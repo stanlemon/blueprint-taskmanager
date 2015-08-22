@@ -5,30 +5,13 @@ var path         = require('path')
   , morgan       = require('morgan')
   , webpack      = require('webpack')
   , config       = require('./webpack.config')
-  , sequelize    = require('sequelize')
-  , epilogue     = require('epilogue')
 ;
 
 var app = express();
 var logger = morgan('combined');
 var compiler = webpack(config);
-var db = new sequelize( process.env.DATABASE_URL || 'sqlite://database.sqlite');
 
-var User = db.define('User', {
-  username: sequelize.STRING,
-  birthday: sequelize.DATE
-});
-
-epilogue.initialize({
-  base: '/api',
-  app: app,
-  sequelize: db
-});
-
-epilogue.resource({
-  model: User,
-  endpoints: ['/users', '/users/:id']
-});
+var db = require("./models")(app);
 
 app.use(logger);
 app.use(bodyParser.json());
@@ -40,7 +23,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
 app.use(serveStatic(path.join(__dirname, 'web'), {'index': ['index.html']}))
 app.use(require('webpack-hot-middleware')(compiler));
 
-db.sync()
+db.sequelize.sync()
     .then(function() {
         var server = app.listen(3000, 'localhost', function (err) {
             if (err) {
@@ -51,13 +34,7 @@ db.sync()
             var host = server.address().address,
                 port = server.address().port;
 
-            console.log('listening at http://%s:%s', host, port);
-
-            // Test creating a user record
-            User.create({
-                username: 'janedoe',
-                birthday: new Date(1980, 6, 20)
-              });
+            console.log('Listening at http://%s:%s', host, port);
         });
     })
 ;
