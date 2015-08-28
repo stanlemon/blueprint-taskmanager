@@ -23,6 +23,28 @@ app.use(require('webpack-dev-middleware')(compiler, {
 app.use(serveStatic(path.join(__dirname, 'web'), {'index': ['index.html']}))
 app.use(require('webpack-hot-middleware')(compiler));
 
+var db = require("./models")(app);
+
+
+var epilogue = require('epilogue');
+var inflection = require('inflection');
+epilogue.initialize({
+    app: app,
+    sequelize: db.sequelize
+});
+Object.keys(db.models).forEach(function(modelName) {
+    var plural = inflection.pluralize(modelName);
+
+    db.resources[modelName] = epilogue.resource({
+        model: db.models[modelName],
+        endpoints: [
+            '/' + plural,
+            '/' + plural + '/:id'
+        ]
+    });
+});
+
+
 db.sequelize.sync()
     .then(function() {
         var server = app.listen(3000, 'localhost', function (err) {
