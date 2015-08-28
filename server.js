@@ -29,6 +29,7 @@ var db = require("./models")(app);
 var epilogue = require('epilogue');
 var inflection = require('inflection');
 epilogue.initialize({
+    base: '/api',
     app: app,
     sequelize: db.sequelize
 });
