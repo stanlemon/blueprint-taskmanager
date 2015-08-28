@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import HelloWorld from './HelloWorld';
+import TaskList from './TaskList';
 
 export default class App extends Component {
     render() {
@@ -30,6 +31,7 @@ export default class App extends Component {
                     <div>
                         <h1>Foobar in Bootstrap</h1>
                         <HelloWorld message="Hello World from your test Bootstrap application!"/>
+                                <TaskList url="/api/tasks" pollInterval={2000}/>
                     </div>
                     <hr />
                     <footer>
