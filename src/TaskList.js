@@ -29,24 +29,22 @@ export default class TaskList extends React.Component {
     }
 
     render() {
-        let taskNodes = this.state.data.map((task, i) => {
-            return (
-                <li>
-                    <p>
-                        <strong>
-                            <Link to="taskView" params={{id: task.id}}>{task.name}</Link>
-                        </strong>
-                    </p>
-                    <p>{task.description}</p>
-                </li>
-            )
-        })
-
         return (
             <div>
                 <h2>Tasks</h2>
                 <ul>
-                    {taskNodes}
+                    {this.state.data.map((task) => {
+                        return (
+                            <li key={task.id}>
+                                <p>
+                                    <strong>
+                                        <Link to="taskView" params={{id: task.id}}>{task.name}</Link>
+                                    </strong>
+                                </p>
+                                <p>{task.description}</p>
+                            </li>
+                        )
+                    })}
                 </ul>
             </div>
         );

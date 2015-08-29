@@ -18,7 +18,7 @@ export default class TaskView extends React.Component {
 
     loadTask() {
         let id = this.props.params.id;
-        let url = this.props.url + '/' + id;
+        let url = this.props.url + id;
 
         fetch(url)
           .then(response => response.json())
