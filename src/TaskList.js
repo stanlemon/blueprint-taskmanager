@@ -1,6 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 export default class TaskList extends React.Component {
+
+    static defaultProps = {
+        url: '/api/tasks',
+        pollInterval: 2000
+    };
 
     constructor(props) {
         super(props);
@@ -24,19 +30,25 @@ export default class TaskList extends React.Component {
 
     render() {
         let taskNodes = this.state.data.map((task, i) => {
-            console.log(task);
             return (
                 <li>
-                    <p><strong>{task.name}</strong></p>
+                    <p>
+                        <strong>
+                            <Link to="taskView" params={{id: task.id}}>{task.name}</Link>
+                        </strong>
+                    </p>
                     <p>{task.description}</p>
                 </li>
             )
         })
 
         return (
-            <ul>
-                {taskNodes}
-            </ul>
+            <div>
+                <h2>Tasks</h2>
+                <ul>
+                    {taskNodes}
+                </ul>
+            </div>
         );
     }
 }

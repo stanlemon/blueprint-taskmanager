@@ -12,6 +12,7 @@
     "inflection": "^1.7.1",
     "morgan": "^1.6.1",
     "react": "^0.13.0",
+    "react-router": "^0.13.3",
     "sequelize": "^3.6.0",
     "serve-static": "^1.10.0",
     "sqlite3": "^3.0.10",

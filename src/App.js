@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import HelloWorld from './HelloWorld';
+import Router, { RouteHandler } from 'react-router';
 import TaskList from './TaskList';
 
 export default class App extends Component {
@@ -30,8 +30,7 @@ export default class App extends Component {
                 <div className="container">
                     <div>
                         <h1>Foobar in Bootstrap</h1>
-                        <HelloWorld message="Hello World from your test Bootstrap application!"/>
-                                <TaskList url="/api/tasks" pollInterval={2000}/>
+                        <RouteHandler/>
                     </div>
                     <hr />
                     <footer>
