@@ -1,11 +1,10 @@
-var path         = require('path')
-  , express      = require('express')
-  , serveStatic  = require('serve-static')
-  , bodyParser   = require('body-parser')
-  , morgan       = require('morgan')
-  , webpack      = require('webpack')
-  , config       = require('./webpack.config')
-;
+var path         = require('path');
+var express      = require('express');
+var serveStatic  = require('serve-static');
+var bodyParser   = require('body-parser');
+var morgan       = require('morgan');
+var webpack      = require('webpack');
+var config       = require('./webpack.config');
 
 var app = express();
 var logger = morgan('combined');
@@ -20,7 +19,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true,
     publicPath: config.output.publicPath
 }));
-app.use(serveStatic(path.join(__dirname, 'web'), {'index': ['index.html']}))
+app.use(serveStatic(path.join(__dirname, 'web'), {'index': ['index.html']}));
 app.use(require('webpack-hot-middleware')(compiler));
 
 var db = require("./models")(app);
@@ -61,4 +60,3 @@ db.sequelize.sync()
         });
     })
 ;
-
