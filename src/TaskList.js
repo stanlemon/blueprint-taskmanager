@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import TaskForm from './TaskForm';
 
 export default class TaskList extends React.Component {
 
@@ -46,6 +47,8 @@ export default class TaskList extends React.Component {
                         )
                     })}
                 </ul>
+
+                <TaskForm/>
             </div>
         );
     }
