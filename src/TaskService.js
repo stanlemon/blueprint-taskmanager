@@ -1,6 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router';
-import TaskForm from './TaskForm';
+import 'whatwg-fetch';
 
 export default class TaskService {
 
@@ -53,7 +51,7 @@ export default class TaskService {
     }
 
     deleteTask(taskId, callback) {
-        let url = this.baseUrl + '/' + task.id;
+        let url = this.baseUrl + '/' + taskId;
 
         fetch(url, {
             method: 'delete',
