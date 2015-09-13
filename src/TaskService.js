@@ -1,5 +1,3 @@
-import 'whatwg-fetch';
-
 export default class TaskService {
 
     constructor(baseUrl = "/api/tasks") {

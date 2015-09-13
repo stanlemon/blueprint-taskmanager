@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Router, { RouteHandler } from 'react-router';
 import TaskList from './TaskList';
 
-export default class App extends Component {
+export default React.createClass({
+
     render() {
         return (
             <div>
@@ -40,4 +41,4 @@ export default class App extends Component {
             </div>
         );
     }
-}
+})

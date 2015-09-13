@@ -1,27 +1,21 @@
 import React from 'react/addons';
-
-import { Link } from 'react-router';
-import TaskService from './TaskService';
+import TaskActions from './actions/TaskActions';
 
 export default React.createClass({
-
-    mixins: [React.addons.LinkedStateMixin],
 
     getInitialState() {
         return {
             name: ''
-        }
-    },
-
-    componentDidMount() {
-        //
+        };
     },
 
     handleSave() {
-        let taskService = new TaskService();
+        TaskActions.createTask(this.state);
+        this.setState({ name: '' });
+    },
 
-        taskService.createTask(this.state, () => console.log('hello') );
-        console.log(this.state);
+    updateTask(e) {
+        this.setState({ name: e.target.value });
     },
 
     render() {
@@ -29,10 +23,10 @@ export default React.createClass({
             <div className="form-inline">
                 <div className="form-group">
                     <label for="task-name">Task</label>
-                    <input type="test" className="form-control" id="task-name" valueLink={this.linkState('name')} />
+                    <input type="test" className="form-control" id="task-name" value={this.state.name} onChange={this.updateTask} />
                     <button className="btn btn-primary" onClick={this.handleSave}>Save</button>
                 </div>
             </div>
-        )
+        );
     }
-})
+});

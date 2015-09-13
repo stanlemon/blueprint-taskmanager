@@ -1,49 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router';
+import Reflux from 'reflux';
 import TaskForm from './TaskForm';
+import TaskItem from './TaskItem';
+import TaskStore from './stores/TaskStore';
 
-export default class TaskList extends React.Component {
+export default React.createClass({
 
-    static defaultProps = {
-        url: '/api/tasks',
-        pollInterval: 2000
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: []
-        }
-    }
-
-    loadTasks() {
-        fetch(this.props.url)
-          .then(response => response.json())
-          .then(data => this.setState({ data: data }))
-          .catch(err => console.error(this.props.url, err.toString()))
-    }
-
-    componentDidMount() {
-        this.loadTasks();
-        setInterval(this.loadTasks.bind(this), this.props.pollInterval);
-    }
+    mixins: [
+        Reflux.connect(TaskStore, "tasks")
+    ],
 
     render() {
         return (
             <div>
                 <h2>Tasks</h2>
                 <ul>
-                    {this.state.data.map((task) => {
+                    {this.state.tasks.map((task) => {
                         return (
-                            <li key={task.id}>
-                                <p>
-                                    <strong>
-                                        <Link to="taskView" params={{id: task.id}}>{task.name}</Link>
-                                    </strong>
-                                </p>
-                                <p>{task.description}</p>
-                            </li>
+                            <TaskItem task={task}/>
                         )
                     })}
                 </ul>
@@ -52,4 +26,4 @@ export default class TaskList extends React.Component {
             </div>
         );
     }
-}
+});

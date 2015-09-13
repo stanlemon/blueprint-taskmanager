@@ -1,39 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Reflux from 'reflux';
+import TaskForm from './TaskForm';
+import TaskItem from './TaskItem';
+import TaskStore from './stores/TaskStore';
 
-export default class TaskView extends React.Component {
+export default React.createClass({
 
-    static defaultProps = {
-        url: '/api/tasks/',
-        pollInterval: 2000
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: []
-        };
-    }
-
-    loadTask() {
-        let id = this.props.params.id;
-        let url = this.props.url + id;
-
-        fetch(url)
-          .then(response => response.json())
-          .then(data => this.setState({ data: data }))
-          .catch(err => console.error(url, err.toString()))
-        ;
-    }
-
-    componentDidMount() {
-        this.loadTask();
-        setInterval(this.loadTask.bind(this), this.props.pollInterval);
-    }
-
+    mixins: [
+        Reflux.listenTo(TaskStore,'onLoadTask')
+        //Reflux.connect(TaskStore, "task")
+    ],
+    
+    onLoadTask(task) {
+        console.log('component loadTask');
+        this.setState({ task: task });
+    },
+    
     render() {
-        let task = this.state.data;
+        let task = this.state.task;
 
         return (
             <div>
@@ -46,4 +31,4 @@ export default class TaskView extends React.Component {
             </div>
         );
     }
-}
+});
