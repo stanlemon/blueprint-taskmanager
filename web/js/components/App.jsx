@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Router, { RouteHandler } from 'react-router';
 
-export default React.createClass({
+export default class App extends React.Component {
 
     render() {
         return (
@@ -40,4 +40,4 @@ export default React.createClass({
             </div>
         );
     }
-})
+}

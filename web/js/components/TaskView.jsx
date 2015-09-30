@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Reflux from 'reflux';
+import Error from './Error';
 import TaskForm from './TaskForm';
 import TaskItem from './TaskItem';
 import TaskStore from '../stores/TaskStore';
@@ -18,6 +19,12 @@ export default React.createClass({
     ],
     
     render() {
+        if (undefined === this.state.task) {
+            return (
+                <Error message="Task does not exist."/>
+            )
+        }
+
         let task = this.state.task;
 
         return (
