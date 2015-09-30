@@ -8,16 +8,18 @@ import TaskStore from './stores/TaskStore';
 export default React.createClass({
 
     mixins: [
-        Reflux.listenTo(TaskStore,'onLoadTask')
-        //Reflux.connect(TaskStore, "task")
+        Reflux.connectFilter(TaskStore, "task", function(tasks) {
+            let taskId = parseInt(this.props.params.id);
+
+            return tasks.filter(function(task) {
+                return task.id === taskId;
+            })[0];
+        })
     ],
     
-    onLoadTask(task) {
-        console.log('component loadTask');
-        this.setState({ task: task });
-    },
-    
     render() {
+        console.log(this.state, this.props);
+
         let task = this.state.task;
 
         return (
