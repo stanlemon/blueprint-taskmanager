@@ -1,6 +1,6 @@
 import Reflux from 'reflux';
 import TaskActions from '../actions/TaskActions';
-import TaskService from '../TaskService';
+import TaskService from '../lib/TaskService';
 
 export default Reflux.createStore({
 
@@ -39,11 +39,7 @@ export default Reflux.createStore({
             this.update();
         });
     },
-    
-    onLoadTask(taskId) {
-        console.log('loadTask');
-    },
-    
+
     loadTasks() {
         this.taskService.loadTasks( (tasks) => {
             this.tasks = tasks;

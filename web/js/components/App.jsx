@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Router, { RouteHandler } from 'react-router';
-import TaskList from './TaskList';
 
 export default React.createClass({
 

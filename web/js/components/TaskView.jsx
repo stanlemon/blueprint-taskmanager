@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import Reflux from 'reflux';
 import TaskForm from './TaskForm';
 import TaskItem from './TaskItem';
-import TaskStore from './stores/TaskStore';
+import TaskStore from '../stores/TaskStore';
 
 export default React.createClass({
 
@@ -18,8 +18,6 @@ export default React.createClass({
     ],
     
     render() {
-        console.log(this.state, this.props);
-
         let task = this.state.task;
 
         return (
@@ -29,7 +27,7 @@ export default React.createClass({
                 <p><strong>Created:</strong> {task.createdAt}</p>
                 <p><strong>Updated:</strong> {task.updatedAt}</p>
 
-                <Link to="taskList">Go back to list</Link>
+                <Link to="taskListView">Go back to list</Link>
             </div>
         );
     }

@@ -6,7 +6,7 @@ module.exports = {
     entry: [
         'webpack-hot-middleware/client',
         'webpack/hot/only-dev-server',
-        './src/index'
+        './web/js/index'
     ],
     output: {
         path: path.join(__dirname, 'dist'),
@@ -25,15 +25,15 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 loaders: ['react-hot', 'babel'],
-                include: path.join(__dirname, 'src')
+                include: path.join(__dirname, 'web/js')
             },
             {
                 test: /\.css$/,
                 loader: 'style!css'
             },
             {
-              test: /\.less$/,
-              loader: "style!css!less"
+                test: /\.less$/,
+                loader: "style!css!less"
             },
             {
                 test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192'

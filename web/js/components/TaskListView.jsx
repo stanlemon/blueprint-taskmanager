@@ -2,7 +2,7 @@ import React from 'react';
 import Reflux from 'reflux';
 import TaskForm from './TaskForm';
 import TaskItem from './TaskItem';
-import TaskStore from './stores/TaskStore';
+import TaskStore from '../stores/TaskStore';
 
 export default React.createClass({
 

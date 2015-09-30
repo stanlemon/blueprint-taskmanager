@@ -1,5 +1,5 @@
 import React from 'react/addons';
-import TaskActions from './actions/TaskActions';
+import TaskActions from '../actions/TaskActions';
 
 export default React.createClass({
 
