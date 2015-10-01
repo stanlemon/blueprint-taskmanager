@@ -1,6 +1,6 @@
 export default class TaskService {
 
-    constructor(baseUrl = "/api/tasks") {
+    constructor(baseUrl = '/api/tasks') {
         this.baseUrl = baseUrl;
     }
 

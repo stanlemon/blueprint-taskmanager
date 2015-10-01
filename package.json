@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "node server.js",
-    "lint": "eslint src"
+    "lint": "eslint ./web/js/"
   },
   "dependencies": {
     "body-parser": "^1.13.3",
