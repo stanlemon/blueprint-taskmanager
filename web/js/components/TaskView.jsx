@@ -17,9 +17,13 @@ export default React.createClass({
             })[0];
         })
     ],
-    
+
     render() {
-        if (undefined === this.state.task) {
+        if (this.state.hasOwnProperty('task') === false) {
+            return <div>Loading...</div>;
+        }
+    
+        if (this.state.hasOwnProperty('task') === true && undefined === this.state.task) {
             return (
                 <Error message="Task does not exist."/>
             )
