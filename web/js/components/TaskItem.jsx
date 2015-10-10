@@ -15,14 +15,14 @@ export default React.createClass({
 		let task = this.props.task;
 
         return (
-			<li key={task.id}>
-				<p>
-					<strong>
-						<Link to="taskView" params={{id: task.id}}>{task.name}</Link>
-					</strong>
+			<tr key={task.id}>
+				<td>
+					<Link to="taskView" params={{id: task.id}}>{task.name}</Link>
+				</td>
+				<td className="text-center">
 					<button type="button" className="btn btn-xs btn-danger" onClick={this.deleteTask}>Delete</button>
-				</p>
-			</li>
+				</td>
+			</tr>
 		)
 	}
 });

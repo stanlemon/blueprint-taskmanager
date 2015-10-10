@@ -1,6 +1,6 @@
 import React from 'react';
 import Reflux from 'reflux';
-import TaskForm from './TaskForm';
+import TaskForm from './CreateTaskForm';
 import TaskItem from './TaskItem';
 import TaskStore from '../stores/TaskStore';
 
@@ -13,14 +13,21 @@ export default React.createClass({
     render() {
         return (
             <div>
-                <h2>Tasks</h2>
-                <ul>
+                <table className="table table-bordered table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th className="col-md-11">Title</th>
+                            <th className="col-md-1 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     {this.state.tasks.map((task) => {
                         return (
                             <TaskItem task={task}/>
                         )
                     })}
-                </ul>
+                    </tbody>
+                </table>
 
                 <TaskForm/>
             </div>

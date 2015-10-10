@@ -17,7 +17,7 @@ export default class App extends React.Component {
                             </button>
                             <a className="navbar-brand" href="#">
                                 <i className="fa fa-cloud"/>&nbsp;
-                                Foobar
+                                Task Manager
                             </a>
                         </div>
                         <div id="navbar" className="collapse navbar-collapse">
@@ -29,7 +29,7 @@ export default class App extends React.Component {
                 </nav>
                 <div className="container">
                     <div>
-                        <h1>Foobar in Bootstrap</h1>
+                        <h1>Task Manager</h1>
                         <RouteHandler/>
                     </div>
                     <hr />

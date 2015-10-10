@@ -1,32 +1,58 @@
 import React from 'react/addons';
 import TaskActions from '../actions/TaskActions';
 
-export default React.createClass({
+export default class TaskForm extends React.Component {
 
-    getInitialState() {
-        return {
-            name: ''
+    static defaultProps = {
+        id: null,
+        name: '',
+        description: ''
+    }
+
+    static propTypes = {
+        id: React.PropTypes.number,
+        name: React.PropTypes.string,
+        description: React.PropTypes.string
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            id: props.id,
+            name: props.name,
+            description: props.description
         };
-    },
 
-    handleSave() {
-        TaskActions.createTask(this.state);
-        this.setState({ name: '' });
-    },
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
 
-    updateTask(e) {
-        this.setState({ name: e.target.value });
-    },
+    handleSubmit(e) {
+        e.preventDefault();
+    }
+
+    handleChange(e) {
+        this.setState({
+            id: this.state.id,
+            name: this.refs.taskName.getDOMNode().value,
+            description: this.refs.taskDescription.getDOMNode().value
+        });
+    }
 
     render() {
         return (
-            <div className="form-inline">
+            <form className="well" onSubmit={this.handleSubmit} onChange={this.handleChange}>
                 <div className="form-group">
-                    <label for="task-name">Task</label>
-                    <input type="test" className="form-control" id="task-name" value={this.state.name} onChange={this.updateTask} />
-                    <button className="btn btn-primary" onClick={this.handleSave}>Save</button>
+                    <label htmlFor="taskName">Name</label>
+                    <input ref="taskName" type="text" className="form-control" id="taskName" defaultValue={this.state.name} />
                 </div>
-            </div>
+                <div className="form-group">
+                    <label htmlFor="taskDescription">Description</label>
+                    <textarea ref="taskDescription" className="form-control" id="taskDescription" defaultValue={this.state.description} />
+                </div>
+                <button className="btn btn-primary">Save</button>
+            </form>
         );
     }
-});
+}
