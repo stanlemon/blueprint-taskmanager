@@ -38,7 +38,7 @@ export default React.createClass({
                 <p><strong>Created:</strong> {task.createdAt}</p>
                 <p><strong>Updated:</strong> {task.updatedAt}</p>
 
-                <Link to="taskListView">Go back to list</Link>
+                <Link to="/">Go back to list</Link>
             </div>
         );
     }

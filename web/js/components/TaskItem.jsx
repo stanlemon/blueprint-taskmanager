@@ -16,7 +16,7 @@ export default React.createClass({
         return (
 			<tr>
 				<td>
-					<Link to="taskView" params={{id: task.id}}>{task.name}</Link>
+					<Link to={`/view/${task.id}`}>{task.name}</Link>
 				</td>
 				<td className="text-center">
 					<button type="button" className="btn btn-xs btn-danger" onClick={this.deleteTask}>Delete</button>

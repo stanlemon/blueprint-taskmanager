@@ -1,5 +1,4 @@
 import React from 'react';
-import Router, { RouteHandler } from 'react-router';
 
 export default class App extends React.Component {
 
@@ -30,7 +29,7 @@ export default class App extends React.Component {
                 <div className="container">
                     <div>
                         <h1>Task Manager</h1>
-                        <RouteHandler/>
+                        {this.props.children}
                     </div>
                     <hr />
                     <footer>

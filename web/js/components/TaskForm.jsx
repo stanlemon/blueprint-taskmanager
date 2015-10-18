@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import TaskActions from '../actions/TaskActions';
 
 export default class TaskForm extends React.Component {

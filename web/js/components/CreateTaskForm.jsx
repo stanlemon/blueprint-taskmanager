@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import TaskForm from './TaskForm';
 import TaskActions from '../actions/TaskActions';
 
