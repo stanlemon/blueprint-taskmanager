@@ -23,7 +23,7 @@ export default React.createClass({
                     <tbody>
                     {this.state.tasks.map((task) => {
                         return (
-                            <TaskItem task={task}/>
+                            <TaskItem key={task.id} task={task}/>
                         )
                     })}
                     </tbody>

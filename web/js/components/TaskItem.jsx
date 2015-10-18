@@ -1,5 +1,4 @@
 import React from 'react';
-import Reflux from 'reflux';
 import { Link } from 'react-router';
 import TaskForm from './TaskForm';
 import TaskStore from '../stores/TaskStore';
@@ -15,7 +14,7 @@ export default React.createClass({
 		let task = this.props.task;
 
         return (
-			<tr key={task.id}>
+			<tr>
 				<td>
 					<Link to="taskView" params={{id: task.id}}>{task.name}</Link>
 				</td>
