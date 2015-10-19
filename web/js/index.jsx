@@ -9,19 +9,33 @@ import App from './components/App';
 import TaskListView from './components/TaskListView';
 import TaskView from './components/TaskView';
 
-import { createStore } from 'redux';
+import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import { devTools, persistState } from 'redux-devtools';
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 import tasksApp from './reducers';
 
-let store = createStore(tasksApp);
+const store = compose(
+  // Enables your middleware:
+  //applyMiddleware(m1, m2, m3), // any Redux middleware, e.g. redux-thunk
+  // Provides support for DevTools:
+  devTools(),
+  // Lets you write ?debug_session=<name> in address bar to persist debug sessions
+  persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+)(createStore)(tasksApp);
 
 ReactDOM.render(
-    <Provider store={store}>
-        <Router>
-            <Route component={App}>
-                <Route name="taskListView" component={TaskListView} path="/"/>
-                <Route name="taskView" component={TaskView} path="/view/:id"/>
-            </Route>
-        </Router>
-    </Provider>
+    <div>
+        <Provider store={store}>
+            <Router>
+                <Route component={App}>
+                    <Route name="taskListView" component={TaskListView} path="/"/>
+                    <Route name="taskView" component={TaskView} path="/view/:id"/>
+                </Route>
+            </Router>
+        </Provider>
+        <DebugPanel top right bottom>
+            <DevTools store={store} monitor={LogMonitor} />
+        </DebugPanel>
+    </div>
 , document.getElementById('app'))
