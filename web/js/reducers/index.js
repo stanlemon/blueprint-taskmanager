@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux';
-import { LOAD_TASKS, CREATE_TASK, UPDATE_TASK, DELETE_TASK } from '../actions/';
+import { LOAD_TASKS_SUCCESS, CREATE_TASK_SUCCESS, UPDATE_TASK_SUCCESS, DELETE_TASK_SUCCESS } from '../actions/';
 
 function tasksReducer(state = [], action) {
     switch (action.type) {
-        case CREATE_TASK:
-            action.task.id = state.length;
+        case LOAD_TASKS_SUCCESS: 
+            return [...action.tasks]
+        case CREATE_TASK_SUCCESS:
             return [...state, action.task]
-        case UPDATE_TASK:
+        case UPDATE_TASK_SUCCESS:
             var tasks = [];
             state.forEach( val => {
                 if (action.task.id == val.id) {
@@ -16,7 +17,7 @@ function tasksReducer(state = [], action) {
                 }
             })
             return tasks;
-        case DELETE_TASK:
+        case DELETE_TASK_SUCCESS:
             var tasks = [];
             state.forEach( val => {
                 if (action.taskId != val.id) {

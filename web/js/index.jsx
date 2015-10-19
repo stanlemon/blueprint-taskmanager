@@ -26,8 +26,8 @@ ReactDOM.render(
         <Provider store={store}>
             <Router>
                 <Route component={App}>
-                    <Route name="taskListView" component={TaskListView} path="/"/>
-                    <Route name="taskView" component={TaskView} path="/view/:id"/>
+                    <Route path="/" component={TaskListView} />
+                    <Route path="/view/:id" component={TaskView} />
                 </Route>
             </Router>
         </Provider>

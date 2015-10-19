@@ -1,12 +1,15 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as taskActions from '../actions/';
+import * as actions from '../actions/';
 
-@connect( state => ({ tasks: state.tasks }) )
+@connect( state => ({ tasks: state.tasks }) , dispatch => {
+  return { actions: bindActionCreators(actions, dispatch) };
+})
 export default class App extends React.Component {
 
-    constructor(props, context) {
-        super(props, context);
+    componentWillMount() {
+        this.props.actions.loadTasks();
     }
 
     render() {
@@ -36,7 +39,7 @@ export default class App extends React.Component {
                 <div className="container">
                     <div>
                         <h1>Task Manager</h1>
-                        {this.props.children}
+                        {React.cloneElement(this.props.children, this.props)}
                     </div>
                     <hr />
                     <footer>

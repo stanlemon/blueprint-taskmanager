@@ -1,24 +1,29 @@
 import React from 'react';
+import Router from 'react-router';
 import { Link } from 'react-router';
 
-export default React.createClass({
+export default class TaskItem extends React.Component {
 
 	deleteTask() {
 		this.props.actions.deleteTask(this.props.task.id);
-	},
+	}
+	
+	viewTask() {
+		this.props.history.pushState(null, '/view/' + this.props.task.id);
+	}
 
     render() {
 		let task = this.props.task;
 
         return (
 			<tr>
-				<td>
-					<Link to={`/view/${task.id}`}>{task.name}</Link>
+				<td onClick={this.viewTask.bind(this)}>
+					{task.name}
 				</td>
-				<td className="text-center">
-					<button type="button" className="btn btn-xs btn-danger" onClick={this.deleteTask}>Delete</button>
+				<td>
+					<button type="button" className="btn btn-xs btn-danger" onClick={this.deleteTask.bind(this)}>Delete</button>
 				</td>
 			</tr>
 		)
 	}
-});
+}

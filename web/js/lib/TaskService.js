@@ -7,60 +7,44 @@ export default class TaskService {
     loadTasks(callback) {
         let url = this.baseUrl;
 
-        fetch(url)
-          .then(response => response.json())
-          .then(callback)
-          .catch(err => console.error(url, err.toString()))
-        ;
+        return fetch(url);
     }
 
-    createTask(task, callback) {
+    createTask(task) {
         let url = this.baseUrl;
 
-        fetch(url, {
+        return fetch(url, {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(task)
-        })
-          .then(response => response.json())
-          .then(callback)
-          .catch(err => console.error(url, err.toString()))
-        ;
+        });
     }
 
-    updateTask(task, callback) {
+    updateTask(task) {
         let url = this.baseUrl + '/' + task.id;
 
-        fetch(url, {
+        return fetch(url, {
             method: 'put',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(task)
-        })
-          .then(response => response.json())
-          .then(callback)
-          .catch(err => console.error(url, err.toString()))
-        ;
+        });
     }
 
-    deleteTask(taskId, callback) {
+    deleteTask(taskId) {
         let url = this.baseUrl + '/' + taskId;
 
-        fetch(url, {
+        return fetch(url, {
             method: 'delete',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        })
-          .then(response => response.json())
-          .then(callback)
-          .catch(err => console.error(url, err.toString()))
-        ;
+        });
     }
 }
