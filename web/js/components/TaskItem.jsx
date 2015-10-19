@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import TaskForm from './TaskForm';
 import TaskStore from '../stores/TaskStore';
-import TaskActions from '../actions/TaskActions';
+import * as taskAction from '../actions/';
 
 export default React.createClass({
 

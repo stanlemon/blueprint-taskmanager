@@ -1,6 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import * as taskActions from '../actions/';
 
+@connect( state => ({ tasks: state.tasks }) )
 export default class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.addTask = this.addTask.bind(this);
+    }
+
+    addTask() {
+        this.props.dispatch(taskActions.createTask({ name: 'hello' }));
+    }
 
     render() {
         return (
@@ -29,6 +41,7 @@ export default class App extends React.Component {
                 <div className="container">
                     <div>
                         <h1>Task Manager</h1>
+                        <div onClick={this.addTask}>Click me</div>
                         {this.props.children}
                     </div>
                     <hr />

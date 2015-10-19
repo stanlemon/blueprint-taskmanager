@@ -1,5 +1,5 @@
 import Reflux from 'reflux';
-import TaskActions from '../actions/TaskActions';
+import TaskActions from '../actions/';
 import TaskService from '../lib/TaskService';
 
 export default Reflux.createStore({

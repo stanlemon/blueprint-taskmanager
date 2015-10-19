@@ -1,6 +1,6 @@
 import React from 'react';
 import TaskForm from './TaskForm';
-import TaskActions from '../actions/TaskActions';
+import * as taskAction from '../actions/';
 
 export default class UpdateTaskForm extends TaskForm {
 

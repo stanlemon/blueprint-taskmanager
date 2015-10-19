@@ -1,16 +1,13 @@
 import React from 'react';
-import Reflux from 'reflux';
 import TaskForm from './CreateTaskForm';
 import TaskItem from './TaskItem';
-import TaskStore from '../stores/TaskStore';
+import { connect } from 'react-redux';
 
-export default React.createClass({
-
-    mixins: [
-        Reflux.connect(TaskStore, "tasks")
-    ],
+@connect( state => ({ tasks: state.tasks }) )
+export default class App extends React.Component {
 
     render() {
+    console.log(this.props.tasks);
         return (
             <div>
                 <table className="table table-bordered table-hover table-condensed">
@@ -21,7 +18,7 @@ export default React.createClass({
                         </tr>
                     </thead>
                     <tbody>
-                    {this.state.tasks.map((task) => {
+                    {this.props.tasks.map((task) => {
                         return (
                             <TaskItem key={task.id} task={task}/>
                         )
@@ -33,4 +30,4 @@ export default React.createClass({
             </div>
         );
     }
-});
+}

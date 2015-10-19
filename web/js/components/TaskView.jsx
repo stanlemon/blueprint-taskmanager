@@ -1,35 +1,35 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Reflux from 'reflux';
 import Error from './Error';
 import TaskForm from './UpdateTaskForm';
 import TaskItem from './TaskItem';
 import TaskStore from '../stores/TaskStore';
 
-export default React.createClass({
+import { connect } from 'react-redux';
 
-    mixins: [
-        Reflux.connectFilter(TaskStore, "task", function(tasks) {
-            let taskId = parseInt(this.props.params.id);
-
-            return tasks.filter(function(task) {
-                return task.id === taskId;
-            })[0];
-        })
-    ],
+@connect( state => ({ tasks: state.tasks }) )
+export default class App extends React.Component {
 
     render() {
-        if (this.state.hasOwnProperty('task') === false) {
-            return <div>Loading...</div>;
-        }
+        console.log(this.props);
+
+        let taskId = parseInt(this.props.params.id);
+        
+        let task = this.props.tasks.filter(function(task) {
+            return task.id === taskId;
+        })[0];
+
+        console.log(task);
+
+        //if (this.state.hasOwnProperty('task') === false) {
+        //    return <div>Loading...</div>;
+        //}
     
-        if (this.state.hasOwnProperty('task') === true && undefined === this.state.task) {
+        if (undefined === task) {
             return (
                 <Error message="Task does not exist."/>
             )
         }
-
-        let task = this.state.task;
 
         return (
             <div>
@@ -42,4 +42,4 @@ export default React.createClass({
             </div>
         );
     }
-});
+}
