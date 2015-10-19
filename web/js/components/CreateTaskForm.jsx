@@ -7,8 +7,10 @@ export default class CreateTaskForm extends TaskForm {
         e.preventDefault();
         
         this.props.actions.createTask(this.state);
-
-        this.refs.taskName.value = '';
-        this.refs.taskDescription.value = '';
+        
+        this.setState({
+            name: '',
+            description: ''
+        });
     }
 }
