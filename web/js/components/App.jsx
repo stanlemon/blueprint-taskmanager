@@ -5,8 +5,8 @@ import * as taskActions from '../actions/';
 @connect( state => ({ tasks: state.tasks }) )
 export default class App extends React.Component {
 
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
     }
 
     render() {
