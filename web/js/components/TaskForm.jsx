@@ -1,5 +1,4 @@
 import React from 'react';
-import * as taskAction from '../actions/';
 
 export default class TaskForm extends React.Component {
 
@@ -15,17 +14,14 @@ export default class TaskForm extends React.Component {
         description: React.PropTypes.string
     }
 
-    constructor(props) {
-        super(props);
-
+    constructor(props, context) {
+        super(props, context);
+console.log("TaskForm", props);
         this.state = {
             id: props.id,
             name: props.name,
             description: props.description
         };
-
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
     }
 
     handleSubmit(e) {
@@ -35,21 +31,28 @@ export default class TaskForm extends React.Component {
     handleChange(e) {
         this.setState({
             id: this.state.id,
-            name: this.refs.taskName.getDOMNode().value,
-            description: this.refs.taskDescription.getDOMNode().value
+            name: this.refs.taskName.value,
+            description: this.refs.taskDescription.value
+        });
+    }
+    
+    clearState() {
+        this.setState({
+            name: '',
+            description: ''
         });
     }
 
     render() {
         return (
-            <form className="well" onSubmit={this.handleSubmit} onChange={this.handleChange}>
+            <form className="well" onSubmit={this.handleSubmit.bind(this)}>
                 <div className="form-group">
                     <label htmlFor="taskName">Name</label>
-                    <input ref="taskName" type="text" className="form-control" id="taskName" defaultValue={this.state.name} />
+                    <input ref="taskName" type="text" className="form-control" id="taskName" value={this.state.name} onChange={this.handleChange.bind(this)} />
                 </div>
                 <div className="form-group">
                     <label htmlFor="taskDescription">Description</label>
-                    <textarea ref="taskDescription" className="form-control" id="taskDescription" defaultValue={this.state.description} />
+                    <textarea ref="taskDescription" className="form-control" id="taskDescription" value={this.state.description} onChange={this.handleChange.bind(this)} />
                 </div>
                 <button className="btn btn-primary">Save</button>
             </form>

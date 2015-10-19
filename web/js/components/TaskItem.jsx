@@ -1,13 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
-import TaskForm from './TaskForm';
-import TaskStore from '../stores/TaskStore';
-import * as taskAction from '../actions/';
 
 export default React.createClass({
 
 	deleteTask() {
-		TaskActions.deleteTask(this.props.task.id);
+		this.props.actions.deleteTask(this.props.task.id);
 	},
 
     render() {

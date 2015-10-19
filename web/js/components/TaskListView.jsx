@@ -1,13 +1,16 @@
 import React from 'react';
 import TaskForm from './CreateTaskForm';
 import TaskItem from './TaskItem';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as actions from '../actions/';
 
 @connect( state => ({ tasks: state.tasks }) )
 export default class App extends React.Component {
 
     render() {
-    console.log(this.props.tasks);
+        let boundActions = bindActionCreators(actions, this.props.dispatch);
+
         return (
             <div>
                 <table className="table table-bordered table-hover table-condensed">
@@ -20,13 +23,13 @@ export default class App extends React.Component {
                     <tbody>
                     {this.props.tasks.map((task) => {
                         return (
-                            <TaskItem key={task.id} task={task}/>
+                            <TaskItem actions={boundActions} key={task.id} task={task}/>
                         )
                     })}
                     </tbody>
                 </table>
 
-                <TaskForm/>
+                <TaskForm actions={boundActions}/>
             </div>
         );
     }

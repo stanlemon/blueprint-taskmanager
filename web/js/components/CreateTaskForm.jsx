@@ -1,17 +1,13 @@
 import React from 'react';
 import TaskForm from './TaskForm';
-import * as taskAction from '../actions/';
 
 export default class CreateTaskForm extends TaskForm {
 
     handleSubmit(e) {
         e.preventDefault();
+        
+        this.props.actions.createTask(this.state);
 
-        TaskActions.createTask(this.state);
-
-        this.setState({
-            name: '',
-            description: ''
-        });
+        this.clearState();
     }
 }
