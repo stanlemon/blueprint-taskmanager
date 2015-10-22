@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import { LOAD_TASKS_SUCCESS, CREATE_TASK_SUCCESS, UPDATE_TASK_SUCCESS, DELETE_TASK_SUCCESS } from '../actions/';
 
 function tasksReducer(state = [], action) {
