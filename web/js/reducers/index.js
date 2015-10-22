@@ -21,11 +21,10 @@ function tasks(state = [], action) {
 export default function(state = { tasks: [], loaded: false }, action) {
     let loaded = state.loaded;
 
-    switch (action.type) {
-        case LOAD_TASKS_SUCCESS:
-            loaded = true;
+    if (action.type == LOAD_TASKS_SUCCESS) {
+        loaded = true;
     }
-    
+
     return {
         tasks: tasks(state.tasks, action),
         loaded: loaded

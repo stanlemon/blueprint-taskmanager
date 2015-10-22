@@ -1,7 +1,11 @@
 {
+  "engines": {
+    "node": "4.2.x"
+  },
   "scripts": {
     "start": "node server.js",
-    "lint": "eslint web/js/**"
+    "lint": "eslint web/js/**",
+    "postinstall": "webpack"
   },
   "dependencies": {
     "body-parser": "^1.13.3",
