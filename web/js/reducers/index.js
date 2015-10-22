@@ -29,9 +29,9 @@ function tasksReducer(state = [], action) {
     }
 }
 
-export default function(state = { tasks: [] }, action) {
-    let loaded = false;
-    
+export default function(state = { tasks: [], loaded: false }, action) {
+    let loaded = state.loaded;
+
     switch (action.type) {
         case LOAD_TASKS_SUCCESS:
             loaded = true;
