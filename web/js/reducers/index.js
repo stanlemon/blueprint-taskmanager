@@ -1,29 +1,18 @@
 import { LOAD_TASKS_SUCCESS, CREATE_TASK_SUCCESS, UPDATE_TASK_SUCCESS, DELETE_TASK_SUCCESS } from '../actions/';
 
-function tasksReducer(state = [], action) {
+function tasks(state = [], action) {
     switch (action.type) {
         case LOAD_TASKS_SUCCESS: 
             return [...action.tasks]
         case CREATE_TASK_SUCCESS:
             return [...state, action.task]
         case UPDATE_TASK_SUCCESS:
-            var tasks = [];
-            state.forEach( val => {
-                if (action.task.id == val.id) {
-                    tasks.push(action.task);
-                } else {
-                    tasks.push(val);
-                }
-            })
-            return tasks;
+            return state.map(task => {
+                return task.id === action.task.id ?
+                    Object.assign({}, action.task) : task
+            });
         case DELETE_TASK_SUCCESS:
-            var tasks = [];
-            state.forEach( val => {
-                if (action.taskId != val.id) {
-                    tasks.push(val);
-                }
-            })
-            return tasks;
+            return state.filter(task => action.taskId != task.id);
         default:
             return state;
     }
@@ -38,7 +27,7 @@ export default function(state = { tasks: [], loaded: false }, action) {
     }
     
     return {
-        tasks: tasksReducer(state.tasks, action),
+        tasks: tasks(state.tasks, action),
         loaded: loaded
     }
 }
