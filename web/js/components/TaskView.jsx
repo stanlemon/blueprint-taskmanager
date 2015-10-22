@@ -7,17 +7,16 @@ import TaskItem from './TaskItem';
 export default class TaskView extends React.Component {
 
     render() {
-        if (!this.props.loaded) {
+        let { params, actions, loaded, tasks } = this.props;
+
+        if (!loaded) {
             return <div/>
         }
 
-        let taskId = parseInt(this.props.params.id);
-        
-        let task = this.props.tasks.filter(function(task) {
-            return task.id === taskId;
-        })[0];
+        let taskId = parseInt(params.id);
+        let task = tasks.filter( task => task.id === taskId )[0];
     
-        if (this.props.loaded && undefined === task) {
+        if (loaded && undefined === task) {
             return (
                 <div>
                     <Error message="Task does not exist."/>
@@ -28,7 +27,7 @@ export default class TaskView extends React.Component {
 
         return (
             <div>
-                <TaskForm actions={this.props.actions} {...task}/>
+                <TaskForm actions={actions} {...task}/>
 
                 <p><strong>Created:</strong> {task.createdAt}</p>
                 <p><strong>Updated:</strong> {task.updatedAt}</p>
