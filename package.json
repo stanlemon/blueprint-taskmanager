@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "node server.js",
-    "lint": "eslint ./web/js/"
+    "lint": "eslint web/js/**"
   },
   "dependencies": {
     "body-parser": "^1.13.3",
@@ -19,51 +19,63 @@
     "redux-thunk": "^1.0.0",
     "sequelize": "^3.6.0",
     "serve-static": "^1.10.0",
-    "sqlite3": "^3.0.10",
+    "sqlite3": "^3.1.0",
     "whatwg-fetch": "^0.9.0"
   },
   "devDependencies": {
     "babel-core": "^5.4.7",
-    "babel-eslint": "^3.1.9",
+    "babel-eslint": "^4.1.3",
     "babel-loader": "^5.1.2",
     "babel-plugin-react-transform": "^1.1.1",
+    "css-loader": "^0.16.0",
     "eslint": "^1.3.1",
     "eslint-plugin-react": "^2.3.0",
-    "less": "^2.5.1",
-    "css-loader": "^0.16.0",
-    "style-loader": "^0.12.3",
-    "less-loader": "^2.2.0",
-    "url-loader": "^0.5.6",
-    "file-loader": "^0.8.4",
     "extract-text-webpack-plugin": "^0.8.2",
-    "webpack": "^1.12.2",
-    "webpack-dev-middleware": "^1.2.0",
-    "webpack-hot-middleware": "^2.4.1",
+    "file-loader": "^0.8.4",
+    "less": "^2.5.1",
+    "less-loader": "^2.2.0",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.0",
+    "redbox-react": "^1.0.1",
     "redux-devtools": "^3.0.0-beta-3",
-    "redux-devtools-log-monitor": "^1.0.0-beta-3",
     "redux-devtools-dock-monitor": "^1.0.0-beta-3",
-    "redbox-react": "^1.0.1"
+    "redux-devtools-log-monitor": "^1.0.0-beta-3",
+    "style-loader": "^0.12.3",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.12.2",
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-hot-middleware": "^2.4.1"
   },
   "babel": {
     "stage": 0,
     "env": {
-        "development": {
-            "plugins": ["react-transform"],
-            "extra": {
-                "react-transform": {
-                "transforms": [{
-                    "transform": "react-transform-hmr",
-                    "imports": ["react"],
-                    "locals": ["module"]
-                }, {
-                    "transform": "react-transform-catch-errors",
-                    "imports": ["react", "redbox-react"]
-                }]
-                }
-            }
+      "development": {
+        "plugins": [
+          "react-transform"
+        ],
+        "extra": {
+          "react-transform": {
+            "transforms": [
+              {
+                "transform": "react-transform-hmr",
+                "imports": [
+                  "react"
+                ],
+                "locals": [
+                  "module"
+                ]
+              },
+              {
+                "transform": "react-transform-catch-errors",
+                "imports": [
+                  "react",
+                  "redbox-react"
+                ]
+              }
+            ]
+          }
         }
+      }
     }
   },
   "eslintConfig": {
