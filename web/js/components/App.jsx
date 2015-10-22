@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions/';
 
-@connect( state => ({ tasks: state.tasks }) , dispatch => {
+@connect( state => state , dispatch => {
   return { actions: bindActionCreators(actions, dispatch) };
 })
 export default class App extends React.Component {
