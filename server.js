@@ -1,4 +1,5 @@
 var path         = require('path');
+var http         = require('http');
 var express      = require('express');
 var serveStatic  = require('serve-static');
 var bodyParser   = require('body-parser');
@@ -11,6 +12,8 @@ var logger = morgan('combined');
 var compiler = webpack(config);
 
 var db = require("./models")(app);
+
+app.set('port', (process.env.PORT || 3000));
 
 app.use(logger);
 app.use(bodyParser.json());
@@ -47,7 +50,9 @@ Object.keys(db.models).forEach(function(modelName) {
 
 db.sequelize.sync()
     .then(function() {
-        var server = app.listen(3000, 'localhost', function (err) {
+        var server = http.createServer(app);
+
+        server.listen(app.get('port'), function(err) {
             if (err) {
                 console.log(err);
                 return;
