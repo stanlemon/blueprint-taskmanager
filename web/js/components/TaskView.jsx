@@ -7,19 +7,22 @@ import TaskItem from './TaskItem';
 export default class TaskView extends React.Component {
 
     render() {
+        if (!this.props.loaded) {
+            return <div/>
+        }
+
         let taskId = parseInt(this.props.params.id);
         
         let task = this.props.tasks.filter(function(task) {
             return task.id === taskId;
         })[0];
-
-        //if (this.state.hasOwnProperty('task') === false) {
-        //    return <div>Loading...</div>;
-        //}
     
-        if (undefined === task) {
+        if (this.props.loaded && undefined === task) {
             return (
-                <Error message="Task does not exist."/>
+                <div>
+                    <Error message="Task does not exist."/>
+                    <Link to="/">Go back to list</Link>
+                </div>
             )
         }
 

@@ -30,8 +30,16 @@ function tasksReducer(state = [], action) {
     }
 }
 
-const tasksApp = combineReducers({
-    tasks: tasksReducer
-});
-
-export default tasksApp;
+export default function(state = { tasks: [] }, action) {
+    let loaded = false;
+    
+    switch (action.type) {
+        case LOAD_TASKS_SUCCESS:
+            loaded = true;
+    }
+    
+    return {
+        tasks: tasksReducer(state.tasks, action),
+        loaded: loaded
+    }
+}
