@@ -1,41 +1,55 @@
+"use strict";
+
 var path = require('path');
 var webpack = require('webpack');
 
-var webpack = require('webpack');
-var path = require('path');
+const PROD = 'production';
+const DEV = 'development;'
+
+let env = process.env.ENV === undefined ? DEV : process.env.ENV;
+console.log(env);
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-    devtool: 'eval', // source-map
-    entry: [
-        'webpack-hot-middleware/client',
-        'webpack/hot/only-dev-server',
-        './web/js/index',
-        './web/css/main.less',
-    ],
+    devtool: 'source-map', // source-map
+    entry: env === PROD ?
+        [
+            './web/js/index',
+            './web/css/main.less',
+        ]
+        :
+        [
+            'webpack-hot-middleware/client',
+            'webpack/hot/only-dev-server',
+            './web/js/index',
+            './web/css/main.less',
+        ],
     output: {
         path: path.join(__dirname, 'web/assets'),
         filename: "[name].js",
         publicPath: '/assets/'
     },
-    plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin(),
-/*    
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify('production')
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
-*/
-        new ExtractTextPlugin("[name].css")
-    ],
+    plugins: env === PROD ?
+        [
+            new webpack.optimize.OccurenceOrderPlugin(),
+            new webpack.DefinePlugin({
+                'process.env': {
+                    'NODE_ENV': JSON.stringify('production')
+                }
+            }),
+            new webpack.optimize.UglifyJsPlugin({
+                compress: {
+                    warnings: false
+                }
+            }),
+            new ExtractTextPlugin("[name].css")
+        ]
+        :
+        [
+            new webpack.HotModuleReplacementPlugin(),
+            new webpack.NoErrorsPlugin(),
+            new ExtractTextPlugin("[name].css")
+        ],
     resolve: {
         extensions: ['', '.js', '.jsx', '.less', '.css']
     },

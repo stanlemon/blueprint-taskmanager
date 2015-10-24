@@ -9,20 +9,12 @@ import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import promiseMiddleware from 'redux-promise';
 import reducer from './reducers';
-import { createDevTools, persistState } from 'redux-devtools';
-import LogMonitor from 'redux-devtools-log-monitor';
-import DockMonitor from 'redux-devtools-dock-monitor';
-
-let DevTools = createDevTools(
-  <DockMonitor toggleVisibilityKey='H' changePositionKey='Q'>
-    <LogMonitor />
-  </DockMonitor>
-);
+import DevTools from './lib/DevTools';
 
 const store = compose(
-    applyMiddleware(promiseMiddleware),
-    DevTools.instrument(),
-    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+    applyMiddleware(promiseMiddleware)
+  , DevTools.instrument()
+  //, persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore)(reducer);
 
 if (module.hot) {
