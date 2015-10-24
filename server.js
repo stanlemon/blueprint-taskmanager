@@ -61,6 +61,8 @@ db.sequelize.sync()
             var host = server.address().address,
                 port = server.address().port;
 
+            if (host == '::') host = 'localhost';
+
             console.log('Listening at http://%s:%s', host, port);
         });
     })

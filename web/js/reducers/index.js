@@ -1,6 +1,6 @@
 import { LOAD_TASKS_SUCCESS, CREATE_TASK_SUCCESS, UPDATE_TASK_SUCCESS, DELETE_TASK_SUCCESS } from '../actions/';
 
-function tasks(state = [], action) {
+function tasks(state = [], action: { type: string; }) {
     switch (action.type) {
         case LOAD_TASKS_SUCCESS: 
             return [...action.tasks]
