@@ -6,8 +6,8 @@ var webpack = require('webpack');
 const PROD = 'production';
 const DEV = 'development;'
 
-let env = process.env.ENV === undefined ? DEV : process.env.ENV;
-console.log(env);
+let env = process.env.NODE_ENV === undefined ? DEV : process.env.NODE_ENV;
+
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {

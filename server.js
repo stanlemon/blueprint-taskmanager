@@ -1,3 +1,5 @@
+"use strict";
+
 var path         = require('path');
 var http         = require('http');
 var express      = require('express');
@@ -13,20 +15,27 @@ var compiler = webpack(config);
 
 var db = require("./models")(app);
 
+const PROD = 'production';
+const DEV = 'development;'
+
+let env = process.env.NODE_ENV === undefined ? DEV : process.env.NODE_ENV;
+
 app.set('port', (process.env.PORT || 3000));
 
 app.use(logger);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(require('webpack-dev-middleware')(compiler, {
-    noInfo: true,
-    publicPath: config.output.publicPath
-}));
 app.use(serveStatic(path.join(__dirname, 'web'), {'index': ['index.html']}));
-app.use(require('webpack-hot-middleware')(compiler));
+
+if (env === DEV) {
+    app.use(require('webpack-dev-middleware')(compiler, {
+        noInfo: true,
+        publicPath: config.output.publicPath
+    }));
+    app.use(require('webpack-hot-middleware')(compiler));
+}
 
 var db = require("./models")(app);
-
 
 var epilogue = require('epilogue');
 var inflection = require('inflection');
