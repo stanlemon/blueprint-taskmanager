@@ -3,6 +3,7 @@
 let path         = require('path');
 let http         = require('http');
 let express      = require('express');
+let helmet       = require('helmet');
 let serveStatic  = require('serve-static');
 let bodyParser   = require('body-parser');
 let morgan       = require('morgan');
@@ -35,6 +36,8 @@ if (env === DEV) {
     }));
     app.use(require('webpack-hot-middleware')(compiler));
 }
+
+helmet(app);
 
 epilogue.initialize({
     base: '/api',
