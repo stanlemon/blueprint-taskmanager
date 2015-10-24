@@ -12,7 +12,7 @@
     "node": "4.2.x"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node app.js",
     "lint": "eslint web/js/**",
     "postinstall": "webpack"
   },
