@@ -1,11 +1,11 @@
 "use strict";
 
-var fs         = require("fs");
-var path       = require("path");
-var Sequelize  = require("sequelize");
+let fs         = require("fs");
+let path       = require("path");
+let Sequelize  = require("sequelize");
 
-module.exports = function(app) {
-    var db = {
+module.exports = app => {
+    let db = {
         sequelize: new Sequelize(process.env.DATABASE_URL || 'sqlite://database.sqlite'),
         models: {},
         resources: {}
@@ -13,19 +13,19 @@ module.exports = function(app) {
 
     fs
         .readdirSync(__dirname)
-        .filter(function(file) {
+        .filter( file => {
             return (file.indexOf(".") !== 0) && (file !== "index.js");
         })
-        .forEach(function(file) {
-            var model = db.sequelize.import(path.join(__dirname, file));
+        .forEach( file => {
+            let model = db.sequelize.import(path.join(__dirname, file));
             db.models[model.name] = model;
         });
 
-    Object.keys(db.models).forEach(function(modelName) {
-        if ("associate" in db.models[modelName]) {
-            db.models[modelName].associate(db);
+    for (let model in db.models) {
+        if ("associate" in db.models[model]) {
+            db.models[model].associate(db);
         }
-    });
+    }
 
     return db;
 };
