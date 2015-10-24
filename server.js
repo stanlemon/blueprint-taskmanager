@@ -8,12 +8,13 @@ var bodyParser   = require('body-parser');
 var morgan       = require('morgan');
 var webpack      = require('webpack');
 var config       = require('./webpack.config');
+var epilogue     = require('epilogue');
+var inflection   = require('inflection');
 
-var app = express();
-var logger = morgan('combined');
-var compiler = webpack(config);
-
-var db = require("./models")(app);
+var app          = express();
+var logger       = morgan('combined');
+var compiler     = webpack(config);
+var db           = require("./models")(app);
 
 const PROD = 'production';
 const DEV = 'development;'
@@ -37,13 +38,12 @@ if (env === DEV) {
 
 var db = require("./models")(app);
 
-var epilogue = require('epilogue');
-var inflection = require('inflection');
 epilogue.initialize({
     base: '/api',
     app: app,
     sequelize: db.sequelize
 });
+
 Object.keys(db.models).forEach(function(modelName) {
     var plural = inflection.pluralize(modelName);
 
@@ -56,7 +56,6 @@ Object.keys(db.models).forEach(function(modelName) {
     });
 });
 
-
 db.sequelize.sync()
     .then(function() {
         var server = http.createServer(app);
@@ -67,8 +66,8 @@ db.sequelize.sync()
                 return;
             }
 
-            var host = server.address().address,
-                port = server.address().port;
+            var host = server.address().address;
+            var port = server.address().port;
 
             if (host == '::') host = 'localhost';
 
