@@ -47,10 +47,11 @@ export async function updateTask(task: Task): { type: string } {
 export async function deleteTask(taskId: number): { type: string } {
     try {
         let response = await taskService.deleteTask(taskId);
-        await response.json();
+        let data = await response.json();
 
         return { type: DELETE_TASK_SUCCESS, taskId: taskId };
     } catch (error) {
+        console.log(error);
         return { type: DELETE_TASK_ERROR, error: error };
     }
 }

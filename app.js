@@ -18,11 +18,18 @@ let compiler     = webpack(config);
 let db           = require("./models")(app);
 
 const PROD = 'production';
-const DEV = 'development;'
+const DEV = 'development'
 
 let env = process.env.NODE_ENV || DEV;
 
 app.set('port', (process.env.PORT || 3000));
+
+app.use(helmet.hidePoweredBy());
+app.use(helmet.ieNoOpen());
+app.use(helmet.noSniff());
+app.use(helmet.frameguard());
+app.use(helmet.xssfilter());
+//app.use(helmet.hsts());
 
 app.use(logger);
 app.use(bodyParser.json());
@@ -36,8 +43,6 @@ if (env === DEV) {
     }));
     app.use(require('webpack-hot-middleware')(compiler));
 }
-
-helmet(app);
 
 epilogue.initialize({
     base: '/api',
@@ -72,6 +77,7 @@ db.sequelize.sync()
 
             if (host == '::') host = 'localhost';
 
+            console.log('Starting in ' + env + ' mode');
             console.log('Listening at http://%s:%s', host, port);
         });
     })

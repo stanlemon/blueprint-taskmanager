@@ -1,10 +1,10 @@
 "use strict";
 
-var path = require('path');
-var webpack = require('webpack');
+let path = require('path');
+let webpack = require('webpack');
 
 const PROD = 'production';
-const DEV = 'development;'
+const DEV = 'development'
 
 let env = process.env.NODE_ENV || DEV;
 

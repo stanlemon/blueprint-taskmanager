@@ -1,10 +1,8 @@
-"use strict";
-
 let fs         = require("fs");
 let path       = require("path");
 let Sequelize  = require("sequelize");
 
-module.exports = app => {
+export default (app) => {
     let db = {
         sequelize: new Sequelize(process.env.DATABASE_URL || 'sqlite://database.sqlite'),
         models: {},
@@ -28,4 +26,4 @@ module.exports = app => {
     }
 
     return db;
-};
+}
