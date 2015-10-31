@@ -5,8 +5,7 @@ import { Link } from 'react-router';
 export default class TaskItem extends React.Component {
 
 	deleteTask() {
-		this.props.click();
-		//this.props.actions.deleteTask(this.props.task.id);
+		this.props.actions.deleteTask(this.props.task.id);
 	}
 
 	viewTask() {
