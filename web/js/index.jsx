@@ -5,6 +5,7 @@ import { Router, Route } from 'react-router';
 import App from './components/App';
 import TaskListView from './components/TaskListView';
 import TaskView from './components/TaskView';
+import LoginView from './components/LoginView';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import promiseMiddleware from 'redux-promise';
@@ -31,6 +32,7 @@ render(
                     <Route path="/" component={TaskListView} />
                     <Route path="/view/:id" component={TaskView} />
                 </Route>
+                <Route path="/login" component={LoginView} />
             </Router>
             <DevTools/>
         </div>

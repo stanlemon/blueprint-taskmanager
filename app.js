@@ -11,6 +11,9 @@ let webpack      = require('webpack');
 let config       = require('./webpack.config');
 let epilogue     = require('epilogue');
 let inflection   = require('inflection');
+let session      = require('express-session')
+let passport     = require('passport');
+let localStrategy = require('passport-local').Strategy;
 
 let app          = express();
 let logger       = morgan('combined');
@@ -44,6 +47,80 @@ if (env === DEV) {
     app.use(require('webpack-hot-middleware')(compiler));
 }
 
+app.use(session({
+    secret: 'theredballonfloatssouthintheslowwindsofazkaban',
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new localStrategy(
+  (username, password, done) => {
+    db.models.User.findOne({ where: { username: username } }).then( (user) => {
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (user.password !== password){
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+    }).catch( (error) => {
+      console.log(error);
+      return done(error, null);
+    });
+  }
+));
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  db.models.User.findById(id).then( (user) => {
+    done(null, user);
+  }).catch( (error) => {
+    console.log(error);
+    done(error, null);
+  });
+});
+
+app.get('/login', (req, res) => {
+  res.redirect('/session');
+});
+
+app.post('/login', passport.authenticate('local'), (req, res) => {
+    console.log('attempting to login');
+  res.redirect('/session');
+});
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
+app.get('/session', (req, res) => {
+  console.log('requesting session', req);
+  if (req.isAuthenticated) {
+    res.json({
+      user: req.user
+    });
+  } else {
+    res.json({
+      user: false
+    })
+  }
+});
+
+app.get('/ping', (req, res) => {
+  res.status(200).send("pong!");
+});
+
+app.get('/secure', isAuthenticated, (req, res) => {
+  res.status(200).send("login!");
+});
+
+
 epilogue.initialize({
     base: '/api',
     app: app,
@@ -62,7 +139,7 @@ for (let model in db.models) {
     });
 }
 
-db.sequelize.sync()
+db.sequelize.sync( /*{ force: true }*/ )
     .then( () => {
         let server = http.createServer(app);
 
@@ -82,3 +159,11 @@ db.sequelize.sync()
         });
     })
 ;
+
+function isAuthenticated(req, res, next)  {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        res.redirect('/login');
+    }
+}
