@@ -2,17 +2,40 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions/';
+import LoginForm from './LoginView';
 
 @connect( state => state , dispatch => {
   return { actions: bindActionCreators(actions, dispatch) };
 })
 export default class App extends React.Component {
 
+    static defaultProps = {
+        pollInterval: 3000
+    }
+
+    static propTypes = {
+        pollInterval: React.PropTypes.number,
+    }
+
     componentWillMount() {
         this.props.actions.loadTasks();
+        this.props.actions.loadUser();
+
+        //setInterval(this.props.actions.loadUser, this.props.pollInterval);
+    }
+
+    logout(e) {
+        console.log('logging out');
+        console.log(this.props.actions);
+        e.preventDefault();
+        this.props.actions.logout();
     }
 
     render() {
+        if (this.props.user === false) {
+            return <LoginForm actions={this.props.actions}/>
+        }
+
         return (
             <div>
                 <nav className="navbar navbar-inverse navbar-fixed-top">
@@ -32,6 +55,7 @@ export default class App extends React.Component {
                         <div id="navbar" className="collapse navbar-collapse">
                             <ul className="nav navbar-nav">
                                 <li className="active"><a href="#">Home</a></li>
+                                <li><a href="#" onClick={this.logout.bind(this)}>Logout</a></li>
                             </ul>
                         </div>
                     </div>

@@ -90,23 +90,21 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', passport.authenticate('local'), (req, res) => {
-    console.log('attempting to login');
   res.redirect('/session');
 });
 
 app.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.redirect('/session');
 });
 
 app.get('/session', (req, res) => {
-  console.log('requesting session', req);
-  if (req.isAuthenticated) {
-    res.json({
+  if (req.isAuthenticated()) {
+    res.status(200).json({
       user: req.user
     });
   } else {
-    res.json({
+    res.status(401).json({
       user: false
     })
   }

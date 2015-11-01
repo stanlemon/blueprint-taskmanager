@@ -1,5 +1,8 @@
 import { TaskService, Task } from '../lib/TaskService';
 
+export const AUTHENTICATED_USER     = 'AUTHENTICATED_USER';
+export const UNAUTHENTICATED_USER   = 'UNAUTHENTICATED_USER';
+export const AUTHENTICATION_ERROR   = 'AUTHENTICATION_ERROR';
 export const LOAD_TASKS_SUCCESS     = 'LOAD_TASKS_SUCCESS';
 export const LOAD_TASKS_ERROR       = 'LOAD_TASKS_ERROR';
 export const CREATE_TASK_SUCCESS    = 'CREATE_TASK_SUCCESS';
@@ -10,6 +13,33 @@ export const DELETE_TASK_SUCCESS    = 'DELETE_TASK_SUCCESS';
 export const DELETE_TASK_ERROR      = 'DELETE_TASK_ERROR';
 
 const taskService = new TaskService();
+
+export async function loadUser(): { type: string } {
+    try {
+        let response = await fetch('/session');
+        let data = await response.json();
+
+        if (data.hasOwnProperty('user') && data.user !== false) {
+            return { type: AUTHENTICATED_USER, user: data.user };
+        } else {
+            return { type: UNAUTHENTICATED_USER };
+        }
+    } catch (error) {
+        return { type: AUTHENTICATION_ERROR, error: error };
+    }
+}
+
+export async function logout(): { type: string } {
+    try {
+        let response = await fetch('/logout');
+        let data = await response.json();
+
+        return { type: UNAUTHENTICATED_USER };
+    } catch (error) {
+        console.log(error);
+        return { type: AUTHENTICATION_ERROR, error: error };
+    }
+}
 
 export async function loadTasks(): { type: string } {
     try {

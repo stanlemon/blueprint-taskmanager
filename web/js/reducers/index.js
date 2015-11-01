@@ -1,11 +1,11 @@
-import { LOAD_TASKS_SUCCESS, CREATE_TASK_SUCCESS, UPDATE_TASK_SUCCESS, DELETE_TASK_SUCCESS } from '../actions/';
+import { AUTHENTICATED_USER, UNAUTHENTICATED_USER, AUTHENTICATION_ERROR, LOAD_TASKS_SUCCESS, CREATE_TASK_SUCCESS, UPDATE_TASK_SUCCESS, DELETE_TASK_SUCCESS } from '../actions/';
 
 function tasks(state = [], action: { type: string; }) {
     switch (action.type) {
-        case LOAD_TASKS_SUCCESS: 
-            return [...action.tasks]
+        case LOAD_TASKS_SUCCESS:
+            return [...action.tasks];
         case CREATE_TASK_SUCCESS:
-            return [...state, action.task]
+            return [...state, action.task];
         case UPDATE_TASK_SUCCESS:
             return state.map(task => {
                 return task.id === action.task.id ?
@@ -18,6 +18,25 @@ function tasks(state = [], action: { type: string; }) {
     }
 }
 
+function user(state = false, action) {
+    switch (action.type) {
+        case UNAUTHENTICATED_USER:
+            return false;
+        case AUTHENTICATED_USER:
+            return Object.assign(action.user);
+        default:
+            return state;
+    }
+}
+
+function error(state = [], action) {
+    switch (action.type) {
+        case AUTHENTICATION_ERROR:
+            return [...state, action.error];
+    }
+    return state;
+}
+
 export default function(state = { tasks: [], loaded: false }, action) {
     let loaded = state.loaded;
 
@@ -26,7 +45,9 @@ export default function(state = { tasks: [], loaded: false }, action) {
     }
 
     return {
+        user: user(state.user, action),
         tasks: tasks(state.tasks, action),
-        loaded: loaded
+        loaded: loaded,
+        error: error(state.error, action)
     }
 }

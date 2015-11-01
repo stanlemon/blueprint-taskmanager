@@ -9,12 +9,12 @@ export default class LoginView extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
+        let { actions } = this.props;
+
         let data = {
             username: this.refs.username.value,
             password: this.refs.password.value
         }
-
-        console.log(data);
 
         return fetch('/login', {
             method: 'post',
@@ -23,7 +23,12 @@ export default class LoginView extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        });
+        }).then(response => response.json())
+          .then(data => {
+              console.log(data);
+              console.log(actions);
+              actions.loadUser();
+          });
     }
 
     render() {
