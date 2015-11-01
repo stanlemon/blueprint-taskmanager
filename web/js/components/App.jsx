@@ -53,7 +53,6 @@ export default class App extends React.Component {
 
         return (
             <div>
-                {(new Date()).toString()}
                 <nav className="navbar navbar-inverse navbar-fixed-top">
                     <div className="container">
                         <div className="navbar-header">
