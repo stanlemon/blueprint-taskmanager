@@ -1,5 +1,6 @@
 import { TaskService, Task } from '../lib/TaskService';
 
+export const ERROR                  = 'ERROR';
 export const AUTHENTICATED_USER     = 'AUTHENTICATED_USER';
 export const UNAUTHENTICATED_USER   = 'UNAUTHENTICATED_USER';
 export const AUTHENTICATION_ERROR   = 'AUTHENTICATION_ERROR';
@@ -14,18 +15,15 @@ export const DELETE_TASK_ERROR      = 'DELETE_TASK_ERROR';
 
 const taskService = new TaskService();
 
-export async function loadUser(): { type: string } {
-    try {
-        let response = await fetch('/session');
-        let data = await response.json();
+export function error(error) {
+    return { type: ERROR, error: error };
+}
 
-        if (data.hasOwnProperty('user') && data.user !== false) {
-            return { type: AUTHENTICATED_USER, user: data.user };
-        } else {
-            return { type: UNAUTHENTICATED_USER };
-        }
-    } catch (error) {
-        return { type: AUTHENTICATION_ERROR, error: error };
+export function loadUser(user) {
+    if (user !== false) {
+        return { type: AUTHENTICATED_USER, user: user };
+    } else {
+        return { type: UNAUTHENTICATED_USER };
     }
 }
 

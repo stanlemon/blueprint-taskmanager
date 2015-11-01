@@ -1,13 +1,17 @@
+import isEqual from 'lodash/lang/isEqual';
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions/';
 import LoginForm from './LoginView';
+import UserService from '../lib/UserService';
 
 @connect( state => state , dispatch => {
   return { actions: bindActionCreators(actions, dispatch) };
 })
 export default class App extends React.Component {
+
+    userService = new UserService();
 
     static defaultProps = {
         pollInterval: 3000
@@ -19,14 +23,25 @@ export default class App extends React.Component {
 
     componentWillMount() {
         this.props.actions.loadTasks();
-        this.props.actions.loadUser();
+        this.checkSession();
 
-        //setInterval(this.props.actions.loadUser, this.props.pollInterval);
+        setInterval(this.checkSession.bind(this), this.props.pollInterval);
+    }
+
+    checkSession() {
+        this.userService.checkSession((err, prev, curr) => {
+            if (err) {
+                this.props.actions.error(err);
+                return;
+            }
+            // Trigger an action when the state of the session changes
+            if (!isEqual(prev, curr)) {
+                this.props.actions.loadUser(curr);
+            }
+        });
     }
 
     logout(e) {
-        console.log('logging out');
-        console.log(this.props.actions);
         e.preventDefault();
         this.props.actions.logout();
     }
@@ -38,6 +53,7 @@ export default class App extends React.Component {
 
         return (
             <div>
+                {(new Date()).toString()}
                 <nav className="navbar navbar-inverse navbar-fixed-top">
                     <div className="container">
                         <div className="navbar-header">

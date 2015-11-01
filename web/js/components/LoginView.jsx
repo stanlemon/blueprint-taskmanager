@@ -25,9 +25,7 @@ export default class LoginView extends React.Component {
             body: JSON.stringify(data)
         }).then(response => response.json())
           .then(data => {
-              console.log(data);
-              console.log(actions);
-              actions.loadUser();
+              actions.loadUser(data.user);
           });
     }
 

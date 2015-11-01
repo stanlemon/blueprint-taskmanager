@@ -1,4 +1,4 @@
-import { AUTHENTICATED_USER, UNAUTHENTICATED_USER, AUTHENTICATION_ERROR, LOAD_TASKS_SUCCESS, CREATE_TASK_SUCCESS, UPDATE_TASK_SUCCESS, DELETE_TASK_SUCCESS } from '../actions/';
+import { ERROR, AUTHENTICATED_USER, UNAUTHENTICATED_USER, AUTHENTICATION_ERROR, LOAD_TASKS_SUCCESS, CREATE_TASK_SUCCESS, UPDATE_TASK_SUCCESS, DELETE_TASK_SUCCESS } from '../actions/';
 
 function tasks(state = [], action: { type: string; }) {
     switch (action.type) {
@@ -31,6 +31,7 @@ function user(state = false, action) {
 
 function error(state = [], action) {
     switch (action.type) {
+        case ERROR:
         case AUTHENTICATION_ERROR:
             return [...state, action.error];
     }
