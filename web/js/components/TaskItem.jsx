@@ -52,11 +52,11 @@ export default class TaskItem extends React.Component {
 
     render() {
         let task = this.props.task;
-
+        let taskName = task.completed === null ? <span>{task.name}</span> : <s>{task.name}</s>;
         return (
             <tr>
                 <td onClick={this.viewTask.bind(this)}>
-                    {task.name}
+                    {taskName}
                 </td>
                 <td>
                     <input type="checkbox" checkedLink={this.completeTask(task)} />

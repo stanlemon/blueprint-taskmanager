@@ -83,6 +83,8 @@ export default class App extends React.Component {
                     <div>
                         {React.cloneElement(this.props.children, this.props)}
                     </div>
+                    <div className="clearfix"></div>
+
                     <hr />
                     <footer>
                         <p>&copy; {(new Date()).getFullYear()} Copyright</p>
