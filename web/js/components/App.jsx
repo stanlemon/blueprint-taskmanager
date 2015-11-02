@@ -35,7 +35,7 @@ export default class App extends React.Component {
                 return;
             }
             // Trigger an action when the state of the session changes
-            if (!isEqual(prev, curr)) {
+            if (!isEqual(prev, curr) || !this.props.loaded.has('user')) {
                 this.props.actions.loadUser(curr);
             }
         });
@@ -47,6 +47,10 @@ export default class App extends React.Component {
     }
 
     render() {
+        if (!this.props.loaded.has('user')) {
+            return <div/>
+        }
+
         if (this.props.user === false) {
             return <LoginForm actions={this.props.actions}/>
         }

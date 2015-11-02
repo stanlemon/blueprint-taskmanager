@@ -38,17 +38,23 @@ function error(state = [], action) {
     return state;
 }
 
-export default function(state = { tasks: [], loaded: false }, action) {
-    let loaded = state.loaded;
-
-    if (action.type == LOAD_TASKS_SUCCESS) {
-        loaded = true;
+function loaded(state = new Set(), action) {
+    switch (action.type) {
+        case LOAD_TASKS_SUCCESS:
+            return new Set([...state, 'tasks']);
+        case UNAUTHENTICATED_USER:
+        case AUTHENTICATED_USER:
+            return new Set([...state, 'user']);
+        default:
+            return state;
     }
+}
 
+export default function(state = {}, action) {
     return {
-        user: user(state.user, action),
-        tasks: tasks(state.tasks, action),
-        loaded: loaded,
-        error: error(state.error, action)
+        user:   user(state.user, action),
+        tasks:  tasks(state.tasks, action),
+        loaded: loaded(state.loaded, action),
+        error:  error(state.error, action)
     }
 }

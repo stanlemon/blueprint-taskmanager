@@ -21,6 +21,6 @@ export default class UserService {
             })
             .catch(err => {
                 callback(err, null, null)
-            })
+            });
     }
 }

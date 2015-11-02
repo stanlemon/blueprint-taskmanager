@@ -7,7 +7,7 @@ export default class TaskListView extends React.Component {
     render() {
         let { actions, history, loaded, tasks } = this.props;
 
-        if (!loaded) {
+        if (!loaded.has('tasks')) {
             return <div/>
         }
 
