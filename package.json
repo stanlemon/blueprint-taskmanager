@@ -23,6 +23,7 @@
     "babel-runtime": "^5.8.x",
     "body-parser": "^1.x.x",
     "bootstrap": "^3.3.x",
+    "bootswatch": "^3.3.5",
     "cookie-session": "^1.2.0",
     "css-loader": "^0.21.0",
     "epilogue": "^0.6.3",
