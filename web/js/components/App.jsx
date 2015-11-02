@@ -68,7 +68,7 @@ export default class App extends React.Component {
                             </button>
                             <a className="navbar-brand" href="#">
                                 <i className="fa fa-cloud"/>&nbsp;
-                                Task Manager
+                                Blueprint
                             </a>
                         </div>
                         <div id="navbar" className="collapse navbar-collapse">
@@ -81,7 +81,6 @@ export default class App extends React.Component {
                 </nav>
                 <div className="container">
                     <div>
-                        <h1>Task Manager</h1>
                         {React.cloneElement(this.props.children, this.props)}
                     </div>
                     <hr />

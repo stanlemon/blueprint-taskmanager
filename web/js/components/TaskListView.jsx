@@ -28,7 +28,8 @@ export default class TaskListView extends React.Component {
                 <table className="table table-bordered table-hover table-condensed">
                     <thead>
                         <tr>
-                            <th className="col-md-10">Title</th>
+                            <th className="col-md-9">Title</th>
+                            <th className="col-md-1">Actions</th>
                             <th className="col-md-2">Actions</th>
                         </tr>
                     </thead>

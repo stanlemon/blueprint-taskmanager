@@ -56,7 +56,10 @@ export default class TaskForm extends React.Component {
                     <label htmlFor="taskDescription">Description</label>
                     <textarea ref="taskDescription" className="form-control" id="taskDescription" value={this.state.description} onChange={this.handleChange.bind(this)} />
                 </div>
-                <button className="btn btn-primary">Save</button>
+                <div className="form-group">
+                    <button className="btn btn-primary col-sm-2">Save</button>
+                </div>
+                <div className="clear-fix"></div>
             </form>
         );
     }

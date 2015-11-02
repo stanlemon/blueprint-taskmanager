@@ -8,7 +8,7 @@ const DEV = 'development'
 
 let env = process.env.NODE_ENV || DEV;
 
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     devtool: 'source-map', // source-map
