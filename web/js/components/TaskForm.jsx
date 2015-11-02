@@ -59,7 +59,7 @@ export default class TaskForm extends React.Component {
                 <div className="form-group">
                     <button className="btn btn-primary col-sm-2">Save</button>
                 </div>
-                <div className="clear-fix"></div>
+                <div className="clearfix"></div>
             </form>
         );
     }
