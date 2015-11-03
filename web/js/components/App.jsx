@@ -62,26 +62,19 @@ export default class App extends React.Component {
 
         return (
             <div>
-                <nav className="navbar navbar-inverse navbar-fixed-top">
+                <nav className="navbar navbar-inverse navbar-fixed-top custom-navbar">
                     <div className="container">
                         <div className="navbar-header">
-                            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                <span className="sr-only">Toggle navigation</span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
-                            </button>
                             <a className="navbar-brand" href="#">
                                 <i className="fa fa-cloud"/>&nbsp;
                                 Blueprint
                             </a>
                         </div>
-                        <div id="navbar" className="collapse navbar-collapse">
-                            <ul className="nav navbar-nav">
-                                <li className="active"><a href="#">Home</a></li>
-                                <li><a href="#" onClick={this.logout.bind(this)}>Logout</a></li>
-                            </ul>
-                        </div>
+                        <ul className="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="#" className="fa fa-sign-out" onClick={this.logout.bind(this)}/>
+                            </li>
+                        </ul>
                     </div>
                 </nav>
                 <div className="container">

@@ -33,7 +33,7 @@ export default class LoginView extends React.Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-sm-6 col-sm-offset-3">
+                    <div className="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
                         <div className="panel panel-info">
                             <div className="panel-heading">
                                 <h3 className="panel-title"><strong>Login</strong></h3>

@@ -59,3 +59,33 @@ body {
 // Utility classes
 @import "~bootstrap/less/utilities.less";
 @import "~bootstrap/less/responsive-utilities.less";
+
+/* icon */ .custom-navbar .fa {font-size:25px}
+.custom-navbar.navbar-inverse .navbar-nav > li > a:hover,
+.custom-navbar.navbar-inverse .navbar-nav > li > a:focus {
+     background-color: inherit;
+ }
+
+@media (max-width:767px) {
+	.custom-navbar .navbar-right {
+	    float: right;
+	    padding-right: 15px;
+	}
+	.custom-navbar .nav.navbar-nav.navbar-right li {
+	    float: right;
+	}
+  	.custom-navbar .nav.navbar-nav.navbar-right li > a {
+	    padding:8px 5px;
+	}
+	.custom-navbar .navbar-toggle {
+	    float: left
+	}
+	.custom-navbar .navbar-header {
+	    float: left;
+	    width: auto!important;
+	}
+	.custom-navbar .navbar-collapse {
+	    clear: both;
+	    float: none;
+	}
+}
