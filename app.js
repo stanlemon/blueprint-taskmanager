@@ -116,31 +116,6 @@ app.get('/secure', isAuthenticated, (req, res) => {
   res.status(200).send("login!");
 });
 
-let auth = (req, res, context) => {
-    if (req.isAuthenticated()) {
-        return context.continue();
-    } else {
-        throw new epilogue.Errors.ForbiddenError("You must be logged in to access this resource.");
-    }
-}
-
-let middleware = {
-    create: {
-        auth: auth
-    },
-    list: {
-        auth: auth
-    },
-    read: {
-        auth: auth
-    },
-    update: {
-        auth: auth
-    },
-    delete: {
-        auth: auth
-    }
-}
 
 epilogue.initialize({
     base: '/api',
@@ -157,11 +132,13 @@ let resources = {
         ]
     })
 }
-resources.Task.use(middleware);
-resources.Task.list.fetch.before( (req, res, context) => {
-    // Always for this to the current user's id
-    req.query.userId = req.user.id;
-    return context.continue;
+
+resources.Task.all.auth((req, res, context) => {
+    if (req.isAuthenticated()) {
+        return context.continue();
+    } else {
+        throw new epilogue.Errors.ForbiddenError("You must be logged in to access this resource.");
+    }
 });
 
 let appendUserId = (req, res, context) => {
@@ -170,15 +147,16 @@ let appendUserId = (req, res, context) => {
     return context.continue;
 }
 
-resources['Task'].list.fetch.before(appendUserId);
-resources['Task'].read.fetch.before(appendUserId);
-resources['Task'].delete.fetch.before(appendUserId);
-resources['Task'].update.fetch.before(appendUserId);
-resources['Task'].create.write.before((req, res, context) => {
+resources.Task.list.fetch.before(appendUserId);
+resources.Task.read.fetch.before(appendUserId);
+resources.Task.delete.fetch.before(appendUserId);
+resources.Task.update.fetch.before(appendUserId);
+resources.Task.create.write.before((req, res, context) => {
     // Add the user id to object
     req.body.userId = req.user.id;
     return context.continue;
 });
+
 
 db.sequelize.sync( /*{ force: true }*/ )
     .then( () => {
