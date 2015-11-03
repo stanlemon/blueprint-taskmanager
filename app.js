@@ -133,6 +133,7 @@ let resources = {
     })
 }
 
+// Require an authenticated user for all operations
 resources.Task.all.auth((req, res, context) => {
     if (req.isAuthenticated()) {
         return context.continue();
@@ -141,18 +142,14 @@ resources.Task.all.auth((req, res, context) => {
     }
 });
 
-let appendUserId = (req, res, context) => {
-    // Always for this to the current user's id
+// Restrict all fetch requests to the authenticated user
+resources.Task.all.fetch_before((req, res, context) => {
     req.query.userId = req.user.id;
     return context.continue;
-}
+});
 
-resources.Task.list.fetch.before(appendUserId);
-resources.Task.read.fetch.before(appendUserId);
-resources.Task.delete.fetch.before(appendUserId);
-resources.Task.update.fetch.before(appendUserId);
+// Set the authenticated user on all writes
 resources.Task.create.write.before((req, res, context) => {
-    // Add the user id to object
     req.body.userId = req.user.id;
     return context.continue;
 });
