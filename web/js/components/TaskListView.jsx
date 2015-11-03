@@ -38,7 +38,7 @@ export default class TaskListView extends React.Component {
         });
 
         if (!loaded.has('tasks')) {
-            return <div/>
+            return <div className="text-center"><i style={{ fontSize: '10em' }} className="text-primary fa fa-refresh fa-spin"></i></div>
         }
 
         let taskList;

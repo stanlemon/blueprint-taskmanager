@@ -10,9 +10,9 @@ let morgan       = require('morgan');
 let webpack      = require('webpack');
 let config       = require('./webpack.config');
 let epilogue     = require('epilogue');
-let inflection   = require('inflection');
 let session      = require('express-session')
 let passport     = require('passport');
+let bcrypt       = require('bcrypt');
 let localStrategy = require('passport-local').Strategy;
 
 let app          = express();
@@ -99,7 +99,10 @@ app.get('/logout', (req, res) => {
 app.get('/session', (req, res) => {
   if (req.isAuthenticated()) {
     res.status(200).json({
-      user: req.user
+      user: {
+        id: req.user.id,
+        createdAt: req.user.createdAt
+      }
     });
   } else {
     res.status(401).json({
