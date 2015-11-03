@@ -148,22 +148,17 @@ epilogue.initialize({
     sequelize: db.sequelize
 });
 
-let resources = {};
-
-for (let model in db.models) {
-    let plural = inflection.pluralize(model);
-
-    resources[model] = epilogue.resource({
-        model: db.models[model],
+let resources = {
+    Task: epilogue.resource({
+        model: db.models.Task,
         endpoints: [
-            '/' + plural,
-            '/' + plural + '/:id'
+            '/tasks',
+            '/tasks/:id'
         ]
-    });
-    resources[model].use(middleware);
+    })
 }
-
-resources['Task'].list.fetch.before( (req, res, context) => {
+resources.Task.use(middleware);
+resources.Task.list.fetch.before( (req, res, context) => {
     // Always for this to the current user's id
     req.query.userId = req.user.id;
     return context.continue;
@@ -180,11 +175,8 @@ resources['Task'].read.fetch.before(appendUserId);
 resources['Task'].delete.fetch.before(appendUserId);
 resources['Task'].update.fetch.before(appendUserId);
 resources['Task'].create.write.before((req, res, context) => {
+    // Add the user id to object
     req.body.userId = req.user.id;
-    console.log(req.body)
-
-    // Always for this to the current user's id
-    //req.query.userId = req.user.id;
     return context.continue;
 });
 
