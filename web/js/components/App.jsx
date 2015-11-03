@@ -55,7 +55,7 @@ export default class App extends React.Component {
         }
 
         if (this.props.user === false) {
-            return <LoginForm actions={this.props.actions}/>
+            return <LoginForm {...this.props}/>
         }
 
         let year = (new Date()).getFullYear();

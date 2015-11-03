@@ -1,4 +1,5 @@
 import React from 'react';
+import Error from './Error';
 
 export default class LoginView extends React.Component {
 
@@ -25,13 +26,30 @@ export default class LoginView extends React.Component {
             body: JSON.stringify(data)
         }).then(response => response.json())
           .then(data => {
-              actions.loadUser(data.user);
+              if (data.error) {
+                  for (let message of data.messages) {
+                      actions.error(message);
+                  }
+              } else {
+                  actions.loadUser(data.user);
+              }
           });
+    }
+
+    componentWillUnmount() {
+        this.props.actions.clearErrors();
     }
 
     render() {
         return (
             <div className="container">
+                <div className="row">
+                    <div className="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
+                        {this.props.errors.map((error, i) => {
+                            return <Error key={i} message={error}/>
+                        })}
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
                         <div className="panel panel-info">

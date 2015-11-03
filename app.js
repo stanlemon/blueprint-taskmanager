@@ -11,6 +11,7 @@ let webpack      = require('webpack');
 let config       = require('./webpack.config');
 let epilogue     = require('epilogue');
 let session      = require('express-session')
+let flash        = require('connect-flash');
 let passport     = require('passport');
 let bcrypt       = require('bcrypt');
 let localStrategy = require('passport-local').Strategy;
@@ -37,6 +38,7 @@ app.use(helmet.xssfilter());
 app.use(logger);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(flash());
 app.use(serveStatic(path.join(__dirname, 'web'), {'index': ['index.html']}));
 
 if (env === DEV) {
@@ -59,10 +61,10 @@ passport.use(new localStrategy(
   (username, password, done) => {
     db.models.User.findOne({ where: { username: username } }).then( (user) => {
       if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, { message: 'Incorrect username or password.' });
       }
-      if (user.password !== password){
-        return done(null, false, { message: 'Incorrect password.' });
+      if (!bcrypt.compareSync(password, user.password)) {
+        return done(null, false, { message: 'Incorrect username or password.' });
       }
       return done(null, user);
     }).catch( (error) => {
@@ -84,10 +86,21 @@ passport.deserializeUser((id, done) => {
 });
 
 app.get('/login', (req, res) => {
-  res.redirect('/session');
+  let messages = req.flash('error');
+  if (messages.length > 0) {
+      res.json({
+          error: true,
+          messages: messages
+      });
+  } else {
+      res.redirect('/session');
+  }
 });
 
-app.post('/login', passport.authenticate('local'), (req, res) => {
+app.post('/login', passport.authenticate('local', {
+    failureRedirect: '/login',
+    failureFlash: true
+}), (req, res) => {
   res.redirect('/session');
 });
 

@@ -1,5 +1,6 @@
 import {
     ERROR
+  , CLEAR_ERRORS
   , AUTHENTICATED_USER
   , UNAUTHENTICATED_USER
   , AUTHENTICATION_ERROR
@@ -42,8 +43,10 @@ function user(state = false, action) {
     }
 }
 
-function error(state = [], action) {
+function errors(state = [], action) {
     switch (action.type) {
+        case CLEAR_ERRORS:
+            return [];
         case ERROR:
         case AUTHENTICATION_ERROR:
             return [...state, action.error];
@@ -68,6 +71,6 @@ export default function(state = {}, action) {
         user:   user(state.user, action),
         tasks:  tasks(state.tasks, action),
         loaded: loaded(state.loaded, action),
-        error:  error(state.error, action)
+        errors:  errors(state.errors, action)
     }
 }
