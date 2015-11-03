@@ -12,7 +12,7 @@
     "node": "4.2.x"
   },
   "scripts": {
-    "start": "./node_modules/babel/bin/babel-node.js app.js",
+    "start": "node app.js",
     "lint": "eslint web/js/**",
     "postinstall": "webpack"
   },

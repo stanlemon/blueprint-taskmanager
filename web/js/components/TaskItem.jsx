@@ -1,3 +1,4 @@
+import isEqual from 'lodash/lang/isEqual';
 import React from 'react';
 import Router from 'react-router';
 import { Link } from 'react-router';
@@ -45,26 +46,35 @@ export default class TaskItem extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            completed: nextProps.task.completed
-        });
+        if (!isEqual(this.props, nextProps)) {
+            this.setState({
+                completed: nextProps.task.completed
+            });
+        }
     }
 
     render() {
         let task = this.props.task;
         let taskName = task.completed === null ? <span>{task.name}</span> : <s>{task.name}</s>;
+
         return (
-            <tr>
-                <td onClick={this.viewTask.bind(this)}>
-                    {taskName}
-                </td>
-                <td>
-                    <input type="checkbox" checkedLink={this.completeTask(task)} />
-                </td>
-                <td>
-                    <button type="button" className="btn btn-xs btn-danger" onClick={this.deleteTask.bind(this)}>Delete</button>
-                </td>
-            </tr>
+            <div style={{ border: '1px solid #e3e3e3', borderRadius: '4px', marginBottom: '8px' }}>
+                <div className="row" style={{ margin: '10px' }}>
+                    <div className="col-xs-7 col-sm-9 col-md-10" onClick={this.viewTask.bind(this)}>
+                        {taskName}
+                    </div>
+                    <div className="col-xs-5 col-sm-3 col-md-2">
+                        <div className="row">
+                            <div className="col-xs-5 col-sm-7 text-right">
+                                <input type="checkbox" checkedLink={this.completeTask(task)} />
+                            </div>
+                            <div className="col-xs-7 col-sm-3 text-right">
+                                <button type="button" className="btn btn-xs btn-danger" onClick={this.deleteTask.bind(this)}>Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         )
     }
 }

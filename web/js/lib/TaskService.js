@@ -1,24 +1,18 @@
 import 'whatwg-fetch';
 
-export type Task = {
-    id: number;
-    name: string;
-    description: string;
-}
-
 export class TaskService {
 
-    constructor(baseUrl: string = '/api/tasks') {
+    constructor(baseUrl = '/api/tasks') {
         this.baseUrl = baseUrl;
     }
 
-    loadTasks(): Promise{
+    loadTasks() {
         let url = this.baseUrl;
 
         return fetch(url);
     }
 
-    createTask(task: Task): Promise {
+    createTask(task) {
         let url = this.baseUrl;
 
         return fetch(url, {
@@ -31,7 +25,7 @@ export class TaskService {
         });
     }
 
-    updateTask(task: Task): Promise {
+    updateTask(task) {
         let url = this.baseUrl + '/' + task.id;
 
         return fetch(url, {
@@ -44,7 +38,7 @@ export class TaskService {
         });
     }
 
-    deleteTask(taskId: number): Promise {
+    deleteTask(taskId) {
         let url = this.baseUrl + '/' + taskId;
 
         return fetch(url, {

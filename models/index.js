@@ -1,29 +1,32 @@
+"use strict";
+
 let fs         = require("fs");
 let path       = require("path");
 let Sequelize  = require("sequelize");
 
-export default (app) => {
-    let db = {
-        sequelize: new Sequelize(process.env.DATABASE_URL || 'sqlite://database.sqlite'),
-        models: {},
-        resources: {}
-    };
+module.exports = () => {
+    let sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite://database.sqlite');
 
-    fs
-        .readdirSync(__dirname)
-        .filter( file => {
-            return (file.indexOf(".") !== 0) && (file !== "index.js");
-        })
-        .forEach( file => {
-            let model = db.sequelize.import(path.join(__dirname, file));
-            db.models[model.name] = model;
-        });
+    let User = sequelize.define('User', {
+        username: Sequelize.STRING,
+        password: Sequelize.STRING,
+        //birthday: Sequelize.DATE
+    });
 
-    for (let model in db.models) {
-        if ("associate" in db.models[model]) {
-            db.models[model].associate(db);
+    let Task = sequelize.define('Task', {
+        name: Sequelize.STRING,
+        description: Sequelize.STRING,
+        due: Sequelize.DATE,
+        completed: Sequelize.DATE
+    });
+
+    Task.belongsTo(User, { as: 'user' });
+
+    return {
+        sequelize: sequelize,
+        models: {
+            User: User,
+            Task: Task
         }
     }
-
-    return db;
 }

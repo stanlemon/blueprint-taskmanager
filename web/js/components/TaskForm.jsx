@@ -1,3 +1,4 @@
+import isEqual from 'lodash/lang/isEqual';
 import React from 'react';
 
 export default class TaskForm extends React.Component {
@@ -38,11 +39,13 @@ export default class TaskForm extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            id: nextProps.id,
-            name: nextProps.name,
-            description: nextProps.description
-        });
+        if (!isEqual(this.props, nextProps)) {
+            this.setState({
+                id: nextProps.id,
+                name: nextProps.name,
+                description: nextProps.description
+            });
+        }
     }
 
     render() {

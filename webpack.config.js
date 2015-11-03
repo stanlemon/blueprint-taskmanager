@@ -11,7 +11,7 @@ let env = process.env.NODE_ENV || DEV;
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-    devtool: 'source-map', // source-map
+    devtool: env === PROD ? 'source-map' : 'eval',
     entry: env === PROD ?
         [
             './web/js/index',

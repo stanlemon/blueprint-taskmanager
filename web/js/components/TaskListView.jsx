@@ -50,28 +50,14 @@ export default class TaskListView extends React.Component {
                         <h1>You don't have any tasks!</h1>
                         <p>Use the form below to get started and add your first task.</p>
                     </div>
-                    <TaskForm actions={actions}/>
                 </div>
             )
         } else {
-            taskList = (
-                <table className="table table-bordered table-hover table-condensed">
-                    <thead>
-                        <tr>
-                            <th className="col-md-9">Title</th>
-                            <th className="col-md-1"></th>
-                            <th className="col-md-2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {tasks.map((task) => {
-                        return (
-                            <TaskItem key={task.id} actions={actions} history={history} task={task}/>
-                        )
-                    })}
-                    </tbody>
-                </table>
-            )
+            taskList = tasks.map((task) => {
+                return (
+                    <TaskItem key={task.id} actions={actions} history={history} task={task}/>
+                )
+            })
         }
 
         let btnClasses    = classNames('btn', 'btn-sm', 'btn-info', 'btn-default');
@@ -81,7 +67,7 @@ export default class TaskListView extends React.Component {
 
         return (
             <div>
-                <div className="pull-right" style={{ width: 400 }}>
+                <div className="col-xs-12 col-sm-5 pull-right">
                     <div className="btn-group btn-group-justified" role="group">
                       <div className="btn-group" role="group">
                         <button type="button" onClick={this.setFilter.bind(this, ALL)} className={btnAll}>All</button>
@@ -98,6 +84,8 @@ export default class TaskListView extends React.Component {
                 <div style={{ minHeight: 10 }}></div>
 
                 {taskList}
+
+                <br />
 
                 <TaskForm actions={actions}/>
             </div>

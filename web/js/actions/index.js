@@ -27,33 +27,36 @@ export function loadUser(user) {
     }
 }
 
-export async function logout(): { type: string } {
+export async function logout() {
     try {
         let response = await fetch('/logout');
         let data = await response.json();
 
         return { type: UNAUTHENTICATED_USER };
     } catch (error) {
-        console.log(error);
         return { type: AUTHENTICATION_ERROR, error: error };
     }
 }
 
-export async function loadTasks(): { type: string } {
+export async function loadTasks() {
     try {
         let response = await taskService.loadTasks();
-        let tasks: Array<Task> = await response.json();
+        let data = await response.json();
 
-        return { type: LOAD_TASKS_SUCCESS, tasks: tasks };
+        if (response.status != 200) {
+            throw new data.message
+        }
+
+        return { type: LOAD_TASKS_SUCCESS, tasks: data };
     } catch (error) {
         return { type: LOAD_TASKS_ERROR, error: error };
     }
 }
 
-export async function createTask(task: Task): { type: string } {
+export async function createTask(task) {
     try {
         let response = await taskService.createTask(task);
-        let data: Task = await response.json();
+        let data = await response.json();
 
         return { type: CREATE_TASK_SUCCESS, task: data };
     } catch (error) {
@@ -61,10 +64,10 @@ export async function createTask(task: Task): { type: string } {
     }
 }
 
-export async function updateTask(task: Task): { type: string } {
+export async function updateTask(task) {
     try {
         let response = await taskService.updateTask(task);
-        let data: Task = await response.json();
+        let data = await response.json();
 
         return { type: UPDATE_TASK_SUCCESS, task: data };
     } catch (error) {
@@ -72,14 +75,13 @@ export async function updateTask(task: Task): { type: string } {
     }
 }
 
-export async function deleteTask(taskId: number): { type: string } {
+export async function deleteTask(taskId) {
     try {
         let response = await taskService.deleteTask(taskId);
         let data = await response.json();
 
         return { type: DELETE_TASK_SUCCESS, taskId: taskId };
     } catch (error) {
-        console.log(error);
         return { type: DELETE_TASK_ERROR, error: error };
     }
 }

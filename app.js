@@ -18,7 +18,7 @@ let localStrategy = require('passport-local').Strategy;
 let app          = express();
 let logger       = morgan('combined');
 let compiler     = webpack(config);
-let db           = require("./models")(app);
+let db           = require("./models")();
 
 const PROD = 'production';
 const DEV = 'development'
@@ -66,7 +66,6 @@ passport.use(new localStrategy(
       }
       return done(null, user);
     }).catch( (error) => {
-      console.log(error);
       return done(error, null);
     });
   }
@@ -80,7 +79,6 @@ passport.deserializeUser((id, done) => {
   db.models.User.findById(id).then( (user) => {
     done(null, user);
   }).catch( (error) => {
-    console.log(error);
     done(error, null);
   });
 });
@@ -118,6 +116,31 @@ app.get('/secure', isAuthenticated, (req, res) => {
   res.status(200).send("login!");
 });
 
+let auth = (req, res, context) => {
+    if (req.isAuthenticated()) {
+        return context.continue();
+    } else {
+        throw new epilogue.Errors.ForbiddenError("You must be logged in to access this resource.");
+    }
+}
+
+let middleware = {
+    create: {
+        auth: auth
+    },
+    list: {
+        auth: auth
+    },
+    read: {
+        auth: auth
+    },
+    update: {
+        auth: auth
+    },
+    delete: {
+        auth: auth
+    }
+}
 
 epilogue.initialize({
     base: '/api',
@@ -125,17 +148,45 @@ epilogue.initialize({
     sequelize: db.sequelize
 });
 
+let resources = {};
+
 for (let model in db.models) {
     let plural = inflection.pluralize(model);
 
-    db.resources[model] = epilogue.resource({
+    resources[model] = epilogue.resource({
         model: db.models[model],
         endpoints: [
             '/' + plural,
             '/' + plural + '/:id'
         ]
     });
+    resources[model].use(middleware);
 }
+
+resources['Task'].list.fetch.before( (req, res, context) => {
+    // Always for this to the current user's id
+    req.query.userId = req.user.id;
+    return context.continue;
+});
+
+let appendUserId = (req, res, context) => {
+    // Always for this to the current user's id
+    req.query.userId = req.user.id;
+    return context.continue;
+}
+
+resources['Task'].list.fetch.before(appendUserId);
+resources['Task'].read.fetch.before(appendUserId);
+resources['Task'].delete.fetch.before(appendUserId);
+resources['Task'].update.fetch.before(appendUserId);
+resources['Task'].create.write.before((req, res, context) => {
+    req.body.userId = req.user.id;
+    console.log(req.body)
+
+    // Always for this to the current user's id
+    //req.query.userId = req.user.id;
+    return context.continue;
+});
 
 db.sequelize.sync( /*{ force: true }*/ )
     .then( () => {

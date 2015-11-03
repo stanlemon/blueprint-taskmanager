@@ -7,7 +7,7 @@ import LoginForm from './LoginView';
 import UserService from '../lib/UserService';
 
 @connect( state => state , dispatch => {
-  return { actions: bindActionCreators(actions, dispatch) };
+    return { actions: bindActionCreators(actions, dispatch) };
 })
 export default class App extends React.Component {
 
@@ -22,7 +22,6 @@ export default class App extends React.Component {
     }
 
     componentWillMount() {
-        this.props.actions.loadTasks();
         this.checkSession();
 
         setInterval(this.checkSession.bind(this), this.props.pollInterval);
@@ -37,6 +36,10 @@ export default class App extends React.Component {
             // Trigger an action when the state of the session changes
             if (!isEqual(prev, curr) || !this.props.loaded.has('user')) {
                 this.props.actions.loadUser(curr);
+
+                if (curr !== false) {
+                    this.props.actions.loadTasks();
+                }
             }
         });
     }
@@ -54,6 +57,8 @@ export default class App extends React.Component {
         if (this.props.user === false) {
             return <LoginForm actions={this.props.actions}/>
         }
+
+        let year = (new Date()).getFullYear();
 
         return (
             <div>
@@ -87,7 +92,7 @@ export default class App extends React.Component {
 
                     <hr />
                     <footer>
-                        <p>&copy; {(new Date()).getFullYear()} Copyright</p>
+                        <p>&copy; {year} Copyright</p>
                     </footer>
                 </div>
             </div>
