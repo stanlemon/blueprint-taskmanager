@@ -124,12 +124,37 @@ app.get('/session', (req, res) => {
   }
 });
 
-app.get('/ping', (req, res) => {
-  res.status(200).send("pong!");
-});
+app.post('/register', (req, res) => {
+    db.models.User
+        .build({
+            name: req.body.name,
+            email: req.body.email,
+            username: req.body.username,
+            password: req.body.password
+        })
+        .save()
+        .then(user => {
+            req.logIn(user, function(err) {
+                  if (err) {
+                      console.log(error);
 
-app.get('/secure', isAuthenticated, (req, res) => {
-  res.status(200).send("login!");
+                      res.json({
+                          error: true,
+                          messages: [error]
+                      });
+                  } else {
+                      res.json(user);
+                  }
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+
+            res.json({
+                error: true,
+                messages: [error]
+            });
+        });
 });
 
 
@@ -171,7 +196,7 @@ resources.Task.create.write.before((req, res, context) => {
 });
 
 
-db.sequelize.sync( /*{ force: true }*/ )
+db.sequelize.sync( { force: true } )
     .then( () => {
         let server = http.createServer(app);
 

@@ -59,20 +59,20 @@ export default class LoginView extends React.Component {
                             <div className="panel-body">
                                 <form className="form-horizontal" method="post" role="form" onSubmit={this.handleSubmit.bind(this)}>
                                   <div className="form-group">
-                                    <label htmlFor="inputEmail3" className="col-sm-3 control-label">Username</label>
+                                    <label htmlFor="username" className="col-sm-3 control-label">Username</label>
                                     <div className="col-sm-9">
                                         <div className="input-group">
                                             <span className="input-group-addon"><i className="fa fa-user"></i></span>
-                                            <input ref="username" type="text" className="form-control" id="username" name="_username" />
+                                            <input ref="username" type="text" className="form-control" id="username" name="username" />
                                         </div>
                                     </div>
                                   </div>
                                   <div className="form-group">
-                                    <label htmlFor="inputPassword3" className="col-sm-3 control-label">Password</label>
+                                    <label htmlFor="password" className="col-sm-3 control-label">Password</label>
                                     <div className="col-sm-9">
                                         <div className="input-group">
                                             <span className="input-group-addon"><i className="fa fa-lock"></i></span>
-                                            <input ref="password" type="password" className="form-control" id="password" name="_password" />
+                                            <input ref="password" type="password" className="form-control" id="password" name="password" />
                                         </div>
                                     </div>
                                   </div>
@@ -83,6 +83,14 @@ export default class LoginView extends React.Component {
                                 </form>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div style={{ minHeight: '15px' }}/>
+                <div className="row">
+                    <div className="text-center col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
+                        <p>
+                            Don't have an account?  <a href="/#/register">Create one now.</a>
+                        </p>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import App from './components/App';
 import TaskListView from './components/TaskListView';
 import TaskView from './components/TaskView';
 import LoginView from './components/LoginView';
+import RegisterView from './components/RegisterView';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import promiseMiddleware from 'redux-promise';
@@ -33,6 +34,7 @@ render(
                     <Route path="/view/:id" component={TaskView} />
                 </Route>
                 <Route path="/login" component={LoginView} />
+                <Route path="/register" component={RegisterView} />
             </Router>
             <DevTools/>
         </div>
