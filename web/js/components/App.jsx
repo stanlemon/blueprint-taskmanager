@@ -1,48 +1,7 @@
-import isEqual from 'lodash/lang/isEqual';
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as actions from '../actions/';
 import LoginForm from './LoginView';
-import UserService from '../lib/UserService';
 
-@connect( state => state , dispatch => {
-    return { actions: bindActionCreators(actions, dispatch) };
-})
 export default class App extends React.Component {
-
-    userService = new UserService();
-
-    static defaultProps = {
-        pollInterval: 3000
-    }
-
-    static propTypes = {
-        pollInterval: React.PropTypes.number,
-    }
-
-    componentWillMount() {
-        this.checkSession();
-
-        setInterval(this.checkSession.bind(this), this.props.pollInterval);
-    }
-
-    checkSession() {
-        this.userService.checkSession((err, prev, curr) => {
-            if (err) {
-                this.props.actions.error(err);
-                return;
-            }
-            // Trigger an action when the state of the session changes
-            if (!isEqual(prev, curr) || !this.props.loaded.has('user')) {
-                this.props.actions.loadUser(curr);
-
-                if (curr !== false) {
-                    this.props.actions.loadTasks();
-                }
-            }
-        });
-    }
 
     logout(e) {
         e.preventDefault();
@@ -50,6 +9,7 @@ export default class App extends React.Component {
     }
 
     render() {
+        console.log(this.props);
         if (!this.props.loaded.has('user')) {
             return <div/>
         }

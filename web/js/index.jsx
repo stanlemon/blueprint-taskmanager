@@ -2,7 +2,7 @@ import 'babel-core/polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route } from 'react-router';
-import App from './components/App';
+import Root from './components/Root';
 import TaskListView from './components/TaskListView';
 import TaskView from './components/TaskView';
 import LoginView from './components/LoginView';
@@ -29,7 +29,7 @@ render(
     <Provider store={store}>
         <div>
             <Router>
-                <Route component={App}>
+                <Route component={Root}>
                     <Route path="/" component={TaskListView} />
                     <Route path="/view/:id" component={TaskView} />
                 </Route>

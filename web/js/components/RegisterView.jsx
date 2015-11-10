@@ -1,12 +1,5 @@
 import React from 'react';
-import Error from './Error';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as actions from '../actions/';
 
-@connect( state => state , dispatch => {
-    return { actions: bindActionCreators(actions, dispatch) };
-})
 export default class RegisterView extends React.Component {
 
     handleSubmit(e) {
