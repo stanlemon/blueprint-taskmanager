@@ -196,7 +196,7 @@ resources.Task.create.write.before((req, res, context) => {
 });
 
 
-db.sequelize.sync( { force: true } )
+db.sequelize.sync( /* { force: true } */ )
     .then( () => {
         let server = http.createServer(app);
 

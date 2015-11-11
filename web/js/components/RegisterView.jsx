@@ -23,15 +23,11 @@ export default class RegisterView extends React.Component {
             body: JSON.stringify(data)
         }).then(response => response.json())
           .then(data => {
-              console.log(actions);
-              console.log(data);
               if (data.error) {
-                  console.log('error');
                   for (let message of data.messages) {
                       actions.error(message);
                   }
               } else {
-                  console.log('user')
                   actions.loadUser(data);
 
                   history.pushState(null, '/');
