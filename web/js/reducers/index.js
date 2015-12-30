@@ -1,3 +1,4 @@
+/* @flow weak */
 import {
     ERROR
   , CLEAR_ERRORS
@@ -14,7 +15,9 @@ import {
   , DELETE_TASK_ERROR
 } from '../actions/';
 
-function tasks(state = [], action: { type: string; }) {
+import { unique } from 'lodash';
+
+function tasks(state = [], action) {
     switch (action.type) {
         case LOAD_TASKS_SUCCESS:
             return [...action.tasks];
@@ -23,10 +26,10 @@ function tasks(state = [], action: { type: string; }) {
         case UPDATE_TASK_SUCCESS:
             return state.map(task => {
                 return task.id === action.task.id ?
-                    Object.assign({}, action.task) : task
+                    Object.assign({}, action.task) : task;
             });
         case DELETE_TASK_SUCCESS:
-            return state.filter(task => action.taskId != task.id);
+            return state.filter(task => action.taskId !== task.id);
         default:
             return state;
     }
@@ -48,29 +51,34 @@ function errors(state = [], action) {
         case CLEAR_ERRORS:
             return [];
         case ERROR:
+        case LOAD_TASKS_ERROR:
+        case CREATE_TASK_ERROR:
+        case UPDATE_TASK_ERROR:
+        case DELETE_TASK_ERROR:
         case AUTHENTICATION_ERROR:
             return [...state, action.error];
-    }
-    return state;
-}
-
-function loaded(state = new Set(), action) {
-    switch (action.type) {
-        case LOAD_TASKS_SUCCESS:
-            return new Set([...state, 'tasks']);
-        case UNAUTHENTICATED_USER:
-        case AUTHENTICATED_USER:
-            return new Set([...state, 'user']);
         default:
             return state;
     }
 }
 
-export default function(state = {}, action) {
-    return {
-        user:   user(state.user, action),
-        tasks:  tasks(state.tasks, action),
-        loaded: loaded(state.loaded, action),
-        errors:  errors(state.errors, action)
+function loaded(state = [], action) {
+    switch (action.type) {
+        case LOAD_TASKS_SUCCESS:
+            return unique([...state, 'tasks']);
+        case UNAUTHENTICATED_USER:
+        case AUTHENTICATED_USER:
+            return unique([...state, 'user']);
+        default:
+            return state;
     }
+}
+
+export default function (state = {}, action) {
+    return {
+        user: user(state.user, action),
+        tasks: tasks(state.tasks, action),
+        loaded: loaded(state.loaded, action),
+        errors: errors(state.errors, action)
+    };
 }

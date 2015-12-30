@@ -1,4 +1,5 @@
-import isEqual from 'lodash/lang/isEqual';
+/* @flow weak */
+import { isEqual } from 'lodash';
 import React from 'react';
 
 export default class TaskForm extends React.Component {
@@ -7,14 +8,14 @@ export default class TaskForm extends React.Component {
         id: null,
         name: '',
         description: ''
-    }
+    };
 
     static propTypes = {
         id: React.PropTypes.number,
         name: React.PropTypes.string,
         description: React.PropTypes.string,
         actions: React.PropTypes.object
-    }
+    };
 
     constructor(props, context) {
         super(props, context);

@@ -1,5 +1,7 @@
+/* @flow weak */
 import React from 'react';
 import LoginForm from './LoginView';
+import { contains } from 'lodash';
 
 export default class App extends React.Component {
 
@@ -9,7 +11,7 @@ export default class App extends React.Component {
     }
 
     render() {
-        if (!this.props.loaded.has('user')) {
+        if (!contains(this.props.loaded, 'user')) {
             return <div/>
         }
 

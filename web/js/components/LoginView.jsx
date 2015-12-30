@@ -1,3 +1,4 @@
+/* @flow weak */
 import React from 'react';
 import Error from './Error';
 
@@ -28,7 +29,7 @@ export default class LoginView extends React.Component {
           .then(data => {
               if (data.error) {
                   for (let message of data.messages) {
-                      actions.error(message);
+                      actions.addError(message);
                   }
               } else {
                   actions.loadUser(data.user);

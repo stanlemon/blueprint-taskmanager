@@ -1,4 +1,5 @@
-import 'babel-core/polyfill';
+/* @flow weak */
+import 'whatwg-fetch';
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route } from 'react-router';
@@ -16,7 +17,6 @@ import DevTools from './lib/DevTools';
 const store = compose(
     applyMiddleware(promiseMiddleware)
   , DevTools.instrument()
-  //, persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore)(reducer);
 
 if (module.hot) {
@@ -39,4 +39,4 @@ render(
             <DevTools/>
         </div>
     </Provider>
-, document.getElementById('root'))
+, document.getElementById('root'));

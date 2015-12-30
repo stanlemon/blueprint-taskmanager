@@ -1,3 +1,5 @@
+/* @flow weak */
+import { contains } from 'lodash';
 import React from 'react';
 import classNames from 'classnames';
 import TaskForm from './CreateTaskForm';
@@ -37,7 +39,7 @@ export default class TaskListView extends React.Component {
             }
         });
 
-        if (!loaded.has('tasks')) {
+        if (!contains(loaded, 'tasks')) {
             return <div className="text-center"><i style={{ fontSize: '10em' }} className="text-primary fa fa-refresh fa-spin"></i></div>
         }
 

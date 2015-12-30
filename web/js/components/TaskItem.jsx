@@ -1,4 +1,5 @@
-import isEqual from 'lodash/lang/isEqual';
+/* @flow weak */
+import { isEqual } from 'lodash';
 import React from 'react';
 import Router from 'react-router';
 import { Link } from 'react-router';
@@ -7,11 +8,11 @@ export default class TaskItem extends React.Component {
 
     static defaultProps = {
         completed: null
-    }
+    };
 
     static propTypes = {
         completed: React.PropTypes.string
-    }
+    };
 
     constructor(props, context) {
         super(props, context);

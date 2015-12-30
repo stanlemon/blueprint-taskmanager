@@ -1,3 +1,4 @@
+/* @flow weak */
 import React from 'react';
 
 export default class RegisterView extends React.Component {
@@ -25,7 +26,7 @@ export default class RegisterView extends React.Component {
           .then(data => {
               if (data.error) {
                   for (let message of data.messages) {
-                      actions.error(message);
+                      actions.addError(message);
                   }
               } else {
                   actions.loadUser(data);

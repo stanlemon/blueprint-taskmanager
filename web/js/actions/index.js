@@ -1,23 +1,24 @@
-import { TaskService, Task } from '../lib/TaskService';
+/* @flow weak */
+import TaskService from '../lib/TaskService';
 
-export const ERROR                  = 'ERROR';
-export const CLEAR_ERRORS           = 'CLEAR_ERRORS';
-export const AUTHENTICATED_USER     = 'AUTHENTICATED_USER';
-export const UNAUTHENTICATED_USER   = 'UNAUTHENTICATED_USER';
-export const AUTHENTICATION_ERROR   = 'AUTHENTICATION_ERROR';
-export const LOAD_TASKS_SUCCESS     = 'LOAD_TASKS_SUCCESS';
-export const LOAD_TASKS_ERROR       = 'LOAD_TASKS_ERROR';
-export const CREATE_TASK_SUCCESS    = 'CREATE_TASK_SUCCESS';
-export const CREATE_TASK_ERROR      = 'CREATE_TASK_ERROR';
-export const UPDATE_TASK_SUCCESS    = 'UPDATE_TASK_SUCCESS';
-export const UPDATE_TASK_ERROR      = 'UPDATE_TASK_ERROR';
-export const DELETE_TASK_SUCCESS    = 'DELETE_TASK_SUCCESS';
-export const DELETE_TASK_ERROR      = 'DELETE_TASK_ERROR';
+export const ERROR = 'ERROR';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
+export const AUTHENTICATED_USER = 'AUTHENTICATED_USER';
+export const UNAUTHENTICATED_USER = 'UNAUTHENTICATED_USER';
+export const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
+export const LOAD_TASKS_SUCCESS = 'LOAD_TASKS_SUCCESS';
+export const LOAD_TASKS_ERROR = 'LOAD_TASKS_ERROR';
+export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
+export const CREATE_TASK_ERROR = 'CREATE_TASK_ERROR';
+export const UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
+export const UPDATE_TASK_ERROR = 'UPDATE_TASK_ERROR';
+export const DELETE_TASK_SUCCESS = 'DELETE_TASK_SUCCESS';
+export const DELETE_TASK_ERROR = 'DELETE_TASK_ERROR';
 
 const taskService = new TaskService();
 
-export function error(error) {
-    return { type: ERROR, error: error };
+export function addError(error) {
+    return { type: ERROR, error };
 }
 
 export function clearErrors() {
@@ -26,67 +27,62 @@ export function clearErrors() {
 
 export function loadUser(user) {
     if (user !== false) {
-        return { type: AUTHENTICATED_USER, user: user };
-    } else {
-        return { type: UNAUTHENTICATED_USER };
+        return { type: AUTHENTICATED_USER, user };
     }
+    return { type: UNAUTHENTICATED_USER };
 }
 
 export async function logout() {
     try {
-        let response = await fetch('/logout');
-        let data = await response.json();
+        const response = await fetch('/logout');
+        await response.json();
 
         return { type: UNAUTHENTICATED_USER };
     } catch (error) {
-        return { type: AUTHENTICATION_ERROR, error: error };
+        return { type: AUTHENTICATION_ERROR, error };
     }
 }
 
 export async function loadTasks() {
     try {
-        let response = await taskService.loadTasks();
-        let data = await response.json();
+        const response = await taskService.loadTasks();
+        const tasks = await response.json();
 
-        if (response.status != 200) {
-            throw new data.message
-        }
-
-        return { type: LOAD_TASKS_SUCCESS, tasks: data };
+        return { type: LOAD_TASKS_SUCCESS, tasks };
     } catch (error) {
-        return { type: LOAD_TASKS_ERROR, error: error };
+        return { type: LOAD_TASKS_ERROR, error };
     }
 }
 
-export async function createTask(task) {
+export async function createTask(data) {
     try {
-        let response = await taskService.createTask(task);
-        let data = await response.json();
+        const response = await taskService.createTask(data);
+        const task = await response.json();
 
-        return { type: CREATE_TASK_SUCCESS, task: data };
+        return { type: CREATE_TASK_SUCCESS, task };
     } catch (error) {
-        return { type: CREATE_TASK_ERROR, error: error };
+        return { type: CREATE_TASK_ERROR, error };
     }
 }
 
-export async function updateTask(task) {
+export async function updateTask(data) {
     try {
-        let response = await taskService.updateTask(task);
-        let data = await response.json();
+        const response = await taskService.updateTask(data);
+        const task = await response.json();
 
-        return { type: UPDATE_TASK_SUCCESS, task: data };
+        return { type: UPDATE_TASK_SUCCESS, task };
     } catch (error) {
-        return { type: UPDATE_TASK_ERROR, error: error };
+        return { type: UPDATE_TASK_ERROR, error };
     }
 }
 
 export async function deleteTask(taskId) {
     try {
-        let response = await taskService.deleteTask(taskId);
-        let data = await response.json();
+        const response = await taskService.deleteTask(taskId);
+        await response.json();
 
-        return { type: DELETE_TASK_SUCCESS, taskId: taskId };
+        return { type: DELETE_TASK_SUCCESS, taskId };
     } catch (error) {
-        return { type: DELETE_TASK_ERROR, error: error };
+        return { type: DELETE_TASK_ERROR, error };
     }
 }

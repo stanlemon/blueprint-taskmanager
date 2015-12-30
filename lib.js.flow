@@ -1,0 +1,3 @@
+declare module "whatwg-fetch" {};
+
+declare function fetch(uri: string, options: ?Object): Promise;

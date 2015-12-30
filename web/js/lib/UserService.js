@@ -1,10 +1,11 @@
-import 'whatwg-fetch';
-
+/* @flow weak */
 export default class UserService {
+
+    baseUrl = '/session';
+    session = false;
 
     constructor(baseUrl = '/session') {
         this.baseUrl = baseUrl;
-        this.session = false;
     }
 
     checkSession(callback) {
@@ -20,7 +21,7 @@ export default class UserService {
                 }
             })
             .catch(err => {
-                callback(err, null, null)
+                callback(err, null, null);
             });
     }
 }
