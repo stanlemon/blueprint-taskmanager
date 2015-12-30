@@ -6,9 +6,9 @@ export default class RegisterView extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        let { actions, history } = this.props;
+        let { history } = this.props;
 
-        let data = {
+        const data = {
             name: this.refs.name.value,
             email: this.refs.email.value,
             username: this.refs.username.value,
@@ -29,15 +29,9 @@ export default class RegisterView extends React.Component {
                       actions.addError(message);
                   }
               } else {
-                  actions.loadUser(data);
-
                   history.pushState(null, '/');
               }
           });
-    }
-
-    componentWillUnmount() {
-        this.props.actions.clearErrors();
     }
 
     render() {
