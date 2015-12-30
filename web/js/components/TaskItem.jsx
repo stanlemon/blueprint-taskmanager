@@ -1,5 +1,6 @@
 /* @flow weak */
 import { isEqual } from 'lodash';
+import { makeDateTime } from '../lib/Utils';
 import React from 'react';
 import Router from 'react-router';
 import { Link } from 'react-router';
@@ -7,11 +8,19 @@ import { Link } from 'react-router';
 export default class TaskItem extends React.Component {
 
     static defaultProps = {
-        completed: null
+        task: {
+            completed: null
+        }
     };
 
     static propTypes = {
-        completed: React.PropTypes.string
+        task: React.PropTypes.shape({
+            id: React.PropTypes.number,
+            name: React.PropTypes.string,
+            description: React.PropTypes.string,
+            due: React.PropTypes.string,
+            completed: React.PropTypes.string
+        })
     };
 
     constructor(props, context) {
@@ -20,10 +29,6 @@ export default class TaskItem extends React.Component {
         this.state = {
             completed: this.props.task.completed,
         };
-    }
-
-    makeDateTime(d = new Date()) {
-        return d.toISOString().replace('T', ' ').replace('Z', '') + ' ' + d.toString().substr(-11, 6);
     }
 
     deleteTask() {
@@ -40,7 +45,7 @@ export default class TaskItem extends React.Component {
            requestChange: (checked) => {
                this.props.actions.updateTask({
                    ...this.props.task,
-                   completed : checked ? this.makeDateTime() : null
+                   completed : checked ? makeDateTime() : null
                });
            }
         };

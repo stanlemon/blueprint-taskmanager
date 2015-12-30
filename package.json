@@ -15,7 +15,8 @@
     "start": "node app.js",
     "lint": "eslint web/js/**",
     "postinstall": "webpack",
-    "build": "NODE_ENV=production webpack"
+    "build": "NODE_ENV=production webpack",
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-core/register ./web/test/**"
   },
   "dependencies": {
     "babel": "^6.3.x",
@@ -67,9 +68,14 @@
   "devDependencies": {
     "babel-eslint": "^5.0.0-beta6",
     "babel-preset-react-hmre": "^1.0.1",
+    "chai": "^3.4.1",
+    "enzyme": "^1.2.0",
     "eslint": "^1.10.x",
     "eslint-config-airbnb": "^2.1.1",
     "eslint-plugin-react": "^3.9.x",
+    "mocha": "^2.3.4",
+    "react-addons-test-utils": "^0.14.5",
+    "sinon": "^1.17.2",
     "webpack": "^1.12.x",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.5.x"
