@@ -18,7 +18,8 @@ export default class LoginView extends React.Component {
             password: this.refs.password.value
         }
 
-        return fetch('/login', {
+        fetch('/login', {
+            credentials: 'same-origin',
             method: 'post',
             headers: {
                 'Accept': 'application/json',
@@ -34,6 +35,8 @@ export default class LoginView extends React.Component {
               } else {
                   actions.loadUser(data.user);
               }
+          }).catch(function(error) {
+              console.log('An error has occurred', error);
           });
     }
 

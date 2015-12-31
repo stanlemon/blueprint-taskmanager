@@ -10,13 +10,16 @@ export default class TaskService {
     loadTasks() {
         const url = this.baseUrl;
 
-        return fetch(url);
+        return fetch(url, {
+            credentials: 'same-origin',
+        });
     }
 
     createTask(task) {
         const url = this.baseUrl;
 
         return fetch(url, {
+            credentials: 'same-origin',
             method: 'post',
             headers: {
                 'Accept': 'application/json',
@@ -30,6 +33,7 @@ export default class TaskService {
         const url = this.baseUrl + '/' + task.id;
 
         return fetch(url, {
+            credentials: 'same-origin',
             method: 'put',
             headers: {
                 'Accept': 'application/json',
@@ -43,6 +47,7 @@ export default class TaskService {
         const url = this.baseUrl + '/' + taskId;
 
         return fetch(url, {
+            credentials: 'same-origin',
             method: 'delete',
             headers: {
                 'Accept': 'application/json',
