@@ -6,7 +6,6 @@ import { Router, Route, browserHistory } from 'react-router';
 import Root from './components/Root';
 import TaskListView from './components/TaskListView';
 import TaskView from './components/TaskView';
-import LoginView from './components/LoginView';
 import RegisterView from './components/RegisterView';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
