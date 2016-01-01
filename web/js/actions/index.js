@@ -34,7 +34,9 @@ export function loadUser(user) {
 
 export async function logout() {
     try {
-        const response = await fetch('/logout');
+        const response = await fetch('/logout', {
+            credentials: 'same-origin'
+        });
         await response.json();
 
         return { type: UNAUTHENTICATED_USER };

@@ -14,6 +14,7 @@ export default class UserService {
         })
             .then(response => response.json())
             .then(data => {
+                // error, previous session value, current session value
                 callback(null, this.session, data.user);
 
                 if (data.hasOwnProperty('user') && data.user !== false) {

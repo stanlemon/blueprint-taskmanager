@@ -1,9 +1,47 @@
 /* @flow weak */
+import { isEqual, contains, omit } from 'lodash';
 import React from 'react';
 import LoginView from './LoginView';
-import { contains } from 'lodash';
+import UserService from '../lib/UserService';
 
 export default class App extends React.Component {
+
+    userService = new UserService();
+
+    static defaultProps = {
+        pollInterval: 3000
+    };
+
+    static propTypes = {
+        pollInterval: React.PropTypes.number,
+    };
+
+    componentWillMount() {
+        this.checkSession();
+        this.interval = setInterval(this.checkSession.bind(this), this.props.pollInterval);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+    checkSession() {
+        this.userService.checkSession((err, prev, curr) => {
+            if (err) {
+                this.props.actions.addError(err);
+                return;
+            }
+
+            // Trigger an action when the state of the session changes
+            if (!isEqual(prev, curr) || !contains(this.props.loaded, 'user')) {
+                this.props.actions.loadUser(curr);
+
+                if (curr !== false) {
+                    this.props.actions.loadTasks();
+                }
+            }
+        });
+    }
 
     logout(e) {
         e.preventDefault();

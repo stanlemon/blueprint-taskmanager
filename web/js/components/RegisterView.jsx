@@ -6,7 +6,7 @@ export default class RegisterView extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        let { history } = this.props;
+        let { history, actions } = this.props;
 
         const data = {
             name: this.refs.name.value,

@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 import Root from './components/Root';
+import App from './components/App';
 import TaskListView from './components/TaskListView';
 import TaskView from './components/TaskView';
 import RegisterView from './components/RegisterView';
@@ -29,10 +30,12 @@ render(
         <div>
             <Router history={browserHistory}>
                 <Route component={Root}>
-                    <Route path="/" component={TaskListView} />
-                    <Route path="/view/:id" component={TaskView} />
+                    <Route component={App}>
+                        <Route path="/" component={TaskListView} />
+                        <Route path="/view/:id" component={TaskView} />
+                    </Route>
+                    <Route path="/register" component={RegisterView} />
                 </Route>
-                <Route path="/register" component={RegisterView} />
             </Router>
             <DevTools/>
         </div>
