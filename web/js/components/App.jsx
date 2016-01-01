@@ -1,6 +1,6 @@
 /* @flow weak */
 import React from 'react';
-import LoginForm from './LoginView';
+import LoginView from './LoginView';
 import { contains } from 'lodash';
 
 export default class App extends React.Component {
@@ -16,7 +16,7 @@ export default class App extends React.Component {
         }
 
         if (this.props.user === false) {
-            return <LoginForm {...this.props}/>
+            return <LoginView {...this.props}/>
         }
 
         let year = (new Date()).getFullYear();
