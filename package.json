@@ -65,6 +65,7 @@
     "sqlite3": "^3.1.1",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.6",
+    "webpack": "^1.12.x",
     "whatwg-fetch": "^0.10.0"
   },
   "devDependencies": {
@@ -78,7 +79,6 @@
     "mocha": "^2.3.4",
     "react-addons-test-utils": "^0.14.5",
     "sinon": "^1.17.2",
-    "webpack": "^1.12.x",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.5.x"
   }
