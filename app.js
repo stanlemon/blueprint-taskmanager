@@ -10,7 +10,7 @@ let morgan       = require('morgan');
 let webpack      = require('webpack');
 let config       = require('./webpack.config');
 let epilogue     = require('epilogue');
-let session      = require('express-session')
+let session      = require('client-sessions')
 let flash        = require('connect-flash');
 let passport     = require('passport');
 let bcrypt       = require('bcrypt');
@@ -50,10 +50,12 @@ if (env === DEV) {
 }
 
 app.use(session({
-    secret: 'theredballonfloatssouthintheslowwindsofazkaban',
-    resave: false,
-    saveUninitialized: false
-}))
+    cookieName: 'session', // cookie name dictates the key name added to the request object
+    secret: 'theredballonfloatssouthintheslowwindsofazkaban', // should be a large unguessable string
+    duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
+    activeDuration: 1000 * 60 * 5 // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
