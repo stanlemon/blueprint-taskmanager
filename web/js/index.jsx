@@ -1,23 +1,20 @@
 /* @flow weak */
-import 'whatwg-fetch';
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, browserHistory } from 'react-router';
-import Root from './components/Root';
-import App from './components/App';
-import TaskListView from './components/TaskListView';
-import TaskView from './components/TaskView';
-import RegisterView from './components/RegisterView';
+import { Router, browserHistory } from 'react-router';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import promiseMiddleware from 'redux-promise';
 import reducer from './reducers';
 import DevTools from './lib/DevTools';
+import Routes from './config/Routes';
 
-const store = compose(
+const middleware = process.env.NODE_ENV !== 'production' ? compose(
     applyMiddleware(promiseMiddleware)
   , DevTools.instrument()
-)(createStore)(reducer);
+) : applyMiddleware(promiseMiddleware);
+
+const store = middleware(createStore)(reducer);
 
 if (module.hot) {
     module.hot.accept('./reducers', () => {
@@ -28,15 +25,7 @@ if (module.hot) {
 render(
     <Provider store={store}>
         <div>
-            <Router history={browserHistory}>
-                <Route component={Root}>
-                    <Route component={App}>
-                        <Route path="/" component={TaskListView} />
-                        <Route path="/view/:id" component={TaskView} />
-                    </Route>
-                    <Route path="/register" component={RegisterView} />
-                </Route>
-            </Router>
+            <Router history={browserHistory} routes={Routes} />
             <DevTools/>
         </div>
     </Provider>

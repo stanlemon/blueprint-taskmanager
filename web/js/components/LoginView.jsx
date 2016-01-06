@@ -11,7 +11,7 @@ export default class LoginView extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        let { actions } = this.props;
+        let { actions, history } = this.props;
 
         let data = {
             username: this.refs.username.value,
@@ -34,6 +34,8 @@ export default class LoginView extends React.Component {
                   }
               } else {
                   actions.loadUser(data.user);
+
+                  history.pushState(null, '/');
               }
           }).catch(function(error) {
               console.log('An error has occurred', error);

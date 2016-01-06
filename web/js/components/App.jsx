@@ -40,21 +40,23 @@ export default class App extends React.Component {
                     this.props.actions.loadTasks();
                 }
             }
+
+            // If we are not logged in redirect them to the login page
+            if (curr === false) {
+                this.props.history.pushState(null, '/login');
+            }
         });
     }
 
     logout(e) {
         e.preventDefault();
         this.props.actions.logout();
+        this.props.history.pushState(null, '/login');
     }
 
     render() {
         if (!contains(this.props.loaded, 'user')) {
             return <div/>
-        }
-
-        if (this.props.user === false) {
-            return <LoginView {...this.props}/>
         }
 
         let year = (new Date()).getFullYear();

@@ -27,28 +27,36 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'web/assets'),
         filename: "[name].js",
+        chunkFilename: 'main-[id].js',
         publicPath: '/assets/'
     },
-    plugins: env === PROD ?
+    plugins: 
         [
-            new webpack.optimize.OccurenceOrderPlugin(),
-            new webpack.DefinePlugin({
+            new webpack.optimize.OccurenceOrderPlugin()
+            , new webpack.DefinePlugin({
                 'process.env': {
-                    'NODE_ENV': JSON.stringify('production')
+                    'NODE_ENV': JSON.stringify(env)
                 }
-            }),
-            new webpack.optimize.UglifyJsPlugin({
-                compress: {
-                    warnings: false
-                }
-            }),
-            new ExtractTextPlugin("[name].css")
-        ]
-        :
-        [
-            new webpack.HotModuleReplacementPlugin(),
-            new webpack.NoErrorsPlugin(),
-            new ExtractTextPlugin("[name].css")
+            })
+            , ...(env === PROD ?
+            [
+                new webpack.optimize.UglifyJsPlugin({
+                    compress: {
+                        warnings: false
+                    }
+                }),
+                new ExtractTextPlugin("[name].css")
+            ]
+            :
+            [
+                new webpack.HotModuleReplacementPlugin(),
+                new webpack.NoErrorsPlugin(),
+                new ExtractTextPlugin("[name].css")
+            ])
+            // Replace calls to fetch with whatwg, because I can
+            , new webpack.ProvidePlugin({
+                'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+            })
         ],
     resolve: {
         extensions: ['', '.js', '.jsx', '.less', '.css']

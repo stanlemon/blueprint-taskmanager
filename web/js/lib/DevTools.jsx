@@ -1,10 +1,21 @@
 import React from 'react';
-import { createDevTools, persistState } from 'redux-devtools';
-import LogMonitor from 'redux-devtools-log-monitor';
-import DockMonitor from 'redux-devtools-dock-monitor';
 
-export default createDevTools(
-    <DockMonitor defaultIsVisible={false} toggleVisibilityKey='ctrl-h' changePositionKey='ctrl-q'>
-        <LogMonitor/>
-    </DockMonitor>
-);
+let DevTools;
+
+if (process.env.NODE_ENV !== 'production') {
+    let { createDevTools, persistState } = require('redux-devtools');
+    let logMonitor = require('redux-devtools-log-monitor');
+    let LogMonitor = logMonitor.default;
+    let dockMonitor = require('redux-devtools-dock-monitor');
+    let DockMonitor = dockMonitor.default;
+
+    DevTools = createDevTools(
+        <DockMonitor defaultIsVisible={false} toggleVisibilityKey='ctrl-h' changePositionKey='ctrl-q'>
+            <LogMonitor/>
+        </DockMonitor>
+    );
+
+    module.exports = DevTools;
+} else {
+    module.exports = <div/>;
+}
