@@ -17,5 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
 
     module.exports = DevTools;
 } else {
-    module.exports = <div/>;
+    module.exports = function() {
+        return <div/>
+    };
 }
