@@ -17,6 +17,7 @@ export default class App extends React.Component {
     };
 
     componentWillMount() {
+        this.props.actions.clearErrors();
         this.checkSession();
         this.interval = setInterval(this.checkSession.bind(this), this.props.pollInterval);
     }

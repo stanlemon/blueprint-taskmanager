@@ -6,12 +6,14 @@ export default class CreateTaskForm extends TaskForm {
 
     handleSubmit(e) {
         e.preventDefault();
-        
+
         this.props.actions.createTask(this.state);
-        
+
         this.setState({
             name: '',
             description: ''
         });
+
+        this.props.actions.clearErrors();
     }
 }

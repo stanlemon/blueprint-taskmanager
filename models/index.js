@@ -16,11 +16,12 @@ module.exports = () => {
         },
         email: {
             type: Sequelize.STRING,
-            allowNull: false
-        },
-        username: {
-            type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true,
+            validate:  {
+                isEmail: true,
+                notEmpty: true
+            }
         },
         password: {
             type: Sequelize.STRING,
@@ -29,15 +30,26 @@ module.exports = () => {
                 let hash = bcrypt.hashSync(value, 10);
 
                 this.setDataValue('password', hash);
+            },
+            validate:  {
+                notEmpty: true
             }
         },
         createdAt: {
             type: Sequelize.DATE,
-            defaultValue: Sequelize.NOW
+            defaultValue: Sequelize.NOW,
+            validate:  {
+                notEmpty: true,
+                isDate: true
+            }
         },
         updatedAt: {
             type: Sequelize.DATE,
-            defaultValue: Sequelize.NOW
+            defaultValue: Sequelize.NOW,
+            validate:  {
+                notEmpty: true,
+                isDate: true
+            }
         },
         active: {
             type: Sequelize.BOOLEAN,
@@ -46,7 +58,12 @@ module.exports = () => {
     });
 
     let Task = sequelize.define('Task', {
-        name: Sequelize.STRING,
+        name: {
+            type: Sequelize.STRING,
+            validate:  {
+                notEmpty: true
+            }
+        },
         description: Sequelize.STRING,
         due: Sequelize.DATE,
         completed: Sequelize.DATE

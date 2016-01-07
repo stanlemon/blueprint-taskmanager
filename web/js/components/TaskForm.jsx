@@ -1,6 +1,17 @@
 /* @flow weak */
 import { isEqual } from 'lodash';
+import classNames from 'classnames';
 import React from 'react';
+
+function hasError(field, errors) {
+    let ret = false;
+    errors.forEach( (error, i) => {
+        if (error.field === field) {
+            ret = true;
+        }
+    });
+    return ret;
+}
 
 export default class TaskForm extends React.Component {
 
@@ -42,14 +53,17 @@ export default class TaskForm extends React.Component {
     }
 
     render() {
+        const nameClasses = classNames('form-group', { 'has-error': hasError('name', this.props.errors) });
+
         return (
             <form className="well" onSubmit={this.handleSubmit.bind(this)}>
-                <div className="form-group">
-                    <label htmlFor="name">Name</label>
+                <div className={nameClasses}>
+                    <label htmlFor="name" className="control-label">Name</label>
                     <input name="name" type="text" className="form-control" value={this.state.name} onChange={this.handleChange.bind(this)} />
+                    {(hasError('name', this.props.errors) ? <span className="help-block">An error has ocurred</span> : false)}
                 </div>
                 <div className="form-group">
-                    <label htmlFor="description">Description</label>
+                    <label htmlFor="description" className="control-label">Description</label>
                     <textarea name="description" className="form-control" value={this.state.description} onChange={this.handleChange.bind(this)} />
                 </div>
                 <div className="form-group">

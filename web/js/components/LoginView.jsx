@@ -65,7 +65,7 @@ export default class LoginView extends React.Component {
                             <div className="panel-body">
                                 <form className="form-horizontal" method="post" role="form" onSubmit={this.handleSubmit.bind(this)}>
                                   <div className="form-group">
-                                    <label htmlFor="username" className="col-sm-3 control-label">Username</label>
+                                    <label htmlFor="username" className="col-sm-3 control-label">Email</label>
                                     <div className="col-sm-9">
                                         <div className="input-group">
                                             <span className="input-group-addon"><i className="fa fa-user"></i></span>

@@ -62,12 +62,12 @@ app.use(passport.session());
 
 passport.use(new localStrategy(
   (username, password, done) => {
-    db.models.User.findOne({ where: { username: username } }).then( (user) => {
+    db.models.User.findOne({ where: { email: username } }).then( (user) => {
       if (!user) {
-        return done(null, false, { message: 'Incorrect username or password.' });
+        return done(null, false, { message: 'Incorrect email or password.' });
       }
       if (!bcrypt.compareSync(password, user.password)) {
-        return done(null, false, { message: 'Incorrect username or password.' });
+        return done(null, false, { message: 'Incorrect email or password.' });
       }
       return done(null, user);
     }).catch( (error) => {
@@ -132,7 +132,6 @@ app.post('/register', (req, res) => {
         .build({
             name: req.body.name,
             email: req.body.email,
-            username: req.body.username,
             password: req.body.password
         })
         .save()
@@ -199,7 +198,7 @@ resources.Task.create.write.before((req, res, context) => {
 });
 
 
-db.sequelize.sync( /* { force: true } */ )
+db.sequelize.sync({ force: true })
     .then( () => {
         let server = http.createServer(app);
 

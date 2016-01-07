@@ -18,7 +18,7 @@ export const DELETE_TASK_ERROR = 'DELETE_TASK_ERROR';
 const taskService = new TaskService();
 
 export function addError(error) {
-    return { type: ERROR, error };
+    return { type: ERROR, errors: [error] };
 }
 
 export function clearErrors() {
@@ -41,7 +41,7 @@ export async function logout() {
 
         return { type: UNAUTHENTICATED_USER };
     } catch (error) {
-        return { type: AUTHENTICATION_ERROR, error };
+        return { type: AUTHENTICATION_ERROR, errors: [error] };
     }
 }
 
@@ -52,7 +52,7 @@ export async function loadTasks() {
 
         return { type: LOAD_TASKS_SUCCESS, tasks };
     } catch (error) {
-        return { type: LOAD_TASKS_ERROR, error };
+        return { type: LOAD_TASKS_ERROR, errors: [error] };
     }
 }
 
@@ -61,9 +61,13 @@ export async function createTask(data) {
         const response = await taskService.createTask(data);
         const task = await response.json();
 
+        if (task.hasOwnProperty('errors') && Array.isArray(task.errors) && task.errors.length > 0) {
+            return { type: CREATE_TASK_ERROR, errors: task.errors };
+        }
+
         return { type: CREATE_TASK_SUCCESS, task };
     } catch (error) {
-        return { type: CREATE_TASK_ERROR, error };
+        return { type: CREATE_TASK_ERROR, errors: [error] };
     }
 }
 
@@ -72,9 +76,13 @@ export async function updateTask(data) {
         const response = await taskService.updateTask(data);
         const task = await response.json();
 
+        if (task.hasOwnProperty('errors') && Array.isArray(task.errors) && task.errors.length > 0) {
+            return { type: UPDATE_TASK_ERROR, errors: task.errors };
+        }
+
         return { type: UPDATE_TASK_SUCCESS, task };
     } catch (error) {
-        return { type: UPDATE_TASK_ERROR, error };
+        return { type: UPDATE_TASK_ERROR, errors: [error] };
     }
 }
 
@@ -85,6 +93,6 @@ export async function deleteTask(taskId) {
 
         return { type: DELETE_TASK_SUCCESS, taskId };
     } catch (error) {
-        return { type: DELETE_TASK_ERROR, error };
+        return { type: DELETE_TASK_ERROR, errors: [error] };
     }
 }

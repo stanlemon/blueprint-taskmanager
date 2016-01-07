@@ -8,7 +8,7 @@ import TaskItem from './TaskItem';
 export default class TaskView extends React.Component {
 
     render() {
-        let { params, actions, loaded, tasks } = this.props;
+        let { params, actions, loaded, tasks, errors } = this.props;
 
         if (!loaded) {
             return <div/>
@@ -28,7 +28,7 @@ export default class TaskView extends React.Component {
 
         return (
             <div>
-                <TaskForm actions={actions} {...task}/>
+                <TaskForm errors={errors} actions={actions} {...task}/>
 
                 <p><strong>Created:</strong> {task.createdAt}</p>
                 <p><strong>Updated:</strong> {task.updatedAt}</p>

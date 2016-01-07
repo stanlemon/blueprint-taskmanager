@@ -56,9 +56,9 @@ function errors(state = [], action) {
         case UPDATE_TASK_ERROR:
         case DELETE_TASK_ERROR:
         case AUTHENTICATION_ERROR:
-            return [...state, action.error];
+            return [...action.errors];
         default:
-            return state;
+            return [];
     }
 }
 

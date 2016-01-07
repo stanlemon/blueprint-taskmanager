@@ -11,7 +11,6 @@ export default class RegisterView extends React.Component {
         const data = {
             name: this.refs.name.value,
             email: this.refs.email.value,
-            username: this.refs.username.value,
             password: this.refs.password.value
         }
 
@@ -54,12 +53,6 @@ export default class RegisterView extends React.Component {
                                         <label htmlFor="email" className="col-sm-2 control-label">Email</label>
                                         <div className="col-sm-10">
                                             <input ref="email" type="email" className="form-control" id="email" name="email" />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="username" className="col-sm-2 control-label">Username</label>
-                                        <div className="col-sm-10">
-                                            <input ref="username" type="text" className="form-control" id="username" name="username" />
                                         </div>
                                     </div>
                                     <div className="form-group">

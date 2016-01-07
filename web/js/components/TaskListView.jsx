@@ -27,7 +27,7 @@ export default class TaskListView extends React.Component {
 
     render() {
         let { filter } = this.state;
-        let { actions, history, loaded } = this.props;
+        let { actions, history, loaded, errors } = this.props;
         let tasks = this.props.tasks.filter( task => {
             switch (this.state.filter) {
                 case ALL:
@@ -89,7 +89,7 @@ export default class TaskListView extends React.Component {
 
                 <br />
 
-                <TaskForm actions={actions}/>
+                <TaskForm actions={actions} errors={errors}/>
             </div>
         );
     }
