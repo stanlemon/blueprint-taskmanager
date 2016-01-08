@@ -47,7 +47,9 @@ export default class TaskForm extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!isEqual(this.props, nextProps)) {
+        // If the next properties are not equal and we don't have errors
+        // If we have errors we don't want to lose our state
+        if (!isEqual(this.props, nextProps) && nextProps.errors.length === 0) {
             this.setState(nextProps);
         }
     }
