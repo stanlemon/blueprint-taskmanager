@@ -44,7 +44,7 @@ export default class TaskForm extends React.Component {
             <Form className="well" fields={task} errors={this.props.errors} handler={this.handleSubmit.bind(this)}>
                 <div className={nameClasses}>
                     <label htmlFor="name" className="control-label">Name</label>
-                    <input name="name" type="text" className="form-control" />
+                    <input name="name" type="text" className="form-control" validate={{ notEmpty: true, length: [4, 1000] }} />
                     {hasError('name', this.props.errors) && <span className="help-block">An error has ocurred</span>}
                 </div>
                 <div className="form-group">

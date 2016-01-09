@@ -20,6 +20,10 @@ export function addError(error) {
     return { type: ERROR, errors: [error] };
 }
 
+export function addErrors(errors) {
+    return { type: ERROR, errors };
+}
+
 export function loadUser(user) {
     if (user !== false) {
         return { type: AUTHENTICATED_USER, user };
