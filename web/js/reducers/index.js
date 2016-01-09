@@ -1,7 +1,6 @@
 /* @flow weak */
 import {
     ERROR
-  , CLEAR_ERRORS
   , AUTHENTICATED_USER
   , UNAUTHENTICATED_USER
   , AUTHENTICATION_ERROR
@@ -48,8 +47,6 @@ function user(state = false, action) {
 
 function errors(state = [], action) {
     switch (action.type) {
-        case CLEAR_ERRORS:
-            return [];
         case ERROR:
         case LOAD_TASKS_ERROR:
         case CREATE_TASK_ERROR:

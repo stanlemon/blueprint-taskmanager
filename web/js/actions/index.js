@@ -2,7 +2,6 @@
 import TaskService from '../lib/TaskService';
 
 export const ERROR = 'ERROR';
-export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const AUTHENTICATED_USER = 'AUTHENTICATED_USER';
 export const UNAUTHENTICATED_USER = 'UNAUTHENTICATED_USER';
 export const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
@@ -19,10 +18,6 @@ const taskService = new TaskService();
 
 export function addError(error) {
     return { type: ERROR, errors: [error] };
-}
-
-export function clearErrors() {
-    return { type: CLEAR_ERRORS };
 }
 
 export function loadUser(user) {
