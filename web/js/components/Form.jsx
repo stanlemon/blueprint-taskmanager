@@ -1,21 +1,15 @@
 /* @flow weak */
-import { isEqual } from 'lodash';
-import classNames from 'classnames';
 import React from 'react';
 
 export default class Form extends React.Component {
 
     static defaultProps = {
         fields: {},
-        errors: [],
-        handler: (state) => {
-            console.log(state);
-        }
+        handler: (state) => {}
     };
 
     static propTypes = {
         fields: React.PropTypes.object,
-        errors: React.PropTypes.array,
         handler: React.PropTypes.func
     };
 
@@ -23,8 +17,7 @@ export default class Form extends React.Component {
         super(props, context);
 
         this.state = {
-            fields: props.fields,
-            errors: []
+            fields: props.fields
         };
     }
 
@@ -43,16 +36,6 @@ export default class Form extends React.Component {
             fields: Object.assign(this.state.fields, { [e.target.name]: e.target.value })
         });
     }
-
-    /*
-    componentWillReceiveProps(nextProps) {
-        // If the next properties are not equal and we don't have errors
-        // If we have errors we don't want to lose our state
-        if (!isEqual(this.props, nextProps) && nextProps.errors.length === 0) {
-            this.setState(nextProps);
-        }
-    }
-    */
 
     render() {
         return (
