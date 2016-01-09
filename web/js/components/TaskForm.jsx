@@ -33,7 +33,7 @@ export default class TaskForm extends React.Component {
     };
 
     handleSubmit(state) {
-        cosole.log(state);
+        console.log(state);
     }
 
     render() {
