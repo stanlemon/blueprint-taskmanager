@@ -4,9 +4,7 @@ import TaskForm from './TaskForm';
 
 export default class UpdateTaskForm extends TaskForm {
 
-    handleSubmit(e) {
-        e.preventDefault();
-
-        this.props.actions.updateTask(this.state);
+    handleSubmit(state) {
+        this.props.actions.updateTask(state);
     }
 }
