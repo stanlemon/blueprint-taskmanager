@@ -31,7 +31,11 @@ export default class Form extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        this.props.handler(this.state.fields);
+        const newState = this.props.handler(this.state.fields);
+        
+        if (newState instanceof Object) {
+            this.setState({ fields: newState});
+        }
     }
 
     handleChange(e) {
