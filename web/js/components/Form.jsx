@@ -1,4 +1,5 @@
 /* @flow weak */
+import { isEqual } from 'lodash';
 import React from 'react';
 import Validator from 'validator';
 
@@ -76,6 +77,12 @@ export default class Form extends React.Component {
         this.setState({
             fields: Object.assign(this.state.fields, { [e.target.name]: e.target.value })
         });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!isEqual(this.props.fields, nextProps.fields) && nextProps.errors.length === 0) {
+            this.setState({ fields: nextProps.fields });
+        }
     }
 
     render() {
