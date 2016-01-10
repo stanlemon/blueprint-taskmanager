@@ -1,29 +1,11 @@
 /* @flow weak */
-import { isEqual } from 'lodash';
+import { isEqual, get } from 'lodash';
 import React from 'react';
 import Validator from 'validator';
 
 export default class Form extends React.Component {
 
-    static defaultProps = {
-        fields: {},
-        handler: (state) => {}
-    };
-
-    static propTypes = {
-        fields: React.PropTypes.object,
-        handler: React.PropTypes.func
-    };
-    
     validators = {};
-
-    constructor(props, context) {
-        super(props, context);
-
-        this.state = {
-            fields: props.fields
-        };
-    }
 
     handleSubmit(e) {
         e.preventDefault();
@@ -47,8 +29,7 @@ export default class Form extends React.Component {
                     console.warn('Validator does not have ' + validator);
                 }
 
-                const value = this.state.fields.hasOwnProperty(field) ?
-                    this.state.fields[field] + '' : '';
+                const value = get(this.state.fields, field, '');
 
                 const args = Array.isArray(validators[field][key]) ? 
                     [value, ...validators[field][key]] : [value];
@@ -78,9 +59,16 @@ export default class Form extends React.Component {
         }
     }
 
-    handleChange(e) {
+    
+    handleChange(field, value) {
         this.setState({
-            fields: Object.assign(this.state.fields, { [e.target.name]: e.target.value })
+            fields: Object.assign(this.state.fields, { [field]: value })
+        });
+    }
+
+    componentWillMount() {
+        this.setState({
+            fields: get(this.props, 'fields', {})
         });
     }
 
@@ -98,19 +86,21 @@ export default class Form extends React.Component {
         );
     }
 
-    processChildren(children, x = 0) {
+    processChildren(children) {
         return React.Children.map(children, (child, i) => {
             if (child instanceof Object && (child.type === 'input' || child.type === 'textarea' || child.type === 'select')) {
                 if (child.props.validate) {
                     this.validators[child.props.name] = child.props.validate;
                 }
 
-                return React.cloneElement(child, Object.assign({}, {
-                    value: this.props.fields[child.props.name],
-                    onChange: this.handleChange.bind(this)
-                }));
+                return React.cloneElement(child, {
+                    valueLink: {
+                        value: this.state.fields[child.props.name] || '',
+                        requestChange: this.handleChange.bind(this, child.props.name)
+                    }
+                });
             } else if (child instanceof Object && child.props.children instanceof Object && React.Children.count(child) > 0) {
-                return React.cloneElement(child, {}, this.processChildren(child.props.children, x + ": " + i));
+                return React.cloneElement(child, {}, this.processChildren(child.props.children));
             } else {
                 return child;
             }

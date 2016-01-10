@@ -39,14 +39,8 @@ export default class TaskForm extends React.Component {
     render() {
         const nameClasses = classNames('form-group', { 'has-error': hasError('name', this.props.errors) });
 
-        const validate = {
-            description: {
-                notEmpty: true, length: [2, 1000] 
-            }
-        };
-
         return (
-            <Form validate={validate} className="well" fields={this.props.task} errors={this.props.errors} handler={this.handleSubmit.bind(this)}>
+            <Form className="well" fields={this.props.task} errors={this.props.errors} handler={this.handleSubmit.bind(this)}>
                 <div className={classNames('form-group', { 'has-error': hasError('name', this.props.errors) })}>
                     <label htmlFor="name" className="control-label">Name</label>
                     <input name="name" type="text" className="form-control" validate={{ notEmpty: true, length: [4, 1000] }} />
