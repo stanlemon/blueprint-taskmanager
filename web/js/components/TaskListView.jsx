@@ -20,9 +20,7 @@ export default class TaskListView extends React.Component {
     }
 
     setFilter(filter) {
-        this.setState({
-            filter: filter
-        });
+        this.setState({ filter });
     }
 
     render() {

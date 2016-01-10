@@ -32,9 +32,8 @@ export default class TaskForm extends React.Component {
         errors: React.PropTypes.array
     };
 
-    handleSubmit(state) {
-        // This is an abstract method that should be overriden
-    }
+    // This is an abstract method that should be overriden
+    handleSubmit(state) {}
 
     render() {
         const nameClasses = classNames('form-group', { 'has-error': hasError('name', this.props.errors) });

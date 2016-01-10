@@ -27,8 +27,8 @@ export default class UserService {
                 callback(error, null, null);
             });
     }
-    
-    login(data, callback) {
+
+    login(credentials, callback) {
         fetch('/login', {
             credentials: 'same-origin',
             method: 'post',
@@ -36,20 +36,21 @@ export default class UserService {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
-        }).then(response => response.json())
-          .then(data => {
-              if (data.errors) {
-                  callback(data.errors);
-              } else {
-                  callback(null, data.user);
-              }
-          }).catch((error) => {
-              callback(error);
-          });
+            body: JSON.stringify(credentials)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errors) {
+                    callback(data.errors);
+                } else {
+                    callback(null, data.user);
+                }
+            }).catch((error) => {
+                callback(error);
+            });
     }
 
-    register(data, callback) {
+    register(user, callback) {
         fetch('/api/users', {
             credentials: 'same-origin',
             method: 'post',
@@ -57,16 +58,17 @@ export default class UserService {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
-        }).then(response => response.json())
-          .then(data => {
-              if (data.errors) {
-                  callback(data.errors);
-              } else {
-                  callback(null, data.user);
-              }
-          }).catch((error) => {
-              callback(error);
-          });
-      }
+            body: JSON.stringify(user)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errors) {
+                    callback(data.errors);
+                } else {
+                    callback(null, data.user);
+                }
+            }).catch((error) => {
+                callback(error);
+            });
+    }
 }

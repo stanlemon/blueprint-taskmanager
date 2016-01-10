@@ -8,10 +8,6 @@ export default class LoginView extends React.Component {
 
     userService = new UserService();
 
-    constructor(props, context) {
-        super(props, context);
-    }
-
     handleSubmit(errors, data) {
         let { actions, history } = this.props;
 
