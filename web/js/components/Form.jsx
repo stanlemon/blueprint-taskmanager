@@ -29,9 +29,12 @@ export default class Form extends React.Component {
         e.preventDefault();
 
         let errors = {};
-        
-        for (let field in this.validators) {
-            for (let key in this.validators[field]) {
+        let validators = {};
+
+        Object.assign(validators, this.validators, this.props.validate);
+
+        for (let field in validators) {
+            for (let key in validators[field]) {
                 let validator;
                 // Magically prepend is for most validators
                 if (key !== 'notEmpty' && key !== 'contains' && key !== 'equals' && key !== 'matches' && key.slice(0,2) !== 'is') {
@@ -44,9 +47,11 @@ export default class Form extends React.Component {
                     console.warn('Validator does not have ' + validator);
                 }
 
-                const value = this.state.fields[field];
-                const args = Array.isArray(this.validators[field][key]) ? 
-                    [value, ...this.validators[field][key]] : [value];
+                const value = this.state.fields.hasOwnProperty(field) ?
+                    this.state.fields[field] + '' : '';
+
+                const args = Array.isArray(validators[field][key]) ? 
+                    [value, ...validators[field][key]] : [value];
 
                 let hasError = false;
 
@@ -101,7 +106,7 @@ export default class Form extends React.Component {
                 }
 
                 return React.cloneElement(child, Object.assign({}, {
-                    value: this.state.fields[child.props.name],
+                    value: this.props.fields[child.props.name],
                     onChange: this.handleChange.bind(this)
                 }));
             } else if (child instanceof Object && child.props.children instanceof Object && React.Children.count(child) > 0) {

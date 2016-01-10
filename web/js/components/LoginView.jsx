@@ -1,45 +1,28 @@
 /* @flow weak */
 import React from 'react';
 import Error from './Error';
+import Form from './Form';
+import UserService from '../lib/UserService';
 
 export default class LoginView extends React.Component {
+
+    userService = new UserService();
 
     constructor(props, context) {
         super(props, context);
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-
+    handleSubmit(errors, data) {
         let { actions, history } = this.props;
 
-        let data = {
-            username: this.refs.username.value,
-            password: this.refs.password.value
-        }
-
-        fetch('/login', {
-            credentials: 'same-origin',
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(response => response.json())
-          .then(data => {
-              if (data.error) {
-                  for (let message of data.messages) {
-                      actions.addError(message);
-                  }
-              } else {
-                  actions.loadUser(data.user);
-
-                  history.pushState(null, '/');
-              }
-          }).catch(function(error) {
-              console.log('An error has occurred', error);
-          });
+        this.userService.login(data, (errors, user) => {
+            if (errors) {
+                actions.addErrors(errors);
+            } else {
+                actions.loadUser(user);
+                history.pushState(null, '/');
+            }
+        });
     }
 
     render() {
@@ -59,30 +42,30 @@ export default class LoginView extends React.Component {
                                 <h3 className="panel-title"><strong>Login</strong></h3>
                             </div>
                             <div className="panel-body">
-                                <form className="form-horizontal" method="post" role="form" onSubmit={this.handleSubmit.bind(this)}>
-                                  <div className="form-group">
-                                    <label htmlFor="username" className="col-sm-3 control-label">Email</label>
-                                    <div className="col-sm-9">
-                                        <div className="input-group">
-                                            <span className="input-group-addon"><i className="fa fa-user"></i></span>
-                                            <input ref="username" type="text" className="form-control" id="username" name="username" />
+                                <Form className="form-horizontal" handler={this.handleSubmit.bind(this)}>
+                                    <div className="form-group">
+                                        <label htmlFor="username" className="col-sm-3 control-label">Email</label>
+                                        <div className="col-sm-9">
+                                                <div className="input-group">
+                                                    <span className="input-group-addon"><i className="fa fa-user"></i></span>
+                                                    <input type="text" className="form-control" id="username" name="username" />
+                                                </div>
                                         </div>
                                     </div>
-                                  </div>
-                                  <div className="form-group">
-                                    <label htmlFor="password" className="col-sm-3 control-label">Password</label>
-                                    <div className="col-sm-9">
-                                        <div className="input-group">
-                                            <span className="input-group-addon"><i className="fa fa-lock"></i></span>
-                                            <input ref="password" type="password" className="form-control" id="password" name="password" />
+                                    <div className="form-group">
+                                        <label htmlFor="password" className="col-sm-3 control-label">Password</label>
+                                        <div className="col-sm-9">
+                                                <div className="input-group">
+                                                    <span className="input-group-addon"><i className="fa fa-lock"></i></span>
+                                                    <input type="password" className="form-control" id="password" name="password" />
+                                                </div>
                                         </div>
                                     </div>
-                                  </div>
-                                  <br />
-                                  <div className="col-sm-10 col-sm-offset-1">
-                                    <button type="submit" className="btn btn-primary btn-block">Login</button>
-                                  </div>
-                                </form>
+                                    <br />
+                                    <div className="col-sm-10 col-sm-offset-1">
+                                        <button type="submit" className="btn btn-primary btn-block">Login</button>
+                                    </div>
+                                </Form>
                             </div>
                         </div>
                     </div>

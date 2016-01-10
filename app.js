@@ -92,8 +92,7 @@ app.get('/login', (req, res) => {
   let messages = req.flash('error');
   if (messages.length > 0) {
       res.json({
-          error: true,
-          messages: messages
+          errors: messages
       });
   } else {
       res.redirect('/session');
@@ -127,39 +126,6 @@ app.get('/session', (req, res) => {
   }
 });
 
-app.post('/register', (req, res) => {
-    db.models.User
-        .build({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password
-        })
-        .save()
-        .then(user => {
-            req.logIn(user, function(err) {
-                  if (err) {
-                      console.log(error);
-
-                      res.json({
-                          error: true,
-                          messages: [error]
-                      });
-                  } else {
-                      res.json(user);
-                  }
-            });
-        })
-        .catch((error) => {
-            console.log(error);
-
-            res.json({
-                error: true,
-                messages: [error]
-            });
-        });
-});
-
-
 epilogue.initialize({
     base: '/api',
     app: app,
@@ -172,6 +138,13 @@ let resources = {
         endpoints: [
             '/tasks',
             '/tasks/:id'
+        ]
+    }),
+    User: epilogue.resource({
+        actions: ['create'],
+        model: db.models.User,
+        endpoints: [
+            '/users'
         ]
     })
 }

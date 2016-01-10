@@ -28,7 +28,7 @@ export default class TaskView extends React.Component {
 
         return (
             <div>
-                <TaskForm errors={errors} actions={actions} {...task}/>
+                <TaskForm task={task} errors={errors} actions={actions}/>
 
                 <p><strong>Created:</strong> {task.createdAt}</p>
                 <p><strong>Updated:</strong> {task.updatedAt}</p>
