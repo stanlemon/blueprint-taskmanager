@@ -72,6 +72,14 @@ export default class TaskListView extends React.Component {
                     <div className="clearfix"></div>
                     <div style={{ minHeight: 10 }}></div>
 
+                    {tasks.length === 0 && (
+                        <div style={{ border: '1px solid #e3e3e3', borderRadius: '4px', marginBottom: '8px' }}>
+                            <div className="text-center row" style={{ margin: '10px' }}>
+                                <em>There are no tasks for this filter</em>
+                            </div>
+                        </div>
+                    )}
+
                     {tasks.map((task) => {
                         return (
                             <TaskItem key={task.id} actions={actions} history={history} task={task}/>
