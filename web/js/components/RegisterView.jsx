@@ -1,7 +1,9 @@
 /* @flow weak */
-import { isEqual } from 'lodash';
+import { isEqual, find } from 'lodash';
+import classNames from 'classnames';
 import React from 'react';
 import Form from './Form';
+import FieldError from './FieldError';
 import { Link } from 'react-router';
 import UserService from '../lib/UserService';
 
@@ -25,7 +27,13 @@ export default class RegisterView extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.actions.addErrors([]);
+    }
+
     render() {
+        const { errors } = this.props;
+
         return (
             <div className="container">
                 <div className="row">
@@ -34,22 +42,31 @@ export default class RegisterView extends React.Component {
                         <div className="panel panel-info">
                             <div className="panel-body">
                                 <Form className="form-horizontal" handler={this.handleSubmit.bind(this)}>
-                                    <div className="form-group">
+                                    <div className={classNames('form-group', { 'has-error': find(errors, (e) => e.field === 'name') })}>
                                         <label htmlFor="name" className="col-sm-2 control-label">Name</label>
                                         <div className="col-sm-10">
                                             <input type="text" className="form-control" id="name" name="name" />
+                                            <FieldError field="name" errors={errors}>
+                                                <span className="help-block">An error has ocurred</span>
+                                            </FieldError>
                                         </div>
                                     </div>
-                                    <div className="form-group">
+                                    <div className={classNames('form-group', { 'has-error': find(errors, (e) => e.field === 'email') })}>
                                         <label htmlFor="email" className="col-sm-2 control-label">Email</label>
                                         <div className="col-sm-10">
                                             <input type="email" className="form-control" id="email" name="email" />
+                                            <FieldError field="email" errors={errors}>
+                                                <span className="help-block">An error has ocurred</span>
+                                            </FieldError>
                                         </div>
                                     </div>
-                                    <div className="form-group">
+                                    <div className={classNames('form-group', { 'has-error': find(errors, (e) => e.field === 'password') })}>
                                         <label htmlFor="password" className="col-sm-2 control-label">Password</label>
                                         <div className="col-sm-10">
                                             <input type="password" className="form-control" id="password" name="password" />
+                                            <FieldError field="password" errors={errors}>
+                                                <span className="help-block">An error has ocurred</span>
+                                            </FieldError>
                                         </div>
                                     </div>
 
