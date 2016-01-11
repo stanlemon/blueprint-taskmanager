@@ -12,9 +12,7 @@ export default class FieldError extends React.Component {
     render() {
         const { errors, field } = this.props;
 
-        const message = errors.reduce((prev, curr) => {
-            return !prev && curr.field == field ? curr : false;
-        }, false);
+        const message = errors.filter(e => e.field == field).slice(0,1)[0];
 
         return message ? this.props.children.slice(0,1)[0] : null;
     }
