@@ -1,5 +1,5 @@
 /* @flow weak */
-import { isEqual, get, isObject, has, zipObject, fill, range, merge } from 'lodash';
+import { get, has, isEqual, isBoolean, isObject, zipObject, fill, range, merge } from 'lodash';
 import React from 'react';
 import Validator from 'validator';
 
@@ -75,7 +75,6 @@ export default class Form extends React.Component {
         }
     }
 
-    
     handleChange(field, value) {
         this.setState({
             fields: Object.assign(this.state.fields, { [field]: value })
@@ -111,9 +110,11 @@ export default class Form extends React.Component {
 
                 this.fields.push(child.props.name);
 
+                const value = get(this.state.fields, child.props.name, '');
+
                 return React.cloneElement(child, {
-                    valueLink: {
-                        value: get(this.state.fields, child.props.name, '') + '',
+                    [child.type === 'input' && child.props.type === 'checkbox' ? 'checkedLink' : 'valueLink']: {
+                        value: value,
                         requestChange: this.handleChange.bind(this, child.props.name)
                     }
                 });

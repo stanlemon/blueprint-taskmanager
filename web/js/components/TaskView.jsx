@@ -1,5 +1,6 @@
 /* @flow weak */
 import { contains } from 'lodash';
+import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router';
 import Error from './Error';
@@ -31,8 +32,12 @@ export default class TaskView extends React.Component {
             <div>
                 <TaskForm task={task} errors={errors} actions={actions}/>
 
-                <p><strong>Created:</strong> {task.createdAt}</p>
-                <p><strong>Updated:</strong> {task.updatedAt}</p>
+                <p>
+                    <strong>Created:</strong> {moment(task.createdAt).format('MMMM Do YYYY, h:mm:ssa')}
+                </p>
+                <p>
+                    <strong>Updated:</strong> {moment(task.updatedAt).format('MMMM Do YYYY, h:mm:ssa')}
+                </p>
 
                 <Link to="/">Go back to list</Link>
             </div>

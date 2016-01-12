@@ -48,7 +48,20 @@ export async function logout() {
 export async function loadTasks() {
     try {
         const response = await taskService.loadTasks();
-        const tasks = await response.json();
+        const data = await response.json();
+
+        // TODO: All of this should be moved to the TaskService
+        const tasks = data.map((task) => {
+            try {
+                task.createdAt = new Date(task.createdAt);
+                task.updatedAt = new Date(task.updatedAt);
+                task.completed = task.completed ? new Date(task.completed) : null
+                task.due = task.due ? new Date(task.due) : null
+            } catch (e) {
+                console.log(e);
+            }
+            return task;
+        });
 
         return { type: LOAD_TASKS_SUCCESS, tasks };
     } catch (error) {

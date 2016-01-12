@@ -1,16 +1,13 @@
 /* @flow weak */
-import { isEqual } from 'lodash';
+import { isEqual, isDate } from 'lodash';
 import React from 'react';
 import TaskForm from './TaskForm';
+import { makeDateTime } from '../lib/Utils';
 
 export default class CreateTaskForm extends TaskForm {
 
-    handleSubmit(errors, data) {
-        if (isEqual({}, errors) === false) {
-            this.props.actions.addErrors(errors);
-        } else {
-            this.props.actions.createTask(data);
-            return {}
-        }
+    handleSave(data) {
+        this.props.actions.createTask(data);
+        return {}
     }
 }

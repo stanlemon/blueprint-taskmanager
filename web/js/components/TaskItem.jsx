@@ -7,16 +7,6 @@ import { Link } from 'react-router';
 
 export default class TaskItem extends React.Component {
 
-    static propTypes = {
-        task: React.PropTypes.shape({
-            id: React.PropTypes.number,
-            name: React.PropTypes.string,
-            description: React.PropTypes.string,
-            due: React.PropTypes.string,
-            completed: React.PropTypes.string
-        })
-    };
-
     deleteTask() {
         this.props.actions.deleteTask(this.props.task.id);
     }
@@ -40,23 +30,32 @@ export default class TaskItem extends React.Component {
     render() {
         const { task } = this.props;
 
-        const styles = {
+        const rowStyles = {
+            cursor: 'pointer',
+            border: '1px solid #e3e3e3',
+            borderRadius: '4px',
+            marginBottom: '8px'
+        };
+
+        const nameStyles = {
             textDecoration: task.completed ? 'line-through' : 'none'
-        }
+        };
 
         return (
-            <div style={{ border: '1px solid #e3e3e3', borderRadius: '4px', marginBottom: '8px' }}>
+            <div style={rowStyles}>
                 <div className="row" style={{ margin: '10px' }}>
-                    <div style={styles} className="col-xs-7 col-sm-9 col-md-10" onClick={this.viewTask.bind(this)}>
+                    <div style={nameStyles} className="col-xs-9 col-sm-9 col-md-10" onTouchTap={this.viewTask.bind(this)}>
                         {task.name}
                     </div>
-                    <div className="col-xs-5 col-sm-3 col-md-2">
+                    <div className="col-xs-3 col-sm-3 col-md-2">
                         <div className="row">
-                            <div className="col-xs-5 col-sm-7 text-right">
+                            <div className="col-xs-6 col-sm-6 text-right">
                                 <input type="checkbox" checkedLink={this.completeTask()} />
                             </div>
-                            <div className="col-xs-7 col-sm-3 text-right">
-                                <button type="button" className="btn btn-xs btn-danger" onClick={this.deleteTask.bind(this)}>Delete</button>
+                            <div className="col-xs-6 col-sm-6 text-right">
+                                <button type="button" className="btn btn-xs btn-danger" onTouchTap={this.deleteTask.bind(this)}>
+                                    <i className="fa fa-trash-o" style={{ padding: '3px' }}/>
+                                </button>
                             </div>
                         </div>
                     </div>

@@ -1,11 +1,6 @@
 
 @import '~font-awesome/less/font-awesome.less';
 
-body {
-    padding-top: 70px;
-    font-family: Helvetica, Arial;
-}
-
 ////////// Bootstrap
 
 // Core variables and mixins
@@ -51,7 +46,7 @@ body {
 @import "~bootstrap/less/close.less";
 
 // Components w/ JavaScript
-@import "~bootstrap/less/modals.less";
+//@import "~bootstrap/less/modals.less";
 //@import "~bootstrap/less/tooltip.less";
 //@import "~bootstrap/less/popovers.less";
 //@import "~bootstrap/less/carousel.less";
@@ -59,6 +54,51 @@ body {
 // Utility classes
 @import "~bootstrap/less/utilities.less";
 @import "~bootstrap/less/responsive-utilities.less";
+
+
+body {
+    padding-top: 70px;
+    font-family: -apple-system, "Helvetica Neue", Helvetica Arial;
+}
+
+
+@rw-font-path: '~react-widgets/lib/fonts';
+@rw-css-prefix: rw-i;
+@rw-version: '4.1.0';
+
+
+.@{rw-css-prefix} {
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1em;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.@{rw-css-prefix}-caret-down:before { content: '\f078'; }
+.@{rw-css-prefix}-caret-up:before { content: '\f077'; }
+.@{rw-css-prefix}-caret-left:before { content: '\f053';  }
+.@{rw-css-prefix}-caret-right:before { content: '\f054'; }
+
+.@{rw-css-prefix}-clock-o:before { content:'\f017'; }
+.@{rw-css-prefix}-calendar:before { content: '\f073'; }
+.@{rw-css-prefix}-search:before { content: '\f002'; }
+
+
+@import "~react-widgets/lib/less/bootstrap-theme.less";
+@import "~react-widgets/lib/less/mixins.less";
+@import "~react-widgets/lib/less/normalize.less";
+//@import "~react-widgets/lib/less/icons.less";
+@import "~react-widgets/lib/less/core.less";
+@import "~react-widgets/lib/less/popup.less";
+@import "~react-widgets/lib/less/datepicker.less";
+//@import "~react-widgets/lib/less/selectlist.less";
+//@import "~react-widgets/lib/less/multiselect.less";
+
 
 label {
     font-weight: normal;

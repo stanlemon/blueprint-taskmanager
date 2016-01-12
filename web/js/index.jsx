@@ -8,6 +8,13 @@ import promiseMiddleware from 'redux-promise';
 import reducer from './reducers';
 import DevTools from './lib/DevTools';
 import Routes from './config/Routes';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import moment from 'moment';
+import momentLocalizer  from 'react-widgets/lib/localizers/moment';
+
+injectTapEventPlugin();
+
+momentLocalizer(moment);
 
 const middleware = process.env.NODE_ENV !== 'production' ? compose(
     applyMiddleware(promiseMiddleware)

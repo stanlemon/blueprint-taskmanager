@@ -49,19 +49,19 @@ export default class LoginView extends React.Component {
                                     <div className="form-group">
                                         <label htmlFor="username" className="col-sm-3 control-label">Email</label>
                                         <div className="col-sm-9">
-                                                <div className="input-group">
-                                                    <span className="input-group-addon"><i className="fa fa-user"></i></span>
-                                                    <input type="text" className="form-control" id="username" name="username" />
-                                                </div>
+                                            <div className="input-group">
+                                                <span className="input-group-addon"><i className="fa fa-user"></i></span>
+                                                <input type="email" className="form-control" id="username" name="username" />
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="password" className="col-sm-3 control-label">Password</label>
                                         <div className="col-sm-9">
-                                                <div className="input-group">
-                                                    <span className="input-group-addon"><i className="fa fa-lock"></i></span>
-                                                    <input type="password" className="form-control" id="password" name="password" />
-                                                </div>
+                                            <div className="input-group">
+                                                <span className="input-group-addon"><i className="fa fa-lock"></i></span>
+                                                <input type="password" className="form-control" id="password" name="password" />
+                                            </div>
                                         </div>
                                     </div>
                                     <br />

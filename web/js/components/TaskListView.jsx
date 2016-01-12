@@ -59,13 +59,19 @@ export default class TaskListView extends React.Component {
                     <div className="col-xs-12 col-sm-5 pull-right">
                         <div className="btn-group btn-group-justified" role="group">
                             <div className="btn-group" role="group">
-                                <button type="button" onClick={this.setFilter.bind(this, ALL)} className={btnAll}>All</button>
+                                <button type="button"
+                                    onTouchTap={this.setFilter.bind(this, ALL)}
+                                    className={btnAll}>All</button>
                             </div>
                             <div className="btn-group" role="group">
-                                <button type="button" onClick={this.setFilter.bind(this, INCOMPLETE)} className={btnIncomplete}>Incomplete</button>
+                                <button type="button"
+                                    onTouchTap={this.setFilter.bind(this, INCOMPLETE)}
+                                    className={btnIncomplete}>Incomplete</button>
                             </div>
                             <div className="btn-group" role="group">
-                                <button type="button" onClick={this.setFilter.bind(this, COMPLETE)} className={btnComplete}>Complete</button>
+                                <button type="button"
+                                    onTouchTap={this.setFilter.bind(this, COMPLETE)}
+                                    className={btnComplete}>Complete</button>
                             </div>
                         </div>
                     </div>

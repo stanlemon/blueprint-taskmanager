@@ -6,6 +6,7 @@ let express      = require('express');
 let helmet       = require('helmet');
 let serveStatic  = require('serve-static');
 let bodyParser   = require('body-parser');
+let compression  = require('compression');
 let morgan       = require('morgan');
 let webpack      = require('webpack');
 let config       = require('./webpack.config');
@@ -24,9 +25,12 @@ let db           = require("./models")();
 const PROD = 'production';
 const DEV = 'development'
 
-let env = process.env.NODE_ENV || DEV;
+const env = process.env.NODE_ENV || DEV;
 
 app.set('port', (process.env.PORT || 3000));
+
+app.use(logger);
+app.use(compression());
 
 app.use(helmet.hidePoweredBy());
 app.use(helmet.ieNoOpen());
@@ -35,7 +39,6 @@ app.use(helmet.frameguard());
 app.use(helmet.xssfilter());
 //app.use(helmet.hsts());
 
-app.use(logger);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(flash());

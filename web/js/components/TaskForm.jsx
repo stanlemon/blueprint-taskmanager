@@ -1,13 +1,35 @@
 /* @flow weak */
-import { isEqual, find } from 'lodash';
+import { isEqual, isBoolean, isDate } from 'lodash';
 import classNames from 'classnames';
+import moment from 'moment';
 import React from 'react';
 import Form from './Form';
+import { DateTimePicker } from 'react-widgets';
 
 export default class TaskForm extends React.Component {
 
+    due: null;
+
     // This is an abstract method that should be overriden
-    handleSubmit(state) {}
+    handleSave(data) {}
+
+    handleSubmit(errors, data) {
+        if (isEqual({}, errors) === false) {
+            this.props.actions.addErrors(errors);
+        } else {
+            data.due = this.due;
+
+            if (!isDate(data.completed)) {
+                data.completed = (data.completed === true) ? makeDateTime() : null;
+            }
+
+            return this.handleSave(data);
+        }
+    }
+
+    componentWillUnmount() {
+        this.props.actions.addErrors({});
+    }
 
     render() {
         const { task, errors } = this.props;
@@ -32,6 +54,22 @@ export default class TaskForm extends React.Component {
                     <textarea name="description" className="form-control" />
                     {errors.description && (<span className="help-block">{errors.description}</span>)}
                 </div>
+                <div className={classNames('form-group', { 'has-error': errors.due })}>
+                    <label htmlFor="due" className="control-label">Due</label>
+                    <DateTimePicker defaultValue={task && task.due} onChange={(due) => this.due = due}/>
+                    {errors.due && (<span className="help-block">{errors.due}</span>)}
+                </div>
+                {task && task.id && (
+                    <div className="checkbox">
+                        <label htmlFor="completed" className="control-label">
+                            <input name="completed" type="checkbox" />
+                            Completed
+                            {task.completed && !isBoolean(task.completed) && (
+                                <em> on {moment(task.completed).format('MMMM Do YYYY, h:mm:ssa')}</em>
+                            )}
+                        </label>
+                    </div>
+                )}
                 <div className="form-group">
                     <button className="btn btn-primary col-sm-2">Save</button>
                 </div>

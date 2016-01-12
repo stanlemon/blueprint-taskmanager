@@ -6,24 +6,36 @@ let webpack = require('webpack');
 const PROD = 'production';
 const DEV = 'development'
 
-let env = process.env.NODE_ENV || DEV;
+const env = process.env.NODE_ENV || DEV;
 
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+const vendors = [
+    'react',
+    'redux',
+    'react-redux',
+    'react-widgets',
+    'react-tap-event-plugin',
+    'moment'
+];
 
 module.exports = {
     devtool: env === PROD ? 'source-map' : 'eval',
     entry: env === PROD ?
-        [
-            './web/js/index',
-            './web/css/main.less',
-        ]
+        {
+            main: ['./web/js/index', './web/css/main.less'],
+            vendors: vendors
+        }
         :
-        [
-            'webpack-hot-middleware/client',
-            'webpack/hot/only-dev-server',
-            './web/js/index',
-            './web/css/main.less',
-        ],
+        {
+            main: [
+                'webpack-hot-middleware/client',
+                'webpack/hot/only-dev-server',
+                './web/js/index',
+                './web/css/main.less',
+            ],
+            vendors: vendors
+        },
     output: {
         path: path.join(__dirname, 'web/assets'),
         filename: "[name].js",
@@ -38,6 +50,7 @@ module.exports = {
                     'NODE_ENV': JSON.stringify(env)
                 }
             })
+            , new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js')
             , ...(env === PROD ?
             [
                 new webpack.optimize.UglifyJsPlugin({
