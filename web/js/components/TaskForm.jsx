@@ -12,11 +12,19 @@ export default class TaskForm extends React.Component {
     render() {
         const { task, errors } = this.props;
 
+        const validate = {
+            name: {
+                notEmpty: {
+                    msg: 'You must enter a name for this task.' 
+                }
+            }
+        };
+
         return (
-            <Form className="well" fields={task} errors={errors} handler={this.handleSubmit.bind(this)}>
+            <Form className="well" validate={validate} fields={task} errors={errors} handler={this.handleSubmit.bind(this)}>
                 <div className={classNames('form-group', { 'has-error': errors.name })}>
                     <label htmlFor="name" className="control-label">Name</label>
-                    <input name="name" type="text" className="form-control" validate={{ notEmpty: true }} />
+                    <input name="name" type="text" className="form-control" />
                     {errors.name && (<span className="help-block">{errors.name}</span>)}
                 </div>
                 <div className={classNames('form-group', { 'has-error': errors.description })}>

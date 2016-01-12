@@ -32,6 +32,31 @@ export default class RegisterView extends React.Component {
     render() {
         const { errors } = this.props;
 
+        const validate = {
+            name: {
+                notEmpty: {
+                    msg: 'You must enter a name.'
+                }
+            },
+            email: {
+                isEmail: {
+                    msg: 'You must enter a valid email address.'
+                },
+                notEmpty: {
+                    msg: 'You must enter a email address.'
+                }
+            },
+            password: {
+                length: {
+                    args: [8, 64],
+                    msg: 'Your password must be between 8 and 64 characters long'
+                },
+                notEmpty: {
+                    msg: 'You must enter a password'
+                }
+            }
+        };
+
         return (
             <div className="container">
                 <div className="row">
@@ -39,26 +64,26 @@ export default class RegisterView extends React.Component {
                         <h2>Register an Account</h2>
                         <div className="panel panel-info">
                             <div className="panel-body">
-                                <Form className="form-horizontal" handler={this.handleSubmit.bind(this)}>
+                                <Form className="form-horizontal" validate={validate} handler={this.handleSubmit.bind(this)}>
                                     <div className={classNames('form-group', { 'has-error': errors.name })}>
                                         <label htmlFor="name" className="col-sm-2 control-label">Name</label>
                                         <div className="col-sm-10">
                                             <input type="text" className="form-control" id="name" name="name" />
-                                            {errors.name && (<span className="help-block">{errors.name}</span>)}
+                                            {errors.name && (<span className="help-block">{errors.name.slice(-1)}</span>)}
                                         </div>
                                     </div>
                                     <div className={classNames('form-group', { 'has-error': errors.email })}>
                                         <label htmlFor="email" className="col-sm-2 control-label">Email</label>
                                         <div className="col-sm-10">
                                             <input type="email" className="form-control" id="email" name="email" />
-                                            {errors.email && (<span className="help-block">{errors.email}</span>)}
+                                            {errors.email && (<span className="help-block">{errors.email.slice(-1)}</span>)}
                                         </div>
                                     </div>
                                     <div className={classNames('form-group', { 'has-error': errors.password })}>
                                         <label htmlFor="password" className="col-sm-2 control-label">Password</label>
                                         <div className="col-sm-10">
                                             <input type="password" className="form-control" id="password" name="password" />
-                                            {errors.password && (<span className="help-block">{errors.password}</span>)}
+                                            {errors.password && (<span className="help-block">{errors.password.slice(-1)}</span>)}
                                         </div>
                                     </div>
 

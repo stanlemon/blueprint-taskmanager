@@ -36,6 +36,10 @@ module.exports = () => {
             type: Sequelize.STRING,
             allowNull: false,
             validate:  {
+                len: {
+                    args: [8, 64],
+                    msg: 'Your password must be between 8 and 64 characters long'
+                },
                 notEmpty: {
                     msg: 'You must enter a password'
                 }

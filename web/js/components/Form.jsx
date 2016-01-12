@@ -1,5 +1,5 @@
 /* @flow weak */
-import { isEqual, get, zipObject, fill, range, merge } from 'lodash';
+import { isEqual, get, isObject, has, zipObject, fill, range, merge } from 'lodash';
 import React from 'react';
 import Validator from 'validator';
 
@@ -33,8 +33,14 @@ export default class Form extends React.Component {
 
                 const value = get(this.state.fields, field, '');
 
-                const args = Array.isArray(validators[field][key]) ? 
-                    [value, ...validators[field][key]] : [value];
+
+                let args = [value];
+
+                if (Array.isArray(validators[field][key])) {
+                    args = [value, ...validators[field][key]];
+                } else if (isObject(validators[field][key]) && has(validators[field][key], 'args')) {
+                    args = validators[field][key].args
+                }
 
                 let hasError = false;
 
@@ -49,7 +55,10 @@ export default class Form extends React.Component {
                         errors[field] = [];
                     }
 
-                    errors[field].push(key);
+                    const message = isObject(validators[field][key]) && has(validators[field][key], 'msg')
+                        ? validators[field][key].msg : key
+
+                    errors[field].push(message);
                 }
             }
         }
