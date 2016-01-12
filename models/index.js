@@ -35,11 +35,6 @@ module.exports = () => {
         password: {
             type: Sequelize.STRING,
             allowNull: false,
-            set: function(value) {
-                let hash = bcrypt.hashSync(value, 10);
-
-                this.setDataValue('password', hash);
-            },
             validate:  {
                 notEmpty: {
                     msg: 'You must enter a password'
@@ -66,6 +61,11 @@ module.exports = () => {
             type: Sequelize.BOOLEAN,
             defaultValue: true
         }
+    });
+
+    User.afterValidate( (user) => {
+        user.password = bcrypt.hashSync(user.password, 10);
+        return Promise.resolve(user);
     });
 
     let Task = sequelize.define('Task', {
