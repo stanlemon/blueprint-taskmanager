@@ -1,4 +1,5 @@
 /* @flow weak */
+import { contains } from 'lodash';
 import React from 'react';
 import { Link } from 'react-router';
 import Error from './Error';
@@ -10,7 +11,7 @@ export default class TaskView extends React.Component {
     render() {
         let { params, actions, loaded, tasks, errors } = this.props;
 
-        if (!loaded) {
+        if (!contains(loaded, 'tasks')) {
             return <div/>
         }
 
