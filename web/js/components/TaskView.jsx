@@ -18,7 +18,7 @@ export default class TaskView extends React.Component {
         let taskId = parseInt(params.id);
         let task = tasks.filter( task => task.id === taskId )[0];
     
-        if (loaded && undefined === task) {
+        if (!task) {
             return (
                 <div>
                     <Error message="Task does not exist."/>

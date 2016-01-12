@@ -41,7 +41,7 @@ export async function logout() {
 
         return { type: UNAUTHENTICATED_USER };
     } catch (error) {
-        return { type: AUTHENTICATION_ERROR, errors: mapErrors({ error: error }) };
+        return { type: AUTHENTICATION_ERROR, errors: mapErrors({ error }) };
     }
 }
 
@@ -77,13 +77,12 @@ export async function updateTask(data) {
         const task = await response.json();
 
         if (task.hasOwnProperty('errors') && Array.isArray(task.errors) && task.errors.length > 0) {
-            console.log('remapped', mapErrors(task.errors));
             return { type: UPDATE_TASK_ERROR, errors: mapErrors(task.errors) };
         }
 
         return { type: UPDATE_TASK_SUCCESS, task };
     } catch (error) {
-        return { type: UPDATE_TASK_ERROR, errors: mapErrors(task.errors) };
+        return { type: UPDATE_TASK_ERROR, errors: mapErrors({ error }) };
     }
 }
 
@@ -94,6 +93,6 @@ export async function deleteTask(taskId) {
 
         return { type: DELETE_TASK_SUCCESS, taskId };
     } catch (error) {
-        return { type: DELETE_TASK_ERROR, errors: mapErrors(task.errors) };
+        return { type: DELETE_TASK_ERROR, errors: mapErrors({ error }) };
     }
 }
