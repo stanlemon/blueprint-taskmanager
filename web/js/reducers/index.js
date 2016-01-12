@@ -45,7 +45,7 @@ function user(state = false, action) {
     }
 }
 
-function errors(state = [], action) {
+function errors(state = {}, action) {
     switch (action.type) {
         case ERROR:
         case LOAD_TASKS_ERROR:
@@ -53,9 +53,9 @@ function errors(state = [], action) {
         case UPDATE_TASK_ERROR:
         case DELETE_TASK_ERROR:
         case AUTHENTICATION_ERROR:
-            return [...action.errors];
+            return Object.assign({}, action.errors);
         default:
-            return [];
+            return {};
     }
 }
 

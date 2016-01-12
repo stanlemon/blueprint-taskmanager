@@ -1,4 +1,5 @@
 /* @flow weak */
+import { values } from 'lodash';
 import React from 'react';
 import Error from './Error';
 import Form from './Form';
@@ -22,15 +23,17 @@ export default class LoginView extends React.Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.addErrors([]);
+        this.props.actions.addErrors({});
     }
 
     render() {
+        const { errors } = this.props;
+
         return (
             <div className="container">
                 <div className="row">
                     <div className="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
-                        {this.props.errors.map((error, i) => {
+                        {values(errors).map((error, i) => {
                             return <Error key={i} message={error}/>
                         })}
                     </div>

@@ -1,4 +1,5 @@
 /* @flow weak */
+import { mapErrors } from '../lib/Utils';
 import TaskService from '../lib/TaskService';
 
 export const ERROR = 'ERROR';
@@ -40,7 +41,7 @@ export async function logout() {
 
         return { type: UNAUTHENTICATED_USER };
     } catch (error) {
-        return { type: AUTHENTICATION_ERROR, errors: [error] };
+        return { type: AUTHENTICATION_ERROR, errors: mapErrors({ error: error }) };
     }
 }
 
@@ -51,7 +52,7 @@ export async function loadTasks() {
 
         return { type: LOAD_TASKS_SUCCESS, tasks };
     } catch (error) {
-        return { type: LOAD_TASKS_ERROR, errors: [error] };
+        return { type: LOAD_TASKS_ERROR, errors: mapErrors({ error }) };
     }
 }
 
@@ -61,12 +62,12 @@ export async function createTask(data) {
         const task = await response.json();
 
         if (task.hasOwnProperty('errors') && Array.isArray(task.errors) && task.errors.length > 0) {
-            return { type: CREATE_TASK_ERROR, errors: task.errors };
+            return { type: CREATE_TASK_ERROR, errors: mapErrors(task.errors) };
         }
 
         return { type: CREATE_TASK_SUCCESS, task };
     } catch (error) {
-        return { type: CREATE_TASK_ERROR, errors: [error] };
+        return { type: CREATE_TASK_ERROR, errors: mapErrors({ error }) };
     }
 }
 
@@ -76,12 +77,13 @@ export async function updateTask(data) {
         const task = await response.json();
 
         if (task.hasOwnProperty('errors') && Array.isArray(task.errors) && task.errors.length > 0) {
-            return { type: UPDATE_TASK_ERROR, errors: task.errors };
+            console.log('remapped', mapErrors(task.errors));
+            return { type: UPDATE_TASK_ERROR, errors: mapErrors(task.errors) };
         }
 
         return { type: UPDATE_TASK_SUCCESS, task };
     } catch (error) {
-        return { type: UPDATE_TASK_ERROR, errors: [error] };
+        return { type: UPDATE_TASK_ERROR, errors: mapErrors(task.errors) };
     }
 }
 
@@ -92,6 +94,6 @@ export async function deleteTask(taskId) {
 
         return { type: DELETE_TASK_SUCCESS, taskId };
     } catch (error) {
-        return { type: DELETE_TASK_ERROR, errors: [error] };
+        return { type: DELETE_TASK_ERROR, errors: mapErrors(task.errors) };
     }
 }

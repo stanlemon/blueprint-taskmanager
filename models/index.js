@@ -12,15 +12,24 @@ module.exports = () => {
     let User = sequelize.define('User', {
         name: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            validate:  {
+                notEmpty: {
+                    msg: 'You must enter a name.'
+                }
+            }
         },
         email: {
             type: Sequelize.STRING,
             allowNull: false,
             unique: true,
             validate:  {
-                isEmail: true,
-                notEmpty: true
+                isEmail: {
+                    msg: 'You must enter a valid email address.'
+                },
+                notEmpty: {
+                    msg: 'You must enter a email address.'
+                }
             }
         },
         password: {
@@ -32,7 +41,9 @@ module.exports = () => {
                 this.setDataValue('password', hash);
             },
             validate:  {
-                notEmpty: true
+                notEmpty: {
+                    msg: 'You must enter a password'
+                }
             }
         },
         createdAt: {
@@ -61,7 +72,9 @@ module.exports = () => {
         name: {
             type: Sequelize.STRING,
             validate:  {
-                notEmpty: true
+                notEmpty: {
+                    msg: 'You must enter a name for this task.'
+                }
             }
         },
         description: Sequelize.STRING,

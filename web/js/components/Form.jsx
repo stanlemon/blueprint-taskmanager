@@ -1,11 +1,13 @@
 /* @flow weak */
-import { isEqual, get } from 'lodash';
+import { isEqual, get, zipObject, fill, range, merge } from 'lodash';
 import React from 'react';
 import Validator from 'validator';
 
 export default class Form extends React.Component {
 
     validators = {};
+
+    fields = [];
 
     handleSubmit(e) {
         e.preventDefault();
@@ -37,7 +39,7 @@ export default class Form extends React.Component {
                 let hasError = false;
 
                 if (key === 'notEmpty') {
-                    hasError = value.match(/^[\s\t\r\n]*$/) === false;
+                    hasError = !!value.match(/^[\s\t\r\n]*$/);
                 } else if (false === Validator[validator].apply(null, args)) {
                     hasError = true;
                 }
@@ -52,8 +54,13 @@ export default class Form extends React.Component {
             }
         }
 
-        const newState = this.props.handler(errors, this.state.fields);
-        
+        // This ensure we always send every field property, though for those that
+        // have not had a change trigger we simply send an empty string
+        const newState = this.props.handler(errors, Object.assign(
+            zipObject(this.fields, fill(range(this.fields.length), '')),
+            this.state.fields
+        ));
+
         if (newState instanceof Object) {
             this.setState({ fields: newState});
         }
@@ -93,9 +100,11 @@ export default class Form extends React.Component {
                     this.validators[child.props.name] = child.props.validate;
                 }
 
+                this.fields.push(child.props.name);
+
                 return React.cloneElement(child, {
                     valueLink: {
-                        value: this.state.fields[child.props.name] || '',
+                        value: get(this.state.fields, child.props.name, '') + '',
                         requestChange: this.handleChange.bind(this, child.props.name)
                     }
                 });
