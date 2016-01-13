@@ -39,7 +39,7 @@ export default class Form extends React.Component {
                 if (Array.isArray(validators[field][key])) {
                     args = [value, ...validators[field][key]];
                 } else if (isObject(validators[field][key]) && has(validators[field][key], 'args')) {
-                    args = validators[field][key].args
+                    args = [value, ...validators[field][key].args];
                 }
 
                 let hasError = false;
