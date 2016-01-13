@@ -10,7 +10,7 @@ import DevTools from './lib/DevTools';
 import Routes from './config/Routes';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import moment from 'moment';
-import momentLocalizer  from 'react-widgets/lib/localizers/moment';
+import momentLocalizer from 'react-widgets/lib/localizers/moment';
 
 injectTapEventPlugin();
 

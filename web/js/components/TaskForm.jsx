@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 import React from 'react';
 import Form from './Form';
+import { makeDateTime } from '../lib/Utils';
 import { DateTimePicker } from 'react-widgets';
 
 export default class TaskForm extends React.Component {

@@ -55,10 +55,10 @@ export async function loadTasks() {
             try {
                 task.createdAt = new Date(task.createdAt);
                 task.updatedAt = new Date(task.updatedAt);
-                task.completed = task.completed ? new Date(task.completed) : null
-                task.due = task.due ? new Date(task.due) : null
+                task.completed = task.completed ? new Date(task.completed) : null;
+                task.due = task.due ? new Date(task.due) : null;
             } catch (e) {
-                console.log(e);
+                console.error(e);
             }
             return task;
         });
