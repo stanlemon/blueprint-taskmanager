@@ -45,6 +45,14 @@ export async function logout() {
     }
 }
 
+function formatTask(task) {
+    task.createdAt = new Date(task.createdAt);
+    task.updatedAt = new Date(task.updatedAt);
+    task.completed = task.completed ? new Date(task.completed) : null;
+    task.due = task.due ? new Date(task.due) : null;
+    return task;
+}
+
 export async function loadTasks() {
     try {
         const response = await taskService.loadTasks();
@@ -52,15 +60,7 @@ export async function loadTasks() {
 
         // TODO: All of this should be moved to the TaskService
         const tasks = data.map((task) => {
-            try {
-                task.createdAt = new Date(task.createdAt);
-                task.updatedAt = new Date(task.updatedAt);
-                task.completed = task.completed ? new Date(task.completed) : null;
-                task.due = task.due ? new Date(task.due) : null;
-            } catch (e) {
-                console.error(e);
-            }
-            return task;
+            return formatTask(task);
         });
 
         return { type: LOAD_TASKS_SUCCESS, tasks };
@@ -78,7 +78,7 @@ export async function createTask(data) {
             return { type: CREATE_TASK_ERROR, errors: mapErrors(task.errors) };
         }
 
-        return { type: CREATE_TASK_SUCCESS, task };
+        return { type: CREATE_TASK_SUCCESS, task: formatTask(task) };
     } catch (error) {
         return { type: CREATE_TASK_ERROR, errors: mapErrors({ error }) };
     }
@@ -93,7 +93,7 @@ export async function updateTask(data) {
             return { type: UPDATE_TASK_ERROR, errors: mapErrors(task.errors) };
         }
 
-        return { type: UPDATE_TASK_SUCCESS, task };
+        return { type: UPDATE_TASK_SUCCESS, task: formatTask(task) };
     } catch (error) {
         return { type: UPDATE_TASK_ERROR, errors: mapErrors({ error }) };
     }
