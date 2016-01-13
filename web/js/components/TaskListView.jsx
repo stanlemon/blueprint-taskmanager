@@ -68,7 +68,7 @@ export default class TaskListView extends React.Component {
                 if (!a.completed && b.completed) {
                     return -1;
                 } else if (a.completed && b.completed) {
-                    return 0;
+                    return moment(a.completed).isAfter(b.completed) ? -1 : 1;
                 } else {
                     return 1;
                 }
