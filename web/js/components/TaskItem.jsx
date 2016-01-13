@@ -1,9 +1,11 @@
 /* @flow weak */
 import { isEqual } from 'lodash';
 import { makeDateTime } from '../lib/Utils';
+import classNames from 'classnames';
 import React from 'react';
 import Router from 'react-router';
 import { Link } from 'react-router';
+import moment from 'moment';
 
 export default class TaskItem extends React.Component {
 
@@ -40,9 +42,16 @@ export default class TaskItem extends React.Component {
         const nameStyles = {
             textDecoration: task.completed ? 'line-through' : 'none'
         };
+        
+        const rowClasses = classNames({
+            // Tasks due in the next day
+            'bg-warning': task.due && !task.completed && moment(task.due).isAfter(moment().subtract(2, 'days')),
+            // Tasks that are are over due
+            'bg-danger': task.due && !task.completed && moment(task.due).isBefore(moment())
+        });
 
         return (
-            <div style={rowStyles}>
+            <div style={rowStyles} className={rowClasses}>
                 <div className="row" style={{ margin: '10px' }}>
                     <div style={nameStyles} className="col-xs-9 col-sm-9 col-md-10" onTouchTap={this.viewTask.bind(this)}>
                         {task.name}
