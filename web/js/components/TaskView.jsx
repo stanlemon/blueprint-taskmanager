@@ -10,7 +10,7 @@ import TaskItem from './TaskItem';
 export default class TaskView extends React.Component {
 
     render() {
-        let { params, actions, loaded, tasks, errors } = this.props;
+        let { params, actions, history, loaded, tasks, errors } = this.props;
 
         if (!contains(loaded, 'tasks')) {
             return <div/>
@@ -30,16 +30,14 @@ export default class TaskView extends React.Component {
 
         return (
             <div>
-                <TaskForm task={task} errors={errors} actions={actions}/>
+                <TaskForm task={task} errors={errors} history={history} actions={actions}/>
 
                 <p>
                     <strong>Created:</strong> {moment(task.createdAt).format('MMMM Do YYYY, h:mm:ssa')}
                 </p>
                 <p>
-                    <strong>Updated:</strong> {moment(task.updatedAt).format('MMMM Do YYYY, h:mm:ssa')}
+                    <strong>Last Updated:</strong> {moment(task.updatedAt).format('MMMM Do YYYY, h:mm:ssa')}
                 </p>
-
-                <Link to="/">Go back to list</Link>
             </div>
         );
     }

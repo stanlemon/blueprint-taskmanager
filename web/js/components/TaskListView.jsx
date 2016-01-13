@@ -4,6 +4,7 @@ import React from 'react';
 import classNames from 'classnames';
 import TaskForm from './CreateTaskForm';
 import TaskItem from './TaskItem';
+import moment from 'moment';
 
 const ALL = 'all';
 const INCOMPLETE = 'incomplete';
@@ -46,6 +47,30 @@ export default class TaskListView extends React.Component {
                         return task.completed !== null;
                     default:
                         return true;
+                }
+            });
+            
+            tasks.sort((a, b) => {
+                return moment(a.createdAt).isAfter(b.createdAt);
+            }).sort((a, b) => {
+                if (!a.due && !b.due) {
+                    return 0;
+                } else if (!a.due && b.due) {
+                    return 1;
+                } else if (a.due && !b.due) {
+                    return -1;
+                } else if (moment(a.due).isSame(b.due)) {
+                    return 0;
+                } else {
+                    return moment(a.due).isAfter(b.due) ? 1 : -1;
+                }
+            }).sort((a, b) => {
+                if (!a.completed && b.completed) {
+                    return -1;
+                } else if (a.completed && b.completed) {
+                    return 0;
+                } else {
+                    return 1;
                 }
             });
 
