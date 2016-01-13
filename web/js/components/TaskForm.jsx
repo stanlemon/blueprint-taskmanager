@@ -9,8 +9,6 @@ import { DateTimePicker } from 'react-widgets';
 
 export default class TaskForm extends React.Component {
 
-    due: null;
-
     // This is an abstract method that should be overriden
     handleSave(data) {}
 
@@ -18,7 +16,9 @@ export default class TaskForm extends React.Component {
         if (isEqual({}, errors) === false) {
             this.props.actions.addErrors(errors);
         } else {
-            data.due = this.due;
+            data.due = this.state.due;
+
+            this.setState({ due: null });
 
             if (!isDate(data.completed)) {
                 data.completed = (data.completed === true) ? makeDateTime() : null;
@@ -27,6 +27,14 @@ export default class TaskForm extends React.Component {
             return this.handleSave(data);
         }
     }
+
+    componentWillMount() {
+        const due = this.props.task && this.props.task.due ? this.props.task.due : null;
+        this.setState({
+            due
+        });
+    }
+
 
     componentWillUnmount() {
         this.props.actions.addErrors({});
@@ -57,7 +65,7 @@ export default class TaskForm extends React.Component {
                 </div>
                 <div className={classNames('form-group', { 'has-error': errors.due })}>
                     <label htmlFor="due" className="control-label">Due</label>
-                    <DateTimePicker defaultValue={task && task.due} onChange={(due) => this.due = due}/>
+                    <DateTimePicker value={this.state.due} onChange={(due) => this.setState({ due })}/>
                     {errors.due && (<span className="help-block">{errors.due}</span>)}
                 </div>
                 {task && task.id && (
