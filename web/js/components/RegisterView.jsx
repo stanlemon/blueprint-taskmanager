@@ -1,5 +1,5 @@
 /* @flow weak */
-import { isEqual, find } from 'lodash';
+import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import React from 'react';
 import Form from './Form';
@@ -9,15 +9,20 @@ import { mapErrors } from '../lib/Utils';
 
 export default class RegisterView extends React.Component {
 
-    userService = new UserService();
+    constructor() {
+        super();
+
+        this.userService = new UserService();
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
 
     handleSubmit(errors, data) {
         if (isEqual({}, errors) === false) {
             this.props.actions.addErrors(errors);
         } else {
-            this.userService.register(data, (errors, user) => {
-                if (errors) {
-                    this.props.actions.addErrors(mapErrors(errors));
+            this.userService.register(data, (errs) => {
+                if (errs) {
+                    this.props.actions.addErrors(mapErrors(errs));
                 } else {
                     this.props.history.pushState(null, '/');
                 }
@@ -64,7 +69,7 @@ export default class RegisterView extends React.Component {
                         <h2>Register an Account</h2>
                         <div className="panel panel-info">
                             <div className="panel-body">
-                                <Form className="form-horizontal" validate={validate} handler={this.handleSubmit.bind(this)}>
+                                <Form className="form-horizontal" validate={validate} handler={this.handleSubmit}>
                                     <div className={classNames('form-group', { 'has-error': errors.name })}>
                                         <label htmlFor="name" className="col-sm-2 control-label">Name</label>
                                         <div className="col-sm-10">
@@ -101,6 +106,13 @@ export default class RegisterView extends React.Component {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
+
+RegisterView.propTypes = {
+    children: React.PropTypes.element,
+    actions: React.PropTypes.object,
+    history: React.PropTypes.object,
+    errors: React.PropTypes.object,
+};

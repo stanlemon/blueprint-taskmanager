@@ -1,8 +1,6 @@
 /* @flow weak */
 export default class TaskService {
 
-    baseUrl = '/api/tasks';
-
     constructor(baseUrl = '/api/tasks') {
         this.baseUrl = baseUrl;
     }
@@ -23,36 +21,36 @@ export default class TaskService {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(task)
+            body: JSON.stringify(task),
         });
     }
 
     updateTask(task) {
-        const url = this.baseUrl + '/' + task.id;
+        const url = `${this.baseUrl}/${task.id}`;
 
         return fetch(url, {
             credentials: 'same-origin',
             method: 'put',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(task)
+            body: JSON.stringify(task),
         });
     }
 
     deleteTask(taskId) {
-        const url = this.baseUrl + '/' + taskId;
+        const url = `${this.baseUrl}/${taskId}`;
 
         return fetch(url, {
             credentials: 'same-origin',
             method: 'delete',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         });
     }
 }

@@ -35,7 +35,7 @@ export function loadUser(user) {
 export async function logout() {
     try {
         const response = await fetch('/logout', {
-            credentials: 'same-origin'
+            credentials: 'same-origin',
         });
         await response.json();
 
@@ -46,11 +46,12 @@ export async function logout() {
 }
 
 function formatTask(task) {
-    task.createdAt = new Date(task.createdAt);
-    task.updatedAt = new Date(task.updatedAt);
-    task.completed = task.completed ? new Date(task.completed) : null;
-    task.due = task.due ? new Date(task.due) : null;
-    return task;
+    return Object.assign({}, task, {
+        createdAt: new Date(task.createdAt),
+        updatedAt: new Date(task.updatedAt),
+        completed: task.completed ? new Date(task.completed) : null,
+        due: task.due ? new Date(task.due) : null,
+    });
 }
 
 export async function loadTasks() {
@@ -59,9 +60,7 @@ export async function loadTasks() {
         const data = await response.json();
 
         // TODO: All of this should be moved to the TaskService
-        const tasks = data.map((task) => {
-            return formatTask(task);
-        });
+        const tasks = data.map((task) => formatTask(task));
 
         return { type: LOAD_TASKS_SUCCESS, tasks };
     } catch (error) {

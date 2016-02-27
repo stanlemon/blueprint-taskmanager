@@ -1,20 +1,17 @@
 /* @flow weak */
-import { isEqual, contains, omit } from 'lodash';
+import { isEqual, includes } from 'lodash';
 import React from 'react';
-import LoginView from './LoginView';
 import UserService from '../lib/UserService';
 
 export default class App extends React.Component {
 
-    userService = new UserService();
+    constructor() {
+        super();
 
-    static defaultProps = {
-        pollInterval: 3000
-    };
-
-    static propTypes = {
-        pollInterval: React.PropTypes.number,
-    };
+        this.userService = new UserService();
+        this.home = this.home.bind(this);
+        this.logout = this.logout.bind(this);
+    }
 
     componentWillMount() {
         this.checkSession();
@@ -33,7 +30,7 @@ export default class App extends React.Component {
             }
 
             // Trigger an action when the state of the session changes
-            if (!isEqual(prev, curr) || !contains(this.props.loaded, 'user')) {
+            if (!isEqual(prev, curr) || !includes(this.props.loaded, 'user')) {
                 this.props.actions.loadUser(curr);
 
                 if (curr !== false) {
@@ -48,6 +45,10 @@ export default class App extends React.Component {
         });
     }
 
+    home() {
+        this.props.history.pushState(null, '/');
+    }
+
     logout(e) {
         e.preventDefault();
         this.props.actions.logout();
@@ -56,25 +57,23 @@ export default class App extends React.Component {
     }
 
     render() {
-        if (!contains(this.props.loaded, 'user')) {
-            return <div/>
+        if (!includes(this.props.loaded, 'user')) {
+            return <div/>;
         }
-
-        let year = (new Date()).getFullYear();
 
         return (
             <div>
                 <nav className="navbar navbar-inverse navbar-fixed-top custom-navbar">
                     <div className="container">
                         <div className="navbar-header">
-                            <a style={{cursor: 'pointer'}} className="navbar-brand" onTouchTap={() => { this.props.history.pushState(null, '/') }}>
+                            <a style={{ cursor: 'pointer' }} className="navbar-brand" onTouchTap={this.home}>
                                 <i className="fa fa-cloud"/>&nbsp;
                                 Blueprint
                             </a>
                         </div>
                         <ul className="nav navbar-nav navbar-right">
                             <li>
-                                <a href="#" className="fa fa-sign-out" onTouchTap={this.logout.bind(this)}/>
+                                <a href="#" className="fa fa-sign-out" onTouchTap={this.logout}/>
                             </li>
                         </ul>
                     </div>
@@ -86,3 +85,15 @@ export default class App extends React.Component {
         );
     }
 }
+
+App.defaultProps = {
+    pollInterval: 3000
+};
+
+App.propTypes = {
+    children: React.PropTypes.element,
+    pollInterval: React.PropTypes.number,
+    actions: React.PropTypes.object,
+    history: React.PropTypes.object,
+    loaded: React.PropTypes.array,
+};

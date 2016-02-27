@@ -1,16 +1,14 @@
 /* @flow weak */
 export default class UserService {
 
-    baseUrl = '/session';
-    session = false;
-
     constructor(baseUrl = '/session') {
         this.baseUrl = baseUrl;
+        this.session = false;
     }
 
     checkSession(callback) {
         fetch(this.baseUrl, {
-            credentials: 'same-origin'
+            credentials: 'same-origin',
         })
             .then(response => response.json())
             .then(data => {
@@ -34,9 +32,9 @@ export default class UserService {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(credentials)
+            body: JSON.stringify(credentials),
         })
             .then(response => response.json())
             .then(data => {
@@ -56,9 +54,9 @@ export default class UserService {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(user)
+            body: JSON.stringify(user),
         })
             .then(response => response.json())
             .then(data => {

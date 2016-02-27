@@ -1,24 +1,26 @@
 /* @flow weak */
-import { get, has, isEqual, isBoolean, isObject, zipObject, fill, range, merge } from 'lodash';
+import { get, has, isEqual, isObject, zipObject, fill, range } from 'lodash';
 import React from 'react';
 import Validator from 'validator';
 
 export default class Form extends React.Component {
 
-    validators = {};
-
-    fields = [];
+    constructor() {
+        super();
+        this.validators = {};
+        this.fields = [];
+    }
 
     handleSubmit(e) {
         e.preventDefault();
 
-        let errors = {};
-        let validators = {};
+        const errors = {};
+        const validators = {};
 
         Object.assign(validators, this.validators, this.props.validate);
 
-        for (let field in validators) {
-            for (let key in validators[field]) {
+        for (const field in validators) {
+            for (const key in validators[field]) {
                 let validator;
                 // Magically prepend is for most validators
                 if (key !== 'notEmpty' && key !== 'contains' && key !== 'equals' && key !== 'matches' && key.slice(0,2) !== 'is') {
@@ -28,7 +30,7 @@ export default class Form extends React.Component {
                 }
 
                 if (key !== 'notEmpty' && !Validator.hasOwnProperty(validator)) {
-                    console.warn('Validator does not have ' + validator);
+                    throw new Error(`Validator does not have ${validator}`);
                 }
 
                 const value = get(this.state.fields, field, '');
@@ -46,7 +48,7 @@ export default class Form extends React.Component {
 
                 if (key === 'notEmpty') {
                     hasError = !!value.match(/^[\s\t\r\n]*$/);
-                } else if (false === Validator[validator].apply(null, args)) {
+                } else if (Validator[validator].apply(null, args) === false) {
                     hasError = true;
                 }
 
@@ -56,7 +58,7 @@ export default class Form extends React.Component {
                     }
 
                     const message = isObject(validators[field][key]) && has(validators[field][key], 'msg')
-                        ? validators[field][key].msg : key
+                        ? validators[field][key].msg : key;
 
                     errors[field].push(message);
                 }
@@ -71,7 +73,7 @@ export default class Form extends React.Component {
         ));
 
         if (newState instanceof Object) {
-            this.setState({ fields: newState});
+            this.setState({ fields: newState });
         }
     }
 
@@ -102,7 +104,7 @@ export default class Form extends React.Component {
     }
 
     processChildren(children) {
-        return React.Children.map(children, (child, i) => {
+        return React.Children.map(children, (child) => {
             if (child instanceof Object && (child.type === 'input' || child.type === 'textarea' || child.type === 'select')) {
                 if (child.props.validate) {
                     this.validators[child.props.name] = child.props.validate;
@@ -114,15 +116,21 @@ export default class Form extends React.Component {
 
                 return React.cloneElement(child, {
                     [child.type === 'input' && child.props.type === 'checkbox' ? 'checkedLink' : 'valueLink']: {
-                        value: value,
+                        value,
                         requestChange: this.handleChange.bind(this, child.props.name)
                     }
                 });
             } else if (child instanceof Object && child.props.children instanceof Object && React.Children.count(child) > 0) {
                 return React.cloneElement(child, {}, this.processChildren(child.props.children));
-            } else {
-                return child;
             }
+            return child;
         });
     }
 }
+
+Form.propTypes = {
+    children: React.PropTypes.element,
+    fields: React.PropTypes.object,
+    validate: React.PropTypes.object,
+    handler: React.PropTypes.func,
+};

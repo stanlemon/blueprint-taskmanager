@@ -2,8 +2,8 @@
   "extends": "airbnb",
   "parser": "babel-eslint",
   "rules": {
-    'react/jsx-indent-props': [2, 4],
-    'indent': [2, 4, { "SwitchCase": 1, "VariableDeclarator": 1 }],
-    'comma-dangle': 0
+    "react/sort-comp": [0],
+    "indent": [2, 4, { "SwitchCase": 1, "VariableDeclarator": 1 }],
+    "quote-props": [2, "consistent-as-needed"]
   }
 }

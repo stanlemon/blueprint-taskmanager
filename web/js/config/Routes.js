@@ -14,7 +14,7 @@ export default [
         childRoutes: [
           {
             path: '/',
-            component: TaskListView
+            component: TaskListView,
           },
           {
             path: '/view/:id',
@@ -23,13 +23,13 @@ export default [
               require.ensure([], (require) => {
                 cb(null, require('../components/TaskView').default);
               });
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       {
         path: '/login',
-        component: LoginView
+        component: LoginView,
       },
       {
         path: '/register',
@@ -38,8 +38,8 @@ export default [
           require.ensure([], (require) => {
             cb(null, require('../components/RegisterView').default);
           });
-        }
-      }
-    ]
-  }
+        },
+      },
+    ],
+  },
 ];

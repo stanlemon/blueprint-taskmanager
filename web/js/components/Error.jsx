@@ -1,13 +1,16 @@
 /* @flow weak */
 import React from 'react';
 
-export default class Error extends React.Component {
+export default function Error(props) {
+    const { message } = props;
 
-    render() {
-        return (
-            <div className="alert alert-danger" role="alert">
-                {this.props.message + ''}
-            </div>
-        );
-    }
+    return (
+        <div className="alert alert-danger" role="alert">
+            {message}
+        </div>
+    );
 }
+
+Error.propTypes = {
+    message: React.PropTypes.string
+};

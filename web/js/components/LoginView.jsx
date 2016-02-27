@@ -7,14 +7,19 @@ import UserService from '../lib/UserService';
 
 export default class LoginView extends React.Component {
 
-    userService = new UserService();
+    constructor() {
+        super();
+
+        this.userService = new UserService();
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
 
     handleSubmit(errors, data) {
-        let { actions, history } = this.props;
+        const { actions, history } = this.props;
 
-        this.userService.login(data, (errors, user) => {
-            if (errors) {
-                actions.addErrors(errors);
+        this.userService.login(data, (errs, user) => {
+            if (errs) {
+                actions.addErrors(errs);
             } else {
                 actions.loadUser(user);
                 history.pushState(null, '/');
@@ -45,7 +50,7 @@ export default class LoginView extends React.Component {
                                 <h3 className="panel-title"><strong>Login</strong></h3>
                             </div>
                             <div className="panel-body">
-                                <Form className="form-horizontal" handler={this.handleSubmit.bind(this)}>
+                                <Form className="form-horizontal" handler={this.handleSubmit}>
                                     <div className="form-group">
                                         <label htmlFor="username" className="col-sm-3 control-label">Email</label>
                                         <div className="col-sm-9">
@@ -77,7 +82,7 @@ export default class LoginView extends React.Component {
                 <div className="row">
                     <div className="text-center col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
                         <p>
-                            Don't have an account?  <a href="/#/register">Create one now.</a>
+                            Don't have an account? <a href="/#/register">Create one now.</a>
                         </p>
                     </div>
                 </div>
@@ -85,3 +90,10 @@ export default class LoginView extends React.Component {
         );
     }
 }
+
+LoginView.propTypes = {
+    children: React.PropTypes.element,
+    actions: React.PropTypes.object,
+    history: React.PropTypes.object,
+    errors: React.PropTypes.object,
+};

@@ -33,7 +33,7 @@ render(
     <Provider store={store}>
         <div>
             <Router history={browserHistory} routes={Routes} />
-            <DevTools/>
+            <DevTools />
         </div>
     </Provider>
 , document.getElementById('root'));

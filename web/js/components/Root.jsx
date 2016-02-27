@@ -11,6 +11,11 @@ class Root extends React.Component {
     }
 }
 
-export default connect( state => state , dispatch => {
+Root.propTypes = {
+    children: React.PropTypes.element,
+};
+
+export default connect(state => state, dispatch => {
     return { actions: bindActionCreators(actions, dispatch) };
 })(Root);
+

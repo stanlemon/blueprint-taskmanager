@@ -1,24 +1,23 @@
 /* @flow weak */
-import { contains } from 'lodash';
+import { includes } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router';
 import Error from './Error';
 import TaskForm from './UpdateTaskForm';
-import TaskItem from './TaskItem';
 
 export default class TaskView extends React.Component {
 
     render() {
-        let { params, actions, history, loaded, tasks, errors } = this.props;
+        const { params, actions, history, loaded, tasks, errors } = this.props;
 
-        if (!contains(loaded, 'tasks')) {
-            return <div/>
+        if (!includes(loaded, 'tasks')) {
+            return <div/>;
         }
 
-        let taskId = parseInt(params.id);
-        let task = tasks.filter( task => task.id === taskId )[0];
-    
+        const taskId = parseInt(params.id, 10);
+        const task = tasks.filter(t => t.id === taskId)[0];
+
         if (!task) {
             return (
                 <div>
@@ -42,3 +41,13 @@ export default class TaskView extends React.Component {
         );
     }
 }
+
+TaskView.propTypes = {
+    children: React.PropTypes.element,
+    actions: React.PropTypes.object,
+    history: React.PropTypes.object,
+    params: React.PropTypes.object,
+    tasks: React.PropTypes.array,
+    errors: React.PropTypes.object,
+    loaded: React.PropTypes.array,
+};

@@ -1,20 +1,20 @@
 /* @flow weak */
 import {
-    ERROR
-  , AUTHENTICATED_USER
-  , UNAUTHENTICATED_USER
-  , AUTHENTICATION_ERROR
-  , LOAD_TASKS_SUCCESS
-  , LOAD_TASKS_ERROR
-  , CREATE_TASK_SUCCESS
-  , CREATE_TASK_ERROR
-  , UPDATE_TASK_SUCCESS
-  , UPDATE_TASK_ERROR
-  , DELETE_TASK_SUCCESS
-  , DELETE_TASK_ERROR
+    ERROR,
+    AUTHENTICATED_USER,
+    UNAUTHENTICATED_USER,
+    AUTHENTICATION_ERROR,
+    LOAD_TASKS_SUCCESS,
+    LOAD_TASKS_ERROR,
+    CREATE_TASK_SUCCESS,
+    CREATE_TASK_ERROR,
+    UPDATE_TASK_SUCCESS,
+    UPDATE_TASK_ERROR,
+    DELETE_TASK_SUCCESS,
+    DELETE_TASK_ERROR,
 } from '../actions/';
 
-import { unique } from 'lodash';
+import { uniq } from 'lodash';
 
 function tasks(state = [], action) {
     switch (action.type) {
@@ -23,10 +23,10 @@ function tasks(state = [], action) {
         case CREATE_TASK_SUCCESS:
             return [...state, action.task];
         case UPDATE_TASK_SUCCESS:
-            return state.map(task => {
-                return task.id === action.task.id ?
-                    Object.assign({}, action.task) : task;
-            });
+            return state.map(
+                (task) => (task.id === action.task.id) ?
+                    Object.assign({}, action.task) : task
+            );
         case DELETE_TASK_SUCCESS:
             return state.filter(task => action.taskId !== task.id);
         default:
@@ -62,10 +62,10 @@ function errors(state = {}, action) {
 function loaded(state = [], action) {
     switch (action.type) {
         case LOAD_TASKS_SUCCESS:
-            return unique([...state, 'tasks']);
+            return uniq([...state, 'tasks']);
         case UNAUTHENTICATED_USER:
         case AUTHENTICATED_USER:
-            return unique([...state, 'user']);
+            return uniq([...state, 'user']);
         default:
             return state;
     }
@@ -76,6 +76,6 @@ export default function (state = {}, action) {
         user: user(state.user, action),
         tasks: tasks(state.tasks, action),
         loaded: loaded(state.loaded, action),
-        errors: errors(state.errors, action)
+        errors: errors(state.errors, action),
     };
 }
