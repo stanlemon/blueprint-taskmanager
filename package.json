@@ -80,7 +80,7 @@
     "babel-preset-react-hmre": "^1.1.x",
     "chai": "^3.4.1",
     "enzyme": "^2.0.x",
-    "eslint": "^2.2.x",
+    "eslint": "^2.2.0",
     "eslint-config-airbnb": "^6.0.x",
     "eslint-plugin-react": "^4.0.x",
     "mocha": "^2.3.4",
