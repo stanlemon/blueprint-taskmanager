@@ -1,7 +1,7 @@
 /* @flow weak */
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, browserHistory } from 'react-router';
+import { Router, hashHistory } from 'react-router';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import promiseMiddleware from 'redux-promise';
@@ -32,7 +32,7 @@ if (module.hot) {
 render(
     <Provider store={store}>
         <div>
-            <Router history={browserHistory} routes={Routes} />
+            <Router history={hashHistory} routes={Routes} />
             <DevTools />
         </div>
     </Provider>
