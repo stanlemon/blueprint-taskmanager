@@ -6,8 +6,8 @@ import React from 'react';
 import Error from '../../js/components/Error';
 
 describe('<Error />', () => {
-    it('should render a single div', () => {
+    it('should render the error message', () => {
         const wrapper = shallow(<Error message="An error occurred!" />);
-        expect(wrapper.contains('<div/>')).to.be.true;
+        expect(wrapper.contains('An error occurred!')).to.equal(true);
     });
 });

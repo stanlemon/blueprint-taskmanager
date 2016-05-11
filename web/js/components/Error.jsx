@@ -12,5 +12,5 @@ export default function Error(props) {
 }
 
 Error.propTypes = {
-    message: React.PropTypes.string
+    message: React.PropTypes.string,
 };
