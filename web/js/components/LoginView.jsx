@@ -14,6 +14,11 @@ export default class LoginView extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    handleClickRegister(e) {
+        e.preventDefault();
+        this.props.history.pushState(null, '/register');
+    }
+
     handleSubmit(errors, data) {
         const { actions, history } = this.props;
 
@@ -82,7 +87,7 @@ export default class LoginView extends React.Component {
                 <div className="row">
                     <div className="text-center col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
                         <p>
-                            Don't have an account? <a href="/#/register">Create one now.</a>
+                            Don't have an account? <a onClick={this.handleClickRegister.bind(this)} href="#">Create one now.</a>
                         </p>
                     </div>
                 </div>
