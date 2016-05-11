@@ -97,7 +97,7 @@ export default class LoginView extends React.Component {
 }
 
 LoginView.propTypes = {
-    children: React.PropTypes.element,
+    children: React.PropTypes.node,
     actions: React.PropTypes.object,
     history: React.PropTypes.object,
     errors: React.PropTypes.object,

@@ -49,7 +49,7 @@ export default class TaskListView extends React.Component {
                     return true;
             }
         });
-        
+
         tasks.sort((a, b) => {
             return moment(a.createdAt).isAfter(b.createdAt);
         }).sort((a, b) => {
@@ -124,7 +124,7 @@ export default class TaskListView extends React.Component {
 }
 
 TaskListView.propTypes = {
-    children: React.PropTypes.element,
+    children: React.PropTypes.node,
     actions: React.PropTypes.object,
     history: React.PropTypes.object,
     tasks: React.PropTypes.array,

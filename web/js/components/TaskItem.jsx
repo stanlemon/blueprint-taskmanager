@@ -89,7 +89,7 @@ export default class TaskItem extends React.Component {
 }
 
 TaskItem.propTypes = {
-    children: React.PropTypes.element,
+    children: React.PropTypes.node,
     actions: React.PropTypes.object,
     history: React.PropTypes.object,
     task: React.PropTypes.object,

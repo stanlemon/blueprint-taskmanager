@@ -111,7 +111,7 @@ export default class RegisterView extends React.Component {
 }
 
 RegisterView.propTypes = {
-    children: React.PropTypes.element,
+    children: React.PropTypes.node,
     actions: React.PropTypes.object,
     history: React.PropTypes.object,
     errors: React.PropTypes.object,

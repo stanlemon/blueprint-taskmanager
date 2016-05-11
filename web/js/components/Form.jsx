@@ -129,7 +129,7 @@ export default class Form extends React.Component {
 }
 
 Form.propTypes = {
-    children: React.PropTypes.element,
+    children: React.PropTypes.node,
     fields: React.PropTypes.object,
     validate: React.PropTypes.object,
     handler: React.PropTypes.func,

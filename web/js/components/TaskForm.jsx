@@ -91,7 +91,7 @@ export default class TaskForm extends React.Component {
 }
 
 TaskForm.propTypes = {
-    children: React.PropTypes.func,
+    children: React.PropTypes.node,
     actions: React.PropTypes.object,
     task: React.PropTypes.object,
     errors: React.PropTypes.object,

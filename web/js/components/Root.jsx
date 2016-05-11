@@ -12,7 +12,7 @@ class Root extends React.Component {
 }
 
 Root.propTypes = {
-    children: React.PropTypes.element,
+    children: React.PropTypes.node,
 };
 
 export default connect(state => state, dispatch => {

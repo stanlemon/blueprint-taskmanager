@@ -43,7 +43,7 @@ export default class TaskView extends React.Component {
 }
 
 TaskView.propTypes = {
-    children: React.PropTypes.element,
+    children: React.PropTypes.node,
     actions: React.PropTypes.object,
     history: React.PropTypes.object,
     params: React.PropTypes.object,

@@ -91,7 +91,7 @@ App.defaultProps = {
 };
 
 App.propTypes = {
-    children: React.PropTypes.element,
+    children: React.PropTypes.node,
     pollInterval: React.PropTypes.number,
     actions: React.PropTypes.object,
     history: React.PropTypes.object,
