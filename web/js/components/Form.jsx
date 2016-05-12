@@ -1,5 +1,5 @@
 /* @flow weak */
-import { get, has, isEqual, isObject, zipObject, fill, range } from 'lodash';
+import { includes, get, has, isEqual, isObject, zipObject, fill, range } from 'lodash';
 import React from 'react';
 import Validator from 'validator';
 
@@ -77,7 +77,8 @@ export default class Form extends React.Component {
         }
     }
 
-    handleChange(field, value) {
+    handleChange(field, event) {
+        const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         this.setState({
             fields: Object.assign(this.state.fields, { [field]: value })
         });
@@ -105,7 +106,7 @@ export default class Form extends React.Component {
 
     processChildren(children) {
         return React.Children.map(children, (child) => {
-            if (child instanceof Object && (child.type === 'input' || child.type === 'textarea' || child.type === 'select')) {
+            if (child instanceof Object && includes(['input', 'textarea', 'select'], child.type)) {
                 if (child.props.validate) {
                     this.validators[child.props.name] = child.props.validate;
                 }
@@ -115,12 +116,10 @@ export default class Form extends React.Component {
                 const value = get(this.state.fields, child.props.name, '');
 
                 return React.cloneElement(child, {
-                    [child.type === 'input' && child.props.type === 'checkbox' ? 'checkedLink' : 'valueLink']: {
-                        value,
-                        requestChange: this.handleChange.bind(this, child.props.name)
-                    }
+                    [child.props.type === 'checkbox' ? 'checked' : 'value']: value,
+                    onChange: this.handleChange.bind(this, child.props.name),
                 });
-            } else if (child instanceof Object && child.props.children instanceof Object && React.Children.count(child) > 0) {
+            } else if (child instanceof Object && React.Children.count(child) > 0) {
                 return React.cloneElement(child, {}, this.processChildren(child.props.children));
             }
             return child;

@@ -21,16 +21,12 @@ export default class TaskItem extends React.Component {
         this.context.router.push(`/view/${this.props.task.id}`);
     }
 
-    completeTask() {
-        return {
-            value: this.props.task.completed !== null,
-            requestChange: (checked) => {
-                this.props.actions.updateTask({
-                    ...this.props.task,
-                    completed: checked ? makeDateTime() : null
-                });
-            }
-        };
+    completeTask(event) {
+        const checked = event.target.checked;
+        this.props.actions.updateTask({
+            ...this.props.task,
+            completed: checked ? makeDateTime() : null
+        });
     }
 
     render() {
@@ -62,20 +58,24 @@ export default class TaskItem extends React.Component {
             <div style={rowStyles} className={rowClasses}>
                 <div className="row" style={{ margin: '10px' }}>
                     <div style={nameStyles}
-                        className="col-xs-9 col-sm-9 col-md-10"
-                        onTouchTap={ this.viewTask }
+                      className="col-xs-9 col-sm-9 col-md-10"
+                      onTouchTap={ this.viewTask }
                     >
                         {task.name}
                     </div>
                     <div className="col-xs-3 col-sm-3 col-md-2">
                         <div className="row">
                             <div className="col-xs-6 col-sm-6 text-right">
-                                <input type="checkbox" checkedLink={ this.completeTask() } />
+                                <input
+                                  type="checkbox"
+                                  checked={this.props.task.completed !== null}
+                                  onChange={this.completeTask.bind(this)}
+                                />
                             </div>
                             <div className="col-xs-6 col-sm-6 text-right">
                                 <button type="button"
-                                    className="btn btn-xs btn-danger"
-                                    onTouchTap={ this.deleteTask }
+                                  className="btn btn-xs btn-danger"
+                                  onTouchTap={ this.deleteTask }
                                 >
                                     <i className="fa fa-trash-o" style={{ padding: '3px' }}/>
                                 </button>
