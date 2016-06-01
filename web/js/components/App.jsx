@@ -58,7 +58,7 @@ export default class App extends React.Component {
 
     render() {
         if (!includes(this.props.loaded, 'user')) {
-            return <div/>;
+            return <div />;
         }
 
         return (
@@ -66,14 +66,17 @@ export default class App extends React.Component {
                 <nav className="navbar navbar-inverse navbar-fixed-top custom-navbar">
                     <div className="container">
                         <div className="navbar-header">
-                            <a style={{ cursor: 'pointer' }} className="navbar-brand" onTouchTap={this.home}>
-                                <i className="fa fa-cloud"/>&nbsp;
+                            <a style={{ cursor: 'pointer' }}
+                              className="navbar-brand"
+                              onTouchTap={this.home}
+                            >
+                                <i className="fa fa-cloud" />&nbsp;
                                 Blueprint
                             </a>
                         </div>
                         <ul className="nav navbar-nav navbar-right">
                             <li>
-                                <a href="#" className="fa fa-sign-out" onTouchTap={this.logout}/>
+                                <a href="#" className="fa fa-sign-out" onTouchTap={this.logout} />
                             </li>
                         </ul>
                     </div>
@@ -87,7 +90,7 @@ export default class App extends React.Component {
 }
 
 App.defaultProps = {
-    pollInterval: 3000
+    pollInterval: 3000,
 };
 
 App.propTypes = {

@@ -27,7 +27,9 @@ export default class TaskListView extends React.Component {
         if (!includes(loaded, 'tasks')) {
             return (
                 <div className="text-center">
-                    <i style={{ fontSize: '10em' }} className="text-primary fa fa-refresh fa-spin"></i>
+                    <i style={{ fontSize: '10em' }}
+                      className="text-primary fa fa-refresh fa-spin"
+                    />
                 </div>
             );
         } else if (this.props.tasks.length === 0) {
@@ -35,7 +37,7 @@ export default class TaskListView extends React.Component {
                 <div className="jumbotron">
                     <h1>You don't have any tasks!</h1>
                     <p>Use the form below to get started and add your first task.</p>
-                    <TaskForm actions={actions} errors={errors}/>
+                    <TaskForm actions={actions} errors={errors} />
                 </div>
             );
         }
@@ -50,9 +52,9 @@ export default class TaskListView extends React.Component {
             }
         });
 
-        tasks.sort((a, b) => {
-            return moment(a.createdAt).isAfter(b.createdAt);
-        }).sort((a, b) => {
+        tasks.sort((a, b) =>
+            moment(a.createdAt).isAfter(b.createdAt)
+        ).sort((a, b) => {
             if (!a.due && !b.due) {
                 return 0;
             } else if (!a.due && b.due) {
@@ -77,24 +79,41 @@ export default class TaskListView extends React.Component {
         const btnIncomplete = classNames(btnClasses, { active: filter === INCOMPLETE });
         const btnComplete = classNames(btnClasses, { active: filter === COMPLETE });
 
+        const style = {
+            notasks: {
+                border: '1px solid #e3e3e3',
+                borderRadius: '4px',
+                marginBottom: '8px',
+            },
+        };
+
         return (
             <div>
                 <div className="col-xs-12 col-sm-5 pull-right">
                     <div className="btn-group btn-group-justified" role="group">
                         <div className="btn-group" role="group">
                             <button type="button"
-                                onTouchTap={this.setFilter.bind(this, ALL)}
-                                className={btnAll}>All</button>
+                              onTouchTap={this.setFilter.bind(this, ALL)}
+                              className={btnAll}
+                            >
+                                All
+                            </button>
                         </div>
                         <div className="btn-group" role="group">
                             <button type="button"
-                                onTouchTap={this.setFilter.bind(this, INCOMPLETE)}
-                                className={btnIncomplete}>Incomplete</button>
+                              onTouchTap={this.setFilter.bind(this, INCOMPLETE)}
+                              className={btnIncomplete}
+                            >
+                                Incomplete
+                            </button>
                         </div>
                         <div className="btn-group" role="group">
                             <button type="button"
-                                onTouchTap={this.setFilter.bind(this, COMPLETE)}
-                                className={btnComplete}>Complete</button>
+                              onTouchTap={this.setFilter.bind(this, COMPLETE)}
+                              className={btnComplete}
+                            >
+                                Complete
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -102,22 +121,20 @@ export default class TaskListView extends React.Component {
                 <div style={{ minHeight: 10 }}></div>
 
                 {tasks.length === 0 && (
-                    <div style={{ border: '1px solid #e3e3e3', borderRadius: '4px', marginBottom: '8px' }}>
+                    <div style={style.notasks}>
                         <div className="text-center row" style={{ margin: '10px' }}>
                             <em>There are no tasks for this filter</em>
                         </div>
                     </div>
                 )}
 
-                {tasks.map((task) => {
-                    return (
-                        <TaskItem key={task.id} actions={actions} history={history} task={task}/>
-                    );
-                })}
+                {tasks.map((task) =>
+                    <TaskItem key={task.id} actions={actions} history={history} task={task} />
+                )}
 
                 <br />
 
-                <TaskForm actions={actions} errors={errors}/>
+                <TaskForm actions={actions} errors={errors} />
             </div>
         );
     }
