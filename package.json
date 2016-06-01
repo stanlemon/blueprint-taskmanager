@@ -50,7 +50,7 @@
     "imports-loader": "^0.6.5",
     "less": "^2.7.x",
     "less-loader": "^2.2.1",
-    "moment": "^2.11.1",
+    "moment": "^2.13.0",
     "morgan": "^1.6.1",
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
