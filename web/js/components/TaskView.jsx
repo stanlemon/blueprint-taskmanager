@@ -6,40 +6,37 @@ import { Link } from 'react-router';
 import Error from './Error';
 import TaskForm from './UpdateTaskForm';
 
-export default class TaskView extends React.Component {
+export default function TaskView({ params, actions, history, loaded, tasks, errors }) {
+    if (!includes(loaded, 'tasks')) {
+        return <div />;
+    }
 
-    render() {
-        const { params, actions, history, loaded, tasks, errors } = this.props;
+    const taskId = parseInt(params.id, 10);
+    const task = tasks.filter(t => t.id === taskId)[0];
 
-        if (!includes(loaded, 'tasks')) {
-            return <div/>;
-        }
-
-        const taskId = parseInt(params.id, 10);
-        const task = tasks.filter(t => t.id === taskId)[0];
-
-        if (!task) {
-            return (
-                <div>
-                    <Error message="Task does not exist."/>
-                    <Link to="/">Go back to list</Link>
-                </div>
-            )
-        }
-
+    if (!task) {
         return (
             <div>
-                <TaskForm task={task} errors={errors} history={history} actions={actions}/>
-
-                <p>
-                    <strong>Created:</strong> {moment(task.createdAt).format('MMMM Do YYYY, h:mm:ssa')}
-                </p>
-                <p>
-                    <strong>Last Updated:</strong> {moment(task.updatedAt).format('MMMM Do YYYY, h:mm:ssa')}
-                </p>
+                <Error message="Task does not exist." />
+                <Link to="/">Go back to list</Link>
             </div>
         );
     }
+
+    return (
+        <div>
+            <TaskForm task={task} errors={errors} history={history} actions={actions} />
+
+            <p>
+                <strong>Created: </strong>
+                {moment(task.createdAt).format('MMMM Do YYYY, h:mm:ssa')}
+            </p>
+            <p>
+                <strong>Last Updated: </strong>
+                {moment(task.updatedAt).format('MMMM Do YYYY, h:mm:ssa')}
+            </p>
+        </div>
+    );
 }
 
 TaskView.propTypes = {
