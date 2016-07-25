@@ -20,7 +20,7 @@ export default class LoginView extends React.Component {
     }
 
     handleSubmit(errors, data) {
-        const { actions, history } = this.props;
+        const { actions } = this.props;
 
         this.userService.login(data, (errs, user) => {
             if (errs) {
@@ -55,30 +55,32 @@ export default class LoginView extends React.Component {
                                 <h3 className="panel-title"><strong>Login</strong></h3>
                             </div>
                             <div className="panel-body">
-                                <Form className="form-horizontal" handler={this.handleSubmit}>
-                                    <div className="form-group">
-                                        <label htmlFor="username" className="col-sm-3 control-label">Email</label>
-                                        <div className="col-sm-9">
-                                            <div className="input-group">
-                                                <span className="input-group-addon"><i className="fa fa-user"></i></span>
-                                                <input type="email" className="form-control" id="username" name="username" />
+                                <div className="form-horizontal">
+                                    <Form handler={this.handleSubmit}>
+                                        <div className="form-group">
+                                            <label htmlFor="username" className="col-sm-3 control-label">Email</label>
+                                            <div className="col-sm-9">
+                                                <div className="input-group">
+                                                    <span className="input-group-addon"><i className="fa fa-user"></i></span>
+                                                    <input type="email" className="form-control" id="username" name="username" />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="password" className="col-sm-3 control-label">Password</label>
-                                        <div className="col-sm-9">
-                                            <div className="input-group">
-                                                <span className="input-group-addon"><i className="fa fa-lock"></i></span>
-                                                <input type="password" className="form-control" id="password" name="password" />
+                                        <div className="form-group">
+                                            <label htmlFor="password" className="col-sm-3 control-label">Password</label>
+                                            <div className="col-sm-9">
+                                                <div className="input-group">
+                                                    <span className="input-group-addon"><i className="fa fa-lock"></i></span>
+                                                    <input type="password" className="form-control" id="password" name="password" />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <br />
-                                    <div className="col-sm-10 col-sm-offset-1">
-                                        <button type="submit" className="btn btn-primary btn-block">Login</button>
-                                    </div>
-                                </Form>
+                                        <br />
+                                        <div className="col-sm-10 col-sm-offset-1">
+                                            <button type="submit" className="btn btn-primary btn-block">Login</button>
+                                        </div>
+                                    </Form>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -69,34 +69,36 @@ export default class RegisterView extends React.Component {
                         <h2>Register an Account</h2>
                         <div className="panel panel-info">
                             <div className="panel-body">
-                                <Form className="form-horizontal" validate={validate} handler={this.handleSubmit}>
-                                    <div className={classNames('form-group', { 'has-error': errors.name })}>
-                                        <label htmlFor="name" className="col-sm-2 control-label">Name</label>
-                                        <div className="col-sm-10">
-                                            <input type="text" className="form-control" id="name" name="name" />
-                                            {errors.name && (<span className="help-block">{errors.name.slice(-1)}</span>)}
+                                <div className="form-horizontal">
+                                    <Form validate={validate} handler={this.handleSubmit}>
+                                        <div className={classNames('form-group', { 'has-error': errors.name })}>
+                                            <label htmlFor="name" className="col-sm-2 control-label">Name</label>
+                                            <div className="col-sm-10">
+                                                <input type="text" className="form-control" id="name" name="name" />
+                                                {errors.name && (<span className="help-block">{errors.name.slice(-1)}</span>)}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className={classNames('form-group', { 'has-error': errors.email })}>
-                                        <label htmlFor="email" className="col-sm-2 control-label">Email</label>
-                                        <div className="col-sm-10">
-                                            <input type="email" className="form-control" id="email" name="email" />
-                                            {errors.email && (<span className="help-block">{errors.email.slice(-1)}</span>)}
+                                        <div className={classNames('form-group', { 'has-error': errors.email })}>
+                                            <label htmlFor="email" className="col-sm-2 control-label">Email</label>
+                                            <div className="col-sm-10">
+                                                <input type="email" className="form-control" id="email" name="email" />
+                                                {errors.email && (<span className="help-block">{errors.email.slice(-1)}</span>)}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className={classNames('form-group', { 'has-error': errors.password })}>
-                                        <label htmlFor="password" className="col-sm-2 control-label">Password</label>
-                                        <div className="col-sm-10">
-                                            <input type="password" className="form-control" id="password" name="password" />
-                                            {errors.password && (<span className="help-block">{errors.password.slice(-1)}</span>)}
+                                        <div className={classNames('form-group', { 'has-error': errors.password })}>
+                                            <label htmlFor="password" className="col-sm-2 control-label">Password</label>
+                                            <div className="col-sm-10">
+                                                <input type="password" className="form-control" id="password" name="password" />
+                                                {errors.password && (<span className="help-block">{errors.password.slice(-1)}</span>)}
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <br />
-                                    <div className="col-sm-6 col-sm-offset-3">
-                                        <button type="submit" className="btn btn-primary btn-block">Register</button>
-                                    </div>
-                                </Form>
+                                        <br />
+                                        <div className="col-sm-6 col-sm-offset-3">
+                                            <button type="submit" className="btn btn-primary btn-block">Register</button>
+                                        </div>
+                                    </Form>
+                                </div>
                             </div>
                         </div>
                         <div style={{ minHeight: '2em' }} />

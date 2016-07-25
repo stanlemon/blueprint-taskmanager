@@ -11,7 +11,7 @@ let morgan       = require('morgan');
 let webpack      = require('webpack');
 let config       = require('./webpack.config');
 let epilogue     = require('epilogue');
-let session      = require('client-sessions')
+let session      = require('client-sessions');
 let flash        = require('connect-flash');
 let passport     = require('passport');
 let bcrypt       = require('bcrypt');
@@ -20,10 +20,10 @@ let localStrategy = require('passport-local').Strategy;
 let app          = express();
 let logger       = morgan('combined');
 let compiler     = webpack(config);
-let db           = require("./models")();
+let db           = require('./models')();
 
 const PROD = 'production';
-const DEV = 'development'
+const DEV = 'development';
 
 const env = process.env.NODE_ENV || DEV;
 
@@ -36,8 +36,7 @@ app.use(helmet.hidePoweredBy());
 app.use(helmet.ieNoOpen());
 app.use(helmet.noSniff());
 app.use(helmet.frameguard());
-app.use(helmet.xssfilter());
-//app.use(helmet.hsts());
+app.use(helmet.xssFilter());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -187,9 +186,11 @@ db.sequelize.sync(/*{ force: true }*/)
             let host = server.address().address;
             let port = server.address().port;
 
-            if (host == '::') host = 'localhost';
+            if (host === '::') {
+                host = 'localhost';
+            }
 
-            console.log('Starting in ' + env + ' mode');
+            console.log('Starting in %s mode', env);
             console.log('Listening at http://%s:%s', host, port);
         });
     })

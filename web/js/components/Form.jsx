@@ -19,8 +19,8 @@ export default class Form extends React.Component {
 
         Object.assign(validators, this.validators, this.props.validate);
 
-        for (const field in validators) {
-            for (const key in validators[field]) {
+        Object.keys(validators).forEach((field) => {
+            Object.keys(validators[field]).forEach((key) => {
                 let validator;
                 // Magically prepend is for most validators
                 if (key !== 'notEmpty' && key !== 'contains' && key !== 'equals' && key !== 'matches' && key.slice(0,2) !== 'is') {
@@ -62,8 +62,8 @@ export default class Form extends React.Component {
 
                     errors[field].push(message);
                 }
-            }
-        }
+            });
+        });
 
         // This ensure we always send every field property, though for those that
         // have not had a change trigger we simply send an empty string
@@ -86,7 +86,7 @@ export default class Form extends React.Component {
 
     componentWillMount() {
         this.setState({
-            fields: get(this.props, 'fields', {})
+            fields: get(this.props, 'fields', {}),
         });
     }
 
@@ -98,7 +98,7 @@ export default class Form extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit.bind(this)} {...this.props}>
+            <form onSubmit={this.handleSubmit.bind(this)}>
                 {this.processChildren(this.props.children)}
             </form>
         );
