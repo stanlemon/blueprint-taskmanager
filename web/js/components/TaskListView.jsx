@@ -22,7 +22,7 @@ export default class TaskListView extends React.Component {
 
     render() {
         const { filter } = this.state;
-        const { actions, history, loaded, errors } = this.props;
+        const { actions, router, loaded, errors } = this.props;
 
         if (!includes(loaded, 'tasks')) {
             return (
@@ -129,7 +129,7 @@ export default class TaskListView extends React.Component {
                 )}
 
                 {tasks.map((task) =>
-                    <TaskItem key={task.id} actions={actions} history={history} task={task} />
+                    <TaskItem key={task.id} actions={actions} router={router} task={task} />
                 )}
 
                 <br />
@@ -143,7 +143,6 @@ export default class TaskListView extends React.Component {
 TaskListView.propTypes = {
     children: React.PropTypes.node,
     actions: React.PropTypes.object,
-    history: React.PropTypes.object,
     tasks: React.PropTypes.array,
     errors: React.PropTypes.object,
     loaded: React.PropTypes.array,

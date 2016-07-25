@@ -24,7 +24,7 @@ export default class RegisterView extends React.Component {
                 if (errs) {
                     this.props.actions.addErrors(mapErrors(errs));
                 } else {
-                    this.context.router.push('/');
+                    this.props.router.push('/');
                 }
             });
         }
@@ -113,12 +113,8 @@ export default class RegisterView extends React.Component {
 }
 
 RegisterView.propTypes = {
+    router: React.PropTypes.object,
     children: React.PropTypes.node,
     actions: React.PropTypes.object,
-    history: React.PropTypes.object,
     errors: React.PropTypes.object,
-};
-
-RegisterView.contextTypes = {
-    router: React.PropTypes.object.isRequired,
 };

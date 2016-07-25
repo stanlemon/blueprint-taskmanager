@@ -6,10 +6,10 @@ export default class UpdateTaskForm extends TaskForm {
 
     handleSave(data) {
         this.props.actions.updateTask(data);
-        this.context.router.push('/');
+        this.props.router.push('/');
     }
 }
 
-UpdateTaskForm.contextTypes = {
-    router: React.PropTypes.object.isRequired,
+UpdateTaskForm.propTypes = {
+    router: React.PropTypes.object,
 };

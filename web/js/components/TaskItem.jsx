@@ -18,7 +18,7 @@ export default class TaskItem extends React.Component {
     }
 
     viewTask() {
-        this.context.router.push(`/view/${this.props.task.id}`);
+        this.props.router.push(`/view/${this.props.task.id}`);
     }
 
     completeTask(event) {
@@ -89,13 +89,9 @@ export default class TaskItem extends React.Component {
 }
 
 TaskItem.propTypes = {
+    router: React.PropTypes.object,
     children: React.PropTypes.node,
     actions: React.PropTypes.object,
-    history: React.PropTypes.object,
     task: React.PropTypes.object,
     errors: React.PropTypes.array,
-};
-
-TaskItem.contextTypes = {
-    router: React.PropTypes.object.isRequired,
 };

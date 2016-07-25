@@ -16,7 +16,7 @@ export default class LoginView extends React.Component {
 
     handleClickRegister(e) {
         e.preventDefault();
-        this.context.router.push('/register');
+        this.props.router.push('/register');
     }
 
     handleSubmit(errors, data) {
@@ -27,7 +27,7 @@ export default class LoginView extends React.Component {
                 actions.addErrors(errs);
             } else {
                 actions.loadUser(user);
-                this.context.router.push('/');
+                this.props.router.push('/');
             }
         });
     }
@@ -99,12 +99,8 @@ export default class LoginView extends React.Component {
 }
 
 LoginView.propTypes = {
+    router: React.PropTypes.object,
     children: React.PropTypes.node,
     actions: React.PropTypes.object,
-    history: React.PropTypes.object,
     errors: React.PropTypes.object,
-};
-
-LoginView.contextTypes = {
-    router: React.PropTypes.object.isRequired,
 };

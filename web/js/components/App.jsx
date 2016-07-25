@@ -40,20 +40,20 @@ export default class App extends React.Component {
 
             // If we are not logged in redirect them to the login page
             if (curr === false) {
-                this.context.router.push('/login');
+                this.props.router.push('/login');
             }
         });
     }
 
     home() {
-        this.context.router.push('/');
+        this.props.router.push('/');
     }
 
     logout(e) {
         e.preventDefault();
         this.props.actions.logout();
         this.props.actions.addErrors({});
-        this.context.router.push('/login');
+        this.props.router.push('/login');
     }
 
     render() {
@@ -94,13 +94,9 @@ App.defaultProps = {
 };
 
 App.propTypes = {
+    router: React.PropTypes.object,
     children: React.PropTypes.node,
     pollInterval: React.PropTypes.number,
     actions: React.PropTypes.object,
-    history: React.PropTypes.object,
     loaded: React.PropTypes.array,
-};
-
-App.contextTypes = {
-    router: React.PropTypes.object.isRequired,
 };

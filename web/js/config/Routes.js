@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 /* @flow weak */
+import { withRouter } from 'react-router';
 import Root from '../components/Root';
 import App from '../components/App';
 import LoginView from '../components/LoginView';
@@ -7,7 +8,7 @@ import TaskListView from '../components/TaskListView';
 
 export default [
   {
-    component: Root,
+    component: withRouter(Root),
     childRoutes: [
       {
         component: App,
