@@ -1,13 +1,7 @@
-'use strict';
-
-import chaiEnzyme from 'chai-enzyme';
-import chai, { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { makeDateTime } from '../../js/lib/Utils';
 import React from 'react';
-import TaskItem from '../../js/components/TaskItem';
-
-chai.use(chaiEnzyme());
+import TaskItem from '../../../web/js/components/TaskItem.jsx';
 
 describe('<TaskItem />', () => {
     it('should render the task name', () => {
@@ -17,7 +11,7 @@ describe('<TaskItem />', () => {
             completed: null
         };
         const wrapper = shallow(<TaskItem task={task} />);
-        expect(wrapper.text()).to.contain(task.name);
+        expect(wrapper.contains(task.name)).toBe(true);
     });
 
     it('should render the task with a checked checkbox', () => {
@@ -28,6 +22,6 @@ describe('<TaskItem />', () => {
         };
         const wrapper = shallow(<TaskItem task={task} />);
 
-        expect(wrapper.find('input')).to.be.checked();
+        expect(wrapper.find('input').is('[checked=true]')).toBe(true);
     });
 });
