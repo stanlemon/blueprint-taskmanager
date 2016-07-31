@@ -20,8 +20,14 @@
     "test": "NODE_ENV=test jest"
   },
   "jest": {
+    "verbose": true,
     "automock": false,
-    "testRegex": "test/.*\\.js$"
+    "testRegex": "test/.*\\.js$",
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json"
+    ]
   },
   "dependencies": {
     "babel": "^6.5.x",
@@ -91,7 +97,7 @@
     "eslint-plugin-react": "^5.2.x",
     "jest": "^14.0.1",
     "react-addons-test-utils": "^15.2.x",
-    "sinon": "^1.17.x",
+    "sinon": "^1.17.5",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.12.x"
   }

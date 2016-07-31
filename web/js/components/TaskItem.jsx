@@ -58,8 +58,9 @@ export default class TaskItem extends React.Component {
             <div style={rowStyles} className={rowClasses}>
                 <div className="row" style={{ margin: '10px' }}>
                     <div style={nameStyles}
-                      className="col-xs-9 col-sm-9 col-md-10"
+                      className="task-name col-xs-9 col-sm-9 col-md-10"
                       onTouchTap={ this.viewTask }
+                      onClick={ this.viewTask }
                     >
                         {task.name}
                     </div>
