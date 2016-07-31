@@ -1,4 +1,3 @@
-/* @flow weak */
 import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import React from 'react';

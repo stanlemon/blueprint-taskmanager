@@ -1,4 +1,3 @@
-/* @flow weak */
 import { makeDateTime } from '../lib/Utils';
 import classNames from 'classnames';
 import React from 'react';

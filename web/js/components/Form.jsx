@@ -1,4 +1,3 @@
-/* @flow weak */
 import { includes, get, has, isEqual, isObject, zipObject, fill, range } from 'lodash';
 import React from 'react';
 import Validator from 'validator';

@@ -1,4 +1,3 @@
-/* @flow weak */
 import { omit } from 'lodash';
 import React from 'react';
 import { bindActionCreators } from 'redux';

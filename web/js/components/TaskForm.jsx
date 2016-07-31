@@ -1,4 +1,3 @@
-/* @flow weak */
 import { isEqual, isBoolean, isDate } from 'lodash';
 import classNames from 'classnames';
 import moment from 'moment';

@@ -1,4 +1,3 @@
-/* @flow weak */
 export default class UserService {
 
     baseUrl = '/session';

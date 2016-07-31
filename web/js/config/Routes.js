@@ -1,5 +1,4 @@
 /* eslint-disable indent */
-/* @flow weak */
 import { withRouter } from 'react-router';
 import Root from '../components/Root';
 import App from '../components/App';

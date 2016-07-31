@@ -1,1 +1,0 @@
-declare function fetch(uri: string, options: ?Object): Promise;

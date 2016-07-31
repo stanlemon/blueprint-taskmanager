@@ -1,4 +1,3 @@
-/* @flow weak */
 import { includes } from 'lodash';
 import moment from 'moment';
 import React from 'react';

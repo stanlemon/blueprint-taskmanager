@@ -1,4 +1,3 @@
-/* @flow weak */
 import { isEqual, includes } from 'lodash';
 import React from 'react';
 import UserService from '../lib/UserService';

@@ -1,4 +1,3 @@
-/* @flow weak */
 import { includes } from 'lodash';
 import React from 'react';
 import classNames from 'classnames';

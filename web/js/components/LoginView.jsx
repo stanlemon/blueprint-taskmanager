@@ -1,4 +1,3 @@
-/* @flow weak */
 import { values } from 'lodash';
 import React from 'react';
 import Error from './Error';

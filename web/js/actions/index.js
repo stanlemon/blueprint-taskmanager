@@ -1,4 +1,3 @@
-/* @flow weak */
 import { mapErrors } from '../lib/Utils';
 import TaskService from '../lib/TaskService';
 
