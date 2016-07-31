@@ -6,12 +6,13 @@ import moment from 'moment';
 
 export default class TaskItem extends React.Component {
 
-    constructor() {
-        super();
-        this.deleteTask = this.deleteTask.bind(this);
-        this.viewTask = this.viewTask.bind(this);
-        this.completeTask = this.completeTask.bind(this);
-    }
+    static propTypes = {
+        router: React.PropTypes.object,
+        children: React.PropTypes.node,
+        actions: React.PropTypes.object,
+        task: React.PropTypes.object,
+        errors: React.PropTypes.array,
+    };
 
     deleteTask() {
         this.props.actions.deleteTask(this.props.task.id);
@@ -25,7 +26,7 @@ export default class TaskItem extends React.Component {
         const checked = event.target.checked;
         this.props.actions.updateTask({
             ...this.props.task,
-            completed: checked ? makeDateTime() : null
+            completed: checked ? makeDateTime() : null,
         });
     }
 
@@ -36,11 +37,11 @@ export default class TaskItem extends React.Component {
             cursor: 'pointer',
             border: '1px solid #e3e3e3',
             borderRadius: '4px',
-            marginBottom: '8px'
+            marginBottom: '8px',
         };
 
         const nameStyles = {
-            textDecoration: task.completed ? 'line-through' : 'none'
+            textDecoration: task.completed ? 'line-through' : 'none',
         };
 
         const rowClasses = classNames({
@@ -51,16 +52,17 @@ export default class TaskItem extends React.Component {
             // Tasks that are are over due
             'bg-danger': task.due
                  && !task.completed
-                 && moment(task.due).isBefore(moment())
+                 && moment(task.due).isBefore(moment()),
         });
 
         return (
             <div style={rowStyles} className={rowClasses}>
                 <div className="row" style={{ margin: '10px' }}>
-                    <div style={nameStyles}
+                    <div
+                      style={nameStyles}
                       className="task-name col-xs-9 col-sm-9 col-md-10"
-                      onTouchTap={ this.viewTask }
-                      onClick={ this.viewTask }
+                      onTouchTap={this.viewTask.bind(this)}
+                      onClick={this.viewTask.bind(this)}
                     >
                         {task.name}
                     </div>
@@ -74,11 +76,12 @@ export default class TaskItem extends React.Component {
                                 />
                             </div>
                             <div className="col-xs-6 col-sm-6 text-right">
-                                <button type="button"
+                                <button
+                                  type="button"
                                   className="btn btn-xs btn-danger"
-                                  onTouchTap={ this.deleteTask }
+                                  onTouchTap={this.deleteTask.bind(this)}
                                 >
-                                    <i className="fa fa-trash-o" style={{ padding: '3px' }}/>
+                                    <i className="fa fa-trash-o" style={{ padding: '3px' }} />
                                 </button>
                             </div>
                         </div>
@@ -88,11 +91,3 @@ export default class TaskItem extends React.Component {
         );
     }
 }
-
-TaskItem.propTypes = {
-    router: React.PropTypes.object,
-    children: React.PropTypes.node,
-    actions: React.PropTypes.object,
-    task: React.PropTypes.object,
-    errors: React.PropTypes.array,
-};

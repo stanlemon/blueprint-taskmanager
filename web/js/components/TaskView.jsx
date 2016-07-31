@@ -42,6 +42,7 @@ export default function TaskView({ params, actions, router, loaded, tasks, error
 TaskView.propTypes = {
     children: React.PropTypes.node,
     actions: React.PropTypes.object,
+    router: React.PropTypes.object,
     params: React.PropTypes.object,
     tasks: React.PropTypes.array,
     errors: React.PropTypes.object,

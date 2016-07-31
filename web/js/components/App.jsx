@@ -5,13 +5,20 @@ import UserService from '../lib/UserService';
 
 export default class App extends React.Component {
 
-    constructor() {
-        super();
+    static propTypes = {
+        router: React.PropTypes.object,
+        children: React.PropTypes.node,
+        pollInterval: React.PropTypes.number,
+        actions: React.PropTypes.object,
+        loaded: React.PropTypes.array,
+    };
 
-        this.userService = new UserService();
-        this.home = this.home.bind(this);
-        this.logout = this.logout.bind(this);
-    }
+    static defaultProps = {
+        pollInterval: 3000,
+    };
+
+    userService = new UserService();
+    interval;
 
     componentWillMount() {
         this.checkSession();
@@ -66,9 +73,10 @@ export default class App extends React.Component {
                 <nav className="navbar navbar-inverse navbar-fixed-top custom-navbar">
                     <div className="container">
                         <div className="navbar-header">
-                            <a style={{ cursor: 'pointer' }}
+                            <a
+                              style={{ cursor: 'pointer' }}
                               className="navbar-brand"
-                              onTouchTap={this.home}
+                              onTouchTap={this.home.bind(this)}
                             >
                                 <i className="fa fa-cloud" />&nbsp;
                                 Blueprint
@@ -76,7 +84,7 @@ export default class App extends React.Component {
                         </div>
                         <ul className="nav navbar-nav navbar-right">
                             <li>
-                                <a href="#" className="fa fa-sign-out" onTouchTap={this.logout} />
+                                <a href="#" className="fa fa-sign-out" onTouchTap={this.logout.bind(this)} />
                             </li>
                         </ul>
                     </div>
@@ -88,15 +96,3 @@ export default class App extends React.Component {
         );
     }
 }
-
-App.defaultProps = {
-    pollInterval: 3000,
-};
-
-App.propTypes = {
-    router: React.PropTypes.object,
-    children: React.PropTypes.node,
-    pollInterval: React.PropTypes.number,
-    actions: React.PropTypes.object,
-    loaded: React.PropTypes.array,
-};

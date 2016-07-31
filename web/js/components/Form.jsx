@@ -5,11 +5,18 @@ import Validator from 'validator';
 
 export default class Form extends React.Component {
 
-    constructor() {
-        super();
-        this.validators = {};
-        this.fields = [];
-    }
+    static propTypes = {
+        children: React.PropTypes.node,
+        fields: React.PropTypes.object,
+        validate: React.PropTypes.object,
+        handler: React.PropTypes.func,
+    };
+
+    validators = {};
+    fields = [];
+    state = {
+        fields: []
+    };
 
     handleSubmit(e) {
         e.preventDefault();
@@ -126,10 +133,3 @@ export default class Form extends React.Component {
         });
     }
 }
-
-Form.propTypes = {
-    children: React.PropTypes.node,
-    fields: React.PropTypes.object,
-    validate: React.PropTypes.object,
-    handler: React.PropTypes.func,
-};

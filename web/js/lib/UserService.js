@@ -1,10 +1,8 @@
 /* @flow weak */
 export default class UserService {
 
-    constructor(baseUrl = '/session') {
-        this.baseUrl = baseUrl;
-        this.session = false;
-    }
+    baseUrl = '/session';
+    session = false;
 
     checkSession(callback) {
         fetch(this.baseUrl, {

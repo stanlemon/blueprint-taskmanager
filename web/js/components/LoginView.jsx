@@ -7,12 +7,14 @@ import UserService from '../lib/UserService';
 
 export default class LoginView extends React.Component {
 
-    constructor() {
-        super();
+    static propTypes = {
+        router: React.PropTypes.object,
+        children: React.PropTypes.node,
+        actions: React.PropTypes.object,
+        errors: React.PropTypes.object,
+    };
 
-        this.userService = new UserService();
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+    userService = new UserService();
 
     handleClickRegister(e) {
         e.preventDefault();
@@ -43,9 +45,7 @@ export default class LoginView extends React.Component {
             <div className="container">
                 <div className="row">
                     <div className="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
-                        {values(errors).map((error, i) => {
-                            return <Error key={i} message={error}/>
-                        })}
+                        {values(errors).map((error, i) => <Error key={i} message={error} />)}
                     </div>
                 </div>
                 <div className="row">
@@ -56,7 +56,7 @@ export default class LoginView extends React.Component {
                             </div>
                             <div className="panel-body">
                                 <div className="form-horizontal">
-                                    <Form handler={this.handleSubmit}>
+                                    <Form handler={this.handleSubmit.bind(this)}>
                                         <div className="form-group">
                                             <label htmlFor="username" className="col-sm-3 control-label">Email</label>
                                             <div className="col-sm-9">
@@ -85,7 +85,7 @@ export default class LoginView extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div style={{ minHeight: '15px' }}/>
+                <div style={{ minHeight: '15px' }} />
                 <div className="row">
                     <div className="text-center col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
                         <p>
@@ -97,10 +97,3 @@ export default class LoginView extends React.Component {
         );
     }
 }
-
-LoginView.propTypes = {
-    router: React.PropTypes.object,
-    children: React.PropTypes.node,
-    actions: React.PropTypes.object,
-    errors: React.PropTypes.object,
-};

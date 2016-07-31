@@ -9,6 +9,17 @@ import { DateTimePicker } from 'react-widgets';
 
 export default class TaskForm extends React.Component {
 
+    static propTypes = {
+        children: React.PropTypes.node,
+        actions: React.PropTypes.object,
+        task: React.PropTypes.object,
+        errors: React.PropTypes.object,
+    };
+
+    state = {
+        due: null,
+    };
+
     handleSave() {}
 
     handleSubmit(errors, data) {
@@ -30,9 +41,7 @@ export default class TaskForm extends React.Component {
 
     componentWillMount() {
         const due = this.props.task && this.props.task.due ? this.props.task.due : null;
-        this.setState({
-            due
-        });
+        this.setState({ due });
     }
 
 
@@ -46,8 +55,8 @@ export default class TaskForm extends React.Component {
         const validate = {
             name: {
                 notEmpty: {
-                    msg: 'You must enter a name for this task.'
-                }
+                    msg: 'You must enter a name for this task.',
+                },
             }
         };
 
@@ -67,7 +76,7 @@ export default class TaskForm extends React.Component {
                         </div>
                         <div className={classNames('form-group', { 'has-error': errors.due })}>
                             <label htmlFor="due" className="control-label">Due</label>
-                            <DateTimePicker value={this.state.due} onChange={(due) => this.setState({ due })}/>
+                            <DateTimePicker value={this.state.due} onChange={(due) => this.setState({ due })} />
                             {errors.due && (<span className="help-block">{errors.due}</span>)}
                         </div>
                         {task && task.id && (
@@ -92,9 +101,3 @@ export default class TaskForm extends React.Component {
     }
 }
 
-TaskForm.propTypes = {
-    children: React.PropTypes.node,
-    actions: React.PropTypes.object,
-    task: React.PropTypes.object,
-    errors: React.PropTypes.object,
-};

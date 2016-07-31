@@ -9,12 +9,14 @@ import { mapErrors } from '../lib/Utils';
 
 export default class RegisterView extends React.Component {
 
-    constructor() {
-        super();
+    static propTypes = {
+        router: React.PropTypes.object,
+        children: React.PropTypes.node,
+        actions: React.PropTypes.object,
+        errors: React.PropTypes.object,
+    };
 
-        this.userService = new UserService();
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+    userService = new UserService();
 
     handleSubmit(errors, data) {
         if (isEqual({}, errors) === false) {
@@ -40,25 +42,25 @@ export default class RegisterView extends React.Component {
         const validate = {
             name: {
                 notEmpty: {
-                    msg: 'You must enter a name.'
-                }
+                    msg: 'You must enter a name.',
+                },
             },
             email: {
                 isEmail: {
-                    msg: 'You must enter a valid email address.'
+                    msg: 'You must enter a valid email address.',
                 },
                 notEmpty: {
-                    msg: 'You must enter a email address.'
-                }
+                    msg: 'You must enter a email address.',
+                },
             },
             password: {
                 length: {
                     args: [8, 64],
-                    msg: 'Your password must be between 8 and 64 characters long'
+                    msg: 'Your password must be between 8 and 64 characters long',
                 },
                 notEmpty: {
-                    msg: 'You must enter a password'
-                }
+                    msg: 'You must enter a password',
+                },
             }
         };
 
@@ -70,7 +72,7 @@ export default class RegisterView extends React.Component {
                         <div className="panel panel-info">
                             <div className="panel-body">
                                 <div className="form-horizontal">
-                                    <Form validate={validate} handler={this.handleSubmit}>
+                                    <Form validate={validate} handler={this.handleSubmit.bind(this)}>
                                         <div className={classNames('form-group', { 'has-error': errors.name })}>
                                             <label htmlFor="name" className="col-sm-2 control-label">Name</label>
                                             <div className="col-sm-10">
@@ -111,10 +113,3 @@ export default class RegisterView extends React.Component {
         );
     }
 }
-
-RegisterView.propTypes = {
-    router: React.PropTypes.object,
-    children: React.PropTypes.node,
-    actions: React.PropTypes.object,
-    errors: React.PropTypes.object,
-};

@@ -12,12 +12,12 @@ const COMPLETE = 'complete';
 
 export default class TaskListView extends React.Component {
 
-    setFilter(filter) {
-        this.setState({ filter });
+    state = {
+        filter: ALL,
     }
 
-    componentWillMount() {
-        this.setState({ filter: ALL });
+    setFilter(filter) {
+        this.setState({ filter });
     }
 
     render() {
@@ -27,7 +27,8 @@ export default class TaskListView extends React.Component {
         if (!includes(loaded, 'tasks')) {
             return (
                 <div className="text-center">
-                    <i style={{ fontSize: '10em' }}
+                    <i
+                      style={{ fontSize: '10em' }}
                       className="text-primary fa fa-refresh fa-spin"
                     />
                 </div>
@@ -92,7 +93,8 @@ export default class TaskListView extends React.Component {
                 <div className="col-xs-12 col-sm-5 pull-right">
                     <div className="btn-group btn-group-justified" role="group">
                         <div className="btn-group" role="group">
-                            <button type="button"
+                            <button
+                              type="button"
                               onTouchTap={this.setFilter.bind(this, ALL)}
                               className={btnAll}
                             >
@@ -100,7 +102,8 @@ export default class TaskListView extends React.Component {
                             </button>
                         </div>
                         <div className="btn-group" role="group">
-                            <button type="button"
+                            <button
+                              type="button"
                               onTouchTap={this.setFilter.bind(this, INCOMPLETE)}
                               className={btnIncomplete}
                             >
@@ -108,7 +111,8 @@ export default class TaskListView extends React.Component {
                             </button>
                         </div>
                         <div className="btn-group" role="group">
-                            <button type="button"
+                            <button
+                              type="button"
                               onTouchTap={this.setFilter.bind(this, COMPLETE)}
                               className={btnComplete}
                             >
@@ -143,6 +147,7 @@ export default class TaskListView extends React.Component {
 TaskListView.propTypes = {
     children: React.PropTypes.node,
     actions: React.PropTypes.object,
+    router: React.PropTypes.object,
     tasks: React.PropTypes.array,
     errors: React.PropTypes.object,
     loaded: React.PropTypes.array,

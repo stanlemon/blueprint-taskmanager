@@ -1,9 +1,7 @@
 /* @flow weak */
 export default class TaskService {
 
-    constructor(baseUrl = '/api/tasks') {
-        this.baseUrl = baseUrl;
-    }
+    baseUrl = '/api/tasks';
 
     loadTasks() {
         const url = this.baseUrl;
