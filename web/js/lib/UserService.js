@@ -43,7 +43,8 @@ export default class UserService {
                 } else {
                     callback(null, data.user);
                 }
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 callback(error);
             });
     }
@@ -65,7 +66,8 @@ export default class UserService {
                 } else {
                     callback(null, data.user);
                 }
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 callback(error);
             });
     }

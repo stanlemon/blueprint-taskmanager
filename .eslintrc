@@ -4,6 +4,8 @@
   "rules": {
     "react/sort-comp": [0],
     "react/jsx-no-bind": [0],
+    "react/jsx-indent": ["warn", 4],
+    "react/jsx-indent-props": ["warn", 4],
     "max-len": ["warn", 120],
     "indent": [2, 4, { "SwitchCase": 1, "VariableDeclarator": 1 }],
     "quote-props": [2, "consistent-as-needed"]
