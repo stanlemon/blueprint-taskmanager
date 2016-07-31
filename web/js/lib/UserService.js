@@ -1,10 +1,9 @@
 export default class UserService {
 
-    baseUrl = '/session';
     session = false;
 
     checkSession(callback) {
-        fetch(this.baseUrl, {
+        fetch('/session', {
             credentials: 'same-origin',
         })
             .then(response => response.json())

@@ -36,67 +36,45 @@ export default class TaskService {
         return response;
     }
 
-    loadTasks() {
-        const url = this.baseUrl;
-
-        return fetch(url, {
+    fetch(url, method = 'get', data = null) {
+        const options = {
             credentials: 'same-origin',
-        })
+            method,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        };
+
+        if (data) {
+            options.body = JSON.stringify(data);
+        }
+
+        return fetch(url, options)
             .then(response => response.json())
-            .then(data => this.checkForErrors(data))
+            .then(response => this.checkForErrors(response))
+        ;
+    }
+
+    loadTasks() {
+        return this.fetch(this.baseUrl)
             .then(data => data.map((task) => this.formatTask(task)))
         ;
     }
 
     createTask(task) {
-        const url = this.baseUrl;
-
-        return fetch(url, {
-            credentials: 'same-origin',
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(task),
-        })
-            .then(response => response.json())
-            .then(data => this.checkForErrors(data))
+        return this.fetch(this.baseUrl, 'post', task)
             .then(data => this.formatTask(data))
         ;
     }
 
     updateTask(task) {
-        const url = `${this.baseUrl}/${task.id}`;
-
-        return fetch(url, {
-            credentials: 'same-origin',
-            method: 'put',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(task),
-        })
-            .then(response => response.json())
-            .then(data => this.checkForErrors(data))
+        return this.fetch(`${this.baseUrl}/${task.id}`, 'put', task)
             .then(data => this.formatTask(data))
         ;
     }
 
     deleteTask(taskId) {
-        const url = `${this.baseUrl}/${taskId}`;
-
-        return fetch(url, {
-            credentials: 'same-origin',
-            method: 'delete',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => response.json())
-            .then(data => this.checkForErrors(data))
-        ;
+        return this.fetch(`${this.baseUrl}/${taskId}`, 'delete');
     }
 }
