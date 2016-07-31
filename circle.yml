@@ -4,5 +4,10 @@ machine:
 
 dependencies:
   override:
-    - npm install --dev
+    - npm install
 
+deployment:
+  production:
+    branch: master
+    heroku:
+      appname: blueprint-taskmanager
