@@ -21,6 +21,7 @@ function routerMock() {
 }
 
 describe('<TaskListView />', () => {
+
     it('should render a spinner while it waits to load', () => {
         const view = mount(<TaskListView loaded={[]} />);
 
@@ -50,11 +51,11 @@ describe('<TaskListView />', () => {
             },
         ];
 
-        spy(TaskListView.prototype, 'componentWillMount');
+        spy(TaskListView.prototype, 'render');
 
         const view = mount(<TaskListView loaded={['tasks']} tasks={tasks} errors={{}} router={router} />);
 
-        expect(TaskListView.prototype.componentWillMount.calledOnce).toBe(true);
+        expect(TaskListView.prototype.render.calledOnce).toBe(true);
 
         expect(view.text().indexOf(tasks[0].name)).toBeGreaterThan(-1);
         expect(view.text().indexOf(tasks[1].name)).toBeGreaterThan(-1);
