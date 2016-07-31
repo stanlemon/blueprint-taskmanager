@@ -75,7 +75,7 @@
     "redux-devtools": "^3.3.x",
     "redux-devtools-dock-monitor": "^1.1.x",
     "redux-devtools-log-monitor": "^1.0.x",
-    "redux-promise": "^0.5.3",
+    "redux-thunk": "^2.1.0",
     "sequelize": "^3.23.x",
     "serve-static": "^1.11.1",
     "sqlite3": "^3.1.4",
