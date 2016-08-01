@@ -3,8 +3,6 @@ import classNames from 'classnames';
 import React from 'react';
 import Form from './Form';
 import { Link } from 'react-router';
-import UserService from '../lib/UserService';
-import { mapErrors } from '../lib/Utils';
 
 export default class RegisterView extends React.Component {
 
@@ -15,19 +13,11 @@ export default class RegisterView extends React.Component {
         errors: React.PropTypes.object,
     };
 
-    userService = new UserService();
-
     handleSubmit(errors, data) {
         if (isEqual({}, errors) === false) {
             this.props.actions.addErrors(errors);
         } else {
-            this.userService.register(data, (errs) => {
-                if (errs) {
-                    this.props.actions.addErrors(mapErrors(errs));
-                } else {
-                    this.props.router.push('/');
-                }
-            });
+            this.props.actions.registerUser(data);
         }
     }
 
@@ -83,7 +73,7 @@ export default class RegisterView extends React.Component {
                                             <label htmlFor="email" className="col-sm-2 control-label">Email</label>
                                             <div className="col-sm-10">
                                                 <input type="email" className="form-control" id="email" name="email" />
-                                                {errors.email && (<span className="help-block">{errors.email.slice(-1)}</span>)}
+                                                {errors.email && (<span className="help-block">{errors.email}</span>)}
                                             </div>
                                         </div>
                                         <div className={classNames('form-group', { 'has-error': errors.password })}>

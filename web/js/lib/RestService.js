@@ -12,7 +12,7 @@ export default class RestService {
 
     checkForErrors(response) {
         if (this.hasError(response)) {
-            throw new RestServiceException(mapErrors(response));
+            throw new RestServiceException(mapErrors(response.errors));
         }
 
         return response;

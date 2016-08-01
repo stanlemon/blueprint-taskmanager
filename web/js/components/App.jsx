@@ -1,6 +1,4 @@
-import { isEqual, includes } from 'lodash';
 import React from 'react';
-import UserService from '../lib/UserService';
 
 export default class App extends React.Component {
 
@@ -16,39 +14,8 @@ export default class App extends React.Component {
         pollInterval: 3000,
     };
 
-    userService = new UserService();
-    interval;
-
     componentWillMount() {
-        this.checkSession();
-        this.interval = setInterval(this.checkSession.bind(this), this.props.pollInterval);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-
-    checkSession() {
-        this.userService.checkSession((err, prev, curr) => {
-            if (err) {
-                this.props.actions.addError(err);
-                return;
-            }
-
-            // Trigger an action when the state of the session changes
-            if (!isEqual(prev, curr) || !includes(this.props.loaded, 'user')) {
-                this.props.actions.loadUser(curr);
-
-                if (curr !== false) {
-                    this.props.actions.loadTasks();
-                }
-            }
-
-            // If we are not logged in redirect them to the login page
-            if (curr === false) {
-                this.props.router.push('/login');
-            }
-        });
+        this.props.actions.loadTasks();
     }
 
     home() {
@@ -63,10 +30,6 @@ export default class App extends React.Component {
     }
 
     render() {
-        if (!includes(this.props.loaded, 'user')) {
-            return <div />;
-        }
-
         return (
             <div>
                 <nav className="navbar navbar-inverse navbar-fixed-top custom-navbar">

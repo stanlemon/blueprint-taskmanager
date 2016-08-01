@@ -1,8 +1,7 @@
-import { values } from 'lodash';
+import { isEqual, values } from 'lodash';
 import React from 'react';
 import Error from './Error';
 import Form from './Form';
-import UserService from '../lib/UserService';
 
 export default class LoginView extends React.Component {
 
@@ -13,24 +12,17 @@ export default class LoginView extends React.Component {
         errors: React.PropTypes.object,
     };
 
-    userService = new UserService();
-
     handleClickRegister(e) {
         e.preventDefault();
         this.props.router.push('/register');
     }
 
     handleSubmit(errors, data) {
-        const { actions } = this.props;
-
-        this.userService.login(data, (errs, user) => {
-            if (errs) {
-                actions.addErrors(errs);
-            } else {
-                actions.loadUser(user);
-                this.props.router.push('/');
-            }
-        });
+        if (isEqual({}, errors) === false) {
+            this.props.actions.addErrors(errors);
+        } else {
+            this.props.actions.login(data);
+        }
     }
 
     componentWillUnmount() {

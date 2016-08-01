@@ -21,6 +21,10 @@ export default class UserService extends RestService {
             });
     }
 
+    _checkSession() {
+        return this.fetch('/session');
+    }
+
     login(credentials, callback) {
         this.fetch('/login', 'post', credentials)
             .then(data => {
@@ -33,6 +37,14 @@ export default class UserService extends RestService {
             .catch((error) => {
                 callback(error);
             });
+    }
+
+    _login(credentials) {
+        return this.fetch('/login', 'post', credentials);
+    }
+
+    logout() {
+        return this.fetch('/logout');
     }
 
     register(user, callback) {
@@ -48,5 +60,9 @@ export default class UserService extends RestService {
             .catch((error) => {
                 callback(error);
             });
+    }
+
+    _register(user) {
+        return this.fetch('/api/users', 'post', user);
     }
 }

@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash';
 import { mapErrors } from '../lib/Utils';
 
 export const ERROR = 'ERROR';
@@ -29,16 +30,14 @@ export function loadUser(user) {
 }
 
 export function logout() {
-    return (dispatch) => {
-        fetch('/logout', {
-            credentials: 'same-origin',
-        })
-            .then(response => response.json())
+    return (dispatch, getState, { userService }) => {
+        userService
+            .logout()
             .then(() => {
                 dispatch({ type: UNAUTHENTICATED_USER });
             })
-            .catch(error => {
-                dispatch({ type: AUTHENTICATION_ERROR, errors: mapErrors({ error }) });
+            .catch(ex => {
+                dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
             });
     };
 }
@@ -50,8 +49,8 @@ export function loadTasks() {
             .then(tasks => {
                 dispatch({ type: LOAD_TASKS_SUCCESS, tasks });
             })
-            .catch(errors => {
-                dispatch({ type: LOAD_TASKS_ERROR, errors });
+            .catch(ex => {
+                dispatch({ type: LOAD_TASKS_ERROR, errors: ex.errors });
             });
     };
 }
@@ -63,8 +62,8 @@ export function createTask(data) {
             .then((task) => {
                 dispatch({ type: CREATE_TASK_SUCCESS, task });
             })
-            .catch(errors => {
-                dispatch({ type: CREATE_TASK_ERROR, errors });
+            .catch(ex => {
+                dispatch({ type: CREATE_TASK_ERROR, errors: ex.errors });
             });
     };
 }
@@ -76,8 +75,8 @@ export function updateTask(data) {
             .then((task) => {
                 dispatch({ type: UPDATE_TASK_SUCCESS, task });
             })
-            .catch(errors => {
-                dispatch({ type: UPDATE_TASK_ERROR, errors });
+            .catch(ex => {
+                dispatch({ type: UPDATE_TASK_ERROR, errors: ex.errors });
             });
     };
 }
@@ -89,8 +88,58 @@ export function deleteTask(taskId) {
             .then(() => {
                 dispatch({ type: DELETE_TASK_SUCCESS, taskId });
             })
-            .catch(errors => {
-                dispatch({ type: DELETE_TASK_ERROR, errors });
+            .catch(ex => {
+                dispatch({ type: DELETE_TASK_ERROR, errors: ex.errors });
             });
     };
+}
+
+export function checkSession() {
+    return (dispatch, getState, { userService }) => {
+        userService
+            ._checkSession()
+            .then(({ user }) => {
+                // Skipping the session check action if nothing has actually changed
+                if (isEqual(getState().user, user)) {
+                    return;
+                }
+
+                if (user === false) {
+                    dispatch({ type: UNAUTHENTICATED_USER });
+                } else {
+                    dispatch({ type: AUTHENTICATED_USER, user });
+                }
+            })
+            .catch(ex => {
+                dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
+            });
+    };
+}
+
+export function registerUser(user) {
+    return (dispatch, getState, { userService }) => {
+        userService
+            ._register(user)
+            .then((data) => {
+                dispatch({ type: AUTHENTICATED_USER, user: data });
+            })
+            .catch(ex => {
+                dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
+            })
+        ;
+    }
+}
+
+export function login(user) {
+    return (dispatch, getState, { userService }) => {
+        userService
+            ._login(user)
+            .then((data) => {
+                dispatch({ type: AUTHENTICATED_USER, user: data });
+            })
+            .catch(ex => {
+                dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
+            })
+        ;
+    }
 }

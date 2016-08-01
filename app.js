@@ -174,8 +174,6 @@ resources.Task.create.write.before((req, res, context) => {
 
 // Auto login a user after they register
 resources.User.create.write.after((req, res, context) => {
-    console.log(context.instance);
-
     req.login(context.instance, (err) => {
         if (err) {
             console.error(err);
