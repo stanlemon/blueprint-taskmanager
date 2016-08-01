@@ -1,12 +1,11 @@
-export default class UserService {
+import RestService from './RestService';
+
+export default class UserService extends RestService {
 
     session = false;
 
     checkSession(callback) {
-        fetch('/session', {
-            credentials: 'same-origin',
-        })
-            .then(response => response.json())
+        this.fetch('/session')
             .then(data => {
                 // error, previous session value, current session value
                 callback(null, this.session, data.user);
@@ -23,16 +22,7 @@ export default class UserService {
     }
 
     login(credentials, callback) {
-        fetch('/login', {
-            credentials: 'same-origin',
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(credentials),
-        })
-            .then(response => response.json())
+        this.fetch('/login', 'post', credentials)
             .then(data => {
                 if (data.errors) {
                     callback(data.errors);
@@ -46,20 +36,12 @@ export default class UserService {
     }
 
     register(user, callback) {
-        fetch('/api/users', {
-            credentials: 'same-origin',
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(user),
-        })
-            .then(response => response.json())
+        this.fetch('/api/users', 'post', user)
             .then(data => {
                 if (data.errors) {
                     callback(data.errors);
                 } else {
+                    this.session = data.user;
                     callback(null, data.user);
                 }
             })

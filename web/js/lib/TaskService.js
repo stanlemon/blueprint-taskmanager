@@ -1,14 +1,6 @@
-import { mapErrors } from '../lib/Utils';
+import RestService from './RestService';
 
-class TaskServiceException {
-    errors = {};
-
-    constructor(errors = {}) {
-        this.errors = errors;
-    }
-}
-
-export default class TaskService {
+export default class TaskService extends RestService {
 
     baseUrl = '/api/tasks';
 
@@ -19,41 +11,6 @@ export default class TaskService {
             completed: task.completed ? new Date(task.completed) : null,
             due: task.due ? new Date(task.due) : null,
         });
-    }
-
-    hasError(response) {
-        return response.hasOwnProperty('errors')
-            && Array.isArray(response.errors)
-            && response.errors.length > 0
-        ;
-    }
-
-    checkForErrors(response) {
-        if (this.hasError(response)) {
-            throw new TaskServiceException(mapErrors(response));
-        }
-
-        return response;
-    }
-
-    fetch(url, method = 'get', data = null) {
-        const options = {
-            credentials: 'same-origin',
-            method,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        };
-
-        if (data) {
-            options.body = JSON.stringify(data);
-        }
-
-        return fetch(url, options)
-            .then(response => response.json())
-            .then(response => this.checkForErrors(response))
-        ;
     }
 
     loadTasks() {

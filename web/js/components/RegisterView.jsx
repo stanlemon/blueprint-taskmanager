@@ -60,7 +60,7 @@ export default class RegisterView extends React.Component {
                 notEmpty: {
                     msg: 'You must enter a password',
                 },
-            }
+            },
         };
 
         return (
