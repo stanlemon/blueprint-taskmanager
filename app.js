@@ -22,7 +22,6 @@ let logger       = morgan('combined');
 let compiler     = webpack(config);
 let db           = require('./models')();
 
-const PROD = 'production';
 const DEV = 'development';
 
 const env = process.env.NODE_ENV || DEV;
@@ -41,7 +40,7 @@ app.use(helmet.xssFilter());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(flash());
-app.use(serveStatic(path.join(__dirname, 'web'), {'index': ['index.html']}));
+app.use(serveStatic(path.join(__dirname, 'web'), { index: ['index.html']}));
 
 if (env === DEV) {
     app.use(require('webpack-dev-middleware')(compiler, {
@@ -56,7 +55,7 @@ app.use(session({
     requestKey: 'session',
     secret: 'theredballonfloatssouthintheslowwindsofazkaban', // should be a large unguessable string
     duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
-    activeDuration: 1000 * 60 * 5 // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
+    activeDuration: 1000 * 60 * 5 // if expiresIn < activeDuration, session is extended by activeDuration
 }));
 
 app.use(passport.initialize());
@@ -64,68 +63,68 @@ app.use(passport.session());
 
 passport.use(new localStrategy(
   (username, password, done) => {
-    db.models.User.findOne({ where: { email: username } }).then( (user) => {
-      if (!user) {
-        return done(null, false, { message: 'Incorrect email or password.' });
-      }
-      if (!bcrypt.compareSync(password, user.password)) {
-        return done(null, false, { message: 'Incorrect email or password.' });
-      }
-      return done(null, user);
-    }).catch( (error) => {
-      return done(error, null);
-    });
+      db.models.User.findOne({ where: { email: username } }).then( (user) => {
+          if (!user) {
+              return done(null, false, { message: 'Incorrect email or password.' });
+          }
+          if (!bcrypt.compareSync(password, user.password)) {
+              return done(null, false, { message: 'Incorrect email or password.' });
+          }
+          return done(null, user);
+      }).catch( (error) => {
+          return done(error, null);
+      });
   }
 ));
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+    done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-  db.models.User.findById(id).then( (user) => {
-    done(null, user);
-  }).catch( (error) => {
-    done(error, null);
-  });
+    db.models.User.findById(id).then( (user) => {
+        done(null, user);
+    }).catch( (error) => {
+        done(error, null);
+    });
 });
 
 app.get('/login', (req, res) => {
-  let messages = req.flash('error');
-  if (messages.length > 0) {
-      res.json({
-          errors: messages
-      });
-  } else {
-      res.redirect('/session');
-  }
+    let messages = req.flash('error');
+    if (messages.length > 0) {
+        res.json({
+            errors: messages
+        });
+    } else {
+        res.redirect('/session');
+    }
 });
 
 app.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',
     failureFlash: true
 }), (req, res) => {
-  res.redirect('/session');
+    res.redirect('/session');
 });
 
 app.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/session');
+    req.logout();
+    res.redirect('/session');
 });
 
 app.get('/session', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.status(200).json({
-      user: {
-        id: req.user.id,
-        createdAt: req.user.createdAt
-      }
-    });
-  } else {
-    res.status(401).json({
-      user: false
-    })
-  }
+    if (req.isAuthenticated()) {
+        res.status(200).json({
+            user: {
+                id: req.user.id,
+                createdAt: req.user.createdAt
+            }
+        });
+    } else {
+        res.status(401).json({
+            user: false
+        })
+    }
 });
 
 epilogue.initialize({
@@ -206,11 +205,3 @@ db.sequelize.sync(/*{ force: true }*/)
         });
     })
 ;
-
-function isAuthenticated(req, res, next)  {
-    if (req.isAuthenticated()) {
-        return next();
-    } else {
-        res.redirect('/login');
-    }
-}

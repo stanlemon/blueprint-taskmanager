@@ -1,5 +1,4 @@
 import { isEqual } from 'lodash';
-import { mapErrors } from '../lib/Utils';
 
 export const ERROR = 'ERROR';
 export const AUTHENTICATED_USER = 'AUTHENTICATED_USER';
