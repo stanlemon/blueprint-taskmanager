@@ -4,7 +4,7 @@ import RestServiceException from './RestServiceException';
 export default class RestService {
 
     hasError(response) {
-        return response.hasOwnProperty('errors')
+        return {}.hasOwnProperty.call(response, 'errors')
             && Array.isArray(response.errors)
             && response.errors.length > 0
         ;

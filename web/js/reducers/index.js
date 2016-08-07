@@ -1,4 +1,5 @@
 /* @flow weak */
+import { uniq } from 'lodash';
 import {
     ERROR,
     AUTHENTICATED_USER,
@@ -13,8 +14,6 @@ import {
     DELETE_TASK_SUCCESS,
     DELETE_TASK_ERROR,
 } from '../actions/';
-
-import { uniq } from 'lodash';
 
 function tasks(state = [], action) {
     switch (action.type) {

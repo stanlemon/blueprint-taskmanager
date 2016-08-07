@@ -96,7 +96,7 @@ export function deleteTask(taskId) {
 export function checkSession() {
     return (dispatch, getState, { userService }) => {
         userService
-            ._checkSession()
+            .checkSession()
             .then(({ user }) => {
                 // Skipping the session check action if nothing has actually changed
                 if (isEqual(getState().user, user)) {
@@ -118,7 +118,7 @@ export function checkSession() {
 export function registerUser(user) {
     return (dispatch, getState, { userService }) => {
         userService
-            ._register(user)
+            .register(user)
             .then((data) => {
                 dispatch({ type: AUTHENTICATED_USER, user: data });
             })
@@ -126,13 +126,13 @@ export function registerUser(user) {
                 dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
             })
         ;
-    }
+    };
 }
 
 export function login(user) {
     return (dispatch, getState, { userService }) => {
         userService
-            ._login(user)
+            .login(user)
             .then((data) => {
                 dispatch({ type: AUTHENTICATED_USER, user: data });
             })
@@ -140,5 +140,5 @@ export function login(user) {
                 dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
             })
         ;
-    }
+    };
 }
