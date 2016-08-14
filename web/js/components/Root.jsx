@@ -1,4 +1,4 @@
-import { isEqual, omit } from 'lodash';
+import { includes, omit } from 'lodash';
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -8,9 +8,11 @@ class Root extends React.Component {
 
     static propTypes = {
         router: React.PropTypes.object,
+        location: React.PropTypes.object,
         children: React.PropTypes.node,
         pollInterval: React.PropTypes.number,
         actions: React.PropTypes.object,
+        loaded: React.PropTypes.array,
     };
 
     static propTypes = {
@@ -18,7 +20,7 @@ class Root extends React.Component {
     };
 
     static defaultProps = {
-        pollInterval: 3000,
+        pollInterval: 10000,
     };
 
     interval;
@@ -38,7 +40,7 @@ class Root extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         // User was not authenticated and is now
-        if (this.props.user === false && nextProps.user !== false) {
+        if (includes(this.props.loaded, 'user') && this.props.user === false && nextProps.user !== false) {
             this.props.router.push('/');
         }
 

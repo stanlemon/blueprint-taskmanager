@@ -1,3 +1,4 @@
+import { includes } from 'lodash';
 import React from 'react';
 
 export default class App extends React.Component {
@@ -5,13 +6,8 @@ export default class App extends React.Component {
     static propTypes = {
         router: React.PropTypes.object,
         children: React.PropTypes.node,
-        pollInterval: React.PropTypes.number,
         actions: React.PropTypes.object,
         loaded: React.PropTypes.array,
-    };
-
-    static defaultProps = {
-        pollInterval: 3000,
     };
 
     componentWillMount() {
@@ -30,6 +26,10 @@ export default class App extends React.Component {
     }
 
     render() {
+        if (!includes(this.props.loaded, 'user')) {
+            return (<div />);
+        }
+
         return (
             <div>
                 <nav className="navbar navbar-inverse navbar-fixed-top custom-navbar">
@@ -46,7 +46,7 @@ export default class App extends React.Component {
                         </div>
                         <ul className="nav navbar-nav navbar-right">
                             <li>
-                                <a href="#" className="fa fa-sign-out" onTouchTap={this.logout.bind(this)} />
+                                <a className="fa fa-sign-out" onTouchTap={this.logout.bind(this)} />
                             </li>
                         </ul>
                     </div>

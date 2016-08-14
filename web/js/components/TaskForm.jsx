@@ -1,4 +1,4 @@
-import { isEqual, isBoolean, isDate } from 'lodash';
+import { isEqual, isBoolean } from 'lodash';
 import classNames from 'classnames';
 import moment from 'moment';
 import React from 'react';
@@ -27,15 +27,14 @@ export default class TaskForm extends React.Component {
             return null;
         }
 
-        data.due = this.state.due;
+        const result = this.handleSave(Object.assign({}, data, {
+            due: this.state.due,
+            completed: data.completed === true ? makeDateTime() : null,
+        }));
 
         this.setState({ due: null });
 
-        if (!isDate(data.completed)) {
-            data.completed = (data.completed === true) ? makeDateTime() : null;
-        }
-
-        return this.handleSave(data);
+        return result;
     }
 
     componentWillMount() {

@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -15,7 +13,7 @@ const vendors = [
     'react-redux',
     'react-widgets',
     'react-tap-event-plugin',
-    'moment'
+    'moment',
 ];
 
 module.exports = {
@@ -23,7 +21,7 @@ module.exports = {
     entry: env === PROD ?
         {
             main: ['./web/js/index', './web/css/main.less'],
-            vendors: vendors
+            vendors,
         }
         :
         {
@@ -33,69 +31,69 @@ module.exports = {
                 './web/js/index',
                 './web/css/main.less',
             ],
-            vendors: vendors
+            vendors,
         },
     output: {
         path: path.join(__dirname, 'web/assets'),
-        filename: "[name].js",
+        filename: '[name].js',
         chunkFilename: 'main-[id].js',
-        publicPath: '/assets/'
+        publicPath: '/assets/',
     },
-    plugins: 
-        [
-            new webpack.optimize.OccurenceOrderPlugin()
-            , new webpack.DefinePlugin({
-                'process.env': {
-                    'NODE_ENV': JSON.stringify(env)
-                }
-            })
-            , new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js')
-            , ...(env === PROD ?
+    plugins: [
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify(env),
+            },
+        }),
+        new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
+        ...(env === PROD ?
             [
                 new webpack.optimize.UglifyJsPlugin({
                     compress: {
-                        warnings: false
-                    }
+                        warnings: false,
+                    },
                 }),
-                new ExtractTextPlugin("[name].css")
+                new ExtractTextPlugin('[name].css'),
             ]
             :
             [
                 new webpack.HotModuleReplacementPlugin(),
                 new webpack.NoErrorsPlugin(),
-                new ExtractTextPlugin("[name].css")
-            ])
-            // Replace calls to fetch with whatwg, because I can
-            , new webpack.ProvidePlugin({
-                'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
-            })
-        ],
+                new ExtractTextPlugin('[name].css'),
+            ]
+        ),
+        // Replace calls to fetch with whatwg, because I can
+        new webpack.ProvidePlugin({
+            fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
+        }),
+    ],
     resolve: {
-        extensions: ['', '.js', '.jsx', '.less', '.css']
+        extensions: ['', '.js', '.jsx', '.less', '.css'],
     },
     module: {
         loaders: [
             {
                 test: /\.jsx?$/,
                 loaders: ['babel'],
-                include: path.join(__dirname, 'web/js')
+                include: path.join(__dirname, 'web/js'),
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader'),
             },
             {
                 test: /\.(png|jpg|gif)$/,
-                loader: 'url-loader?limit=8192'
+                loader: 'url-loader?limit=8192',
             }, // inline base64 URLs for <=8k images, direct URLs for the rest
             {
                 test: /\.(svg|woff|woff2|eot|ttf)(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'file?name=[name].[ext]'
-            }
-        ]
-    }
+                loader: 'file?name=[name].[ext]',
+            },
+        ],
+    },
 };
