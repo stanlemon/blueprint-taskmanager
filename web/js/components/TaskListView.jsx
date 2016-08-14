@@ -1,9 +1,9 @@
 import { includes } from 'lodash';
 import React from 'react';
 import classNames from 'classnames';
+import moment from 'moment';
 import TaskForm from './CreateTaskForm';
 import TaskItem from './TaskItem';
-import moment from 'moment';
 
 const ALL = 'all';
 const INCOMPLETE = 'incomplete';
@@ -120,8 +120,8 @@ export default class TaskListView extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="clearfix"></div>
-                <div style={{ minHeight: 10 }}></div>
+                <div className="clearfix" />
+                <div style={{ minHeight: 10 }} />
 
                 {tasks.length === 0 && (
                     <div style={style.notasks}>

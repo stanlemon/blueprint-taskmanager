@@ -2,9 +2,9 @@ import { isEqual, isBoolean, isDate } from 'lodash';
 import classNames from 'classnames';
 import moment from 'moment';
 import React from 'react';
+import { DateTimePicker } from 'react-widgets';
 import Form from './Form';
 import { makeDateTime } from '../lib/Utils';
-import { DateTimePicker } from 'react-widgets';
 
 export default class TaskForm extends React.Component {
 
@@ -25,17 +25,17 @@ export default class TaskForm extends React.Component {
         if (isEqual({}, errors) === false) {
             this.props.actions.addErrors(errors);
             return null;
-        } else {
-            data.due = this.state.due;
-
-            this.setState({ due: null });
-
-            if (!isDate(data.completed)) {
-                data.completed = (data.completed === true) ? makeDateTime() : null;
-            }
-
-            return this.handleSave(data);
         }
+
+        data.due = this.state.due;
+
+        this.setState({ due: null });
+
+        if (!isDate(data.completed)) {
+            data.completed = (data.completed === true) ? makeDateTime() : null;
+        }
+
+        return this.handleSave(data);
     }
 
     componentWillMount() {
@@ -56,7 +56,7 @@ export default class TaskForm extends React.Component {
                 notEmpty: {
                     msg: 'You must enter a name for this task.',
                 },
-            }
+            },
         };
 
         return (
@@ -92,8 +92,8 @@ export default class TaskForm extends React.Component {
                         <div className="form-group">
                             <button className="btn btn-primary col-sm-2">Save</button>
                         </div>
-                        <div className="clearfix"></div>
-                        </div>
+                        <div className="clearfix" />
+                    </div>
                 </Form>
             </div>
         );

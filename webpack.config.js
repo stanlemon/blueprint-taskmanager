@@ -1,14 +1,13 @@
-"use strict";
+'use strict';
 
-let path = require('path');
-let webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const PROD = 'production';
-const DEV = 'development'
+const DEV = 'development';
 
 const env = process.env.NODE_ENV || DEV;
-
-let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const vendors = [
     'react',

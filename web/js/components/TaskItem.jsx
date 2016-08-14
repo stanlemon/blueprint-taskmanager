@@ -1,7 +1,7 @@
-import { makeDateTime } from '../lib/Utils';
 import classNames from 'classnames';
 import React from 'react';
 import moment from 'moment';
+import { makeDateTime } from '../lib/Utils';
 
 export default class TaskItem extends React.Component {
 
@@ -23,10 +23,11 @@ export default class TaskItem extends React.Component {
 
     completeTask(event) {
         const checked = event.target.checked;
-        this.props.actions.updateTask({
-            ...this.props.task,
-            completed: checked ? makeDateTime() : null,
-        });
+        this.props.actions.updateTask(
+            Object.assign({}, this.props.task, {
+                completed: checked ? makeDateTime() : null,
+            })
+        );
     }
 
     render() {

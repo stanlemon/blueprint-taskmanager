@@ -14,7 +14,7 @@ export default class Form extends React.Component {
     validators = {};
     fields = [];
     state = {
-        fields: []
+        fields: [],
     };
 
     handleSubmit(e) {

@@ -52,7 +52,7 @@ export default class LoginView extends React.Component {
                                             <label htmlFor="username" className="col-sm-3 control-label">Email</label>
                                             <div className="col-sm-9">
                                                 <div className="input-group">
-                                                    <span className="input-group-addon"><i className="fa fa-user"></i></span>
+                                                    <span className="input-group-addon"><i className="fa fa-user" /></span>
                                                     <input type="email" className="form-control" id="username" name="username" />
                                                 </div>
                                             </div>
@@ -61,7 +61,7 @@ export default class LoginView extends React.Component {
                                             <label htmlFor="password" className="col-sm-3 control-label">Password</label>
                                             <div className="col-sm-9">
                                                 <div className="input-group">
-                                                    <span className="input-group-addon"><i className="fa fa-lock"></i></span>
+                                                    <span className="input-group-addon"><i className="fa fa-lock" /></span>
                                                     <input type="password" className="form-control" id="password" name="password" />
                                                 </div>
                                             </div>
@@ -80,7 +80,10 @@ export default class LoginView extends React.Component {
                 <div className="row">
                     <div className="text-center col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
                         <p>
-                            Don't have an account? <a onClick={this.handleClickRegister.bind(this)} href="#">Create one now.</a>
+                            Don't have an account?
+                            <button type="button" className="btn btn-link" onClick={this.handleClickRegister.bind(this)}>
+                                Create one now.
+                            </button>
                         </p>
                     </div>
                 </div>
