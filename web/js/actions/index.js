@@ -1,6 +1,7 @@
 import { isEqual } from 'lodash';
 
 export const ERROR = 'ERROR';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const AUTHENTICATED_USER = 'AUTHENTICATED_USER';
 export const UNAUTHENTICATED_USER = 'UNAUTHENTICATED_USER';
 export const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
@@ -13,12 +14,18 @@ export const UPDATE_TASK_ERROR = 'UPDATE_TASK_ERROR';
 export const DELETE_TASK_SUCCESS = 'DELETE_TASK_SUCCESS';
 export const DELETE_TASK_ERROR = 'DELETE_TASK_ERROR';
 
-export function addError(error) {
-    return { type: ERROR, errors: [error] };
-}
-
 export function addErrors(errors) {
     return { type: ERROR, errors };
+}
+
+export function clearErrors() {
+    return (dispatch, getState) => {
+        if (isEqual({}, getState().errors)) {
+            return;
+        }
+
+        dispatch({ type: CLEAR_ERRORS });
+    };
 }
 
 export function loadUser(user) {

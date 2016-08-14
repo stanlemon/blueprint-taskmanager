@@ -26,7 +26,7 @@ export default class LoginView extends React.Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.addErrors({});
+        this.props.actions.clearErrors();
     }
 
     render() {

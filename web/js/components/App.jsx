@@ -25,7 +25,7 @@ export default class App extends React.Component {
     logout(e) {
         e.preventDefault();
         this.props.actions.logout();
-        this.props.actions.addErrors({});
+        this.props.actions.clearErrors();
         this.props.router.push('/login');
     }
 

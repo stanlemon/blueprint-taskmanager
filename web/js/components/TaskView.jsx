@@ -11,7 +11,7 @@ export default function TaskView({ params, actions, router, loaded, tasks, error
     }
 
     const taskId = parseInt(params.id, 10);
-    const task = tasks.filter(t => t.id === taskId)[0];
+    const task = Object.assign({}, tasks.filter(t => t.id === taskId)[0]);
 
     if (!task) {
         return (

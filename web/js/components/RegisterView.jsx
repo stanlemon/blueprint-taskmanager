@@ -22,7 +22,7 @@ export default class RegisterView extends React.Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.addErrors({});
+        this.props.actions.clearErrors();
     }
 
     render() {

@@ -2,6 +2,7 @@
 import { uniq } from 'lodash';
 import {
     ERROR,
+    CLEAR_ERRORS,
     AUTHENTICATED_USER,
     UNAUTHENTICATED_USER,
     AUTHENTICATION_ERROR,
@@ -53,6 +54,7 @@ function errors(state = {}, action) {
         case DELETE_TASK_ERROR:
         case AUTHENTICATION_ERROR:
             return Object.assign({}, action.errors);
+        case CLEAR_ERRORS:
         default:
             return {};
     }

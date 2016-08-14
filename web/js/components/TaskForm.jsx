@@ -43,9 +43,8 @@ export default class TaskForm extends React.Component {
         this.setState({ due });
     }
 
-
     componentWillUnmount() {
-        this.props.actions.addErrors({});
+        this.props.actions.clearErrors();
     }
 
     render() {
