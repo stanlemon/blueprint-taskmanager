@@ -94,6 +94,7 @@ export default class TaskListView extends React.Component {
                         <div className="btn-group" role="group">
                             <button
                               type="button"
+                              onClick={this.setFilter.bind(this, ALL)}
                               onTouchTap={this.setFilter.bind(this, ALL)}
                               className={btnAll}
                             >
@@ -103,6 +104,7 @@ export default class TaskListView extends React.Component {
                         <div className="btn-group" role="group">
                             <button
                               type="button"
+                              onClick={this.setFilter.bind(this, INCOMPLETE)}
                               onTouchTap={this.setFilter.bind(this, INCOMPLETE)}
                               className={btnIncomplete}
                             >
@@ -112,6 +114,7 @@ export default class TaskListView extends React.Component {
                         <div className="btn-group" role="group">
                             <button
                               type="button"
+                              onClick={this.setFilter.bind(this, COMPLETE)}
                               onTouchTap={this.setFilter.bind(this, COMPLETE)}
                               className={btnComplete}
                             >

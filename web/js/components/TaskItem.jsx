@@ -61,8 +61,8 @@ export default class TaskItem extends React.Component {
                     <div
                       style={nameStyles}
                       className="task-name col-xs-9 col-sm-9 col-md-10"
-                      onTouchTap={this.viewTask.bind(this)}
                       onClick={this.viewTask.bind(this)}
+                      onTouchTap={this.viewTask.bind(this)}
                     >
                         {task.name}
                     </div>
@@ -79,6 +79,7 @@ export default class TaskItem extends React.Component {
                                 <button
                                   type="button"
                                   className="btn btn-xs btn-danger"
+                                  onClick={this.deleteTask.bind(this)}
                                   onTouchTap={this.deleteTask.bind(this)}
                                 >
                                     <i className="fa fa-trash-o" style={{ padding: '3px' }} />

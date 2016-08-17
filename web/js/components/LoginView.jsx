@@ -29,6 +29,10 @@ export default class LoginView extends React.Component {
         this.props.actions.clearErrors();
     }
 
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(nextProps.errors, this.props.errors);
+    }
+
     render() {
         const { errors } = this.props;
 
@@ -81,7 +85,12 @@ export default class LoginView extends React.Component {
                     <div className="text-center col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
                         <p>
                             Don't have an account?
-                            <button type="button" className="btn btn-link" onClick={this.handleClickRegister.bind(this)}>
+                            <button
+                              type="button"
+                              className="btn btn-link"
+                              onClick={this.handleClickRegister.bind(this)}
+                              onTouchTap={this.handleClickRegister.bind(this)}
+                            >
                                 Create one now.
                             </button>
                         </p>

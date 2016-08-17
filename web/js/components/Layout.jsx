@@ -1,7 +1,7 @@
 import { includes } from 'lodash';
 import React from 'react';
 
-export default class App extends React.Component {
+export default class Layout extends React.Component {
 
     static propTypes = {
         router: React.PropTypes.object,
@@ -38,6 +38,7 @@ export default class App extends React.Component {
                             <a
                               style={{ cursor: 'pointer' }}
                               className="navbar-brand"
+                              onClick={this.home.bind(this)}
                               onTouchTap={this.home.bind(this)}
                             >
                                 <i className="fa fa-cloud" />&nbsp;
@@ -46,7 +47,11 @@ export default class App extends React.Component {
                         </div>
                         <ul className="nav navbar-nav navbar-right">
                             <li>
-                                <a className="fa fa-sign-out" onTouchTap={this.logout.bind(this)} />
+                                <a
+                                  className="fa fa-sign-out"
+                                  onClick={this.logout.bind(this)}
+                                  onTouchTap={this.logout.bind(this)}
+                                />
                             </li>
                         </ul>
                     </div>

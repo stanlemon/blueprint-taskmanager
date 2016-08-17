@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import { withRouter } from 'react-router';
 import Root from '../components/Root';
-import App from '../components/App';
+import Layout from '../components/Layout';
 import LoginView from '../components/LoginView';
 import TaskListView from '../components/TaskListView';
 
@@ -10,7 +10,7 @@ export default [
     component: withRouter(Root),
     childRoutes: [
       {
-        component: App,
+        component: Layout,
         childRoutes: [
           {
             path: '/',

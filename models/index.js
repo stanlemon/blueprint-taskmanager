@@ -1,98 +1,104 @@
-"use strict";
-
-let fs         = require("fs");
-let path       = require("path");
-let bcrypt     = require('bcrypt');
-
-let Sequelize  = require("sequelize");
+const bcrypt = require('bcrypt');
+const uuid = require('uuid');
+const Sequelize = require('sequelize');
 
 module.exports = () => {
-    let sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite://database.sqlite');
+    const sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite://database.sqlite', { logging: () => null });
 
-    let User = sequelize.define('User', {
+    const User = sequelize.define('User', {
         name: {
             type: Sequelize.STRING,
             allowNull: false,
-            validate:  {
+            validate: {
                 notEmpty: {
-                    msg: 'You must enter a name.'
-                }
-            }
+                    msg: 'You must enter a name.',
+                },
+            },
         },
         email: {
             type: Sequelize.STRING,
             allowNull: false,
             unique: true,
-            validate:  {
+            validate: {
                 isEmail: {
-                    msg: 'You must enter a valid email address.'
+                    msg: 'You must enter a valid email address.',
                 },
                 notEmpty: {
-                    msg: 'You must enter a email address.'
-                }
-            }
+                    msg: 'You must enter a email address.',
+                },
+            },
+        },
+        token: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true,
         },
         password: {
             type: Sequelize.STRING,
             allowNull: false,
-            validate:  {
+            validate: {
                 len: {
                     args: [8, 64],
-                    msg: 'Your password must be between 8 and 64 characters long'
+                    msg: 'Your password must be between 8 and 64 characters long',
                 },
                 notEmpty: {
-                    msg: 'You must enter a password'
-                }
-            }
+                    msg: 'You must enter a password',
+                },
+            },
         },
         createdAt: {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW,
-            validate:  {
+            validate: {
                 notEmpty: true,
-                isDate: true
-            }
+                isDate: true,
+            },
         },
         updatedAt: {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW,
-            validate:  {
+            validate: {
                 notEmpty: true,
-                isDate: true
-            }
+                isDate: true,
+            },
         },
         active: {
             type: Sequelize.BOOLEAN,
-            defaultValue: true
-        }
+            defaultValue: true,
+        },
     });
 
-    User.afterValidate( (user) => {
+    User.beforeValidate(user => {
+        user.token = uuid.v4();
+        return Promise.resolve(user);
+    });
+
+    User.afterValidate(user => {
         user.password = bcrypt.hashSync(user.password, 10);
         return Promise.resolve(user);
     });
 
-    let Task = sequelize.define('Task', {
+    const Task = sequelize.define('Task', {
         name: {
             type: Sequelize.STRING,
-            validate:  {
+            validate: {
                 notEmpty: {
-                    msg: 'You must enter a name for this task.'
-                }
-            }
+                    msg: 'You must enter a name for this task.',
+                },
+            },
         },
         description: Sequelize.STRING,
         due: Sequelize.DATE,
-        completed: Sequelize.DATE
+        completed: Sequelize.DATE,
     });
 
     Task.belongsTo(User, { as: 'user' });
 
     return {
-        sequelize: sequelize,
+        sequelize,
         models: {
-            User: User,
-            Task: Task
-        }
-    }
-}
+            User,
+            Task,
+        },
+    };
+};

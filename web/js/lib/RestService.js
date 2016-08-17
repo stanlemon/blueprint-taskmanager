@@ -1,5 +1,6 @@
 import { mapErrors } from '../lib/Utils';
 import RestServiceException from './RestServiceException';
+import fetch from 'isomorphic-fetch';
 
 export default class RestService {
 

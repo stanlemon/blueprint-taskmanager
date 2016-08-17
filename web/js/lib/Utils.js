@@ -17,3 +17,7 @@ export function mapErrors(errors = []) {
     return results;
 }
 /*eslint-enable */
+
+export function isDev() {
+    return process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test';
+}

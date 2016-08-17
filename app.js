@@ -148,10 +148,32 @@ const resources = {
 
 // Require an authenticated user for all operations
 resources.Task.all.auth((req, res, context) => {
-    if (req.isAuthenticated()) {
+    // We optionally let a bearer token be passed in, and we'll log the user in using that'
+    if (req.headers && req.headers.authorization) {
+        const parts = req.headers.authorization.split(' ');
+
+        if (parts.length === 2) {
+            const scheme = parts[0];
+            const token = parts[1];
+
+            if (/^Bearer$/i.test(scheme)) {
+                db.models.User.findOne({ where: { token } }).then(user => {
+                    if (user) {
+                        req.login(user, () => {
+                            return context.continue();
+                        });
+                    } else {
+                        res.status(401).send({ message: 'Unauthorized' });
+                        return context.stop();
+                    }
+                });
+            }
+        }
+    } else if (req.isAuthenticated()) {
         return context.continue();
+    } else {
+        throw new epilogue.Errors.ForbiddenError('You must be logged in to access this resource.');
     }
-    throw new epilogue.Errors.ForbiddenError('You must be logged in to access this resource.');
 });
 
 // Restrict all fetch requests to the authenticated user
@@ -177,23 +199,27 @@ resources.User.create.write.after((req, res, context) => {
     return context.continue;
 });
 
+const server = http.createServer(app);
 
-db.sequelize.sync(/*{ force: true }*/)
-    .then(() => {
-        const server = http.createServer(app);
+server.on('close', () => {
+    console.log('Shutting down...');
+});
 
-        server.listen(app.get('port'), err => {
-            if (err) {
-                console.error(err);
-                return;
-            }
+server.listen(app.get('port'), err => {
+    if (err) {
+        console.error(err);
+        return;
+    }
 
-            const host = server.address().address === '::' ?
-                'localhost' : server.address().address;
-            const port = server.address().port;
+    const host = server.address().address === '::' ?
+        'localhost' : server.address().address;
+    const port = server.address().port;
 
-            console.log('Starting in %s mode', ENV);
-            console.log('Listening at http://%s:%s', host, port);
-        });
-    })
-;
+    console.log('Starting in %s mode', ENV);
+    console.log('Listening at http://%s:%s', host, port);
+});
+
+module.exports = {
+    server,
+    db
+};

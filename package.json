@@ -1,6 +1,6 @@
 {
-  "name": "react-playground",
-  "version": "0.2.0",
+  "name": "blueprint-task-manager",
+  "version": "0.3.0",
   "author": "Stan Lemon <stosh1985@gmail.com>",
   "description": "Blueprint Task Manager - A playground to experiment with React, Redux and their devtools.",
   "license": "MIT",
@@ -23,6 +23,7 @@
     "verbose": true,
     "automock": false,
     "testRegex": "test/.*\\.js$",
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
     "moduleFileExtensions": [
       "js",
       "jsx",
@@ -58,6 +59,7 @@
     "helmet": "^2.1.x",
     "history": "^3.0.x",
     "imports-loader": "^0.6.5",
+    "isomorphic-fetch": "^2.2.1",
     "less": "^2.7.x",
     "less-loader": "^2.2.3",
     "lodash": "^4.15.0",
@@ -82,6 +84,7 @@
     "sqlite3": "^3.1.4",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
+    "uuid": "^2.0.2",
     "validator": "^5.5.x",
     "webpack": "^1.13.x",
     "whatwg-fetch": "^1.0.x"

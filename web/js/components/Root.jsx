@@ -38,10 +38,11 @@ class Root extends React.Component {
         clearInterval(this.interval);
     }
 
-    componentWillReceiveProps(nextProps) {
+    shouldComponentUpdate(nextProps) {
         // User was not authenticated and is now
         if (includes(this.props.loaded, 'user') && this.props.user === false && nextProps.user !== false) {
             this.props.router.push('/');
+            return false;
         }
 
         const unauthPaths = [
@@ -52,12 +53,16 @@ class Root extends React.Component {
         // Unauthenticated user is on a page they shouldn't be
         if (nextProps.user !== false && unauthPaths.indexOf(this.props.location.pathname) > -1) {
             this.props.router.push('/');
+            return false;
         }
 
         // Unauthenticated user is on a page they shouldn't be
         if (nextProps.user === false && unauthPaths.indexOf(this.props.location.pathname) === -1) {
             this.props.router.push('/login');
+            return false;
         }
+
+        return true;
     }
 
     render() {
