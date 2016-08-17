@@ -1,8 +1,8 @@
 import fs from 'fs';
 import { mount } from 'enzyme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-
-injectTapEventPlugin();
+import App from '../js/App';
+import UserService from '../js/lib/UserService';
+import TaskService from '../js/lib/TaskService';
 
 jest.useRealTimers();
 jasmine.getEnv().defaultTimeoutInterval = 5000;
@@ -45,9 +45,14 @@ describe('EndToEnd', () => {
     // TODO Allow setting of bearer token in service, alter URL and this test might work OK 
     describe('Working', () => {
         it('Works', (done) => {
-            const app = require('../js/App').default;
+            const baseUrl = 'http://localhost:3131';
+            const options = {};
 
-            const view = mount(app());
+            const app = App({
+                userService: new UserService(baseUrl, options),
+                taskService: new TaskService(baseUrl, options),
+            });
+            const view = mount(app);
 
             // Something is happening here that I need to wait for
             setTimeout(() => {

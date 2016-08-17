@@ -1,8 +1,16 @@
+import fetch from 'isomorphic-fetch';
 import { mapErrors } from '../lib/Utils';
 import RestServiceException from './RestServiceException';
-import fetch from 'isomorphic-fetch';
 
 export default class RestService {
+
+    baseUrl;
+    options;
+
+    constructor(baseUrl = '', options = {}) {
+        this.baseUrl = baseUrl;
+        this.options = options;
+    }
 
     hasError(response) {
         return {}.hasOwnProperty.call(response, 'errors')
@@ -33,7 +41,7 @@ export default class RestService {
             options.body = JSON.stringify(data);
         }
 
-        return fetch(url, options)
+        return fetch(this.baseUrl + url, Object.assign({}, this.options, options))
             .then(response => response.json())
             .then(response => this.checkForErrors(response))
         ;

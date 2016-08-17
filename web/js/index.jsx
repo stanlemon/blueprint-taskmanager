@@ -1,4 +1,11 @@
 import { render } from 'react-dom';
-import app from './App';
+import UserService from './lib/UserService';
+import TaskService from './lib/TaskService';
+import App from './App';
 
-render(app(), document.getElementById('root'));
+const services = {
+    userService: new UserService(),
+    taskService: new TaskService(),
+};
+
+render(App(services), document.getElementById('root'));

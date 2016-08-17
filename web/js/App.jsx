@@ -9,9 +9,6 @@ import momentLocalizer from 'react-widgets/lib/localizers/moment';
 import reducer from './reducers';
 import { isDev } from './lib/Utils';
 import DevTools from './lib/DevTools';
-//import Routes from './config/Routes';
-import UserService from './lib/UserService';
-import TaskService from './lib/TaskService';
 import Root from './components/Root';
 import Layout from './components/Layout';
 import LoginView from './components/LoginView';
@@ -23,12 +20,7 @@ injectTapEventPlugin();
 
 momentLocalizer(moment);
 
-export default function () {
-    const services = {
-        userService: new UserService(),
-        taskService: new TaskService(),
-    };
-
+export default function (services) {
     const middleware = isDev() ? compose(
         applyMiddleware(thunk.withExtraArgument(services))
     , DevTools.instrument()
