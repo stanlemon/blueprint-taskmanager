@@ -46,12 +46,11 @@ describe('EndToEnd', () => {
     describe('Working', () => {
         it('Works', (done) => {
             const baseUrl = 'http://localhost:3131';
-            const options = {};
-
-            const app = App({
-                userService: new UserService(baseUrl, options),
-                taskService: new TaskService(baseUrl, options),
-            });
+            const services = {
+                userService: new UserService(baseUrl),
+                taskService: new TaskService(baseUrl),
+            };
+            const app = App(services);
             const view = mount(app);
 
             // Something is happening here that I need to wait for
@@ -68,7 +67,23 @@ describe('EndToEnd', () => {
                 setTimeout(() => {
                     db.models.User.findOne({ where: { email: 'test@test.com' } }).then(user => {
                         expect(user.email).toBe('test@test.com');
-                        done();
+
+                        const options = {
+                            headers: {
+                                Authorization: `Bearer ${user.token}`,
+                            },
+                        };
+
+                        services.userService.setOptions(options);
+
+                        view.setProps(user);
+                        view.update();
+
+                        setTimeout(() => {
+                            console.log(view.html());
+
+                            done();
+                        }, 100);
                     }).catch(error => {
                         console.error(error);
                     });

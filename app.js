@@ -123,6 +123,29 @@ app.get('/session', (req, res) => {
     }
 });
 
+function authorizeBearer(req, res, next, stop) {
+    // We optionally let a bearer token be passed in, and we'll log the user in using that'
+    if (req.headers && req.headers.authorization) {
+        const parts = req.headers.authorization.split(' ');
+
+        if (parts.length === 2) {
+            const scheme = parts[0];
+            const token = parts[1];
+
+            if (/^Bearer$/i.test(scheme)) {
+                db.models.User.findOne({ where: { token } }).then(user => {
+                    if (user) {
+                        req.login(user, () => next());
+                    } else {
+                        res.status(401).send({ message: 'Unauthorized' });
+                        stop();
+                    }
+                });
+            }
+        }
+    }
+}
+
 epilogue.initialize({
     base: '/api',
     app,
@@ -159,18 +182,16 @@ resources.Task.all.auth((req, res, context) => {
             if (/^Bearer$/i.test(scheme)) {
                 db.models.User.findOne({ where: { token } }).then(user => {
                     if (user) {
-                        req.login(user, () => {
-                            return context.continue();
-                        });
+                        req.login(user, () => context.continue());
                     } else {
                         res.status(401).send({ message: 'Unauthorized' });
-                        return context.stop();
+                        context.stop();
                     }
                 });
             }
         }
     } else if (req.isAuthenticated()) {
-        return context.continue();
+        context.continue();
     } else {
         throw new epilogue.Errors.ForbiddenError('You must be logged in to access this resource.');
     }

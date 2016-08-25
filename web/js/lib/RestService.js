@@ -46,4 +46,12 @@ export default class RestService {
             .then(response => this.checkForErrors(response))
         ;
     }
+
+    setBaseUrl(baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    setOptions(options) {
+        this.options = options;
+    }
 }
