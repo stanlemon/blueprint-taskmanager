@@ -19,7 +19,7 @@ const db = require('./models')();
 
 const DEV = 'development';
 const ENV = process.env.NODE_ENV || DEV;
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 const logger = morgan('combined');
 const compiler = webpack(config);
