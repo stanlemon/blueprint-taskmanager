@@ -12,14 +12,14 @@ const session = require('client-sessions');
 const flash = require('connect-flash');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const LocalStrategy = require('passport-local').Strategy;
+const { Strategy: LocalStrategy } = require('passport-local');
 
 const config = require('./webpack.config');
 const db = require('./models')();
 
 const DEV = 'development';
 const ENV = process.env.NODE_ENV || DEV;
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 const logger = morgan('combined');
 const compiler = webpack(config);
