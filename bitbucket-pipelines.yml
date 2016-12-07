@@ -1,6 +1,6 @@
 # You can use a Docker image from Docker Hub or your own container
 # registry for your build environment.
-image: node:6.3.1
+image: node:7.2.0
 
 pipelines:
   default:

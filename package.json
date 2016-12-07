@@ -9,7 +9,7 @@
     "url": "git@bitbucket.org:stanlemon/react-playground.git"
   },
   "engines": {
-    "node": "6.3.1"
+    "node": "7.2.0"
   },
   "scripts": {
     "start": "node app.js",

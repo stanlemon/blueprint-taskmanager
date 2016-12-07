@@ -16,27 +16,23 @@ During development [Webpack](http://webpack.github.io) is configured to [hot-rel
 To get started, simply:
 
     npm install
-    npm started
+    npm start
 
 You can run tests by doing:
 
-    npm tests
+    npm test
 
 You can lint the source by doing:
 
-    npm run-script lint
+    npm run lint
 
 You can build the production assets by doing:
 
-    npm run-script build
+    npm run build
 
 You can start the production version of the app by doing:
 
     NODE_ENV=production npm start
-
-If you want to make changes to the backend with live changes, install nodemon and you can do:
-
-    npm run-script dev
 
 ## Try it out
 
