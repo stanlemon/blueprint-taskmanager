@@ -7,32 +7,27 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const morgan = require('morgan');
 const webpack = require('webpack');
-const config = require('./webpack.config');
 const epilogue = require('epilogue');
 const session = require('client-sessions');
 const flash = require('connect-flash');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
-const db = require('./models')();
 
-const app = express();
-const logger = morgan('combined');
-const compiler = webpack(config);
+const config = require('./webpack.config');
+const db = require('./models')();
 
 const DEV = 'development';
 const ENV = process.env.NODE_ENV || DEV;
+const PORT = process.env.PORT || 3000;
 
-app.set('port', (process.env.PORT || 3000));
+const logger = morgan('combined');
+const compiler = webpack(config);
+const app = express();
 
 app.use(logger);
 app.use(compression());
-
-app.use(helmet.hidePoweredBy());
-app.use(helmet.ieNoOpen());
-app.use(helmet.noSniff());
-app.use(helmet.frameguard());
-app.use(helmet.xssFilter());
+app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(flash());
@@ -220,13 +215,11 @@ resources.User.create.write.after((req, res, context) => {
     return context.continue;
 });
 
+app.listen()
+
 const server = http.createServer(app);
 
-server.on('close', () => {
-    console.log('Shutting down...');
-});
-
-server.listen(app.get('port'), err => {
+server.listen(PORT, err => {
     if (err) {
         console.error(err);
         return;
@@ -239,8 +232,3 @@ server.listen(app.get('port'), err => {
     console.log('Starting in %s mode', ENV);
     console.log('Listening at http://%s:%s', host, port);
 });
-
-module.exports = {
-    server,
-    db
-};
