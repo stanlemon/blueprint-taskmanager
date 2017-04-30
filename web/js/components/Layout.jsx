@@ -1,13 +1,14 @@
 import { includes } from 'lodash';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class Layout extends React.Component {
 
     static propTypes = {
-        router: React.PropTypes.object,
-        children: React.PropTypes.node,
-        actions: React.PropTypes.object,
-        loaded: React.PropTypes.array,
+        router: PropTypes.object,
+        children: PropTypes.node,
+        actions: PropTypes.object,
+        loaded: PropTypes.array,
     };
 
     componentWillMount() {

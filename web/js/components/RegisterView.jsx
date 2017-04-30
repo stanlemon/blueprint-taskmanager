@@ -1,16 +1,17 @@
 import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
 import Form from './Form';
 import { Link } from 'react-router';
 
 export default class RegisterView extends React.Component {
 
     static propTypes = {
-        router: React.PropTypes.object,
-        children: React.PropTypes.node,
-        actions: React.PropTypes.object,
-        errors: React.PropTypes.object,
+        router: PropTypes.object,
+        children: PropTypes.node,
+        actions: PropTypes.object,
+        errors: PropTypes.object,
     };
 
     handleSubmit(errors, data) {

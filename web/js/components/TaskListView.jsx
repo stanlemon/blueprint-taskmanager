@@ -1,5 +1,6 @@
 import { includes } from 'lodash';
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
 import TaskForm from './CreateTaskForm';
@@ -147,10 +148,10 @@ export default class TaskListView extends React.Component {
 }
 
 TaskListView.propTypes = {
-    children: React.PropTypes.node,
-    actions: React.PropTypes.object,
-    router: React.PropTypes.object,
-    tasks: React.PropTypes.array,
-    errors: React.PropTypes.object,
-    loaded: React.PropTypes.array,
+    children: PropTypes.node,
+    actions: PropTypes.object,
+    router: PropTypes.object,
+    tasks: PropTypes.array,
+    errors: PropTypes.object,
+    loaded: PropTypes.array,
 };

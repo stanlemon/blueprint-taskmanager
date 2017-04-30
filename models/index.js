@@ -68,12 +68,12 @@ module.exports = () => {
         },
     });
 
-    User.beforeValidate(user => {
+    User.beforeValidate((user) => {
         user.token = uuid.v4();
         return Promise.resolve(user);
     });
 
-    User.afterValidate(user => {
+    User.afterValidate((user) => {
         user.password = bcrypt.hashSync(user.password, 10);
         return Promise.resolve(user);
     });
@@ -93,6 +93,9 @@ module.exports = () => {
     });
 
     Task.belongsTo(User, { as: 'user' });
+
+    // Uncomment this to create a sqlite database file in dev mode
+    // sequelize.sync({ force: true });
 
     return {
         sequelize,

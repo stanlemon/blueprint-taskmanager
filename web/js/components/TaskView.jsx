@@ -1,6 +1,7 @@
 import { includes } from 'lodash';
 import moment from 'moment';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import Error from './Error';
 import TaskForm from './UpdateTaskForm';
@@ -39,11 +40,11 @@ export default function TaskView({ params, actions, router, loaded, tasks, error
 }
 
 TaskView.propTypes = {
-    children: React.PropTypes.node,
-    actions: React.PropTypes.object,
-    router: React.PropTypes.object,
-    params: React.PropTypes.object,
-    tasks: React.PropTypes.array,
-    errors: React.PropTypes.object,
-    loaded: React.PropTypes.array,
+    children: PropTypes.node,
+    actions: PropTypes.object,
+    router: PropTypes.object,
+    params: PropTypes.object,
+    tasks: PropTypes.array,
+    errors: PropTypes.object,
+    loaded: PropTypes.array,
 };

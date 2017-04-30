@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function Error(props) {
     const { message } = props;
@@ -11,5 +12,5 @@ export default function Error(props) {
 }
 
 Error.propTypes = {
-    message: React.PropTypes.string,
+    message: PropTypes.string,
 };

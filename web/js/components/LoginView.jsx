@@ -1,15 +1,16 @@
 import { isEqual, values } from 'lodash';
 import React from 'react';
+import PropTypes from 'prop-types';
 import Error from './Error';
 import Form from './Form';
 
 export default class LoginView extends React.Component {
 
     static propTypes = {
-        router: React.PropTypes.object,
-        children: React.PropTypes.node,
-        actions: React.PropTypes.object,
-        errors: React.PropTypes.object,
+        router: PropTypes.object,
+        children: PropTypes.node,
+        actions: PropTypes.object,
+        errors: PropTypes.object,
     };
 
     handleClickRegister(e) {

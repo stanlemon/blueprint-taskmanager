@@ -56,7 +56,7 @@ app.use(passport.session());
 
 passport.use(new LocalStrategy(
     (username, password, done) => {
-        db.models.User.findOne({ where: { email: username } }).then(user => {
+        db.models.User.findOne({ where: { email: username } }).then((user) => {
             if (!user) {
                 return done(null, false, { message: 'Incorrect email or password.' });
             }
@@ -73,9 +73,9 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-    db.models.User.findById(id).then(user => {
+    db.models.User.findById(id).then((user) => {
         done(null, user);
-    }).catch(error => {
+    }).catch((error) => {
         done(error, null);
     });
 });
@@ -118,29 +118,6 @@ app.get('/session', (req, res) => {
     }
 });
 
-function authorizeBearer(req, res, next, stop) {
-    // We optionally let a bearer token be passed in, and we'll log the user in using that'
-    if (req.headers && req.headers.authorization) {
-        const parts = req.headers.authorization.split(' ');
-
-        if (parts.length === 2) {
-            const scheme = parts[0];
-            const token = parts[1];
-
-            if (/^Bearer$/i.test(scheme)) {
-                db.models.User.findOne({ where: { token } }).then(user => {
-                    if (user) {
-                        req.login(user, () => next());
-                    } else {
-                        res.status(401).send({ message: 'Unauthorized' });
-                        stop();
-                    }
-                });
-            }
-        }
-    }
-}
-
 epilogue.initialize({
     base: '/api',
     app,
@@ -175,7 +152,7 @@ resources.Task.all.auth((req, res, context) => {
             const token = parts[1];
 
             if (/^Bearer$/i.test(scheme)) {
-                db.models.User.findOne({ where: { token } }).then(user => {
+                db.models.User.findOne({ where: { token } }).then((user) => {
                     if (user) {
                         req.login(user, () => context.continue());
                     } else {
@@ -215,11 +192,11 @@ resources.User.create.write.after((req, res, context) => {
     return context.continue;
 });
 
-app.listen()
+app.listen();
 
 const server = http.createServer(app);
 
-server.listen(PORT, err => {
+server.listen(PORT, (err) => {
     if (err) {
         console.error(err);
         return;

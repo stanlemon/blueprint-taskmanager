@@ -1,16 +1,17 @@
 import classNames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { makeDateTime } from '../lib/Utils';
 
 export default class TaskItem extends React.Component {
 
     static propTypes = {
-        router: React.PropTypes.object,
-        children: React.PropTypes.node,
-        actions: React.PropTypes.object,
-        task: React.PropTypes.object,
-        errors: React.PropTypes.array,
+        router: PropTypes.object,
+        children: PropTypes.node,
+        actions: PropTypes.object,
+        task: PropTypes.object,
+        errors: PropTypes.array,
     };
 
     deleteTask() {

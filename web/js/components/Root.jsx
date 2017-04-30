@@ -1,5 +1,6 @@
 import { includes, omit } from 'lodash';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions/';
@@ -7,16 +8,16 @@ import * as actions from '../actions/';
 class Root extends React.Component {
 
     static propTypes = {
-        router: React.PropTypes.object,
-        location: React.PropTypes.object,
-        children: React.PropTypes.node,
-        pollInterval: React.PropTypes.number,
-        actions: React.PropTypes.object,
-        loaded: React.PropTypes.array,
+        router: PropTypes.object,
+        location: PropTypes.object,
+        children: PropTypes.node,
+        pollInterval: PropTypes.number,
+        actions: PropTypes.object,
+        loaded: PropTypes.array,
     };
 
     static propTypes = {
-        children: React.PropTypes.node,
+        children: PropTypes.node,
     };
 
     static defaultProps = {

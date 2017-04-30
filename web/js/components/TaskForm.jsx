@@ -2,6 +2,7 @@ import { isEqual, isBoolean } from 'lodash';
 import classNames from 'classnames';
 import moment from 'moment';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DateTimePicker } from 'react-widgets';
 import Form from './Form';
 import { makeDateTime } from '../lib/Utils';
@@ -9,10 +10,10 @@ import { makeDateTime } from '../lib/Utils';
 export default class TaskForm extends React.Component {
 
     static propTypes = {
-        children: React.PropTypes.node,
-        actions: React.PropTypes.object,
-        task: React.PropTypes.object,
-        errors: React.PropTypes.object,
+        children: PropTypes.node,
+        actions: PropTypes.object,
+        task: PropTypes.object,
+        errors: PropTypes.object,
     };
 
     state = {

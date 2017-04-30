@@ -1,14 +1,15 @@
 import { includes, get, has, isEqual, isObject, zipObject, fill, range } from 'lodash';
 import React from 'react';
+import PropTypes from 'prop-types';
 import Validator from 'validator';
 
 export default class Form extends React.Component {
 
     static propTypes = {
-        children: React.PropTypes.node,
-        fields: React.PropTypes.object,
-        validate: React.PropTypes.object,
-        handler: React.PropTypes.func,
+        children: PropTypes.node,
+        fields: PropTypes.object,
+        validate: PropTypes.object,
+        handler: PropTypes.func,
     };
 
     validators = {};
