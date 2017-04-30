@@ -68,7 +68,7 @@ export function createTask(data) {
             .then((task) => {
                 dispatch({ type: CREATE_TASK_SUCCESS, task });
             })
-            .catch(ex => {
+            .catch((ex) => {
                 dispatch({ type: CREATE_TASK_ERROR, errors: ex.errors });
             });
     };
