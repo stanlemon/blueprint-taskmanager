@@ -5,11 +5,15 @@ import PropTypes from 'prop-types';
 export default class Layout extends React.Component {
 
     static propTypes = {
-        router: PropTypes.object,
-        children: PropTypes.node,
-        actions: PropTypes.object,
+        router: PropTypes.object.isRequired,
+        children: PropTypes.node.isRequired,
+        actions: PropTypes.object.isRequired,
         loaded: PropTypes.array,
     };
+
+    static defaultProps = {
+        loaded: [],
+    }
 
     componentWillMount() {
         this.props.actions.loadTasks();
@@ -37,6 +41,7 @@ export default class Layout extends React.Component {
                     <div className="container">
                         <div className="navbar-header">
                             <a
+                              role="button"
                               style={{ cursor: 'pointer' }}
                               className="navbar-brand"
                               onClick={this.home.bind(this)}
@@ -48,8 +53,10 @@ export default class Layout extends React.Component {
                         </div>
                         <ul className="nav navbar-nav navbar-right">
                             <li>
-                                <a
-                                  className="fa fa-sign-out"
+                                <i
+                                  role="button"
+                                  style={{ cursor: 'pointer' }}
+                                  className="navbar-brand fa fa-sign-out"
                                   onClick={this.logout.bind(this)}
                                   onTouchTap={this.logout.bind(this)}
                                 />

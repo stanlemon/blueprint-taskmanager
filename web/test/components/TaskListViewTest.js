@@ -5,23 +5,16 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import moment from 'moment';
 import momentLocalizer from 'react-widgets/lib/localizers/moment';
 import TaskListView from '../../../web/js/components/TaskListView.jsx';
+import MockRouter from '../mocks/MockRouter';
 
 injectTapEventPlugin();
 
 momentLocalizer(moment);
 
-function routerMock() {
-    this.routes = [];
-
-    this.push = (route) => {
-        this.routes.push(route);
-    };
-}
-
 describe('<TaskListView />', () => {
 
     it('should render a spinner while it waits to load', () => {
-        const view = mount(<TaskListView loaded={[]} />);
+        const view = mount(<TaskListView loaded={[]} tasks={[]} router={new MockRouter()} actions={{}} />);
 
         const i = view.find('i');
 
@@ -30,7 +23,7 @@ describe('<TaskListView />', () => {
     });
 
     it('should render a list of tasks', () => {
-        const router = new routerMock();
+        const router = new MockRouter();
 
         const tasks = [
             {
@@ -51,7 +44,7 @@ describe('<TaskListView />', () => {
 
         spy(TaskListView.prototype, 'render');
 
-        const view = mount(<TaskListView loaded={['tasks']} tasks={tasks} errors={{}} router={router} />);
+        const view = mount(<TaskListView loaded={['tasks']} tasks={tasks} errors={{}} router={router} actions={{}} />);
 
         expect(TaskListView.prototype.render.calledOnce).toBe(true);
 

@@ -8,10 +8,12 @@ import Form from './Form';
 export default class RegisterView extends React.Component {
 
     static propTypes = {
-        router: PropTypes.object,
-        children: PropTypes.node,
-        actions: PropTypes.object,
+        actions: PropTypes.object.isRequired,
         errors: PropTypes.object,
+    };
+
+    static defaultProps = {
+        errors: {},
     };
 
     handleSubmit(errors, data) {
@@ -67,7 +69,9 @@ export default class RegisterView extends React.Component {
                                             <label htmlFor="name" className="col-sm-2 control-label">Name</label>
                                             <div className="col-sm-10">
                                                 <input type="text" className="form-control" id="name" name="name" />
-                                                {errors.name && (<span className="help-block">{errors.name.slice(-1)}</span>)}
+                                                {errors.name && (
+                                                    <span className="help-block">{errors.name.slice(-1)}</span>
+                                                )}
                                             </div>
                                         </div>
                                         <div className={classNames('form-group', { 'has-error': errors.email })}>
@@ -78,16 +82,27 @@ export default class RegisterView extends React.Component {
                                             </div>
                                         </div>
                                         <div className={classNames('form-group', { 'has-error': errors.password })}>
-                                            <label htmlFor="password" className="col-sm-2 control-label">Password</label>
+                                            <label htmlFor="password" className="col-sm-2 control-label">
+                                                Password
+                                            </label>
                                             <div className="col-sm-10">
-                                                <input type="password" className="form-control" id="password" name="password" />
-                                                {errors.password && (<span className="help-block">{errors.password.slice(-1)}</span>)}
+                                                <input
+                                                  type="password"
+                                                  className="form-control"
+                                                  id="password"
+                                                  name="password"
+                                                />
+                                                {errors.password && (
+                                                    <span className="help-block">{errors.password.slice(-1)}</span>
+                                                )}
                                             </div>
                                         </div>
 
                                         <br />
                                         <div className="col-sm-6 col-sm-offset-3">
-                                            <button type="submit" className="btn btn-primary btn-block">Register</button>
+                                            <button type="submit" className="btn btn-primary btn-block">
+                                                Register
+                                            </button>
                                         </div>
                                     </Form>
                                 </div>

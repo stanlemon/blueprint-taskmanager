@@ -7,11 +7,9 @@ import { makeDateTime } from '../lib/Utils';
 export default class TaskItem extends React.Component {
 
     static propTypes = {
-        router: PropTypes.object,
-        children: PropTypes.node,
-        actions: PropTypes.object,
-        task: PropTypes.object,
-        errors: PropTypes.array,
+        router: PropTypes.object.isRequired,
+        actions: PropTypes.object.isRequired,
+        task: PropTypes.object.isRequired,
     };
 
     deleteTask() {
@@ -60,6 +58,7 @@ export default class TaskItem extends React.Component {
             <div style={rowStyles} className={rowClasses}>
                 <div className="row" style={{ margin: '10px' }}>
                     <div
+                      role="button"
                       style={nameStyles}
                       className="task-name col-xs-9 col-sm-9 col-md-10"
                       onClick={this.viewTask.bind(this)}
@@ -78,7 +77,6 @@ export default class TaskItem extends React.Component {
                             </div>
                             <div className="col-xs-6 col-sm-6 text-right">
                                 <button
-                                  type="button"
                                   className="btn btn-xs btn-danger"
                                   onClick={this.deleteTask.bind(this)}
                                   onTouchTap={this.deleteTask.bind(this)}

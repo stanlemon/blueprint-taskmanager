@@ -8,20 +8,19 @@ import * as actions from '../actions/';
 class Root extends React.Component {
 
     static propTypes = {
-        router: PropTypes.object,
-        location: PropTypes.object,
-        children: PropTypes.node,
+        router: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+        children: PropTypes.node.isRequired,
         pollInterval: PropTypes.number,
-        actions: PropTypes.object,
-        loaded: PropTypes.array,
-    };
-
-    static propTypes = {
-        children: PropTypes.node,
+        actions: PropTypes.object.isRequired,
+        loaded: PropTypes.array.isRequired,
+        user: PropTypes.object,
     };
 
     static defaultProps = {
+        loaded: [],
         pollInterval: 10000,
+        user: false,
     };
 
     interval;
@@ -71,7 +70,8 @@ class Root extends React.Component {
     }
 }
 
-export default connect(state => state, dispatch => {
-    return { actions: bindActionCreators(actions, dispatch) };
-})(Root);
+export default connect(
+    state => state,
+    dispatch => ({ actions: bindActionCreators(actions, dispatch) })
+)(Root);
 

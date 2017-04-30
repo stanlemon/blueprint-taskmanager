@@ -6,10 +6,18 @@ import Validator from 'validator';
 export default class Form extends React.Component {
 
     static propTypes = {
-        children: PropTypes.node,
+        children: PropTypes.node.isRequired,
         fields: PropTypes.object,
         validate: PropTypes.object,
         handler: PropTypes.func,
+        errors: PropTypes.object, // eslint-disable-line react/no-unused-prop-types
+    };
+
+    static defaultProps = {
+        fields: {},
+        errors: {},
+        validate: {},
+        handler: () => {},
     };
 
     validators = {};
@@ -30,13 +38,18 @@ export default class Form extends React.Component {
             Object.keys(validators[field]).forEach((key) => {
                 let validator;
                 // Magically prepend is for most validators
-                if (key !== 'notEmpty' && key !== 'contains' && key !== 'equals' && key !== 'matches' && key.slice(0,2) !== 'is') {
-                    validator = 'is' + key.charAt(0).toUpperCase() + key.slice(1);
+                if (key !== 'notEmpty' &&
+                    key !== 'contains' &&
+                    key !== 'equals' &&
+                    key !== 'matches' &&
+                    key.slice(0, 2) !== 'is'
+                ) {
+                    validator = `is${key.charAt(0).toUpperCase()}${key.slice(1)}`;
                 } else {
                     validator = key;
                 }
 
-                if (key !== 'notEmpty' && !Validator.hasOwnProperty(validator)) {
+                if (key !== 'notEmpty' && !Object.prototype.hasOwnProperty.call(Validator, (validator))) {
                     throw new Error(`Validator does not have ${validator}`);
                 }
 
@@ -60,7 +73,7 @@ export default class Form extends React.Component {
                 }
 
                 if (hasError) {
-                    if (!errors.hasOwnProperty(field)) {
+                    if (!Object.prototype.hasOwnProperty.call(errors, field)) {
                         errors[field] = [];
                     }
 
@@ -87,7 +100,7 @@ export default class Form extends React.Component {
     handleChange(field, event) {
         const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         this.setState({
-            fields: Object.assign(this.state.fields, { [field]: value })
+            fields: Object.assign(this.state.fields, { [field]: value }),
         });
     }
 

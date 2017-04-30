@@ -40,11 +40,15 @@ export default function TaskView({ params, actions, router, loaded, tasks, error
 }
 
 TaskView.propTypes = {
-    children: PropTypes.node,
-    actions: PropTypes.object,
-    router: PropTypes.object,
-    params: PropTypes.object,
-    tasks: PropTypes.array,
+    actions: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired,
+    tasks: PropTypes.array.isRequired,
     errors: PropTypes.object,
     loaded: PropTypes.array,
+};
+
+TaskView.defaultProps = {
+    errors: {},
+    loaded: [],
 };

@@ -1,11 +1,10 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import TaskForm from './TaskForm';
 
 export default class UpdateTaskForm extends TaskForm {
 
     static propTypes = {
-        router: PropTypes.object,
+        router: PropTypes.object.isRequired,
     };
 
     handleSave(data) {

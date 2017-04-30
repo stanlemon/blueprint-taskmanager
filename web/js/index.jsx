@@ -10,7 +10,6 @@ import momentLocalizer from 'react-widgets/lib/localizers/moment';
 import reducer from './reducers';
 import UserService from './lib/UserService';
 import TaskService from './lib/TaskService';
-import { isDev } from './lib/Utils';
 import DevTools from './lib/DevTools';
 import Root from './components/Root';
 import Layout from './components/Layout';

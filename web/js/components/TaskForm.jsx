@@ -10,10 +10,14 @@ import { makeDateTime } from '../lib/Utils';
 export default class TaskForm extends React.Component {
 
     static propTypes = {
-        children: PropTypes.node,
-        actions: PropTypes.object,
+        actions: PropTypes.object.isRequired,
         task: PropTypes.object,
         errors: PropTypes.object,
+    };
+
+    static defaultProps = {
+        task: {},
+        errors: {},
     };
 
     state = {

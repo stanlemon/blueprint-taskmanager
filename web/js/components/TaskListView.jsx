@@ -12,6 +12,19 @@ const COMPLETE = 'complete';
 
 export default class TaskListView extends React.Component {
 
+    static propTypes = {
+        actions: PropTypes.object.isRequired,
+        router: PropTypes.object.isRequired,
+        tasks: PropTypes.array.isRequired,
+        errors: PropTypes.object,
+        loaded: PropTypes.array,
+    };
+
+    static defaultProps = {
+        errors: {},
+        loaded: [],
+    };
+
     state = {
         filter: ALL,
     }
@@ -146,12 +159,3 @@ export default class TaskListView extends React.Component {
         );
     }
 }
-
-TaskListView.propTypes = {
-    children: PropTypes.node,
-    actions: PropTypes.object,
-    router: PropTypes.object,
-    tasks: PropTypes.array,
-    errors: PropTypes.object,
-    loaded: PropTypes.array,
-};
