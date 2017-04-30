@@ -1,9 +1,15 @@
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
+const fs = require('fs');
 const Sequelize = require('sequelize');
 
 module.exports = () => {
-    const sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite://database.sqlite', { logging: () => null });
+    const DEV_DATABASE_PATH = 'database.sqlite';
+    const DEV_DATABASE_URL = 'sqlite://' + DEV_DATABASE_PATH;
+
+    const DATABASE_URL = process.env.DATABASE_URL || DEV_DATABASE_URL;
+
+    const sequelize = new Sequelize(DATABASE_URL, { logging: () => null });
 
     const User = sequelize.define('User', {
         name: {
@@ -95,7 +101,10 @@ module.exports = () => {
     Task.belongsTo(User, { as: 'user' });
 
     // Uncomment this to create a sqlite database file in dev mode
-    // sequelize.sync({ force: true });
+    if (DATABASE_URL === DEV_DATABASE_URL && !fs.existsSync(DEV_DATABASE_PATH)) {
+        console.log('In DEV mode and a database file doesn\'t exist yet, so I\'m creating one!');
+        sequelize.sync({ force: true });
+    }
 
     return {
         sequelize,
