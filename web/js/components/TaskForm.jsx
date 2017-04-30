@@ -74,7 +74,7 @@ export default class TaskForm extends React.Component {
                         </div>
                         <div className={classNames('form-group', { 'has-error': errors.due })}>
                             <label htmlFor="due" className="control-label">Due</label>
-                            <DateTimePicker value={this.state.due} onChange={(due) => this.setState({ due })} />
+                            <DateTimePicker value={this.state.due} onChange={due => this.setState({ due })} />
                             {errors.due && (<span className="help-block">{errors.due}</span>)}
                         </div>
                         {task && task.id && (

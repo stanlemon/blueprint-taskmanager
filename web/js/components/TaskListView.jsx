@@ -42,7 +42,7 @@ export default class TaskListView extends React.Component {
                 </div>
             );
         }
-        const tasks = this.props.tasks.filter(task => {
+        const tasks = this.props.tasks.filter((task) => {
             switch (this.state.filter) {
                 case INCOMPLETE:
                     return task.completed === null;
@@ -135,7 +135,7 @@ export default class TaskListView extends React.Component {
                     </div>
                 )}
 
-                {tasks.map((task) =>
+                {tasks.map(task =>
                     <TaskItem key={task.id} actions={actions} router={router} task={task} />
                 )}
 

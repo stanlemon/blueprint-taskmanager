@@ -1,9 +1,21 @@
 {
   "plugins": ["transform-class-properties"],
-  "presets": ["react", "latest"],
+  "presets": [
+    "react",
+    ["env", {
+      "targets": {
+        "browsers": ["last 1 version"]
+      },
+      "useBuiltIns": true
+    }]
+  ],
   "env": {
     "development": {
       "presets": ["react-hmre"]
+    },
+    "production": {
+      "presets": ["babili"],
+      "plugins": ["transform-react-remove-prop-types"]
     }
   }
 }

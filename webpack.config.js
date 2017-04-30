@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const BabiliPlugin = require("babili-webpack-plugin");
 
 const PROD = 'production';
 const DEV = 'development';
@@ -9,11 +10,19 @@ const env = process.env.NODE_ENV || DEV;
 
 const vendors = [
     'react',
+    'react-dom',
+    'react-router',
     'redux',
+    'redux-thunk',
     'react-redux',
     'react-widgets',
     'react-tap-event-plugin',
     'moment',
+    'classnames',
+    'history',
+    'isomorphic-fetch',
+    'lodash',
+    'validator',
 ];
 
 module.exports = {
@@ -40,6 +49,7 @@ module.exports = {
         publicPath: '/assets/',
     },
     plugins: [
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.DefinePlugin({
             'process.env': {
@@ -49,11 +59,7 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
         ...(env === PROD ?
             [
-                new webpack.optimize.UglifyJsPlugin({
-                    compress: {
-                        warnings: false,
-                    },
-                }),
+                new BabiliPlugin(),
                 new ExtractTextPlugin('[name].css'),
             ]
             :
