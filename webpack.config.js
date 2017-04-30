@@ -1,96 +1,60 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const BabiliPlugin = require("babili-webpack-plugin");
+const BabiliPlugin = require('babili-webpack-plugin');
 
 const PROD = 'production';
 const DEV = 'development';
 
 const env = process.env.NODE_ENV || DEV;
 
-const vendors = [
-    'react',
-    'react-dom',
-    'react-router',
-    'redux',
-    'redux-thunk',
-    'react-redux',
-    'react-widgets',
-    'react-tap-event-plugin',
-    'moment',
-    'classnames',
-    'history',
-    'isomorphic-fetch',
-    'lodash',
-    'validator',
-];
-
 module.exports = {
     devtool: env === PROD ? 'source-map' : 'eval',
-    entry: env === PROD ?
-        {
-            main: ['./web/js/index', './web/css/main.less'],
-            vendors,
-        }
-        :
-        {
-            main: [
-                'webpack-hot-middleware/client',
-                'webpack/hot/only-dev-server',
-                './web/js/index',
-                './web/css/main.less',
-            ],
-            vendors,
-        },
+    entry: {
+        main: ['./web/js/index.jsx', './web/css/main.less'],
+    },
     output: {
         path: path.join(__dirname, 'web/assets'),
         filename: '[name].js',
-        chunkFilename: 'main-[id].js',
         publicPath: '/assets/',
     },
     plugins: [
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-        new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify(env),
+                NODE_ENV: JSON.stringify(env),
             },
         }),
-        new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
-        ...(env === PROD ?
-            [
-                new BabiliPlugin(),
-                new ExtractTextPlugin('[name].css'),
-            ]
-            :
-            [
-                new webpack.HotModuleReplacementPlugin(),
-                new webpack.NoErrorsPlugin(),
-                new ExtractTextPlugin('[name].css'),
-            ]
-        ),
-        // Replace calls to fetch with whatwg, because I can
-        new webpack.ProvidePlugin({
-            fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
+        new ExtractTextPlugin('[name].css'),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendors',
+            filename: 'vendors.js',
+            minChunks: module => module.context && module.context.indexOf('node_modules') !== -1,
         }),
+        ...(env === PROD ? [
+            new BabiliPlugin(),
+        ] : [
+            new webpack.HotModuleReplacementPlugin(),
+            new webpack.NoEmitOnErrorsPlugin(),
+        ]),
     ],
     resolve: {
-        extensions: ['', '.js', '.jsx', '.less', '.css'],
+        extensions: ['.js', '.jsx', '.less', '.css'],
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
-                loaders: ['babel'],
-                include: path.join(__dirname, 'web/js'),
+                loaders: 'babel-loader',
+                exclude: /(node_modules)/,
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
+                loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }),
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader'),
+                loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!less-loader' }),
             },
             {
                 test: /\.(png|jpg|gif)$/,
@@ -98,7 +62,7 @@ module.exports = {
             }, // inline base64 URLs for <=8k images, direct URLs for the rest
             {
                 test: /\.(svg|woff|woff2|eot|ttf)(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'file?name=[name].[ext]',
+                loader: 'file-loader?name=[name].[ext]',
             },
         ],
     },

@@ -28,7 +28,7 @@ const services = {
     taskService: new TaskService(),
 };
 
-const middleware = isDev() ? compose(
+const middleware = process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test' ? compose(
     applyMiddleware(thunk.withExtraArgument(services))
 , DevTools.instrument()
 ) : applyMiddleware(thunk.withExtraArgument(services));

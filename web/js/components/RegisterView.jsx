@@ -2,8 +2,8 @@ import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Form from './Form';
 import { Link } from 'react-router';
+import Form from './Form';
 
 export default class RegisterView extends React.Component {
 

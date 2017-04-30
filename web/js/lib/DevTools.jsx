@@ -1,7 +1,6 @@
 import React from 'react';
-import { isDev } from './Utils';
 
-if (isDev()) {
+if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
     const { createDevTools, persistState } = require('redux-devtools');
     const LogMonitor = require('redux-devtools-log-monitor').default;
     const DockMonitor = require('redux-devtools-dock-monitor').default;
