@@ -13,7 +13,7 @@ export default class TaskService extends RestService {
 
     loadTasks() {
         return this.fetch(`${this.baseUrl}/api/tasks/`)
-            .then(data => data.map((task) => this.formatTask(task)))
+            .then(data => data.map(task => this.formatTask(task)))
         ;
     }
 
