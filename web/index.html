@@ -5,7 +5,15 @@
         <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" name="viewport">
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <script src="http://localhost:8097"></script>
+        <script type="text/javascript">
+        // Presumably we're not in production, so inject the react-dev-tools code (for when you want/need it)
+        if (window.location.hostname == 'localhost') {
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'http://localhost:8097';
+            document.getElementsByTagName('head')[0].appendChild(script);
+        }
+        </script>
     </head>
     <body>
         <div id="root"></div>
