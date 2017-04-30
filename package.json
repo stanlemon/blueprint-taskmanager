@@ -33,7 +33,7 @@
     ]
   },
   "dependencies": {
-    "bcrypt": "^1.0.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.x.x",
     "bootstrap": "^3.3.x",
     "bootswatch": "^3.3.7",

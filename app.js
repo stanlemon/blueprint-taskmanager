@@ -11,7 +11,7 @@ const epilogue = require('epilogue');
 const session = require('client-sessions');
 const flash = require('connect-flash');
 const passport = require('passport');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { Strategy: LocalStrategy } = require('passport-local');
 
 const config = require('./webpack.config');
