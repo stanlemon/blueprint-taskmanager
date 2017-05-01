@@ -18,6 +18,7 @@ class Root extends React.Component {
     };
 
     static defaultProps = {
+        actions: {},
         loaded: [],
         pollInterval: 10000,
         user: false,

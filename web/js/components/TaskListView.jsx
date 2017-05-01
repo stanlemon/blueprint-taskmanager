@@ -21,6 +21,8 @@ export default class TaskListView extends React.Component {
     };
 
     static defaultProps = {
+        actions: {},
+        tasks: [],
         errors: {},
         loaded: [],
     };
