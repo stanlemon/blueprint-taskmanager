@@ -12,6 +12,7 @@ export default class Layout extends React.Component {
     };
 
     static defaultProps = {
+        actions: {},
         loaded: [],
     }
 

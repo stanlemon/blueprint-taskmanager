@@ -2,14 +2,10 @@ import { spy } from 'sinon';
 import React from 'react';
 import { mount } from 'enzyme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import moment from 'moment';
-import momentLocalizer from 'react-widgets/lib/localizers/moment';
 import TaskListView from '../../../web/js/components/TaskListView.jsx';
 import MockRouter from '../mocks/MockRouter';
 
 injectTapEventPlugin();
-
-momentLocalizer(moment);
 
 describe('<TaskListView />', () => {
 

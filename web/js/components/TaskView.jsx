@@ -49,6 +49,8 @@ TaskView.propTypes = {
 };
 
 TaskView.defaultProps = {
+    actions: {},
     errors: {},
     loaded: [],
+    tasks: [],
 };

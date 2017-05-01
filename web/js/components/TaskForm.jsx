@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DateTimePicker } from 'react-widgets';
+import Datetime from 'react-datetime';
 import Form from './Form';
 import { makeDateTime } from '../lib/Utils';
 
@@ -78,7 +78,7 @@ export default class TaskForm extends React.Component {
                         </div>
                         <div className={classNames('form-group', { 'has-error': errors.due })}>
                             <label htmlFor="due" className="control-label">Due</label>
-                            <DateTimePicker value={this.state.due} onChange={due => this.setState({ due })} />
+                            <Datetime value={this.state.due} onChange={due => this.setState({ due })} />
                             {errors.due && (<span className="help-block">{errors.due}</span>)}
                         </div>
                         {task && task.id && (

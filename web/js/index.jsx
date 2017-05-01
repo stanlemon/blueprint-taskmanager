@@ -5,8 +5,6 @@ import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import moment from 'moment';
-import momentLocalizer from 'react-widgets/lib/localizers/moment';
 import reducer from './reducers';
 import UserService from './lib/UserService';
 import TaskService from './lib/TaskService';
@@ -19,8 +17,6 @@ import TaskListView from './components/TaskListView';
 import TaskView from './components/TaskView';
 
 injectTapEventPlugin();
-
-momentLocalizer(moment);
 
 const services = {
     userService: new UserService(),
