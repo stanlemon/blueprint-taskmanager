@@ -6,7 +6,6 @@ const serveStatic = require('serve-static');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const morgan = require('morgan');
-const webpack = require('webpack');
 const epilogue = require('epilogue');
 const session = require('client-sessions');
 const flash = require('connect-flash');
@@ -22,7 +21,6 @@ const ENV = process.env.NODE_ENV || DEV;
 const PORT = process.env.PORT || 3000;
 
 const logger = morgan('combined');
-const compiler = webpack(config);
 const app = express();
 
 app.use(logger);
@@ -35,6 +33,9 @@ app.use(serveStatic(path.join(__dirname, 'web'), { index: ['index.html'] }));
 
 if (ENV === DEV) {
     /* eslint-disable global-require, import/no-extraneous-dependencies */
+    const webpack = require('webpack');
+    const compiler = webpack(config);
+
     app.use(require('webpack-dev-middleware')(compiler, {
         noInfo: true,
         publicPath: config.output.publicPath,
