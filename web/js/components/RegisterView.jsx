@@ -13,6 +13,7 @@ export default class RegisterView extends React.Component {
     };
 
     static defaultProps = {
+        actions: {},
         errors: {},
     };
 

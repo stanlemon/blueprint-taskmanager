@@ -13,6 +13,7 @@ export default class LoginView extends React.Component {
     };
 
     static defaultProps = {
+        actions: {},
         errors: {},
     };
 

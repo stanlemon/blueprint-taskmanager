@@ -21,7 +21,7 @@ class Root extends React.Component {
         actions: {},
         loaded: [],
         pollInterval: 10000,
-        user: false,
+        user: null,
     };
 
     interval;
@@ -41,7 +41,7 @@ class Root extends React.Component {
 
     shouldComponentUpdate(nextProps) {
         // User was not authenticated and is now
-        if (includes(this.props.loaded, 'user') && this.props.user === false && nextProps.user !== false) {
+        if (includes(this.props.loaded, 'user') && this.props.user === null && nextProps.user !== null) {
             this.props.router.push('/');
             return false;
         }
@@ -52,13 +52,13 @@ class Root extends React.Component {
         ];
 
         // Unauthenticated user is on a page they shouldn't be
-        if (nextProps.user !== false && unauthPaths.indexOf(this.props.location.pathname) > -1) {
+        if (nextProps.user !== null && unauthPaths.indexOf(this.props.location.pathname) > -1) {
             this.props.router.push('/');
             return false;
         }
 
         // Unauthenticated user is on a page they shouldn't be
-        if (nextProps.user === false && unauthPaths.indexOf(this.props.location.pathname) === -1) {
+        if (nextProps.user === null && unauthPaths.indexOf(this.props.location.pathname) === -1) {
             this.props.router.push('/login');
             return false;
         }

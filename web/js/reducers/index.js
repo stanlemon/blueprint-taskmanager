@@ -34,10 +34,10 @@ function tasks(state = [], action) {
     }
 }
 
-function user(state = false, action) {
+function user(state = null, action) {
     switch (action.type) {
         case UNAUTHENTICATED_USER:
-            return false;
+            return null;
         case AUTHENTICATED_USER:
             return Object.assign(action.user);
         default:
