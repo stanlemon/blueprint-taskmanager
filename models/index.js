@@ -1,3 +1,4 @@
+/*eslint no-console: "off"*/
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const fs = require('fs');
@@ -45,7 +46,8 @@ module.exports = () => {
             validate: {
                 len: {
                     args: [8, 64],
-                    msg: 'Your password must be between 8 and 64 characters long',
+                    msg:
+                        'Your password must be between 8 and 64 characters long',
                 },
                 notEmpty: {
                     msg: 'You must enter a password',
@@ -74,12 +76,12 @@ module.exports = () => {
         },
     });
 
-    User.beforeValidate((user) => {
+    User.beforeValidate(user => {
         user.token = uuid.v4();
         return Promise.resolve(user);
     });
 
-    User.afterValidate((user) => {
+    User.afterValidate(user => {
         user.password = bcrypt.hashSync(user.password, 10);
         return Promise.resolve(user);
     });
@@ -101,8 +103,13 @@ module.exports = () => {
     Task.belongsTo(User, { as: 'user' });
 
     // Uncomment this to create a sqlite database file in dev mode
-    if (DATABASE_URL === DEV_DATABASE_URL && !fs.existsSync(DEV_DATABASE_PATH)) {
-        console.log('In DEV mode and a database file doesn\'t exist yet, so I\'m creating one!');
+    if (
+        DATABASE_URL === DEV_DATABASE_URL &&
+        !fs.existsSync(DEV_DATABASE_PATH)
+    ) {
+        console.log(
+            "In DEV mode and a database file doesn't exist yet, so I'm creating one!"
+        );
         sequelize.sync({ force: true });
     }
 

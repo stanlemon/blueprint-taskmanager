@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/';
 
 class Root extends React.Component {
-
     static propTypes = {
         router: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,
@@ -41,24 +40,31 @@ class Root extends React.Component {
 
     shouldComponentUpdate(nextProps) {
         // User was not authenticated and is now
-        if (includes(this.props.loaded, 'user') && this.props.user === null && nextProps.user !== null) {
+        if (
+            includes(this.props.loaded, 'user') &&
+            this.props.user === null &&
+            nextProps.user !== null
+        ) {
             this.props.router.push('/');
             return false;
         }
 
-        const unauthPaths = [
-            '/login',
-            '/register',
-        ];
+        const unauthPaths = ['/login', '/register'];
 
         // Unauthenticated user is on a page they shouldn't be
-        if (nextProps.user !== null && unauthPaths.indexOf(this.props.location.pathname) > -1) {
+        if (
+            nextProps.user !== null &&
+            unauthPaths.indexOf(this.props.location.pathname) > -1
+        ) {
             this.props.router.push('/');
             return false;
         }
 
         // Unauthenticated user is on a page they shouldn't be
-        if (nextProps.user === null && unauthPaths.indexOf(this.props.location.pathname) === -1) {
+        if (
+            nextProps.user === null &&
+            unauthPaths.indexOf(this.props.location.pathname) === -1
+        ) {
             this.props.router.push('/login');
             return false;
         }
@@ -67,7 +73,10 @@ class Root extends React.Component {
     }
 
     render() {
-        return React.cloneElement(this.props.children, omit(this.props, 'children'));
+        return React.cloneElement(
+            this.props.children,
+            omit(this.props, 'children')
+        );
     }
 }
 
@@ -75,4 +84,3 @@ export default connect(
     state => state,
     dispatch => ({ actions: bindActionCreators(actions, dispatch) })
 )(Root);
-

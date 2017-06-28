@@ -3,7 +3,6 @@ import { mapErrors } from '../lib/Utils';
 import RestServiceException from './RestServiceException';
 
 export default class RestService {
-
     baseUrl;
     options;
 
@@ -13,10 +12,11 @@ export default class RestService {
     }
 
     hasError(response) {
-        return {}.hasOwnProperty.call(response, 'errors')
-            && Array.isArray(response.errors)
-            && response.errors.length > 0
-        ;
+        return (
+            {}.hasOwnProperty.call(response, 'errors') &&
+            Array.isArray(response.errors) &&
+            response.errors.length > 0
+        );
     }
 
     checkForErrors(response) {
@@ -32,7 +32,7 @@ export default class RestService {
             credentials: 'same-origin',
             method,
             headers: {
-                'Accept': 'application/json',
+                Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
         };
@@ -41,10 +41,12 @@ export default class RestService {
             options.body = JSON.stringify(data);
         }
 
-        return fetch(this.baseUrl + url, Object.assign({}, this.options, options))
+        return fetch(
+            this.baseUrl + url,
+            Object.assign({}, this.options, options)
+        )
             .then(response => response.json())
-            .then(response => this.checkForErrors(response))
-        ;
+            .then(response => this.checkForErrors(response));
     }
 
     setBaseUrl(baseUrl) {

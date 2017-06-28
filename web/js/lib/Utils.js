@@ -7,12 +7,12 @@ export function makeDateTime(d = new Date()) {
 /*eslint-disable */
 export function mapErrors(errors = []) {
     const results = {};
-    errors.forEach((error) => {
+    errors.forEach(error => {
         if (typeof error === 'object') {
             results[error.field] = [error.message];
         } else {
             results.main = [error];
-        }         
+        }
     });
     return results;
 }

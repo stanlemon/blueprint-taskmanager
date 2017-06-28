@@ -42,7 +42,7 @@ export function logout() {
             .then(() => {
                 dispatch({ type: UNAUTHENTICATED_USER });
             })
-            .catch((ex) => {
+            .catch(ex => {
                 dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
             });
     };
@@ -52,10 +52,10 @@ export function loadTasks() {
     return (dispatch, getState, { taskService }) => {
         taskService
             .loadTasks()
-            .then((tasks) => {
+            .then(tasks => {
                 dispatch({ type: LOAD_TASKS_SUCCESS, tasks });
             })
-            .catch((ex) => {
+            .catch(ex => {
                 dispatch({ type: LOAD_TASKS_ERROR, errors: ex.errors });
             });
     };
@@ -65,10 +65,10 @@ export function createTask(data) {
     return (dispatch, getState, { taskService }) => {
         taskService
             .createTask(data)
-            .then((task) => {
+            .then(task => {
                 dispatch({ type: CREATE_TASK_SUCCESS, task });
             })
-            .catch((ex) => {
+            .catch(ex => {
                 dispatch({ type: CREATE_TASK_ERROR, errors: ex.errors });
             });
     };
@@ -78,10 +78,10 @@ export function updateTask(data) {
     return (dispatch, getState, { taskService }) => {
         taskService
             .updateTask(data)
-            .then((task) => {
+            .then(task => {
                 dispatch({ type: UPDATE_TASK_SUCCESS, task });
             })
-            .catch((ex) => {
+            .catch(ex => {
                 dispatch({ type: UPDATE_TASK_ERROR, errors: ex.errors });
             });
     };
@@ -94,7 +94,7 @@ export function deleteTask(taskId) {
             .then(() => {
                 dispatch({ type: DELETE_TASK_SUCCESS, taskId });
             })
-            .catch((ex) => {
+            .catch(ex => {
                 dispatch({ type: DELETE_TASK_ERROR, errors: ex.errors });
             });
     };
@@ -116,7 +116,7 @@ export function checkSession() {
                     dispatch({ type: AUTHENTICATED_USER, user });
                 }
             })
-            .catch((ex) => {
+            .catch(ex => {
                 dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
             });
     };
@@ -126,13 +126,12 @@ export function registerUser(user) {
     return (dispatch, getState, { userService }) => {
         userService
             .register(user)
-            .then((data) => {
+            .then(data => {
                 dispatch({ type: AUTHENTICATED_USER, user: data });
             })
-            .catch((ex) => {
+            .catch(ex => {
                 dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
-            })
-        ;
+            });
     };
 }
 
@@ -140,12 +139,11 @@ export function login(user) {
     return (dispatch, getState, { userService }) => {
         userService
             .login(user)
-            .then((data) => {
+            .then(data => {
                 dispatch({ type: AUTHENTICATED_USER, user: data });
             })
-            .catch((ex) => {
+            .catch(ex => {
                 dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
-            })
-        ;
+            });
     };
 }

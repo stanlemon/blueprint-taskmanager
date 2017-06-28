@@ -5,9 +5,25 @@
     "es6": true,
     "node": true
   },
-  "extends": "airbnb",
   "parser": "babel-eslint",
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:import/errors",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "plugins": [
+    "prettier",
+    "react",
+    "jsx-a11y"
+  ],
   "rules": {
+    "prettier/prettier": ["error", {
+      "tabWidth": 4,
+      "printWidth": 80,
+      "singleQuote": true,
+      "trailingComma": "es5"
+    }],
     "class-methods-use-this": ["off"],
     "comma-dangle": ["error", {
       "arrays": "always-multiline",
@@ -16,15 +32,13 @@
       "exports": "always-multiline",
       "functions": "ignore"
     }],
-    "indent": [2, 4, { "SwitchCase": 1, "VariableDeclarator": 1 }],
-    "max-len": ["warn", 120],
-    "quote-props": [2, "consistent-as-needed"],
     "react/sort-comp": ["off"],
     "react/jsx-no-bind": ["off"],
     "react/jsx-indent": ["warn", 4],
-    "react/jsx-indent-props": ["warn", 2],
     "react/forbid-prop-types": ["off"],
     "react/no-unescaped-entities": ["off"],
-    "jsx-a11y/no-static-element-interactions": ["off"]
+    "jsx-a11y/no-static-element-interactions": ["off"],
+    "jsx-a11y/interactive-supports-focus": ["off"],
+    "jsx-a11y/click-events-have-key-events": ["off"]
   }
 }

@@ -8,9 +8,15 @@ import MockRouter from '../mocks/MockRouter';
 injectTapEventPlugin();
 
 describe('<TaskListView />', () => {
-
     it('should render a spinner while it waits to load', () => {
-        const view = mount(<TaskListView loaded={[]} tasks={[]} router={new MockRouter()} actions={{}} />);
+        const view = mount(
+            <TaskListView
+                loaded={[]}
+                tasks={[]}
+                router={new MockRouter()}
+                actions={{}}
+            />
+        );
 
         const i = view.find('i');
 
@@ -40,7 +46,15 @@ describe('<TaskListView />', () => {
 
         spy(TaskListView.prototype, 'render');
 
-        const view = mount(<TaskListView loaded={['tasks']} tasks={tasks} errors={{}} router={router} actions={{}} />);
+        const view = mount(
+            <TaskListView
+                loaded={['tasks']}
+                tasks={tasks}
+                errors={{}}
+                router={router}
+                actions={{}}
+            />
+        );
 
         expect(TaskListView.prototype.render.calledOnce).toBe(true);
 

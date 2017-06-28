@@ -6,7 +6,14 @@ import { Link } from 'react-router';
 import Error from './Error';
 import TaskForm from './UpdateTaskForm';
 
-export default function TaskView({ params, actions, router, loaded, tasks, errors }) {
+export default function TaskView({
+    params,
+    actions,
+    router,
+    loaded,
+    tasks,
+    errors,
+}) {
     if (!includes(loaded, 'tasks')) {
         return <div />;
     }
@@ -25,7 +32,12 @@ export default function TaskView({ params, actions, router, loaded, tasks, error
 
     return (
         <div>
-            <TaskForm task={task} errors={errors} router={router} actions={actions} />
+            <TaskForm
+                task={task}
+                errors={errors}
+                router={router}
+                actions={actions}
+            />
 
             <p>
                 <strong>Created: </strong>
