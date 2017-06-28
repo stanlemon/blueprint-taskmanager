@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import { makeDateTime } from '../../js/lib/Utils';
 import React from 'react';
-import TaskItem from '../../../web/js/components/TaskItem.jsx';
+import TaskItem from '../../../web/js/components/TaskItem';
 import MockRouter from '../mocks/MockRouter';
 
 describe('<TaskItem />', () => {

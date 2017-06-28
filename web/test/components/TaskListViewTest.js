@@ -2,7 +2,7 @@ import { spy } from 'sinon';
 import React from 'react';
 import { mount } from 'enzyme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import TaskListView from '../../../web/js/components/TaskListView.jsx';
+import TaskListView from '../../../web/js/components/TaskListView';
 import MockRouter from '../mocks/MockRouter';
 
 injectTapEventPlugin();
