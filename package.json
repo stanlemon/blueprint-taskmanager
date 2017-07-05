@@ -23,14 +23,12 @@
   "jest": {
     "verbose": true,
     "automock": false,
-    "testRegex": "test/.*\\Test.js$",
+    "testRegex": "web/js/.*\\.test.js$",
     "transform": {
       ".*": "<rootDir>/node_modules/babel-jest"
     },
     "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "json"
+      "js"
     ]
   },
   "dependencies": {

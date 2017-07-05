@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import Error from '../../../web/js/components/Error';
+import Error from './Error';
 
 describe('<Error />', () => {
     it('should render the error message', () => {
