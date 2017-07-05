@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import { makeDateTime } from '../../js/lib/Utils';
 import React from 'react';
-import TaskItem from '../../../web/js/components/TaskItem.jsx';
+import TaskItem from '../../../web/js/components/TaskItem';
 import MockRouter from '../mocks/MockRouter';
 
 describe('<TaskItem />', () => {
@@ -9,9 +9,11 @@ describe('<TaskItem />', () => {
         const task = {
             id: 1,
             name: 'Foobar',
-            completed: null
+            completed: null,
         };
-        const wrapper = shallow(<TaskItem task={task} router={new MockRouter()} actions={{}} />);
+        const wrapper = shallow(
+            <TaskItem task={task} router={new MockRouter()} actions={{}} />
+        );
         expect(wrapper.contains(task.name)).toBe(true);
     });
 
@@ -19,9 +21,11 @@ describe('<TaskItem />', () => {
         const task = {
             id: 1,
             name: 'Foobar',
-            completed: makeDateTime()
+            completed: makeDateTime(),
         };
-        const wrapper = shallow(<TaskItem task={task} router={new MockRouter()} actions={{}} />);
+        const wrapper = shallow(
+            <TaskItem task={task} router={new MockRouter()} actions={{}} />
+        );
 
         expect(wrapper.find('input').is('[checked=true]')).toBe(true);
     });

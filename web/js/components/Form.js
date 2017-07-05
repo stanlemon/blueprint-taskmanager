@@ -1,10 +1,18 @@
-import { includes, get, has, isEqual, isObject, zipObject, fill, range } from 'lodash';
+import {
+    includes,
+    get,
+    has,
+    isEqual,
+    isObject,
+    zipObject,
+    fill,
+    range,
+} from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Validator from 'validator';
 
 export default class Form extends React.Component {
-
     static propTypes = {
         children: PropTypes.node.isRequired,
         fields: PropTypes.object,
@@ -34,33 +42,41 @@ export default class Form extends React.Component {
 
         Object.assign(validators, this.validators, this.props.validate);
 
-        Object.keys(validators).forEach((field) => {
-            Object.keys(validators[field]).forEach((key) => {
+        Object.keys(validators).forEach(field => {
+            Object.keys(validators[field]).forEach(key => {
                 let validator;
                 // Magically prepend is for most validators
-                if (key !== 'notEmpty' &&
+                if (
+                    key !== 'notEmpty' &&
                     key !== 'contains' &&
                     key !== 'equals' &&
                     key !== 'matches' &&
                     key.slice(0, 2) !== 'is'
                 ) {
-                    validator = `is${key.charAt(0).toUpperCase()}${key.slice(1)}`;
+                    validator = `is${key.charAt(0).toUpperCase()}${key.slice(
+                        1
+                    )}`;
                 } else {
                     validator = key;
                 }
 
-                if (key !== 'notEmpty' && !Object.prototype.hasOwnProperty.call(Validator, (validator))) {
+                if (
+                    key !== 'notEmpty' &&
+                    !Object.prototype.hasOwnProperty.call(Validator, validator)
+                ) {
                     throw new Error(`Validator does not have ${validator}`);
                 }
 
                 const value = get(this.state.fields, field, '');
 
-
                 let args = [value];
 
                 if (Array.isArray(validators[field][key])) {
                     args = [value, ...validators[field][key]];
-                } else if (isObject(validators[field][key]) && has(validators[field][key], 'args')) {
+                } else if (
+                    isObject(validators[field][key]) &&
+                    has(validators[field][key], 'args')
+                ) {
                     args = [value, ...validators[field][key].args];
                 }
 
@@ -77,8 +93,11 @@ export default class Form extends React.Component {
                         errors[field] = [];
                     }
 
-                    const message = isObject(validators[field][key]) && has(validators[field][key], 'msg')
-                        ? validators[field][key].msg : key;
+                    const message =
+                        isObject(validators[field][key]) &&
+                        has(validators[field][key], 'msg')
+                            ? validators[field][key].msg
+                            : key;
 
                     errors[field].push(message);
                 }
@@ -87,10 +106,13 @@ export default class Form extends React.Component {
 
         // This ensure we always send every field property, though for those that
         // have not had a change trigger we simply send an empty string
-        const newState = this.props.handler(errors, Object.assign(
-            zipObject(this.fields, fill(range(this.fields.length), '')),
-            this.state.fields
-        ));
+        const newState = this.props.handler(
+            errors,
+            Object.assign(
+                zipObject(this.fields, fill(range(this.fields.length), '')),
+                this.state.fields
+            )
+        );
 
         if (newState instanceof Object) {
             this.setState({ fields: newState });
@@ -98,7 +120,10 @@ export default class Form extends React.Component {
     }
 
     handleChange(field, event) {
-        const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+        const value =
+            event.target.type === 'checkbox'
+                ? event.target.checked
+                : event.target.value;
         this.setState({
             fields: Object.assign(this.state.fields, { [field]: value }),
         });
@@ -111,7 +136,10 @@ export default class Form extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!isEqual(this.props.fields, nextProps.fields) && nextProps.errors.length === 0) {
+        if (
+            !isEqual(this.props.fields, nextProps.fields) &&
+            nextProps.errors.length === 0
+        ) {
             this.setState({ fields: nextProps.fields });
         }
     }
@@ -125,8 +153,11 @@ export default class Form extends React.Component {
     }
 
     processChildren(children) {
-        return React.Children.map(children, (child) => {
-            if (child instanceof Object && includes(['input', 'textarea', 'select'], child.type)) {
+        return React.Children.map(children, child => {
+            if (
+                child instanceof Object &&
+                includes(['input', 'textarea', 'select'], child.type)
+            ) {
                 if (child.props.validate) {
                     this.validators[child.props.name] = child.props.validate;
                 }
@@ -136,11 +167,20 @@ export default class Form extends React.Component {
                 const value = get(this.state.fields, child.props.name, '');
 
                 return React.cloneElement(child, {
-                    [child.props.type === 'checkbox' ? 'checked' : 'value']: value,
+                    [child.props.type === 'checkbox'
+                        ? 'checked'
+                        : 'value']: value,
                     onChange: this.handleChange.bind(this, child.props.name),
                 });
-            } else if (child instanceof Object && React.Children.count(child) > 0) {
-                return React.cloneElement(child, {}, this.processChildren(child.props.children));
+            } else if (
+                child instanceof Object &&
+                React.Children.count(child) > 0
+            ) {
+                return React.cloneElement(
+                    child,
+                    {},
+                    this.processChildren(child.props.children)
+                );
             }
             return child;
         });

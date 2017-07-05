@@ -1,3 +1,4 @@
+/*eslint no-console: "off"*/
 const path = require('path');
 const http = require('http');
 const express = require('express');
@@ -36,49 +37,63 @@ if (ENV === DEV) {
     const webpack = require('webpack');
     const compiler = webpack(config);
 
-    app.use(require('webpack-dev-middleware')(compiler, {
-        noInfo: true,
-        publicPath: config.output.publicPath,
-    }));
+    app.use(
+        require('webpack-dev-middleware')(compiler, {
+            noInfo: true,
+            publicPath: config.output.publicPath,
+        })
+    );
     app.use(require('webpack-hot-middleware')(compiler));
     /* eslint-enable */
 }
 
-app.use(session({
-    cookieName: 'blueprint', // cookie name dictates the key name added to the request object
-    requestKey: 'session',
-    secret: 'theredballonfloatssouthintheslowwindsofazkaban', // should be a large unguessable string
-    duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
-    activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration, session is extended by activeDuration
-}));
+app.use(
+    session({
+        cookieName: 'blueprint', // cookie name dictates the key name added to the request object
+        requestKey: 'session',
+        secret: 'theredballonfloatssouthintheslowwindsofazkaban', // should be a large unguessable string
+        duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
+        activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration, session is extended by activeDuration
+    })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy(
-    (username, password, done) => {
-        db.models.User.findOne({ where: { email: username } }).then((user) => {
-            if (!user) {
-                return done(null, false, { message: 'Incorrect email or password.' });
-            }
-            if (!bcrypt.compareSync(password, user.password)) {
-                return done(null, false, { message: 'Incorrect email or password.' });
-            }
-            return done(null, user);
-        }).catch(error => done(error, null));
-    }
-));
+passport.use(
+    new LocalStrategy((username, password, done) => {
+        db.models.User
+            .findOne({ where: { email: username } })
+            .then(user => {
+                if (!user) {
+                    return done(null, false, {
+                        message: 'Incorrect email or password.',
+                    });
+                }
+                if (!bcrypt.compareSync(password, user.password)) {
+                    return done(null, false, {
+                        message: 'Incorrect email or password.',
+                    });
+                }
+                return done(null, user);
+            })
+            .catch(error => done(error, null));
+    })
+);
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-    db.models.User.findById(id).then((user) => {
-        done(null, user);
-    }).catch((error) => {
-        done(error, null);
-    });
+    db.models.User
+        .findById(id)
+        .then(user => {
+            done(null, user);
+        })
+        .catch(error => {
+            done(error, null);
+        });
 });
 
 app.get('/login', (req, res) => {
@@ -92,12 +107,16 @@ app.get('/login', (req, res) => {
     }
 });
 
-app.post('/login', passport.authenticate('local', {
-    failureRedirect: '/login',
-    failureFlash: true,
-}), (req, res) => {
-    res.redirect('/session');
-});
+app.post(
+    '/login',
+    passport.authenticate('local', {
+        failureRedirect: '/login',
+        failureFlash: true,
+    }),
+    (req, res) => {
+        res.redirect('/session');
+    }
+);
 
 app.get('/logout', (req, res) => {
     req.logout();
@@ -128,17 +147,12 @@ epilogue.initialize({
 const resources = {
     Task: epilogue.resource({
         model: db.models.Task,
-        endpoints: [
-            '/tasks',
-            '/tasks/:id',
-        ],
+        endpoints: ['/tasks', '/tasks/:id'],
     }),
     User: epilogue.resource({
         actions: ['create'],
         model: db.models.User,
-        endpoints: [
-            '/users',
-        ],
+        endpoints: ['/users'],
     }),
 };
 
@@ -153,7 +167,7 @@ resources.Task.all.auth((req, res, context) => {
             const token = parts[1];
 
             if (/^Bearer$/i.test(scheme)) {
-                db.models.User.findOne({ where: { token } }).then((user) => {
+                db.models.User.findOne({ where: { token } }).then(user => {
                     if (user) {
                         req.login(user, () => context.continue());
                     } else {
@@ -166,7 +180,9 @@ resources.Task.all.auth((req, res, context) => {
     } else if (req.isAuthenticated()) {
         context.continue();
     } else {
-        throw new epilogue.Errors.ForbiddenError('You must be logged in to access this resource.');
+        throw new epilogue.Errors.ForbiddenError(
+            'You must be logged in to access this resource.'
+        );
     }
 });
 
@@ -184,7 +200,7 @@ resources.Task.create.write.before((req, res, context) => {
 
 // Auto login a user after they register
 resources.User.create.write.after((req, res, context) => {
-    req.login(context.instance, (err) => {
+    req.login(context.instance, err => {
         if (err) {
             console.error(err);
         }
@@ -197,14 +213,16 @@ app.listen();
 
 const server = http.createServer(app);
 
-server.listen(PORT, (err) => {
+server.listen(PORT, err => {
     if (err) {
         console.error(err);
         return;
     }
 
-    const host = server.address().address === '::' ?
-        'localhost' : server.address().address;
+    const host =
+        server.address().address === '::'
+            ? 'localhost'
+            : server.address().address;
     const port = server.address().port;
 
     console.log('Starting in %s mode', ENV);

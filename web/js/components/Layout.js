@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class Layout extends React.Component {
-
     static propTypes = {
         router: PropTypes.object.isRequired,
         children: PropTypes.node.isRequired,
@@ -14,7 +13,7 @@ export default class Layout extends React.Component {
     static defaultProps = {
         actions: {},
         loaded: [],
-    }
+    };
 
     componentWillMount() {
         this.props.actions.loadTasks();
@@ -33,7 +32,7 @@ export default class Layout extends React.Component {
 
     render() {
         if (!includes(this.props.loaded, 'user')) {
-            return (<div />);
+            return <div />;
         }
 
         return (
@@ -42,24 +41,23 @@ export default class Layout extends React.Component {
                     <div className="container">
                         <div className="navbar-header">
                             <a
-                              role="button"
-                              style={{ cursor: 'pointer' }}
-                              className="navbar-brand"
-                              onClick={this.home.bind(this)}
-                              onTouchTap={this.home.bind(this)}
+                                role="button"
+                                style={{ cursor: 'pointer' }}
+                                className="navbar-brand"
+                                onClick={this.home.bind(this)}
+                                onTouchTap={this.home.bind(this)}
                             >
-                                <i className="fa fa-cloud" />&nbsp;
-                                Blueprint
+                                <i className="fa fa-cloud" />&nbsp; Blueprint
                             </a>
                         </div>
                         <ul className="nav navbar-nav navbar-right">
                             <li>
                                 <i
-                                  role="button"
-                                  style={{ cursor: 'pointer' }}
-                                  className="navbar-brand fa fa-sign-out"
-                                  onClick={this.logout.bind(this)}
-                                  onTouchTap={this.logout.bind(this)}
+                                    role="button"
+                                    style={{ cursor: 'pointer' }}
+                                    className="navbar-brand fa fa-sign-out"
+                                    onClick={this.logout.bind(this)}
+                                    onTouchTap={this.logout.bind(this)}
                                 />
                             </li>
                         </ul>

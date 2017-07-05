@@ -11,7 +11,7 @@ const env = process.env.NODE_ENV || DEV;
 module.exports = {
     devtool: env === PROD ? 'source-map' : 'eval',
     entry: {
-        main: ['./web/js/index.jsx', './web/css/main.less'],
+        main: ['./web/js/index.js', './web/css/main.less'],
     },
     output: {
         path: path.join(__dirname, 'web/assets'),

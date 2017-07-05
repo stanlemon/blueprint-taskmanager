@@ -1,7 +1,6 @@
 import RestService from './RestService';
 
 export default class UserService extends RestService {
-
     checkSession() {
         return this.fetch('/session');
     }

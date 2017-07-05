@@ -1,16 +1,23 @@
 import { spy } from 'sinon';
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import TaskListView from '../../../web/js/components/TaskListView.jsx';
+import TaskListView from './TaskListView';
+import TaskItem from './TaskItem';
 import MockRouter from '../mocks/MockRouter';
 
 injectTapEventPlugin();
 
 describe('<TaskListView />', () => {
-
     it('should render a spinner while it waits to load', () => {
-        const view = mount(<TaskListView loaded={[]} tasks={[]} router={new MockRouter()} actions={{}} />);
+        const view = mount(
+            <TaskListView
+                loaded={[]}
+                tasks={[]}
+                router={new MockRouter()}
+                actions={{}}
+            />
+        );
 
         const i = view.find('i');
 
@@ -38,17 +45,19 @@ describe('<TaskListView />', () => {
             },
         ];
 
-        spy(TaskListView.prototype, 'render');
+        const view = shallow(
+            <TaskListView
+                loaded={['tasks']}
+                tasks={tasks}
+                errors={{}}
+                router={router}
+                actions={{}}
+            />
+        );
 
-        const view = mount(<TaskListView loaded={['tasks']} tasks={tasks} errors={{}} router={router} actions={{}} />);
-
-        expect(TaskListView.prototype.render.calledOnce).toBe(true);
-
-        expect(view.text().indexOf(tasks[0].name)).toBeGreaterThan(-1);
-        expect(view.text().indexOf(tasks[1].name)).toBeGreaterThan(-1);
-
-        view.find('.task-name').first().simulate('click');
-
-        expect(router.routes[0]).toBe('/view/2');
+        // List of tasks contains our first task
+        expect(view.contains(<TaskItem router={router} actions={{}} task={tasks[0]} />)).toBe(true);
+        // List of tasks contains our second task
+        expect(view.contains(<TaskItem router={router} actions={{}} task={tasks[1]} />)).toBe(true);
     });
 });

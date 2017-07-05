@@ -24,8 +24,10 @@ function tasks(state = [], action) {
             return [...state, action.task];
         case UPDATE_TASK_SUCCESS:
             return state.map(
-                task => ((task.id === action.task.id) ?
-                    Object.assign({}, action.task) : task)
+                task =>
+                    task.id === action.task.id
+                        ? Object.assign({}, action.task)
+                        : task
             );
         case DELETE_TASK_SUCCESS:
             return state.filter(task => action.taskId !== task.id);
@@ -72,7 +74,7 @@ function loaded(state = [], action) {
     }
 }
 
-export default function (state = {}, action) {
+export default function(state = {}, action) {
     return {
         user: user(state.user, action),
         tasks: tasks(state.tasks, action),
