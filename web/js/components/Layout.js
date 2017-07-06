@@ -20,17 +20,18 @@ export default class Layout extends React.Component {
     }
 
     home() {
-        this.props.router.push('/');
+        this.props.history.push('/');
     }
 
     logout(e) {
         e.preventDefault();
         this.props.actions.logout();
         this.props.actions.clearErrors();
-        this.props.router.push('/login');
+        this.props.history.push('/login');
     }
 
     render() {
+        console.log('Layout', this.props);
         if (!includes(this.props.loaded, 'user')) {
             return <div />;
         }

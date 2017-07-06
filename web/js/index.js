@@ -1,13 +1,10 @@
 import React from 'react';
 import { render } from 'react-dom';
 import {
-    Router,
-    IndexRoute,
-    Route,
-    hashHistory,
-    createMemoryHistory,
-    withRouter,
-} from 'react-router';
+    HashRouter as Router,
+    Switch,
+    Route
+} from 'react-router-dom';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -48,24 +45,50 @@ if (module.hot) {
     });
 }
 
-const history =
-    process.env.NODE_ENV === 'test' ? createMemoryHistory() : hashHistory;
+import { withRouter } from 'react-router'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as _actions from './actions/';
+
+//const actions = bindActionCreators(_actions, store.dispatch);
+
+
+const A = connect(
+    state => state,
+    dispatch => ({ actions: bindActionCreators(_actions, dispatch) })
+)((props) => {
+    console.log('Connected', props)
+    return (
+        <Router>
+            <Root>
+                <Switch>
+                    <Route path="/login" render={(router) =>
+                        <LoginView {...props} router={router} />
+                    } />
+                    <Route path="/register" render={(router) =>
+                        <RegisterView {...props} router={router} />
+                    } />
+                    <Route path="/" render={(router) =>
+                        <Layout {...props} router={router}>
+                            <Switch>
+                                <Route exact path="/" render={(router) =>
+                                    <TaskListView {...props} router={router} />
+                                }/>
+                                <Route exact path="/view/:id" render={(router) =>
+                                    <TaskView {...props} router={router} />
+                                }/>
+                            </Switch>
+                        </Layout>
+                    } />
+                </Switch>
+            </Root>
+        </Router>
+    )
+})
 
 const App = (
     <Provider store={store}>
-        <div>
-            <Router history={history}>
-                <Route component={withRouter(Root)}>
-                    <Route path="/login" component={LoginView} />
-                    <Route path="/register" component={RegisterView} />
-                    <Route path="/" component={Layout}>
-                        <IndexRoute component={TaskListView} />
-                        <Route path="view/:id" component={TaskView} />
-                    </Route>
-                </Route>
-            </Router>
-            <DevTools />
-        </div>
+        <A />
     </Provider>
 );
 

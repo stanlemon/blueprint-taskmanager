@@ -1,11 +1,13 @@
 import { includes, omit } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions/';
 
 class Root extends React.Component {
+    /*
     static propTypes = {
         router: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,
@@ -15,6 +17,7 @@ class Root extends React.Component {
         loaded: PropTypes.array.isRequired,
         user: PropTypes.object,
     };
+    */
 
     static defaultProps = {
         actions: {},
@@ -45,7 +48,7 @@ class Root extends React.Component {
             this.props.user === null &&
             nextProps.user !== null
         ) {
-            this.props.router.push('/');
+            this.props.router.history.push('/');
             return false;
         }
 
@@ -54,18 +57,18 @@ class Root extends React.Component {
         // Unauthenticated user is on a page they shouldn't be
         if (
             nextProps.user !== null &&
-            unauthPaths.indexOf(this.props.location.pathname) > -1
+            unauthPaths.indexOf(this.props.router.route.location.pathname) > -1
         ) {
-            this.props.router.push('/');
+            this.props.router.history.push('/');
             return false;
         }
 
         // Unauthenticated user is on a page they shouldn't be
         if (
             nextProps.user === null &&
-            unauthPaths.indexOf(this.props.location.pathname) === -1
+            unauthPaths.indexOf(this.props.router.route.location.pathname) === -1
         ) {
-            this.props.router.push('/login');
+            this.props.router.history.push('/login');
             return false;
         }
 
@@ -80,7 +83,7 @@ class Root extends React.Component {
     }
 }
 
-export default connect(
+export default withRouter(connect(
     state => state,
     dispatch => ({ actions: bindActionCreators(actions, dispatch) })
-)(Root);
+)(Root));
