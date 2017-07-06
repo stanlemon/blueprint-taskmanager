@@ -63,46 +63,44 @@ export default class LoginView extends React.Component {
                                         handler={this.handleSubmit.bind(this)}
                                     >
                                         <div className="form-group">
-                                            <label
-                                                htmlFor="username"
-                                                className="col-sm-3 control-label"
-                                            >
-                                                Email
-                                            </label>
-                                            <div className="col-sm-9">
-                                                <div className="input-group">
-                                                    <span className="input-group-addon">
-                                                        <i className="fa fa-user" />
-                                                    </span>
-                                                    <input
-                                                        type="email"
-                                                        className="form-control"
-                                                        id="username"
-                                                        name="username"
-                                                    />
+                                            <label htmlFor="username">
+                                                <div className="col-sm-3 control-label">
+                                                    Email
                                                 </div>
-                                            </div>
+                                                <div className="col-sm-9">
+                                                    <div className="input-group">
+                                                        <span className="input-group-addon">
+                                                            <i className="fa fa-user" />
+                                                        </span>
+                                                        <input
+                                                            type="email"
+                                                            className="form-control"
+                                                            id="username"
+                                                            name="username"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </label>
                                         </div>
                                         <div className="form-group">
-                                            <label
-                                                htmlFor="password"
-                                                className="col-sm-3 control-label"
-                                            >
-                                                Password
-                                            </label>
-                                            <div className="col-sm-9">
-                                                <div className="input-group">
-                                                    <span className="input-group-addon">
-                                                        <i className="fa fa-lock" />
-                                                    </span>
-                                                    <input
-                                                        type="password"
-                                                        className="form-control"
-                                                        id="password"
-                                                        name="password"
-                                                    />
+                                            <label htmlFor="password">
+                                                <div className="col-sm-3 control-label">
+                                                    Password
                                                 </div>
-                                            </div>
+                                                <div className="col-sm-9">
+                                                    <div className="input-group">
+                                                        <span className="input-group-addon">
+                                                            <i className="fa fa-lock" />
+                                                        </span>
+                                                        <input
+                                                            type="password"
+                                                            className="form-control"
+                                                            id="password"
+                                                            name="password"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </label>
                                         </div>
                                         <br />
                                         <div className="col-sm-10 col-sm-offset-1">

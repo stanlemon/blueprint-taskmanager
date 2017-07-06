@@ -3,19 +3,22 @@
     "browser": true,
     "commonjs": true,
     "es6": true,
-    "node": true
+    "node": true,
+    "jasmine": true
   },
   "parser": "babel-eslint",
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:import/errors",
-    "plugin:jsx-a11y/recommended"
+    "plugin:jsx-a11y/recommended",
+    "plugin:jest/recommended"
   ],
   "plugins": [
     "prettier",
     "react",
-    "jsx-a11y"
+    "jsx-a11y",
+    "jest"
   ],
   "rules": {
     "prettier/prettier": ["error", {

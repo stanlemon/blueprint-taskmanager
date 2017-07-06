@@ -80,16 +80,16 @@ export default class TaskForm extends React.Component {
                         >
                             <label htmlFor="name" className="control-label">
                                 Name
+                                <input
+                                    name="name"
+                                    type="text"
+                                    className="form-control"
+                                />
+                                {errors.name &&
+                                    <span className="help-block">
+                                        {errors.name}
+                                    </span>}
                             </label>
-                            <input
-                                name="name"
-                                type="text"
-                                className="form-control"
-                            />
-                            {errors.name &&
-                                <span className="help-block">
-                                    {errors.name}
-                                </span>}
                         </div>
                         <div
                             className={classNames('form-group', {
@@ -101,15 +101,15 @@ export default class TaskForm extends React.Component {
                                 className="control-label"
                             >
                                 Description
+                                <textarea
+                                    name="description"
+                                    className="form-control"
+                                />
+                                {errors.description &&
+                                    <span className="help-block">
+                                        {errors.description}
+                                    </span>}
                             </label>
-                            <textarea
-                                name="description"
-                                className="form-control"
-                            />
-                            {errors.description &&
-                                <span className="help-block">
-                                    {errors.description}
-                                </span>}
                         </div>
                         <div
                             className={classNames('form-group', {
@@ -118,15 +118,15 @@ export default class TaskForm extends React.Component {
                         >
                             <label htmlFor="due" className="control-label">
                                 Due
+                                <Datetime
+                                    value={this.state.due}
+                                    onChange={due => this.setState({ due })}
+                                />
+                                {errors.due &&
+                                    <span className="help-block">
+                                        {errors.due}
+                                    </span>}
                             </label>
-                            <Datetime
-                                value={this.state.due}
-                                onChange={due => this.setState({ due })}
-                            />
-                            {errors.due &&
-                                <span className="help-block">
-                                    {errors.due}
-                                </span>}
                         </div>
                         {task &&
                             task.id &&

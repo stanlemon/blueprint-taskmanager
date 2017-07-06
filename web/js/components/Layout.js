@@ -40,15 +40,14 @@ export default class Layout extends React.Component {
                 <nav className="navbar navbar-inverse navbar-fixed-top custom-navbar">
                     <div className="container">
                         <div className="navbar-header">
-                            <a
-                                role="button"
+                            <button
                                 style={{ cursor: 'pointer' }}
-                                className="navbar-brand"
+                                className="navbar-brand btn-link"
                                 onClick={this.home.bind(this)}
                                 onTouchTap={this.home.bind(this)}
                             >
                                 <i className="fa fa-cloud" />&nbsp; Blueprint
-                            </a>
+                            </button>
                         </div>
                         <ul className="nav navbar-nav navbar-right">
                             <li>

@@ -47,7 +47,7 @@ function user(state = null, action) {
     }
 }
 
-function errors(state = {}, action) {
+function errors(action) {
     switch (action.type) {
         case ERROR:
         case LOAD_TASKS_ERROR:
@@ -79,6 +79,6 @@ export default function(state = {}, action) {
         user: user(state.user, action),
         tasks: tasks(state.tasks, action),
         loaded: loaded(state.loaded, action),
-        errors: errors(state.errors, action),
+        errors: errors(action),
     };
 }

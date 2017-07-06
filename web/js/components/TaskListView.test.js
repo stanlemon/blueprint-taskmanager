@@ -1,4 +1,3 @@
-import { spy } from 'sinon';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -56,8 +55,16 @@ describe('<TaskListView />', () => {
         );
 
         // List of tasks contains our first task
-        expect(view.contains(<TaskItem router={router} actions={{}} task={tasks[0]} />)).toBe(true);
+        expect(
+            view.contains(
+                <TaskItem router={router} actions={{}} task={tasks[0]} />
+            )
+        ).toBe(true);
         // List of tasks contains our second task
-        expect(view.contains(<TaskItem router={router} actions={{}} task={tasks[1]} />)).toBe(true);
+        expect(
+            view.contains(
+                <TaskItem router={router} actions={{}} task={tasks[1]} />
+            )
+        ).toBe(true);
     });
 });

@@ -75,24 +75,25 @@ export default class RegisterView extends React.Component {
                                                 { 'has-error': errors.name }
                                             )}
                                         >
-                                            <label
-                                                htmlFor="name"
-                                                className="col-sm-2 control-label"
-                                            >
-                                                Name
+                                            <label htmlFor="name">
+                                                <div className="col-sm-2 control-label">
+                                                    Name
+                                                </div>
+                                                <div className="col-sm-10">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        id="name"
+                                                        name="name"
+                                                    />
+                                                    {errors.name &&
+                                                        <span className="help-block">
+                                                            {errors.name.slice(
+                                                                -1
+                                                            )}
+                                                        </span>}
+                                                </div>
                                             </label>
-                                            <div className="col-sm-10">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="name"
-                                                    name="name"
-                                                />
-                                                {errors.name &&
-                                                    <span className="help-block">
-                                                        {errors.name.slice(-1)}
-                                                    </span>}
-                                            </div>
                                         </div>
                                         <div
                                             className={classNames(
@@ -100,24 +101,23 @@ export default class RegisterView extends React.Component {
                                                 { 'has-error': errors.email }
                                             )}
                                         >
-                                            <label
-                                                htmlFor="email"
-                                                className="col-sm-2 control-label"
-                                            >
-                                                Email
+                                            <label htmlFor="email">
+                                                <div className="col-sm-2 control-label">
+                                                    Email
+                                                </div>
+                                                <div className="col-sm-10">
+                                                    <input
+                                                        type="email"
+                                                        className="form-control"
+                                                        id="email"
+                                                        name="email"
+                                                    />
+                                                    {errors.email &&
+                                                        <span className="help-block">
+                                                            {errors.email}
+                                                        </span>}
+                                                </div>
                                             </label>
-                                            <div className="col-sm-10">
-                                                <input
-                                                    type="email"
-                                                    className="form-control"
-                                                    id="email"
-                                                    name="email"
-                                                />
-                                                {errors.email &&
-                                                    <span className="help-block">
-                                                        {errors.email}
-                                                    </span>}
-                                            </div>
                                         </div>
                                         <div
                                             className={classNames(
@@ -128,26 +128,25 @@ export default class RegisterView extends React.Component {
                                                 }
                                             )}
                                         >
-                                            <label
-                                                htmlFor="password"
-                                                className="col-sm-2 control-label"
-                                            >
-                                                Password
+                                            <label htmlFor="password">
+                                                <div className="col-sm-2 control-label">
+                                                    Password
+                                                </div>
+                                                <div className="col-sm-10">
+                                                    <input
+                                                        type="password"
+                                                        className="form-control"
+                                                        id="password"
+                                                        name="password"
+                                                    />
+                                                    {errors.password &&
+                                                        <span className="help-block">
+                                                            {errors.password.slice(
+                                                                -1
+                                                            )}
+                                                        </span>}
+                                                </div>
                                             </label>
-                                            <div className="col-sm-10">
-                                                <input
-                                                    type="password"
-                                                    className="form-control"
-                                                    id="password"
-                                                    name="password"
-                                                />
-                                                {errors.password &&
-                                                    <span className="help-block">
-                                                        {errors.password.slice(
-                                                            -1
-                                                        )}
-                                                    </span>}
-                                            </div>
                                         </div>
 
                                         <br />

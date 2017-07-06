@@ -2,6 +2,7 @@
 .*/node_modules/babel.*
 .*/node_modules/fbjs.*
 .*/node_modules/babylon.*
+.*/node_modules/bcrypt.*
 
 [include]
 ./node_modules/
