@@ -1,23 +1,16 @@
 import { includes, omit } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router'
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as actions from '../actions/';
 
-class Root extends React.Component {
-    /*
+export default class Root extends React.Component {
     static propTypes = {
         router: PropTypes.object.isRequired,
-        location: PropTypes.object.isRequired,
         children: PropTypes.node.isRequired,
         pollInterval: PropTypes.number,
         actions: PropTypes.object.isRequired,
         loaded: PropTypes.array.isRequired,
         user: PropTypes.object,
     };
-    */
 
     static defaultProps = {
         actions: {},
@@ -57,7 +50,7 @@ class Root extends React.Component {
         // Unauthenticated user is on a page they shouldn't be
         if (
             nextProps.user !== null &&
-            unauthPaths.indexOf(this.props.router.route.location.pathname) > -1
+            unauthPaths.indexOf(this.props.router.location.pathname) > -1
         ) {
             this.props.router.history.push('/');
             return false;
@@ -66,7 +59,7 @@ class Root extends React.Component {
         // Unauthenticated user is on a page they shouldn't be
         if (
             nextProps.user === null &&
-            unauthPaths.indexOf(this.props.router.route.location.pathname) === -1
+            unauthPaths.indexOf(this.props.router.location.pathname) === -1
         ) {
             this.props.router.history.push('/login');
             return false;
@@ -82,8 +75,3 @@ class Root extends React.Component {
         );
     }
 }
-
-export default withRouter(connect(
-    state => state,
-    dispatch => ({ actions: bindActionCreators(actions, dispatch) })
-)(Root));

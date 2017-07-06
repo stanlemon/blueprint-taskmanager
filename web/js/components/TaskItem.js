@@ -16,7 +16,7 @@ export default class TaskItem extends React.Component {
     }
 
     viewTask() {
-        this.props.router.push(`/view/${this.props.task.id}`);
+        this.props.router.history.push(`/view/${this.props.task.id}`);
     }
 
     completeTask(event) {
