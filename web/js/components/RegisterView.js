@@ -166,7 +166,7 @@ export default class RegisterView extends React.Component {
                         <div className="text-center">
                             <button
                                 className="btn btn-link"
-                                onClick={this.props.navigateTo('/login')}
+                                onClick={() => this.props.navigateTo('/login')}
                             >
                                 Return to Login
                             </button>
