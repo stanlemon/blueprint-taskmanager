@@ -13,7 +13,7 @@ const COMPLETE = 'complete';
 export default class TaskListView extends React.Component {
     static propTypes = {
         actions: PropTypes.object.isRequired,
-        router: PropTypes.object.isRequired,
+        navigateTo: PropTypes.func.isRequired,
         tasks: PropTypes.array.isRequired,
         errors: PropTypes.object,
         loaded: PropTypes.array,
@@ -36,7 +36,7 @@ export default class TaskListView extends React.Component {
 
     render() {
         const { filter } = this.state;
-        const { actions, router, loaded, errors } = this.props;
+        const { actions, loaded, errors, navigateTo } = this.props;
 
         if (!includes(loaded, 'tasks')) {
             return (
@@ -123,7 +123,6 @@ export default class TaskListView extends React.Component {
                             <button
                                 type="button"
                                 onClick={this.setFilter.bind(this, ALL)}
-                                onTouchTap={this.setFilter.bind(this, ALL)}
                                 className={btnAll}
                             >
                                 All
@@ -133,10 +132,6 @@ export default class TaskListView extends React.Component {
                             <button
                                 type="button"
                                 onClick={this.setFilter.bind(this, INCOMPLETE)}
-                                onTouchTap={this.setFilter.bind(
-                                    this,
-                                    INCOMPLETE
-                                )}
                                 className={btnIncomplete}
                             >
                                 Incomplete
@@ -146,7 +141,6 @@ export default class TaskListView extends React.Component {
                             <button
                                 type="button"
                                 onClick={this.setFilter.bind(this, COMPLETE)}
-                                onTouchTap={this.setFilter.bind(this, COMPLETE)}
                                 className={btnComplete}
                             >
                                 Complete
@@ -171,7 +165,7 @@ export default class TaskListView extends React.Component {
                     <TaskItem
                         key={task.id}
                         actions={actions}
-                        router={router}
+                        navigateTo={navigateTo}
                         task={task}
                     />
                 )}

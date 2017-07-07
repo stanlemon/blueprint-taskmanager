@@ -1,10 +1,11 @@
-import { includes, omit } from 'lodash';
+import { includes } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class Root extends React.Component {
+export default class SessionWatcher extends React.Component {
     static propTypes = {
-        router: PropTypes.object.isRequired,
+        navigateTo: PropTypes.func.isRequired,
+        path: PropTypes.string.isRequired,
         children: PropTypes.node.isRequired,
         pollInterval: PropTypes.number,
         actions: PropTypes.object.isRequired,
@@ -41,7 +42,7 @@ export default class Root extends React.Component {
             this.props.user === null &&
             nextProps.user !== null
         ) {
-            this.props.router.history.push('/');
+            this.props.navigateTo('/');
             return false;
         }
 
@@ -50,18 +51,18 @@ export default class Root extends React.Component {
         // Unauthenticated user is on a page they shouldn't be
         if (
             nextProps.user !== null &&
-            unauthPaths.indexOf(this.props.router.location.pathname) > -1
+            unauthPaths.indexOf(this.props.path) > -1
         ) {
-            this.props.router.history.push('/');
+            this.props.navigateTo('/');
             return false;
         }
 
         // Unauthenticated user is on a page they shouldn't be
         if (
             nextProps.user === null &&
-            unauthPaths.indexOf(this.props.router.location.pathname) === -1
+            unauthPaths.indexOf(this.props.path) === -1
         ) {
-            this.props.router.history.push('/login');
+            this.props.navigateTo('/login');
             return false;
         }
 
@@ -69,9 +70,6 @@ export default class Root extends React.Component {
     }
 
     render() {
-        return React.cloneElement(
-            this.props.children,
-            omit(this.props, 'children')
-        );
+        return React.cloneElement(this.props.children, this.props);
     }
 }

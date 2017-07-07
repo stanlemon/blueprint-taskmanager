@@ -59,7 +59,6 @@
     "react-dom": "^15.6.x",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
-    "react-tap-event-plugin": "^2.0.x",
     "redux": "^3.7.x",
     "redux-thunk": "^2.2.0",
     "sequelize": "^4.2.x",

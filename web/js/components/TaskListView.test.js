@@ -1,11 +1,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import TaskListView from './TaskListView';
 import TaskItem from './TaskItem';
-import MockRouter from '../mocks/MockRouter';
-
-injectTapEventPlugin();
 
 describe('<TaskListView />', () => {
     it('should render a spinner while it waits to load', () => {
@@ -13,7 +9,7 @@ describe('<TaskListView />', () => {
             <TaskListView
                 loaded={[]}
                 tasks={[]}
-                router={new MockRouter()}
+                navigateTo={() => {}}
                 actions={{}}
             />
         );
@@ -25,8 +21,6 @@ describe('<TaskListView />', () => {
     });
 
     it('should render a list of tasks', () => {
-        const router = new MockRouter();
-
         const tasks = [
             {
                 id: 1,
@@ -44,12 +38,14 @@ describe('<TaskListView />', () => {
             },
         ];
 
+        const navigateTo = () => {};
+
         const view = shallow(
             <TaskListView
                 loaded={['tasks']}
                 tasks={tasks}
                 errors={{}}
-                router={router}
+                navigateTo={navigateTo}
                 actions={{}}
             />
         );
@@ -57,13 +53,21 @@ describe('<TaskListView />', () => {
         // List of tasks contains our first task
         expect(
             view.contains(
-                <TaskItem router={router} actions={{}} task={tasks[0]} />
+                <TaskItem
+                    navigateTo={navigateTo}
+                    actions={{}}
+                    task={tasks[0]}
+                />
             )
         ).toBe(true);
         // List of tasks contains our second task
         expect(
             view.contains(
-                <TaskItem router={router} actions={{}} task={tasks[1]} />
+                <TaskItem
+                    navigateTo={navigateTo}
+                    actions={{}}
+                    task={tasks[1]}
+                />
             )
         ).toBe(true);
     });

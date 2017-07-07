@@ -6,7 +6,7 @@ import Form from './Form';
 
 export default class LoginView extends React.Component {
     static propTypes = {
-        router: PropTypes.object.isRequired,
+        navigateTo: PropTypes.func.isRequired,
         actions: PropTypes.object.isRequired,
         errors: PropTypes.object,
     };
@@ -18,7 +18,7 @@ export default class LoginView extends React.Component {
 
     handleClickRegister(e) {
         e.preventDefault();
-        this.props.router.push('/register');
+        this.props.navigateTo('/register');
     }
 
     handleSubmit(errors, data) {
@@ -126,7 +126,6 @@ export default class LoginView extends React.Component {
                                 type="button"
                                 className="btn btn-link"
                                 onClick={this.handleClickRegister.bind(this)}
-                                onTouchTap={this.handleClickRegister.bind(this)}
                             >
                                 Create one now.
                             </button>

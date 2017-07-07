@@ -6,7 +6,7 @@ import { makeDateTime } from '../lib/Utils';
 
 export default class TaskItem extends React.Component {
     static propTypes = {
-        router: PropTypes.object.isRequired,
+        navigateTo: PropTypes.func.isRequired,
         actions: PropTypes.object.isRequired,
         task: PropTypes.object.isRequired,
     };
@@ -16,7 +16,7 @@ export default class TaskItem extends React.Component {
     }
 
     viewTask() {
-        this.props.router.history.push(`/view/${this.props.task.id}`);
+        this.props.navigateTo(`/view/${this.props.task.id}`);
     }
 
     completeTask(event) {
@@ -63,7 +63,6 @@ export default class TaskItem extends React.Component {
                         style={nameStyles}
                         className="task-name col-xs-9 col-sm-9 col-md-10"
                         onClick={this.viewTask.bind(this)}
-                        onTouchTap={this.viewTask.bind(this)}
                     >
                         {task.name}
                     </div>
@@ -80,7 +79,6 @@ export default class TaskItem extends React.Component {
                                 <button
                                     className="btn btn-xs btn-danger"
                                     onClick={this.deleteTask.bind(this)}
-                                    onTouchTap={this.deleteTask.bind(this)}
                                 >
                                     <i
                                         className="fa fa-trash-o"
