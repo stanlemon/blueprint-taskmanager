@@ -8,7 +8,7 @@ describe('<UpdateTaskForm />', () => {
         let lastSavedTask = null;
 
         const actions = {
-            updateTask: (task) => {
+            updateTask: task => {
                 // Store the task so that we can reference it later
                 lastSavedTask = task;
             },

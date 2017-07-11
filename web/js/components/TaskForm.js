@@ -34,7 +34,10 @@ export default class TaskForm extends React.Component {
         const result = this.handleSave(
             Object.assign({}, data, {
                 due: this.state.due,
-                completed: data.completed === true ? makeDateTime() : data.completed || null,
+                completed:
+                    data.completed === true
+                        ? makeDateTime()
+                        : data.completed || null,
             })
         );
 

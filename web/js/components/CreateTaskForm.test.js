@@ -1,14 +1,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import CreateTaskForm from './CreateTaskForm';
-import moment from 'moment';
 
 describe('<CreateTaskForm />', () => {
     it('should render a form with a task in it', () => {
         let lastSavedTask = null;
 
         const actions = {
-            createTask: (task) => {
+            createTask: task => {
                 // Store the task so that we can reference it later
                 lastSavedTask = task;
             },
@@ -46,10 +45,10 @@ describe('<CreateTaskForm />', () => {
 
         form.simulate('submit');
 
-        const expectedTask = Object.assign(
-            task,
-            { completed: null, due: null}
-        );
+        const expectedTask = Object.assign(task, {
+            completed: null,
+            due: null,
+        });
 
         expect(lastSavedTask).toEqual(expectedTask);
     });
