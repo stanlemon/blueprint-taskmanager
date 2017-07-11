@@ -3,11 +3,12 @@ import TaskForm from './TaskForm';
 
 export default class UpdateTaskForm extends TaskForm {
     static propTypes = {
-        router: PropTypes.object.isRequired,
+        navigateTo: PropTypes.func.isRequired,
+        actions: PropTypes.object.isRequired,
     };
 
     handleSave(data) {
         this.props.actions.updateTask(data);
-        this.props.router.push('/');
+        this.props.navigateTo('/');
     }
 }

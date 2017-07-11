@@ -1,14 +1,11 @@
-import { includes, omit } from 'lodash';
+import { includes } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as actions from '../actions/';
 
-class Root extends React.Component {
+export default class SessionWatcher extends React.Component {
     static propTypes = {
-        router: PropTypes.object.isRequired,
-        location: PropTypes.object.isRequired,
+        navigateTo: PropTypes.func.isRequired,
+        path: PropTypes.string.isRequired,
         children: PropTypes.node.isRequired,
         pollInterval: PropTypes.number,
         actions: PropTypes.object.isRequired,
@@ -45,7 +42,7 @@ class Root extends React.Component {
             this.props.user === null &&
             nextProps.user !== null
         ) {
-            this.props.router.push('/');
+            this.props.navigateTo('/');
             return false;
         }
 
@@ -54,18 +51,18 @@ class Root extends React.Component {
         // Unauthenticated user is on a page they shouldn't be
         if (
             nextProps.user !== null &&
-            unauthPaths.indexOf(this.props.location.pathname) > -1
+            unauthPaths.indexOf(this.props.path) > -1
         ) {
-            this.props.router.push('/');
+            this.props.navigateTo('/');
             return false;
         }
 
         // Unauthenticated user is on a page they shouldn't be
         if (
             nextProps.user === null &&
-            unauthPaths.indexOf(this.props.location.pathname) === -1
+            unauthPaths.indexOf(this.props.path) === -1
         ) {
-            this.props.router.push('/login');
+            this.props.navigateTo('/login');
             return false;
         }
 
@@ -73,14 +70,6 @@ class Root extends React.Component {
     }
 
     render() {
-        return React.cloneElement(
-            this.props.children,
-            omit(this.props, 'children')
-        );
+        return React.cloneElement(this.props.children, this.props);
     }
 }
-
-export default connect(
-    state => state,
-    dispatch => ({ actions: bindActionCreators(actions, dispatch) })
-)(Root);

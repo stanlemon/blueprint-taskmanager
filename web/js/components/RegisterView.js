@@ -2,12 +2,12 @@ import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import Form from './Form';
 
 export default class RegisterView extends React.Component {
     static propTypes = {
         actions: PropTypes.object.isRequired,
+        navigateTo: PropTypes.func.isRequired,
         errors: PropTypes.object,
     };
 
@@ -164,7 +164,12 @@ export default class RegisterView extends React.Component {
                         </div>
                         <div style={{ minHeight: '2em' }} />
                         <div className="text-center">
-                            <Link to="/login">Return to Login</Link>
+                            <button
+                                className="btn btn-link"
+                                onClick={() => this.props.navigateTo('/login')}
+                            >
+                                Return to Login
+                            </button>
                         </div>
                     </div>
                 </div>

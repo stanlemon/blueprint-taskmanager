@@ -1,31 +1,34 @@
-import { includes } from 'lodash';
+import { includes, isEmpty } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import Error from './Error';
 import TaskForm from './UpdateTaskForm';
 
 export default function TaskView({
-    params,
     actions,
-    router,
     loaded,
+    taskId,
     tasks,
+    navigateTo,
     errors,
 }) {
     if (!includes(loaded, 'tasks')) {
         return <div />;
     }
 
-    const taskId = parseInt(params.id, 10);
     const task = Object.assign({}, tasks.filter(t => t.id === taskId)[0]);
 
-    if (!task) {
+    if (isEmpty(task)) {
         return (
             <div>
                 <Error message="Task does not exist." />
-                <Link to="/">Go back to list</Link>
+                <button
+                    className="btn btn-link"
+                    onClick={this.props.navigateTo('/')}
+                >
+                    Go back to list
+                </button>
             </div>
         );
     }
@@ -35,7 +38,7 @@ export default function TaskView({
             <TaskForm
                 task={task}
                 errors={errors}
-                router={router}
+                navigateTo={navigateTo}
                 actions={actions}
             />
 
@@ -53,8 +56,8 @@ export default function TaskView({
 
 TaskView.propTypes = {
     actions: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
+    navigateTo: PropTypes.func.isRequired,
+    taskId: PropTypes.number.isRequired,
     tasks: PropTypes.array.isRequired,
     errors: PropTypes.object,
     loaded: PropTypes.array,
