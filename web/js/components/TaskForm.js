@@ -53,6 +53,10 @@ export default class TaskForm extends React.Component {
         this.props.actions.clearErrors();
     }
 
+    setDueDate(due) {
+        this.setState({ due });
+    }
+
     render() {
         const { task, errors } = this.props;
 
@@ -120,7 +124,7 @@ export default class TaskForm extends React.Component {
                                 Due
                                 <Datetime
                                     value={this.state.due}
-                                    onChange={due => this.setState({ due })}
+                                    onChange={this.setDueDate.bind(this)}
                                 />
                                 {errors.due &&
                                     <span className="help-block">
@@ -148,7 +152,10 @@ export default class TaskForm extends React.Component {
                                 </label>
                             </div>}
                         <div className="form-group">
-                            <button className="btn btn-primary col-sm-2">
+                            <button
+                                name="saveTask"
+                                className="btn btn-primary col-sm-2"
+                            >
                                 Save
                             </button>
                         </div>
