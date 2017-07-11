@@ -34,7 +34,10 @@ export default class TaskForm extends React.Component {
         const result = this.handleSave(
             Object.assign({}, data, {
                 due: this.state.due,
-                completed: data.completed === true ? makeDateTime() : null,
+                completed:
+                    data.completed === true
+                        ? makeDateTime()
+                        : data.completed || null,
             })
         );
 
@@ -51,6 +54,10 @@ export default class TaskForm extends React.Component {
 
     componentWillUnmount() {
         this.props.actions.clearErrors();
+    }
+
+    setDueDate(due) {
+        this.setState({ due });
     }
 
     render() {
@@ -120,7 +127,7 @@ export default class TaskForm extends React.Component {
                                 Due
                                 <Datetime
                                     value={this.state.due}
-                                    onChange={due => this.setState({ due })}
+                                    onChange={this.setDueDate.bind(this)}
                                 />
                                 {errors.due &&
                                     <span className="help-block">
@@ -148,7 +155,10 @@ export default class TaskForm extends React.Component {
                                 </label>
                             </div>}
                         <div className="form-group">
-                            <button className="btn btn-primary col-sm-2">
+                            <button
+                                name="saveTask"
+                                className="btn btn-primary col-sm-2"
+                            >
                                 Save
                             </button>
                         </div>
