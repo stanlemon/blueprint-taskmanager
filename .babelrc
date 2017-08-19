@@ -14,7 +14,7 @@
       "presets": ["react-hmre"]
     },
     "production": {
-      "presets": ["babili"],
+      "presets": [ ["minify", { "mangle": false }] ],
       "plugins": ["transform-react-remove-prop-types", "lodash"]
     }
   }
