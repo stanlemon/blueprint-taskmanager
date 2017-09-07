@@ -39,9 +39,9 @@ export default class LoginView extends React.Component {
             <div className="container">
                 <div className="row">
                     <div className="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
-                        {values(errors).map(error =>
+                        {values(errors).map(error => (
                             <Error key={error} message={error} />
-                        )}
+                        ))}
                     </div>
                 </div>
                 <div className="row">

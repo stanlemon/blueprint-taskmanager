@@ -60,16 +60,18 @@ export default class TaskListView extends React.Component {
                 </div>
             );
         }
-        const tasks = sortTasksByDate(this.props.tasks.filter(task => {
-            switch (this.state.filter) {
-                case INCOMPLETE:
-                    return task.completed === null;
-                case COMPLETE:
-                    return task.completed !== null;
-                default:
-                    return true;
-            }
-        }));
+        const tasks = sortTasksByDate(
+            this.props.tasks.filter(task => {
+                switch (this.state.filter) {
+                    case INCOMPLETE:
+                        return task.completed === null;
+                    case COMPLETE:
+                        return task.completed !== null;
+                    default:
+                        return true;
+                }
+            })
+        );
 
         const btnClasses = classNames(
             'btn',
@@ -129,7 +131,7 @@ export default class TaskListView extends React.Component {
                 <div className="clearfix" />
                 <div style={{ minHeight: 10 }} />
 
-                {tasks.length === 0 &&
+                {tasks.length === 0 && (
                     <div style={style.notasks}>
                         <div
                             className="text-center row"
@@ -137,16 +139,17 @@ export default class TaskListView extends React.Component {
                         >
                             <em>There are no tasks for this filter</em>
                         </div>
-                    </div>}
+                    </div>
+                )}
 
-                {tasks.map(task =>
+                {tasks.map(task => (
                     <TaskItem
                         key={task.id}
                         actions={actions}
                         navigateTo={navigateTo}
                         task={task}
                     />
-                )}
+                ))}
 
                 <br />
 

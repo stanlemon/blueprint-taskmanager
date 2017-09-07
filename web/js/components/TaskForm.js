@@ -92,10 +92,11 @@ export default class TaskForm extends React.Component {
                                     type="text"
                                     className="form-control"
                                 />
-                                {errors.name &&
+                                {errors.name && (
                                     <span className="help-block">
                                         {errors.name}
-                                    </span>}
+                                    </span>
+                                )}
                             </label>
                         </div>
                         <div
@@ -112,10 +113,11 @@ export default class TaskForm extends React.Component {
                                     name="description"
                                     className="form-control"
                                 />
-                                {errors.description &&
+                                {errors.description && (
                                     <span className="help-block">
                                         {errors.description}
-                                    </span>}
+                                    </span>
+                                )}
                             </label>
                         </div>
                         <div
@@ -129,14 +131,15 @@ export default class TaskForm extends React.Component {
                                     value={this.state.due}
                                     onChange={this.setDueDate.bind(this)}
                                 />
-                                {errors.due &&
+                                {errors.due && (
                                     <span className="help-block">
                                         {errors.due}
-                                    </span>}
+                                    </span>
+                                )}
                             </label>
                         </div>
                         {task &&
-                            task.id &&
+                        task.id && (
                             <div className="checkbox">
                                 <label
                                     htmlFor="completed"
@@ -145,15 +148,18 @@ export default class TaskForm extends React.Component {
                                     <input name="completed" type="checkbox" />
                                     Completed
                                     {task.completed &&
-                                        !isBoolean(task.completed) &&
+                                    !isBoolean(task.completed) && (
                                         <em>
-                                            {' '}on{' '}
+                                            {' '}
+                                            on{' '}
                                             {moment(task.completed).format(
                                                 'MMMM Do YYYY, h:mm:ssa'
                                             )}
-                                        </em>}
+                                        </em>
+                                    )}
                                 </label>
-                            </div>}
+                            </div>
+                        )}
                         <div className="form-group">
                             <button
                                 name="saveTask"

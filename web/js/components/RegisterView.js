@@ -86,12 +86,13 @@ export default class RegisterView extends React.Component {
                                                         id="name"
                                                         name="name"
                                                     />
-                                                    {errors.name &&
+                                                    {errors.name && (
                                                         <span className="help-block">
                                                             {errors.name.slice(
                                                                 -1
                                                             )}
-                                                        </span>}
+                                                        </span>
+                                                    )}
                                                 </div>
                                             </label>
                                         </div>
@@ -112,10 +113,11 @@ export default class RegisterView extends React.Component {
                                                         id="email"
                                                         name="email"
                                                     />
-                                                    {errors.email &&
+                                                    {errors.email && (
                                                         <span className="help-block">
                                                             {errors.email}
-                                                        </span>}
+                                                        </span>
+                                                    )}
                                                 </div>
                                             </label>
                                         </div>
@@ -139,12 +141,13 @@ export default class RegisterView extends React.Component {
                                                         id="password"
                                                         name="password"
                                                     />
-                                                    {errors.password &&
+                                                    {errors.password && (
                                                         <span className="help-block">
                                                             {errors.password.slice(
                                                                 -1
                                                             )}
-                                                        </span>}
+                                                        </span>
+                                                    )}
                                                 </div>
                                             </label>
                                         </div>

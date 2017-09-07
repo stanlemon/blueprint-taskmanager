@@ -17,7 +17,7 @@ export default function Routes(props) {
         <Router>
             <Route
                 path="/"
-                render={router =>
+                render={router => (
                     <SessionWatcher
                         {...props}
                         path={router.location.pathname}
@@ -26,23 +26,25 @@ export default function Routes(props) {
                         <Switch>
                             <Route
                                 path="/login"
-                                render={router =>
+                                render={router => (
                                     <LoginView
                                         {...props}
                                         navigateTo={navigateTo.bind(router)}
-                                    />}
+                                    />
+                                )}
                             />
                             <Route
                                 path="/register"
-                                render={router =>
+                                render={router => (
                                     <RegisterView
                                         {...props}
                                         navigateTo={navigateTo.bind(router)}
-                                    />}
+                                    />
+                                )}
                             />
                             <Route
                                 path="/"
-                                render={router =>
+                                render={router => (
                                     <Layout
                                         {...props}
                                         navigateTo={navigateTo.bind(router)}
@@ -51,18 +53,19 @@ export default function Routes(props) {
                                             <Route
                                                 exact
                                                 path="/"
-                                                render={router =>
+                                                render={router => (
                                                     <TaskListView
                                                         {...props}
                                                         navigateTo={navigateTo.bind(
                                                             router
                                                         )}
-                                                    />}
+                                                    />
+                                                )}
                                             />
                                             <Route
                                                 exact
                                                 path="/view/:id"
-                                                render={router =>
+                                                render={router => (
                                                     <TaskView
                                                         {...props}
                                                         navigateTo={navigateTo.bind(
@@ -73,13 +76,16 @@ export default function Routes(props) {
                                                                 .id,
                                                             10
                                                         )}
-                                                    />}
+                                                    />
+                                                )}
                                             />
                                         </Switch>
-                                    </Layout>}
+                                    </Layout>
+                                )}
                             />
                         </Switch>
-                    </SessionWatcher>}
+                    </SessionWatcher>
+                )}
             />
         </Router>
     );
