@@ -2,7 +2,6 @@ import { includes } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import moment from 'moment';
 import { sortTasksByDate } from '../lib/Utils';
 import TaskForm from './CreateTaskForm';
 import TaskItem from './TaskItem';
