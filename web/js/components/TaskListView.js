@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
+import { sortTasksByDate } from '../lib/Utils';
 import TaskForm from './CreateTaskForm';
 import TaskItem from './TaskItem';
 
@@ -59,7 +60,7 @@ export default class TaskListView extends React.Component {
                 </div>
             );
         }
-        const tasks = this.props.tasks.filter(task => {
+        const tasks = sortTasksByDate(this.props.tasks.filter(task => {
             switch (this.state.filter) {
                 case INCOMPLETE:
                     return task.completed === null;
@@ -68,30 +69,7 @@ export default class TaskListView extends React.Component {
                 default:
                     return true;
             }
-        });
-
-        tasks
-            .sort((a, b) => moment(a.createdAt).isAfter(b.createdAt))
-            .sort((a, b) => {
-                if (!a.due && !b.due) {
-                    return 0;
-                } else if (!a.due && b.due) {
-                    return 1;
-                } else if (a.due && !b.due) {
-                    return -1;
-                } else if (moment(a.due).isSame(b.due)) {
-                    return 0;
-                }
-                return moment(a.due).isAfter(b.due) ? 1 : -1;
-            })
-            .sort((a, b) => {
-                if (!a.completed && b.completed) {
-                    return -1;
-                } else if (a.completed && b.completed) {
-                    return moment(a.completed).isAfter(b.completed) ? -1 : 1;
-                }
-                return 1;
-            });
+        }));
 
         const btnClasses = classNames(
             'btn',
