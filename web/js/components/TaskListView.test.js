@@ -4,12 +4,14 @@ import TaskListView from './TaskListView';
 import TaskItem from './TaskItem';
 
 describe('<TaskListView />', () => {
+    const navigateTo = () => {};
+
     it('should render a spinner while it waits to load', () => {
         const view = mount(
             <TaskListView
                 loaded={[]}
                 tasks={[]}
-                navigateTo={() => {}}
+                navigateTo={navigateTo}
                 actions={{}}
             />
         );
@@ -37,8 +39,6 @@ describe('<TaskListView />', () => {
                 completed: false,
             },
         ];
-
-        const navigateTo = () => {};
 
         const view = shallow(
             <TaskListView

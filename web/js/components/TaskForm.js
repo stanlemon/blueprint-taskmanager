@@ -25,7 +25,7 @@ export default class TaskForm extends React.Component {
 
     handleSave() {}
 
-    handleSubmit(errors, data) {
+    handleSubmit = (errors, data) => {
         if (isEqual({}, errors) === false) {
             this.props.actions.addErrors(errors);
             return null;
@@ -44,7 +44,11 @@ export default class TaskForm extends React.Component {
         this.setState({ due: null });
 
         return result;
-    }
+    };
+
+    setDueDate = due => {
+        this.setState({ due });
+    };
 
     componentWillMount() {
         const due =
@@ -54,10 +58,6 @@ export default class TaskForm extends React.Component {
 
     componentWillUnmount() {
         this.props.actions.clearErrors();
-    }
-
-    setDueDate(due) {
-        this.setState({ due });
     }
 
     render() {
@@ -77,7 +77,7 @@ export default class TaskForm extends React.Component {
                     validate={validate}
                     fields={task}
                     errors={errors}
-                    handler={this.handleSubmit.bind(this)}
+                    handler={this.handleSubmit}
                 >
                     <div>
                         <div
@@ -129,7 +129,7 @@ export default class TaskForm extends React.Component {
                                 Due
                                 <Datetime
                                     value={this.state.due}
-                                    onChange={this.setDueDate.bind(this)}
+                                    onChange={this.setDueDate}
                                 />
                                 {errors.due && (
                                     <span className="help-block">

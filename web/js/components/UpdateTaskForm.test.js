@@ -24,11 +24,13 @@ describe('<UpdateTaskForm />', () => {
             ),
         };
 
+        const navigateTo = () => {};
+
         const view = mount(
             <UpdateTaskForm
                 task={task}
                 actions={actions}
-                navigateTo={() => {}}
+                navigateTo={navigateTo}
             />
         );
 

@@ -11,22 +11,22 @@ export default class TaskItem extends React.Component {
         task: PropTypes.object.isRequired,
     };
 
-    deleteTask() {
+    deleteTask = () => {
         this.props.actions.deleteTask(this.props.task.id);
-    }
+    };
 
-    viewTask() {
+    viewTask = () => {
         this.props.navigateTo(`/view/${this.props.task.id}`);
-    }
+    };
 
-    completeTask(event) {
+    completeTask = event => {
         const checked = event.target.checked;
         this.props.actions.updateTask(
             Object.assign({}, this.props.task, {
                 completed: checked ? makeDateTime() : null,
             })
         );
-    }
+    };
 
     render() {
         const { task } = this.props;
@@ -62,7 +62,9 @@ export default class TaskItem extends React.Component {
                         role="button"
                         style={nameStyles}
                         className="task-name col-xs-9 col-sm-9 col-md-10"
-                        onClick={this.viewTask.bind(this)}
+                        onClick={this.viewTask}
+                        onKeyDown={this.viewTask}
+                        tabIndex={0}
                     >
                         {task.name}
                     </div>
@@ -72,13 +74,13 @@ export default class TaskItem extends React.Component {
                                 <input
                                     type="checkbox"
                                     checked={this.props.task.completed !== null}
-                                    onChange={this.completeTask.bind(this)}
+                                    onChange={this.completeTask}
                                 />
                             </div>
                             <div className="col-xs-6 col-sm-6 text-right">
                                 <button
                                     className="btn btn-xs btn-danger"
-                                    onClick={this.deleteTask.bind(this)}
+                                    onClick={this.deleteTask}
                                 >
                                     <i
                                         className="fa fa-trash-o"

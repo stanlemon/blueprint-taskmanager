@@ -34,6 +34,10 @@ export default class TaskListView extends React.Component {
         this.setState({ filter });
     }
 
+    setFilterToAll = () => this.setFilter(ALL);
+    setFilterToIncomplete = () => this.setFilter(INCOMPLETE);
+    setFilterToComplete = () => this.setFilter(COMPLETE);
+
     render() {
         const { filter } = this.state;
         const { actions, loaded, errors, navigateTo } = this.props;
@@ -101,7 +105,7 @@ export default class TaskListView extends React.Component {
                         <div className="btn-group" role="group">
                             <button
                                 type="button"
-                                onClick={this.setFilter.bind(this, ALL)}
+                                onClick={this.setFilterToAll}
                                 className={btnAll}
                             >
                                 All
@@ -110,7 +114,7 @@ export default class TaskListView extends React.Component {
                         <div className="btn-group" role="group">
                             <button
                                 type="button"
-                                onClick={this.setFilter.bind(this, INCOMPLETE)}
+                                onClick={this.setFilterToIncomplete}
                                 className={btnIncomplete}
                             >
                                 Incomplete
@@ -119,7 +123,7 @@ export default class TaskListView extends React.Component {
                         <div className="btn-group" role="group">
                             <button
                                 type="button"
-                                onClick={this.setFilter.bind(this, COMPLETE)}
+                                onClick={this.setFilterToComplete}
                                 className={btnComplete}
                             >
                                 Complete

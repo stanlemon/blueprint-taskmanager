@@ -34,7 +34,7 @@ export default class Form extends React.Component {
         fields: [],
     };
 
-    handleSubmit(e) {
+    handleSubmit = e => {
         e.preventDefault();
 
         const errors = {};
@@ -117,7 +117,7 @@ export default class Form extends React.Component {
         if (newState instanceof Object) {
             this.setState({ fields: newState });
         }
-    }
+    };
 
     handleChange(field, event) {
         const value =
@@ -146,7 +146,7 @@ export default class Form extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit.bind(this)}>
+            <form onSubmit={this.handleSubmit}>
                 {this.processChildren(this.props.children)}
             </form>
         );

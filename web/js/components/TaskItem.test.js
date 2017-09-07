@@ -4,6 +4,8 @@ import React from 'react';
 import TaskItem from '../../../web/js/components/TaskItem';
 
 describe('<TaskItem />', () => {
+    const navigateTo = () => {};
+
     it('should render the task name', () => {
         const task = {
             id: 1,
@@ -11,7 +13,7 @@ describe('<TaskItem />', () => {
             completed: null,
         };
         const wrapper = shallow(
-            <TaskItem task={task} navigateTo={() => {}} actions={{}} />
+            <TaskItem task={task} navigateTo={navigateTo} actions={{}} />
         );
         expect(wrapper.contains(task.name)).toBe(true);
     });
@@ -23,7 +25,7 @@ describe('<TaskItem />', () => {
             completed: makeDateTime(),
         };
         const wrapper = shallow(
-            <TaskItem task={task} navigateTo={() => {}} actions={{}} />
+            <TaskItem task={task} navigateTo={navigateTo} actions={{}} />
         );
 
         expect(wrapper.find('input').is('[checked=true]')).toBe(true);

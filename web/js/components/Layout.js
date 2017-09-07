@@ -19,15 +19,15 @@ export default class Layout extends React.Component {
         this.props.actions.loadTasks();
     }
 
-    home() {
+    handleClickToHome = () => {
         this.props.navigateTo('/');
-    }
+    };
 
-    logout() {
+    handleClickToLogout = () => {
         this.props.actions.logout();
         this.props.actions.clearErrors();
         this.props.navigateTo('/login');
-    }
+    };
 
     render() {
         if (!includes(this.props.loaded, 'user')) {
@@ -42,7 +42,7 @@ export default class Layout extends React.Component {
                             <button
                                 style={{ cursor: 'pointer' }}
                                 className="navbar-brand btn-link"
-                                onClick={this.home.bind(this)}
+                                onClick={this.handleClickToHome}
                             >
                                 <i className="fa fa-cloud" />&nbsp; Blueprint
                             </button>
@@ -53,7 +53,9 @@ export default class Layout extends React.Component {
                                     role="button"
                                     style={{ cursor: 'pointer' }}
                                     className="navbar-brand fa fa-sign-out"
-                                    onClick={this.logout.bind(this)}
+                                    onClick={this.handleClickToLogout}
+                                    onKeyDown={this.handleClickToLogout}
+                                    tabIndex={0}
                                 />
                             </li>
                         </ul>

@@ -18,11 +18,13 @@ describe('<CreateTaskForm />', () => {
             description: 'A brief description',
         };
 
+        const navigateTo = () => {};
+
         const view = mount(
             <CreateTaskForm
                 task={task}
                 actions={actions}
-                navigateTo={() => {}}
+                navigateTo={navigateTo}
             />
         );
 

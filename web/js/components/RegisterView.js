@@ -16,13 +16,17 @@ export default class RegisterView extends React.Component {
         errors: {},
     };
 
-    handleSubmit(errors, data) {
+    handleClickToLogin = () => {
+        this.props.navigateTo('/login');
+    };
+
+    handleSubmit = (errors, data) => {
         if (isEqual({}, errors) === false) {
             this.props.actions.addErrors(errors);
         } else {
             this.props.actions.registerUser(data);
         }
-    }
+    };
 
     componentWillUnmount() {
         this.props.actions.clearErrors();
@@ -67,7 +71,7 @@ export default class RegisterView extends React.Component {
                                 <div className="form-horizontal">
                                     <Form
                                         validate={validate}
-                                        handler={this.handleSubmit.bind(this)}
+                                        handler={this.handleSubmit}
                                     >
                                         <div
                                             className={classNames(
@@ -169,7 +173,7 @@ export default class RegisterView extends React.Component {
                         <div className="text-center">
                             <button
                                 className="btn btn-link"
-                                onClick={() => this.props.navigateTo('/login')}
+                                onClick={this.handleClickToLogin}
                             >
                                 Return to Login
                             </button>

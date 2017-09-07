@@ -16,13 +16,17 @@ export default class LoginView extends React.Component {
         errors: {},
     };
 
-    handleSubmit(errors, data) {
+    handleClickToRegister = () => {
+        this.props.navigateTo('/register');
+    };
+
+    handleSubmit = (errors, data) => {
         if (isEqual({}, errors) === false) {
             this.props.actions.addErrors(errors);
         } else {
             this.props.actions.login(data);
         }
-    }
+    };
 
     componentWillUnmount() {
         this.props.actions.clearErrors();
@@ -54,9 +58,7 @@ export default class LoginView extends React.Component {
                             </div>
                             <div className="panel-body">
                                 <div className="form-horizontal">
-                                    <Form
-                                        handler={this.handleSubmit.bind(this)}
-                                    >
+                                    <Form handler={this.handleSubmit}>
                                         <div className="form-group">
                                             <label htmlFor="username">
                                                 <div className="col-sm-3 control-label">
@@ -120,8 +122,7 @@ export default class LoginView extends React.Component {
                             <button
                                 type="button"
                                 className="btn btn-link"
-                                onClick={() =>
-                                    this.props.navigateTo('/register')}
+                                onClick={this.handleClickToRegister}
                             >
                                 Create one now.
                             </button>
