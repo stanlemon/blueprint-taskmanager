@@ -1,7 +1,10 @@
-import { shallow } from 'enzyme';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import { makeDateTime } from '../../js/lib/Utils';
 import React from 'react';
 import TaskItem from '../../../web/js/components/TaskItem';
+
+configure({ adapter: new Adapter() });
 
 describe('<TaskItem />', () => {
     const navigateTo = () => {};
