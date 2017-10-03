@@ -10,11 +10,15 @@ import createHashHistory from 'history/createHashHistory';
 
 const history = createHashHistory();
 
-function navigateTo(route) {
-    history.push(route);
-}
-
 export default function Routes(props) {
+    // Allows us to abstract away react router & the history implementation from our stuff
+    function navigateTo(route) {
+        history.push(route);
+        // Capture our route in redux, this is important to ensure navigation changes state
+        // in the SessionWatcher correctly.
+        props.actions.storePath(route);
+    }
+    
     return (
         <Router history={history}>
             <SessionWatcher
@@ -23,39 +27,36 @@ export default function Routes(props) {
                 navigateTo={navigateTo}
             >
                 <Switch>
-                    <Route path="/login">
+                    <Route exact path="/login">
                         <LoginView {...props} navigateTo={navigateTo} />
                     </Route>
-                    <Route path="/register">
+                    <Route exact path="/register">
                         <RegisterView {...props} navigateTo={navigateTo} />
-                        )}
-                    </Route>
-                    <Route path="/">
+                    </Route>npm
+                    <Route exact path="/">
                         <Layout {...props} navigateTo={navigateTo}>
-                            <Switch>
-                                <Route exact path="/">
-                                    <TaskListView
-                                        {...props}
-                                        navigateTo={navigateTo}
-                                    />
-                                </Route>
-                                <Route
-                                    exact
-                                    path="/view/:id"
-                                    render={router => (
-                                        <TaskView
-                                            {...props}
-                                            navigateTo={navigateTo}
-                                            taskId={parseInt(
-                                                router.match.params.id,
-                                                10
-                                            )}
-                                        />
-                                    )}
-                                />
-                            </Switch>
+                            <TaskListView
+                                {...props}
+                                navigateTo={navigateTo}
+                            />
                         </Layout>
                     </Route>
+                    <Route
+                        exact
+                        path="/view/:id"
+                        render={router => (
+                            <Layout {...props} navigateTo={navigateTo}>
+                                <TaskView
+                                    {...props}
+                                    navigateTo={navigateTo}
+                                    taskId={parseInt(
+                                        router.match.params.id,
+                                        10
+                                    )}
+                                />
+                            </Layout>
+                        )}
+                    />
                 </Switch>
             </SessionWatcher>
         </Router>

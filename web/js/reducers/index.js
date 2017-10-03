@@ -14,6 +14,7 @@ import {
     UPDATE_TASK_ERROR,
     DELETE_TASK_SUCCESS,
     DELETE_TASK_ERROR,
+    STORE_PATH,
 } from '../actions/';
 
 function tasks(state = [], action) {
@@ -80,5 +81,6 @@ export default function(state = {}, action) {
         tasks: tasks(state.tasks, action),
         loaded: loaded(state.loaded, action),
         errors: errors(action),
+        path: action.path,
     };
 }

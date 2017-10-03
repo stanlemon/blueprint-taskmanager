@@ -17,6 +17,8 @@ export default function TaskView({
         return <div />;
     }
 
+    const handleReturnToList = () => this.props.navigateTo('/');
+
     const task = Object.assign({}, tasks.filter(t => t.id === taskId)[0]);
 
     if (isEmpty(task)) {
@@ -25,7 +27,7 @@ export default function TaskView({
                 <Error message="Task does not exist." />
                 <button
                     className="btn btn-link"
-                    onClick={this.props.navigateTo('/')}
+                    onClick={handleReturnToList}
                 >
                     Go back to list
                 </button>

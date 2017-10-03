@@ -32,10 +32,6 @@ export default class LoginView extends React.Component {
         this.props.actions.clearErrors();
     }
 
-    shouldComponentUpdate(nextProps) {
-        return !isEqual(nextProps.errors, this.props.errors);
-    }
-
     render() {
         const { errors } = this.props;
 
