@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Router, Switch, Route } from 'react-router-dom';
 import SessionWatcher from './SessionWatcher';
 import Layout from './Layout';
@@ -18,7 +19,7 @@ export default function Routes(props) {
         // in the SessionWatcher correctly.
         props.actions.storePath(route);
     }
-    
+
     return (
         <Router history={history}>
             <SessionWatcher
@@ -35,10 +36,7 @@ export default function Routes(props) {
                     </Route>npm
                     <Route exact path="/">
                         <Layout {...props} navigateTo={navigateTo}>
-                            <TaskListView
-                                {...props}
-                                navigateTo={navigateTo}
-                            />
+                            <TaskListView {...props} navigateTo={navigateTo} />
                         </Layout>
                     </Route>
                     <Route
@@ -62,3 +60,7 @@ export default function Routes(props) {
         </Router>
     );
 }
+
+Routes.propTypes = {
+    actions: PropTypes.object.isRequired,
+};

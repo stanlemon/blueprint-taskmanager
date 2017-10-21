@@ -10,7 +10,11 @@ module.exports = () => {
 
     const DATABASE_URL = process.env.DATABASE_URL || DEV_DATABASE_URL;
 
-    const sequelize = new Sequelize(DATABASE_URL, { logging: () => null });
+    const sequelize = new Sequelize(DATABASE_URL, {
+        logging: () => null,
+        // We don't use this, but it's deprecated and defaults on and I dislike warnings in my console.
+        operatorsAliases: false,
+    });
 
     const User = sequelize.define('User', {
         name: {

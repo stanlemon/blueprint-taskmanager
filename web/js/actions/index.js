@@ -152,4 +152,3 @@ export function login(user) {
 export function storePath(path) {
     return { type: STORE_PATH, path };
 }
-

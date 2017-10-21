@@ -25,10 +25,7 @@ export default function TaskView({
         return (
             <div>
                 <Error message="Task does not exist." />
-                <button
-                    className="btn btn-link"
-                    onClick={handleReturnToList}
-                >
+                <button className="btn btn-link" onClick={handleReturnToList}>
                     Go back to list
                 </button>
             </div>

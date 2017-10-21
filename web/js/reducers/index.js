@@ -14,7 +14,7 @@ import {
     UPDATE_TASK_ERROR,
     DELETE_TASK_SUCCESS,
     DELETE_TASK_ERROR,
-    STORE_PATH,
+    STORE_PATH, // eslint-disable-line no-unused-vars
 } from '../actions/';
 
 function tasks(state = [], action) {

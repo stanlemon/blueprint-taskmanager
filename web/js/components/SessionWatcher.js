@@ -35,7 +35,7 @@ export default class SessionWatcher extends React.Component {
         clearInterval(this.interval);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps) {
         return !isEqual(nextProps, this.props);
     }
 

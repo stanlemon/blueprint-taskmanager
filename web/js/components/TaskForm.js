@@ -139,27 +139,32 @@ export default class TaskForm extends React.Component {
                             </label>
                         </div>
                         {task &&
-                        task.id && (
-                            <div className="checkbox">
-                                <label
-                                    htmlFor="completed"
-                                    className="control-label"
-                                >
-                                    <input name="completed" type="checkbox" />
-                                    Completed
-                                    {task.completed &&
-                                    !isBoolean(task.completed) && (
-                                        <em>
-                                            {' '}
-                                            on{' '}
-                                            {moment(task.completed).format(
-                                                'MMMM Do YYYY, h:mm:ssa'
+                            task.id && (
+                                <div className="checkbox">
+                                    <label
+                                        htmlFor="completed"
+                                        className="control-label"
+                                    >
+                                        <input
+                                            name="completed"
+                                            type="checkbox"
+                                        />
+                                        Completed
+                                        {task.completed &&
+                                            !isBoolean(task.completed) && (
+                                                <em>
+                                                    {' '}
+                                                    on{' '}
+                                                    {moment(
+                                                        task.completed
+                                                    ).format(
+                                                        'MMMM Do YYYY, h:mm:ssa'
+                                                    )}
+                                                </em>
                                             )}
-                                        </em>
-                                    )}
-                                </label>
-                            </div>
-                        )}
+                                    </label>
+                                </div>
+                            )}
                         <div className="form-group">
                             <button
                                 name="saveTask"
