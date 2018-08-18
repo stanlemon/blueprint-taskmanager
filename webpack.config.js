@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BabiliPlugin = require('babili-webpack-plugin');
 
 const PROD = 'production';
@@ -9,6 +9,7 @@ const DEV = 'development';
 const env = process.env.NODE_ENV || DEV;
 
 module.exports = {
+    mode: env,
     devtool: env === PROD ? 'source-map' : 'eval',
     entry: {
         main: ['./web/js/index.js', './web/css/main.less'],
@@ -25,21 +26,32 @@ module.exports = {
                 NODE_ENV: JSON.stringify(env),
             },
         }),
-        new ExtractTextPlugin('[name].css'),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendors',
-            filename: 'vendors.js',
-            minChunks: module => module.context && module.context.indexOf('node_modules') !== -1,
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: '[name].css',
+            chunkFilename: '[id].css',
         }),
-        ...(env === PROD ? [
-            new BabiliPlugin(),
-        ] : [
-            new webpack.HotModuleReplacementPlugin(),
-            new webpack.NoEmitOnErrorsPlugin(),
-        ]),
+        ...(env === PROD
+            ? [new BabiliPlugin()]
+            : [
+                  new webpack.HotModuleReplacementPlugin(),
+                  new webpack.NoEmitOnErrorsPlugin(),
+              ]),
     ],
     resolve: {
         extensions: ['.js', '.jsx', '.less', '.css'],
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all',
+                },
+            },
+        },
     },
     module: {
         rules: [
@@ -50,11 +62,22 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }),
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    'css-loader',
+                ],
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!less-loader' }),
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    'css-loader',
+                    'less-loader',
+                ],
             },
             {
                 test: /\.(png|jpg|gif)$/,
