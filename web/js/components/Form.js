@@ -135,7 +135,7 @@ export default class Form extends React.Component {
         });
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps) {
         if (
             !isEqual(this.props.fields, prevProps.fields) &&
             this.props.errors.length === 0
