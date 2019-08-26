@@ -17,11 +17,9 @@ export default class TaskService extends RestService {
     }
 
     createTask(task) {
-        return this.fetch(
-            `${this.baseUrl}/api/tasks/`,
-            'post',
-            task
-        ).then(data => this.formatTask(data));
+        return this.fetch(`${this.baseUrl}/api/tasks/`, 'post', task).then(
+            data => this.formatTask(data)
+        );
     }
 
     updateTask(task) {

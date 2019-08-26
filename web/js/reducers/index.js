@@ -24,11 +24,10 @@ function tasks(state = [], action) {
         case CREATE_TASK_SUCCESS:
             return [...state, action.task];
         case UPDATE_TASK_SUCCESS:
-            return state.map(
-                task =>
-                    task.id === action.task.id
-                        ? Object.assign({}, action.task)
-                        : task
+            return state.map(task =>
+                task.id === action.task.id
+                    ? Object.assign({}, action.task)
+                    : task
             );
         case DELETE_TASK_SUCCESS:
             return state.filter(task => action.taskId !== task.id);
