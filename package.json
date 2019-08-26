@@ -36,8 +36,8 @@
     "dependencies": {
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
-        "bootstrap": "^3.3.x",
-        "bootswatch": "^3.3.7",
+        "bootstrap": ">=3.4.1 <4.0.0",
+        "bootswatch": ">=3.4.1 <4.0.0",
         "classnames": "^2.2.6",
         "client-sessions": "^0.8.0",
         "compression": "^1.7.4",
