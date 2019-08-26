@@ -19,7 +19,7 @@
         "prettier/react"
     ],
     "rules": {
-        "react/jsx-no-bind": ["warn"],
+        "react/jsx-no-bind": ["warn", { "allowArrowFunctions": true }],
         "react/no-unescaped-entities": ["off"]
     },
     "settings": {
