@@ -74,7 +74,7 @@
         "sqlite3": "^4.1.0",
         "uuid": "^3.3.3",
         "validator": "^11.1.0",
-        "whatwg-fetch": "^2.0.4"
+        "whatwg-fetch": "^3.0.0"
     },
     "devDependencies": {
         "babel-core": "^6.26.3",

@@ -7,7 +7,7 @@ import LoginView from './LoginView';
 import RegisterView from './RegisterView';
 import TaskListView from './TaskListView';
 import TaskView from './TaskView';
-import createHashHistory from 'history/createHashHistory';
+import { createHashHistory } from 'history';
 
 const history = createHashHistory();
 
@@ -33,7 +33,8 @@ export default function Routes(props) {
                     </Route>
                     <Route exact path="/register">
                         <RegisterView {...props} navigateTo={navigateTo} />
-                    </Route>npm
+                    </Route>
+                    npm
                     <Route exact path="/">
                         <Layout {...props} navigateTo={navigateTo}>
                             <TaskListView {...props} navigateTo={navigateTo} />
