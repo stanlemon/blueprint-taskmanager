@@ -44,7 +44,8 @@ export default class Layout extends React.Component {
                                 className="navbar-brand btn-link"
                                 onClick={this.handleClickToHome}
                             >
-                                <i className="fa fa-cloud" />&nbsp; Blueprint
+                                <i className="fa fa-cloud" />
+                                &nbsp; Blueprint
                             </button>
                         </div>
                         <ul className="nav navbar-nav navbar-right">

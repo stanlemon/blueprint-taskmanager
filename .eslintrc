@@ -1,33 +1,31 @@
 {
-  "env": {
-    "browser": true,
-    "commonjs": true,
-    "es6": true,
-    "node": true,
-    "jasmine": true
-  },
-  "parser": "babel-eslint",
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:import/errors",
-    "plugin:jsx-a11y/recommended",
-    "plugin:jest/recommended"
-  ],
-  "plugins": [
-    "prettier",
-    "react",
-    "jsx-a11y",
-    "jest"
-  ],
-  "rules": {
-    "prettier/prettier": ["error", {
-      "tabWidth": 4,
-      "printWidth": 80,
-      "singleQuote": true,
-      "trailingComma": "es5"
-    }],
-    "react/jsx-no-bind": ["warn"],
-    "react/no-unescaped-entities": ["off"]
-  }
+    "env": {
+        "es6": true,
+        // For using 'document'
+        "browser": true,
+        // For using 'module'
+        "node": true,
+        // For jest test globals
+        "jasmine": true,
+    },
+    "parser": "babel-eslint",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:jest/recommended",
+        "plugin:prettier/recommended",
+        "plugin:import/errors",
+        "prettier",
+        "prettier/react"
+    ],
+    "rules": {
+        "react/jsx-no-bind": ["warn"],
+        "react/no-unescaped-entities": ["off"]
+    },
+    "settings": {
+        "react": {
+          // Define this otherwise the rule produces a warning
+            "version": "detect"
+        }
+    }
 }
