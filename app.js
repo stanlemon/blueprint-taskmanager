@@ -7,7 +7,7 @@ const serveStatic = require('serve-static');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const morgan = require('morgan');
-const epilogue = require('epilogue');
+const finale = require('finale-rest');
 const session = require('client-sessions');
 const flash = require('connect-flash');
 const passport = require('passport');
@@ -119,18 +119,18 @@ app.get('/session', (req, res) => {
     }
 });
 
-epilogue.initialize({
+finale.initialize({
     base: '/api',
     app,
     sequelize: db.sequelize,
 });
 
 const resources = {
-    Task: epilogue.resource({
+    Task: finale.resource({
         model: db.models.Task,
         endpoints: ['/tasks', '/tasks/:id'],
     }),
-    User: epilogue.resource({
+    User: finale.resource({
         actions: ['create'],
         model: db.models.User,
         endpoints: ['/users'],
@@ -161,9 +161,7 @@ resources.Task.all.auth((req, res, context) => {
     } else if (req.isAuthenticated()) {
         context.continue();
     } else {
-        throw new epilogue.Errors.ForbiddenError(
-            'You must be logged in to access this resource.'
-        );
+        context.error(403, 'You must be logged in to access this resource.');
     }
 });
 
