@@ -15,7 +15,7 @@ export default class Layout extends React.Component {
         loaded: [],
     };
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.actions.loadTasks();
     }
 

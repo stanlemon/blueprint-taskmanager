@@ -129,18 +129,18 @@ export default class Form extends React.Component {
         });
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({
             fields: get(this.props, 'fields', {}),
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (
-            !isEqual(this.props.fields, nextProps.fields) &&
-            nextProps.errors.length === 0
+            !isEqual(this.props.fields, prevProps.fields) &&
+            this.props.errors.length === 0
         ) {
-            this.setState({ fields: nextProps.fields });
+            this.setState({ fields: this.props.fields });
         }
     }
 

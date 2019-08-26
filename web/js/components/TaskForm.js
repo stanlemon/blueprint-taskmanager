@@ -50,7 +50,7 @@ export default class TaskForm extends React.Component {
         this.setState({ due });
     };
 
-    componentWillMount() {
+    componentDidMount() {
         const due =
             this.props.task && this.props.task.due ? this.props.task.due : null;
         this.setState({ due });

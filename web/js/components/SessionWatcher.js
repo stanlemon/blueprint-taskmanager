@@ -22,7 +22,7 @@ export default class SessionWatcher extends React.Component {
 
     interval;
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.actions.checkSession();
 
         this.interval = setInterval(
