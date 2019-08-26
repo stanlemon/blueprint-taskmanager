@@ -1,21 +1,3 @@
 {
-  "plugins": ["transform-class-properties", "lodash"],
-  "presets": [
-    "react",
-    ["env", {
-      "targets": {
-        "browsers": ["last 2 versions"]
-      },
-      "useBuiltIns": true
-    }]
-  ],
-  "env": {
-    "development": {
-      "presets": ["react-hmre"]
-    },
-    "production": {
-      "presets": [ ["minify", { "mangle": false }] ],
-      "plugins": ["transform-react-remove-prop-types", "lodash"]
-    }
-  }
+    "plugins": ["@babel/plugin-proposal-class-properties"]
 }

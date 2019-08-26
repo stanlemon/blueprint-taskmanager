@@ -4,3 +4,5 @@ npm-debug.log
 database.sqlite
 web/assets/
 coverage/
+dist/
+.cache/

@@ -14,7 +14,6 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const { Strategy: LocalStrategy } = require('passport-local');
 
-const config = require('./webpack.config');
 const db = require('./models')();
 
 const DEV = 'development';
@@ -30,22 +29,6 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(flash());
-app.use(serveStatic(path.join(__dirname, 'web'), { index: ['index.html'] }));
-
-if (ENV === DEV) {
-    /* eslint-disable global-require, import/no-extraneous-dependencies */
-    const webpack = require('webpack');
-    const compiler = webpack(config);
-
-    app.use(
-        require('webpack-dev-middleware')(compiler, {
-            noInfo: true,
-            publicPath: config.output.publicPath,
-        })
-    );
-    app.use(require('webpack-hot-middleware')(compiler));
-    /* eslint-enable */
-}
 
 app.use(
     session({
@@ -62,8 +45,7 @@ app.use(passport.session());
 
 passport.use(
     new LocalStrategy((username, password, done) => {
-        db.models.User
-            .findOne({ where: { email: username } })
+        db.models.User.findOne({ where: { email: username } })
             .then(user => {
                 if (!user) {
                     return done(null, false, {
@@ -86,8 +68,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-    db.models.User
-        .findById(id)
+    db.models.User.findByPk(id)
         .then(user => {
             done(null, user);
         })
@@ -208,6 +189,25 @@ resources.User.create.write.after((req, res, context) => {
 
     return context.continue;
 });
+
+if (ENV === DEV) {
+    /* eslint-disable global-require, import/no-extraneous-dependencies */
+    const Bundler = require('parcel-bundler');
+
+    const file = path.join(__dirname, 'web', 'index.html');
+    const options = {};
+
+    // Initialize a new parcel bundler
+    const bundler = new Bundler(file, options);
+
+    // This will let Parcel handle every request to the express server not already defined
+    app.use(bundler.middleware());
+    /* eslint-enable */
+} else {
+    app.use(
+        serveStatic(path.join(__dirname, 'dist'), { index: ['index.html'] })
+    );
+}
 
 app.listen();
 
