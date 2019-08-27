@@ -2,7 +2,6 @@ import React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import UpdateTaskForm from './UpdateTaskForm';
-import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 
 configure({ adapter: new Adapter() });
