@@ -1,7 +1,9 @@
-import moment from 'moment';
+import format from 'date-fns/format';
+import isAfter from 'date-fns/isAfter';
+import isSameMinute from 'date-fns/isSameMinute';
 
 export function makeDateTime(d = new Date()) {
-    return moment(d).format('YYYY-MM-DD HH:mm:ss.SSS z');
+    return format(d, 'yyyy-MM-dd HH:mm:ss.SSS z');
 }
 
 /*eslint-disable */
@@ -21,7 +23,7 @@ export function mapErrors(errors = []) {
 export function sortTasksByDate(tasks) {
     return tasks
         .concat()
-        .sort((a, b) => moment(a.createdAt).isAfter(b.createdAt))
+        .sort((a, b) => isAfter(a.createdAt, b.createdAt))
         .sort((a, b) => {
             if (!a.due && !b.due) {
                 return 0;
@@ -29,16 +31,16 @@ export function sortTasksByDate(tasks) {
                 return 1;
             } else if (a.due && !b.due) {
                 return -1;
-            } else if (moment(a.due).isSame(b.due)) {
+            } else if (isSameMinute(a.due, b.due)) {
                 return 0;
             }
-            return moment(a.due).isAfter(b.due) ? 1 : -1;
+            return isAfter(a.due, b.due) ? 1 : -1;
         })
         .sort((a, b) => {
             if (!a.completed && b.completed) {
                 return -1;
             } else if (a.completed && b.completed) {
-                return moment(a.completed).isAfter(b.completed) ? -1 : 1;
+                return isAfter(a.completed, b.completed) ? -1 : 1;
             }
             return 1;
         });

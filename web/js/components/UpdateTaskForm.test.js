@@ -2,7 +2,8 @@ import React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import UpdateTaskForm from './UpdateTaskForm';
-import moment from 'moment';
+import format from 'date-fns/format';
+import parseISO from 'date-fns/parseISO';
 
 configure({ adapter: new Adapter() });
 
@@ -21,10 +22,8 @@ describe('<UpdateTaskForm />', () => {
             id: 1,
             name: 'Test Task',
             description: 'A brief description',
-            due: moment('2018-06-12 07:08').format('YYYY-MM-DD HH:mm:ss.SSS'),
-            completed: moment('2017-06-12 07:08').format(
-                'YYYY-MM-DD HH:mm:ss.SSS'
-            ),
+            due: parseISO('2018-06-12T07:08'),
+            completed: parseISO('2017-06-12T07:08'),
         };
 
         const navigateTo = () => {};

@@ -1,9 +1,10 @@
-import { isEqual, isBoolean } from 'lodash';
+import isEqual from 'lodash/isEqual';
+import isBoolean from 'lodash/isBoolean';
 import classNames from 'classnames';
-import moment from 'moment';
+import format from 'date-fns/format';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Datetime from 'react-datetime';
+import DatePicker from 'react-datepicker';
 import Form from './Form';
 import { makeDateTime } from '../lib/Utils';
 
@@ -127,10 +128,15 @@ export default class TaskForm extends React.Component {
                         >
                             <label htmlFor="due" className="control-label">
                                 Due
-                                <Datetime
-                                    value={this.state.due}
-                                    onChange={this.setDueDate}
-                                />
+                                <div style={{ fontSize: '16pt' }}>
+                                    <DatePicker
+                                        className="form-control"
+                                        selected={this.state.due}
+                                        onChange={this.setDueDate}
+                                        showTimeSelect
+                                        dateFormat="MM/dd/yyyy h:mma"
+                                    />
+                                </div>
                                 {errors.due && (
                                     <span className="help-block">
                                         {errors.due}
@@ -151,8 +157,9 @@ export default class TaskForm extends React.Component {
                                             <em>
                                                 {' '}
                                                 on{' '}
-                                                {moment(task.completed).format(
-                                                    'MMMM Do YYYY, h:mm:ssa'
+                                                {format(
+                                                    task.completed,
+                                                    'MMMM do yyyy, h:mm:ssa'
                                                 )}
                                             </em>
                                         )}

@@ -1,5 +1,5 @@
 /* @flow weak */
-import { uniq } from 'lodash';
+import uniq from 'lodash/uniq';
 import {
     ERROR,
     CLEAR_ERRORS,
