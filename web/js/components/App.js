@@ -22,12 +22,6 @@ const store = compose(applyMiddleware(thunk.withExtraArgument(services)))(
     createStore
 )(reducer);
 
-if (module.hot) {
-    module.hot.accept('../reducers', () => {
-        store.replaceReducer(require('../reducers')); // eslint-disable-line global-require
-    });
-}
-
 export default function App() {
     return (
         <Provider store={store}>
