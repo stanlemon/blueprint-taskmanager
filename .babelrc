@@ -1,21 +1,9 @@
 {
-  "plugins": ["transform-class-properties", "lodash"],
-  "presets": [
-    "react",
-    ["env", {
-      "targets": {
-        "browsers": ["last 2 versions"]
-      },
-      "useBuiltIns": true
-    }]
-  ],
-  "env": {
-    "development": {
-      "presets": ["react-hmre"]
-    },
-    "production": {
-      "presets": [ ["minify", { "mangle": false }] ],
-      "plugins": ["transform-react-remove-prop-types", "lodash"]
-    }
-  }
+    "presets": [
+        "@babel/preset-react",
+        [
+            "@babel/preset-env", { "targets": { "browsers": "last 2 versions, >25%" } }
+        ]
+    ],
+    "plugins": ["@babel/plugin-proposal-class-properties"]
 }

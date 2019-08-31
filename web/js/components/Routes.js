@@ -7,9 +7,9 @@ import LoginView from './LoginView';
 import RegisterView from './RegisterView';
 import TaskListView from './TaskListView';
 import TaskView from './TaskView';
-import createHashHistory from 'history/createHashHistory';
+import { createBrowserHistory } from 'history';
 
-const history = createHashHistory();
+const history = createBrowserHistory();
 
 export default function Routes(props) {
     // Allows us to abstract away react router & the history implementation from our stuff
@@ -33,7 +33,8 @@ export default function Routes(props) {
                     </Route>
                     <Route exact path="/register">
                         <RegisterView {...props} navigateTo={navigateTo} />
-                    </Route>npm
+                    </Route>
+                    npm
                     <Route exact path="/">
                         <Layout {...props} navigateTo={navigateTo}>
                             <TaskListView {...props} navigateTo={navigateTo} />

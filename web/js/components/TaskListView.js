@@ -1,4 +1,4 @@
-import { includes } from 'lodash';
+import includes from 'lodash/includes';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';

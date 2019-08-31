@@ -1,4 +1,5 @@
-import { isEqual, values } from 'lodash';
+import isEqual from 'lodash/isEqual';
+import values from 'lodash/values';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Error from './Error';

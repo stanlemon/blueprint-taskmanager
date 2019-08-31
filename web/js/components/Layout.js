@@ -1,4 +1,4 @@
-import { includes } from 'lodash';
+import includes from 'lodash/includes';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -15,7 +15,7 @@ export default class Layout extends React.Component {
         loaded: [],
     };
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.actions.loadTasks();
     }
 
@@ -44,7 +44,8 @@ export default class Layout extends React.Component {
                                 className="navbar-brand btn-link"
                                 onClick={this.handleClickToHome}
                             >
-                                <i className="fa fa-cloud" />&nbsp; Blueprint
+                                <i className="fa fa-cloud" />
+                                &nbsp; Blueprint
                             </button>
                         </div>
                         <ul className="nav navbar-nav navbar-right">

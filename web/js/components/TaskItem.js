@@ -1,7 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import isAfter from 'date-fns/isAfter';
+import isBefore from 'date-fns/isBefore';
+import subDays from 'date-fns/subDays';
 import { makeDateTime } from '../lib/Utils';
 
 export default class TaskItem extends React.Component {
@@ -47,12 +49,10 @@ export default class TaskItem extends React.Component {
             'bg-warning':
                 task.due &&
                 !task.completed &&
-                moment(task.due).isAfter(moment().subtract(2, 'days')),
+                isAfter(task.due, subDays(new Date(), 2)),
             // Tasks that are are over due
             'bg-danger':
-                task.due &&
-                !task.completed &&
-                moment(task.due).isBefore(moment()),
+                task.due && !task.completed && isBefore(task.due, new Date()),
         });
 
         return (

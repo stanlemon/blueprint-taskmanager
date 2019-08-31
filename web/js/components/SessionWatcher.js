@@ -1,4 +1,5 @@
-import { isEqual, includes } from 'lodash';
+import isEqual from 'lodash/isEqual';
+import includes from 'lodash/includes';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -22,7 +23,7 @@ export default class SessionWatcher extends React.Component {
 
     interval;
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.actions.checkSession();
 
         this.interval = setInterval(
@@ -39,12 +40,12 @@ export default class SessionWatcher extends React.Component {
         return !isEqual(nextProps, this.props);
     }
 
-    componentWillUpdate(nextProps) {
+    componentDidUpdate(prevProps) {
         // User was not authenticated and is now
         if (
-            includes(this.props.loaded, 'user') &&
+            includes(prevProps.loaded, 'user') &&
             this.props.user === null &&
-            nextProps.user !== null
+            prevProps.user !== null
         ) {
             this.props.navigateTo('/');
             return;
@@ -54,7 +55,7 @@ export default class SessionWatcher extends React.Component {
 
         // Authenticated user is on an unauthenticated page
         if (
-            nextProps.user !== null &&
+            this.props.user !== null &&
             unauthPaths.indexOf(this.props.path) > -1
         ) {
             this.props.navigateTo('/');
@@ -63,7 +64,7 @@ export default class SessionWatcher extends React.Component {
 
         // Unauthenticated user is on an authenticated page
         if (
-            nextProps.user === null &&
+            this.props.user === null &&
             unauthPaths.indexOf(this.props.path) === -1
         ) {
             this.props.navigateTo('/login');

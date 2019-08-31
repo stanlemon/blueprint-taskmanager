@@ -10,7 +10,6 @@ import thunk from 'redux-thunk';
 import reducer from '../reducers/';
 import UserService from '../lib/UserService';
 import TaskService from '../lib/TaskService';
-import DevTools from '../lib/DevTools'; // eslint-disable-line import/default
 import * as actions from '../actions/';
 import Routes from './Routes';
 
@@ -19,16 +18,9 @@ const services = {
     taskService: new TaskService(),
 };
 
-const store = compose(
-    applyMiddleware(thunk.withExtraArgument(services)),
-    DevTools.instrument()
-)(createStore)(reducer);
-
-if (module.hot) {
-    module.hot.accept('../reducers', () => {
-        store.replaceReducer(require('../reducers')); // eslint-disable-line global-require
-    });
-}
+const store = compose(applyMiddleware(thunk.withExtraArgument(services)))(
+    createStore
+)(reducer);
 
 export default function App() {
     return (
@@ -42,7 +34,6 @@ export default function App() {
                         })
                     )(Routes)
                 )}
-                <DevTools />
             </div>
         </Provider>
     );

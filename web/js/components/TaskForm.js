@@ -1,84 +1,100 @@
-import { isEqual, isBoolean } from 'lodash';
+import isBoolean from 'lodash/isBoolean';
 import classNames from 'classnames';
-import moment from 'moment';
+import format from 'date-fns/format';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Datetime from 'react-datetime';
-import Form from './Form';
-import { makeDateTime } from '../lib/Utils';
+import DatePicker from 'react-datepicker';
+import isEmpty from 'lodash/isEmpty';
 
 export default class TaskForm extends React.Component {
     static propTypes = {
+        save: PropTypes.func.isRequired,
         actions: PropTypes.object.isRequired,
         task: PropTypes.object,
         errors: PropTypes.object,
     };
 
     static defaultProps = {
-        task: {},
+        // Define the full form here, otherwise you'll get an error about switching between controlled & uncontrolled components
+        task: {
+            name: '',
+            description: '',
+            completed: false,
+            due: null,
+        },
         errors: {},
     };
 
-    state = {
-        due: null,
-    };
+    constructor(props) {
+        super(props);
 
-    handleSave() {}
+        this.state = {
+            data: props.task || {},
+            errors: props.errors || {},
+        };
+    }
 
-    handleSubmit = (errors, data) => {
-        if (isEqual({}, errors) === false) {
-            this.props.actions.addErrors(errors);
-            return null;
+    handleSubmit = e => {
+        e.preventDefault();
+
+        const errors = {};
+
+        if (isEmpty(this.state.data) || isEmpty(this.state.data.name)) {
+            errors['name'] = 'You must enter a name for this task.';
         }
 
-        const result = this.handleSave(
-            Object.assign({}, data, {
-                due: this.state.due,
-                completed:
-                    data.completed === true
-                        ? makeDateTime()
-                        : data.completed || null,
-            })
-        );
+        // If there are any errors, bail
+        if (Object.keys(errors).length > 0) {
+            this.setState(state => {
+                return { ...state, ...{ errors } };
+            });
+            return;
+        }
 
-        this.setState({ due: null });
+        const result = this.props.save(this.state.data);
 
-        return result;
+        this.setState({ errors: {}, data: result });
+    };
+
+    setError = (key, error) => {
+        this.setState(state => {
+            return {
+                ...state,
+                ...{ errors: { ...state.errors, ...{ [key]: error } } },
+            };
+        });
     };
 
     setDueDate = due => {
-        this.setState({ due });
+        this.setData('due', due);
     };
 
-    componentWillMount() {
-        const due =
-            this.props.task && this.props.task.due ? this.props.task.due : null;
-        this.setState({ due });
-    }
+    setData = (key, value) => {
+        this.setState(state => {
+            return {
+                ...state,
+                ...{
+                    data: { ...state.data, ...{ [key]: value } },
+                },
+            };
+        });
+    };
 
-    componentWillUnmount() {
-        this.props.actions.clearErrors();
-    }
+    setValue = e => {
+        if (e.target.type && e.target.type === 'checkbox') {
+            this.setData(e.target.name, e.target.checked);
+        } else {
+            this.setData(e.target.name, e.target.value);
+        }
+    };
 
     render() {
-        const { task, errors } = this.props;
-
-        const validate = {
-            name: {
-                notEmpty: {
-                    msg: 'You must enter a name for this task.',
-                },
-            },
-        };
+        const task = this.state.data;
+        const errors = this.state.errors;
 
         return (
             <div className="well">
-                <Form
-                    validate={validate}
-                    fields={task}
-                    errors={errors}
-                    handler={this.handleSubmit}
-                >
+                <form onSubmit={this.handleSubmit}>
                     <div>
                         <div
                             className={classNames('form-group', {
@@ -91,6 +107,8 @@ export default class TaskForm extends React.Component {
                                     name="name"
                                     type="text"
                                     className="form-control"
+                                    onChange={this.setValue}
+                                    value={task.name}
                                 />
                                 {errors.name && (
                                     <span className="help-block">
@@ -112,6 +130,8 @@ export default class TaskForm extends React.Component {
                                 <textarea
                                     name="description"
                                     className="form-control"
+                                    onChange={this.setValue}
+                                    value={task.description}
                                 />
                                 {errors.description && (
                                     <span className="help-block">
@@ -127,10 +147,16 @@ export default class TaskForm extends React.Component {
                         >
                             <label htmlFor="due" className="control-label">
                                 Due
-                                <Datetime
-                                    value={this.state.due}
-                                    onChange={this.setDueDate}
-                                />
+                                <div>
+                                    <DatePicker
+                                        name="due"
+                                        className="form-control"
+                                        selected={task.due}
+                                        onChange={this.setDueDate}
+                                        showTimeSelect
+                                        dateFormat="MM/dd/yyyy h:mma"
+                                    />
+                                </div>
                                 {errors.due && (
                                     <span className="help-block">
                                         {errors.due}
@@ -148,6 +174,10 @@ export default class TaskForm extends React.Component {
                                         <input
                                             name="completed"
                                             type="checkbox"
+                                            checked={
+                                                task.completed ? true : false
+                                            }
+                                            onChange={this.setValue}
                                         />
                                         Completed
                                         {task.completed &&
@@ -155,10 +185,9 @@ export default class TaskForm extends React.Component {
                                                 <em>
                                                     {' '}
                                                     on{' '}
-                                                    {moment(
-                                                        task.completed
-                                                    ).format(
-                                                        'MMMM Do YYYY, h:mm:ssa'
+                                                    {format(
+                                                        task.completed,
+                                                        'MMMM do yyyy, h:mm:ssa'
                                                     )}
                                                 </em>
                                             )}
@@ -175,7 +204,7 @@ export default class TaskForm extends React.Component {
                         </div>
                         <div className="clearfix" />
                     </div>
-                </Form>
+                </form>
             </div>
         );
     }

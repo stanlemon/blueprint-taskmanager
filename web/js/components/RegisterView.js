@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';

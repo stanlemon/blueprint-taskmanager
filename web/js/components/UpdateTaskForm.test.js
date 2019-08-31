@@ -2,12 +2,12 @@ import React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import UpdateTaskForm from './UpdateTaskForm';
-import moment from 'moment';
+import parseISO from 'date-fns/parseISO';
 
 configure({ adapter: new Adapter() });
 
 describe('<UpdateTaskForm />', () => {
-    it('should render a form with a task in it', () => {
+    it('should render a form with an existing task and update it', () => {
         let lastSavedTask = null;
 
         const actions = {
@@ -21,10 +21,8 @@ describe('<UpdateTaskForm />', () => {
             id: 1,
             name: 'Test Task',
             description: 'A brief description',
-            due: moment('2018-06-12 07:08').format('YYYY-MM-DD HH:mm:ss.SSS'),
-            completed: moment('2017-06-12 07:08').format(
-                'YYYY-MM-DD HH:mm:ss.SSS'
-            ),
+            due: parseISO('2018-06-12T07:08'),
+            completed: parseISO('2017-06-12T07:08'),
         };
 
         const navigateTo = () => {};
@@ -45,17 +43,40 @@ describe('<UpdateTaskForm />', () => {
 
         expect(description.props().value).toEqual(task.description);
 
-        // UpdateTaskForm has a Datetime component that sets the components state with the due date
-        expect(view.state().due).toEqual(task.due);
+        const due = view.find('input[name="due"]');
+
+        expect(due.props().value).toEqual('06/12/2018 7:08AM');
 
         const completed = view.find('input[name="completed"]');
 
-        expect(completed.props().checked).toEqual(task.completed);
+        expect(completed.props().checked).toEqual(true);
+
+        const completedLabel = view.find('label[htmlFor="completed"]');
+
+        expect(completedLabel.text()).toEqual(
+            'Completed on June 12th 2017, 7:08:00AM'
+        );
+
+        // Update the task name
+        const newName = 'New Task Name';
+        name.simulate('change', {
+            target: { name: 'name', value: newName },
+        });
+
+        // Update the task description
+        const newDescription = 'New Task Description';
+        description.simulate('change', {
+            target: { name: 'description', value: newDescription },
+        });
 
         const form = view.find('form');
 
         form.simulate('submit');
 
-        expect(lastSavedTask).toEqual(task);
+        // When we submit we should have the original task, but with the new name and description fields
+        expect(lastSavedTask).toEqual({
+            ...task,
+            ...{ name: newName, description: newDescription },
+        });
     });
 });

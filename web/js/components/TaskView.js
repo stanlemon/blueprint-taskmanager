@@ -1,5 +1,6 @@
-import { includes, isEmpty } from 'lodash';
-import moment from 'moment';
+import includes from 'lodash/includes';
+import isEmpty from 'lodash/isEmpty';
+import format from 'date-fns/format';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Error from './Error';
@@ -43,11 +44,11 @@ export default function TaskView({
 
             <p>
                 <strong>Created: </strong>
-                {moment(task.createdAt).format('MMMM Do YYYY, h:mm:ssa')}
+                {format(task.createdAt, 'MMMM do yyyy, h:mm:ssa')}
             </p>
             <p>
                 <strong>Last Updated: </strong>
-                {moment(task.updatedAt).format('MMMM Do YYYY, h:mm:ssa')}
+                {format(task.updatedAt, 'MMMM do yyyy, h:mm:ssa')}
             </p>
         </div>
     );

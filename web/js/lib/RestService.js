@@ -1,4 +1,3 @@
-import fetch from 'isomorphic-fetch';
 import { mapErrors } from '../lib/Utils';
 import RestServiceException from './RestServiceException';
 

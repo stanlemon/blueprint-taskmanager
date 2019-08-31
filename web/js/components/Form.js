@@ -1,13 +1,11 @@
-import {
-    includes,
-    get,
-    has,
-    isEqual,
-    isObject,
-    zipObject,
-    fill,
-    range,
-} from 'lodash';
+import includes from 'lodash/includes';
+import get from 'lodash/get';
+import has from 'lodash/has';
+import isEqual from 'lodash/isEqual';
+import isObject from 'lodash/isObject';
+import zipObject from 'lodash/zipObject';
+import fill from 'lodash/fill';
+import range from 'lodash/range';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Validator from 'validator';
@@ -129,18 +127,18 @@ export default class Form extends React.Component {
         });
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({
             fields: get(this.props, 'fields', {}),
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
         if (
-            !isEqual(this.props.fields, nextProps.fields) &&
-            nextProps.errors.length === 0
+            !isEqual(this.props.fields, prevProps.fields) &&
+            this.props.errors.length === 0
         ) {
-            this.setState({ fields: nextProps.fields });
+            this.setState({ fields: this.props.fields });
         }
     }
 
