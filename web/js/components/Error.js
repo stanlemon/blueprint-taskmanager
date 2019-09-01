@@ -5,7 +5,7 @@ export default function Error(props) {
     const { message } = props;
 
     return (
-        <div className="alert alert-danger" role="alert">
+        <div className="error alert alert-danger" role="alert">
             {message}
         </div>
     );
