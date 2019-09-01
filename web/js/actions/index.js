@@ -5,6 +5,7 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const AUTHENTICATED_USER = 'AUTHENTICATED_USER';
 export const UNAUTHENTICATED_USER = 'UNAUTHENTICATED_USER';
 export const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
+export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const LOAD_TASKS_SUCCESS = 'LOAD_TASKS_SUCCESS';
 export const LOAD_TASKS_ERROR = 'LOAD_TASKS_ERROR';
 export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
@@ -136,7 +137,7 @@ export function registerUser(user) {
                 dispatch({ type: AUTHENTICATED_USER, user: data });
             })
             .catch(ex => {
-                dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
+                dispatch({ type: REGISTER_ERROR, errors: ex.errors });
             });
     };
 }

@@ -1,8 +1,9 @@
-import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
+import isEmail from 'validator/lib/isEmail';
+import isLength from 'validator/lib/isLength';
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Form from './Form';
 
 export default class RegisterView extends React.Component {
     static propTypes = {
@@ -16,51 +17,92 @@ export default class RegisterView extends React.Component {
         errors: {},
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            data: {
+                name: '',
+                email: '',
+                password: '',
+            },
+        };
+    }
+
     handleClickToLogin = () => {
         this.props.navigateTo('/login');
     };
 
-    handleSubmit = (errors, data) => {
-        if (isEqual({}, errors) === false) {
-            this.props.actions.addErrors(errors);
-        } else {
-            this.props.actions.registerUser(data);
+    handleSubmit = e => {
+        e.preventDefault();
+
+        const errors = {};
+
+        // TODO: Add error validation
+        if (isEmpty(this.state.data) || isEmpty(this.state.data.name)) {
+            errors['name'] = 'You must enter your name.';
         }
+
+        if (isEmpty(this.state.data) || isEmpty(this.state.data.email)) {
+            errors['email'] = 'You must enter your email.';
+        }
+
+        if (
+            !isEmpty(this.state.data.email) &&
+            !isEmail(this.state.data.email)
+        ) {
+            errors['email'] = 'You must enter a valid email address.';
+        }
+
+        if (isEmpty(this.state.data) || isEmpty(this.state.data.password)) {
+            errors['password'] = 'You must enter your password.';
+        }
+
+        if (
+            !isEmpty(this.state.data.password) &&
+            !isLength(this.state.data.password, { min: 8, max: 64 })
+        ) {
+            errors['password'] =
+                'Your password must be between 8 and 64 characters in length.';
+        }
+
+        // If there are any errors, bail
+        if (Object.keys(errors).length > 0) {
+            this.setState(state => {
+                return { ...state, ...{ errors } };
+            });
+            return;
+        }
+
+        // Clear out our errors
+        this.setState(state => {
+            return { ...state, errors: {} };
+        });
+
+        this.props.actions.registerUser(this.state.data);
     };
 
-    componentWillUnmount() {
-        this.props.actions.clearErrors();
-    }
+    setValue = e => {
+        const key = e.target.name;
+        const value = e.target.value;
+
+        this.setState(state => {
+            return {
+                ...state,
+                ...{
+                    data: {
+                        ...state.data,
+                        ...{ [key]: value },
+                    },
+                },
+            };
+        });
+    };
 
     render() {
-        const { errors } = this.props;
+        const errors = { ...this.props.errors, ...this.state.errors };
 
-        const validate = {
-            name: {
-                notEmpty: {
-                    msg: 'You must enter a name.',
-                },
-            },
-            email: {
-                isEmail: {
-                    msg: 'You must enter a valid email address.',
-                },
-                notEmpty: {
-                    msg: 'You must enter a email address.',
-                },
-            },
-            password: {
-                length: {
-                    args: [8, 64],
-                    msg:
-                        'Your password must be between 8 and 64 characters long',
-                },
-                notEmpty: {
-                    msg: 'You must enter a password',
-                },
-            },
-        };
-
+        // TODO: Add double entry of password
         return (
             <div className="container">
                 <div className="row">
@@ -69,10 +111,7 @@ export default class RegisterView extends React.Component {
                         <div className="panel panel-info">
                             <div className="panel-body">
                                 <div className="form-horizontal">
-                                    <Form
-                                        validate={validate}
-                                        handler={this.handleSubmit}
-                                    >
+                                    <form onSubmit={this.handleSubmit}>
                                         <div
                                             className={classNames(
                                                 'form-group',
@@ -89,12 +128,14 @@ export default class RegisterView extends React.Component {
                                                         className="form-control"
                                                         id="name"
                                                         name="name"
+                                                        value={
+                                                            this.state.data.name
+                                                        }
+                                                        onChange={this.setValue}
                                                     />
                                                     {errors.name && (
                                                         <span className="help-block">
-                                                            {errors.name.slice(
-                                                                -1
-                                                            )}
+                                                            {errors.name}
                                                         </span>
                                                     )}
                                                 </div>
@@ -116,6 +157,11 @@ export default class RegisterView extends React.Component {
                                                         className="form-control"
                                                         id="email"
                                                         name="email"
+                                                        value={
+                                                            this.state.data
+                                                                .email
+                                                        }
+                                                        onChange={this.setValue}
                                                     />
                                                     {errors.email && (
                                                         <span className="help-block">
@@ -144,12 +190,15 @@ export default class RegisterView extends React.Component {
                                                         className="form-control"
                                                         id="password"
                                                         name="password"
+                                                        value={
+                                                            this.state.data
+                                                                .password
+                                                        }
+                                                        onChange={this.setValue}
                                                     />
                                                     {errors.password && (
                                                         <span className="help-block">
-                                                            {errors.password.slice(
-                                                                -1
-                                                            )}
+                                                            {errors.password}
                                                         </span>
                                                     )}
                                                 </div>
@@ -165,7 +214,7 @@ export default class RegisterView extends React.Component {
                                                 Register
                                             </button>
                                         </div>
-                                    </Form>
+                                    </form>
                                 </div>
                             </div>
                         </div>

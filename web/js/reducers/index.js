@@ -6,6 +6,7 @@ import {
     AUTHENTICATED_USER,
     UNAUTHENTICATED_USER,
     AUTHENTICATION_ERROR,
+    REGISTER_ERROR,
     LOAD_TASKS_SUCCESS,
     LOAD_TASKS_ERROR,
     CREATE_TASK_SUCCESS,
@@ -14,7 +15,6 @@ import {
     UPDATE_TASK_ERROR,
     DELETE_TASK_SUCCESS,
     DELETE_TASK_ERROR,
-    STORE_PATH, // eslint-disable-line no-unused-vars
 } from '../actions/';
 
 function tasks(state = [], action) {
@@ -56,7 +56,8 @@ function errors(state = null, action) {
         case UPDATE_TASK_ERROR:
         case DELETE_TASK_ERROR:
         case AUTHENTICATION_ERROR:
-            return Object.assign(state, action.errors);
+        case REGISTER_ERROR:
+            return { ...state, ...action.errors };
         case CLEAR_ERRORS:
             return {};
         default:
