@@ -15,7 +15,6 @@
         "start": "node app.js",
         "lint": "eslint --ext .jsx --ext .js app.js models/* web/js/**",
         "prettier": "prettier --write \"{app.js,models/*.js,web/**/*.js,web/**/*.less}\"",
-        "heroku-postbuild": "NODE_ENV=production parcel build",
         "build": "NODE_ENV=production parcel build web/index.html",
         "test": "NODE_ENV=test jest --coverage"
     },
