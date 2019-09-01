@@ -24,10 +24,11 @@ function tasks(state = [], action) {
         case CREATE_TASK_SUCCESS:
             return [...state, action.task];
         case UPDATE_TASK_SUCCESS:
-            return state.map(task =>
-                task.id === action.task.id
-                    ? Object.assign({}, action.task)
-                    : task
+            return state.map(
+                task =>
+                    task.id === action.task.id
+                        ? Object.assign({}, action.task)
+                        : task
             );
         case DELETE_TASK_SUCCESS:
             return state.filter(task => action.taskId !== task.id);
@@ -47,7 +48,7 @@ function user(state = null, action) {
     }
 }
 
-function errors(action) {
+function errors(state = null, action) {
     switch (action.type) {
         case ERROR:
         case LOAD_TASKS_ERROR:
@@ -55,10 +56,11 @@ function errors(action) {
         case UPDATE_TASK_ERROR:
         case DELETE_TASK_ERROR:
         case AUTHENTICATION_ERROR:
-            return Object.assign({}, action.errors);
+            return Object.assign(state, action.errors);
         case CLEAR_ERRORS:
-        default:
             return {};
+        default:
+            return { ...state };
     }
 }
 
@@ -79,7 +81,7 @@ export default function(state = {}, action) {
         user: user(state.user, action),
         tasks: tasks(state.tasks, action),
         loaded: loaded(state.loaded, action),
-        errors: errors(action),
+        errors: errors(state.errors, action),
         path: action.path,
     };
 }

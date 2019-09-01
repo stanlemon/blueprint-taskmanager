@@ -41,6 +41,7 @@ export function logout() {
         userService
             .logout()
             .then(() => {
+                dispatch({ type: CLEAR_ERRORS });
                 dispatch({ type: UNAUTHENTICATED_USER });
             })
             .catch(ex => {
@@ -67,6 +68,7 @@ export function createTask(data) {
         taskService
             .createTask(data)
             .then(task => {
+                dispatch({ type: CLEAR_ERRORS });
                 dispatch({ type: CREATE_TASK_SUCCESS, task });
             })
             .catch(ex => {
@@ -80,6 +82,7 @@ export function updateTask(data) {
         taskService
             .updateTask(data)
             .then(task => {
+                dispatch({ type: CLEAR_ERRORS });
                 dispatch({ type: UPDATE_TASK_SUCCESS, task });
             })
             .catch(ex => {
@@ -93,6 +96,7 @@ export function deleteTask(taskId) {
         taskService
             .deleteTask(taskId)
             .then(() => {
+                dispatch({ type: CLEAR_ERRORS });
                 dispatch({ type: DELETE_TASK_SUCCESS, taskId });
             })
             .catch(ex => {
@@ -128,6 +132,7 @@ export function registerUser(user) {
         userService
             .register(user)
             .then(data => {
+                dispatch({ type: CLEAR_ERRORS });
                 dispatch({ type: AUTHENTICATED_USER, user: data });
             })
             .catch(ex => {
@@ -141,6 +146,7 @@ export function login(user) {
         userService
             .login(user)
             .then(data => {
+                dispatch({ type: CLEAR_ERRORS });
                 dispatch({ type: AUTHENTICATED_USER, user: data });
             })
             .catch(ex => {

@@ -77,7 +77,7 @@ passport.deserializeUser((id, done) => {
         });
 });
 
-app.get('/login', (req, res) => {
+app.get('/auth/login', (req, res) => {
     const messages = req.flash('error');
     if (messages.length > 0) {
         res.json({
@@ -89,22 +89,22 @@ app.get('/login', (req, res) => {
 });
 
 app.post(
-    '/login',
+    '/auth/login',
     passport.authenticate('local', {
-        failureRedirect: '/login',
+        failureRedirect: '/auth/login',
         failureFlash: true,
     }),
     (req, res) => {
-        res.redirect('/session');
+        res.redirect('/auth/session');
     }
 );
 
-app.get('/logout', (req, res) => {
+app.get('/auth/logout', (req, res) => {
     req.logout();
-    res.redirect('/session');
+    res.redirect('/auth/session');
 });
 
-app.get('/session', (req, res) => {
+app.get('/auth/session', (req, res) => {
     if (req.isAuthenticated()) {
         res.status(200).json({
             user: {

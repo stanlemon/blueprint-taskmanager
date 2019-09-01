@@ -1,47 +1,98 @@
-import isEqual from 'lodash/isEqual';
-import values from 'lodash/values';
+import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Error from './Error';
-import Form from './Form';
 
 export default class LoginView extends React.Component {
     static propTypes = {
         navigateTo: PropTypes.func.isRequired,
         actions: PropTypes.object.isRequired,
-        errors: PropTypes.object,
     };
 
     static defaultProps = {
         actions: {},
-        errors: {},
     };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            errors: {},
+            data: {
+                username: '',
+                password: '',
+            },
+        };
+    }
 
     handleClickToRegister = () => {
         this.props.navigateTo('/register');
     };
 
-    handleSubmit = (errors, data) => {
-        if (isEqual({}, errors) === false) {
-            this.props.actions.addErrors(errors);
-        } else {
-            this.props.actions.login(data);
+    handleSubmit = e => {
+        e.preventDefault();
+
+        const errors = {};
+
+        if (isEmpty(this.state.data) || isEmpty(this.state.data.username)) {
+            errors['username'] = 'You must enter your username.';
         }
+
+        if (isEmpty(this.state.data) || isEmpty(this.state.data.password)) {
+            errors['password'] = 'You must enter your password.';
+        }
+
+        // If there are any errors, bail
+        if (Object.keys(errors).length > 0) {
+            this.setState(state => {
+                return { ...state, ...{ errors } };
+            });
+            return;
+        }
+
+        // Clear out our errors
+        this.setState(state => {
+            return { ...state, errors: {} };
+        });
+
+        this.props.actions.login(this.state.data);
     };
 
-    componentWillUnmount() {
-        this.props.actions.clearErrors();
-    }
+    setValue = e => {
+        const key = e.target.name;
+        const value = e.target.value;
+
+        this.setState(state => {
+            return {
+                ...state,
+                ...{
+                    data: {
+                        ...state.data,
+                        ...{ [key]: value },
+                    },
+                },
+            };
+        });
+    };
 
     render() {
-        const { errors } = this.props;
+        const errors = {
+            // These errors came from the component's validation that occurred on a submit
+            ...this.state.errors,
+            // Errors are a map keyed to an array here, but we only want the first message off of the main key
+            ...(isEmpty(this.props.errors)
+                ? {}
+                : { main: this.props.errors.main[0] }),
+        };
+
+        const { username, password } = this.state.data;
 
         return (
             <div className="container">
                 <div className="row">
                     <div className="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
-                        {values(errors).map(error => (
-                            <Error key={error} message={error} />
+                        {Object.entries(errors).map(([key, value]) => (
+                            <Error key={key} message={value} />
                         ))}
                     </div>
                 </div>
@@ -55,7 +106,7 @@ export default class LoginView extends React.Component {
                             </div>
                             <div className="panel-body">
                                 <div className="form-horizontal">
-                                    <Form handler={this.handleSubmit}>
+                                    <form onSubmit={this.handleSubmit}>
                                         <div className="form-group">
                                             <label htmlFor="username">
                                                 <div className="col-sm-3 control-label">
@@ -71,6 +122,10 @@ export default class LoginView extends React.Component {
                                                             className="form-control"
                                                             id="username"
                                                             name="username"
+                                                            value={username}
+                                                            onChange={
+                                                                this.setValue
+                                                            }
                                                         />
                                                     </div>
                                                 </div>
@@ -91,6 +146,10 @@ export default class LoginView extends React.Component {
                                                             className="form-control"
                                                             id="password"
                                                             name="password"
+                                                            value={password}
+                                                            onChange={
+                                                                this.setValue
+                                                            }
                                                         />
                                                     </div>
                                                 </div>
@@ -105,7 +164,7 @@ export default class LoginView extends React.Component {
                                                 Login
                                             </button>
                                         </div>
-                                    </Form>
+                                    </form>
                                 </div>
                             </div>
                         </div>
