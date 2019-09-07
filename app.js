@@ -202,9 +202,12 @@ if (ENV === DEV) {
     app.use(bundler.middleware());
     /* eslint-enable */
 } else {
-    app.use(
-        serveStatic(path.join(__dirname, 'dist'), { index: ['index.html'] })
-    );
+    // Serve assets compiled by parcel
+    app.use(serveStatic(path.join(__dirname, 'dist')));
+    // All other requests get routed to our SPA
+    app.get('/*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    });
 }
 
 app.listen();
