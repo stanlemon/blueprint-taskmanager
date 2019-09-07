@@ -33,34 +33,23 @@ export default class TaskItem extends React.Component {
     render() {
         const { task } = this.props;
 
-        const rowStyles = {
-            cursor: 'pointer',
-            border: '1px solid #e3e3e3',
-            borderRadius: '4px',
-            marginBottom: '8px',
-        };
-
-        const nameStyles = {
-            textDecoration: task.completed ? 'line-through' : 'none',
-        };
-
-        const rowClasses = classNames({
+        const rowClasses = classNames('task-row', {
             // Tasks due in the next day
-            'bg-warning':
+            'bg-warning task-due-soon':
                 task.due &&
                 !task.completed &&
                 isAfter(task.due, subDays(new Date(), 2)),
             // Tasks that are are over due
-            'bg-danger':
+            'bg-danger task-overdue':
                 task.due && !task.completed && isBefore(task.due, new Date()),
+            'task-completed': task.completed ? true : false,
         });
 
         return (
-            <div style={rowStyles} className={rowClasses}>
+            <div className={rowClasses}>
                 <div className="row" style={{ margin: '10px' }}>
                     <div
                         role="button"
-                        style={nameStyles}
                         className="task-name col-xs-9 col-sm-9 col-md-10"
                         onClick={this.viewTask}
                         onKeyDown={this.viewTask}
@@ -73,13 +62,14 @@ export default class TaskItem extends React.Component {
                             <div className="col-xs-6 col-sm-6 text-right">
                                 <input
                                     type="checkbox"
+                                    className="complete-task"
                                     checked={this.props.task.completed !== null}
                                     onChange={this.completeTask}
                                 />
                             </div>
                             <div className="col-xs-6 col-sm-6 text-right">
                                 <button
-                                    className="btn btn-xs btn-danger"
+                                    className="btn btn-xs btn-danger delete-task"
                                     onClick={this.deleteTask}
                                 >
                                     <i

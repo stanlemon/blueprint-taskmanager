@@ -57,7 +57,6 @@ export default class TaskForm extends React.Component {
     };
 
     setDueDate = due => {
-        console.log('setDueDate()', due);
         this.setData('due', due);
     };
 
