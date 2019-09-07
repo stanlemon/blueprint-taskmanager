@@ -59,7 +59,7 @@ export default class TaskListView extends React.Component {
                         Use the form below to get started and add your first
                         task.
                     </p>
-                    <TaskForm actions={actions} errors={errors} />
+                    <CreateTaskForm actions={actions} errors={errors} />
                 </div>
             );
         }
