@@ -54,7 +54,7 @@ describe('<UpdateTaskForm />', () => {
         const completedLabel = view.find('label[htmlFor="completed"]');
 
         expect(completedLabel.text()).toEqual(
-            'Completed on June 12th 2017, 7:08:00AM'
+            'Completed on June 12th 2017, 7:08AM'
         );
 
         // Update the task name

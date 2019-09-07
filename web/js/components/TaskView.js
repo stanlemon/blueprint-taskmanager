@@ -5,6 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Error from './Error';
 import UpdateTaskForm from './UpdateTaskForm';
+import { DATE_FORMAT_LONG } from '../lib/Utils';
 
 export default function TaskView({
     actions,
@@ -18,7 +19,7 @@ export default function TaskView({
         return <div />;
     }
 
-    const handleReturnToList = () => this.props.navigateTo('/');
+    const handleReturnToList = () => navigateTo('/');
 
     const task = Object.assign({}, tasks.filter(t => t.id === taskId)[0]);
 
@@ -44,11 +45,11 @@ export default function TaskView({
 
             <p>
                 <strong>Created: </strong>
-                {format(task.createdAt, 'MMMM do yyyy, h:mm:ssa')}
+                <span>{format(task.createdAt, DATE_FORMAT_LONG)}</span>
             </p>
             <p>
                 <strong>Last Updated: </strong>
-                {format(task.updatedAt, 'MMMM do yyyy, h:mm:ssa')}
+                <span>{format(task.updatedAt, DATE_FORMAT_LONG)}</span>
             </p>
         </div>
     );

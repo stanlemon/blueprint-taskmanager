@@ -2,6 +2,8 @@ import format from 'date-fns/format';
 import isAfter from 'date-fns/isAfter';
 import isSameMinute from 'date-fns/isSameMinute';
 
+export const DATE_FORMAT_LONG = 'MMMM do yyyy, h:mma';
+
 export function makeDateTime(d = new Date()) {
     return format(d, 'yyyy-MM-dd HH:mm:ss.SSS z');
 }

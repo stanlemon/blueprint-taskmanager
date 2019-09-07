@@ -5,6 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import isEmpty from 'lodash/isEmpty';
+import { DATE_FORMAT_LONG } from '../lib/Utils';
 
 export default class TaskForm extends React.Component {
     static propTypes = {
@@ -175,7 +176,7 @@ export default class TaskForm extends React.Component {
                                                 on{' '}
                                                 {format(
                                                     task.completed,
-                                                    'MMMM do yyyy, h:mm:ssa'
+                                                    DATE_FORMAT_LONG
                                                 )}
                                             </em>
                                         )}
