@@ -115,7 +115,8 @@ describe('Utils', () => {
         const input = [].concat(shuffle(tasks));
 
         const actual = sortTasksByDate(input);
-        console.log(actual);
+
+        // FYI: This doesn't work consistently on Node 10
         expect(actual).toEqual(tasks);
     });
 });
