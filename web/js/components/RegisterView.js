@@ -38,7 +38,6 @@ export default class RegisterView extends React.Component {
 
         const errors = {};
 
-        // TODO: Add error validation
         if (isEmpty(this.state.data) || isEmpty(this.state.data.name)) {
             errors['name'] = 'You must enter your name.';
         }
