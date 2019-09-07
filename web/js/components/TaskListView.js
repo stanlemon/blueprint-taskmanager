@@ -82,11 +82,13 @@ export default class TaskListView extends React.Component {
             'btn-info',
             'btn-default'
         );
-        const btnAll = classNames(btnClasses, { active: filter === ALL });
-        const btnIncomplete = classNames(btnClasses, {
+        const btnAll = classNames(btnClasses, 'task-filter-all', {
+            active: filter === ALL,
+        });
+        const btnIncomplete = classNames(btnClasses, 'task-filter-incomplete', {
             active: filter === INCOMPLETE,
         });
-        const btnComplete = classNames(btnClasses, {
+        const btnComplete = classNames(btnClasses, 'task-filter-complete', {
             active: filter === COMPLETE,
         });
 
@@ -137,10 +139,10 @@ export default class TaskListView extends React.Component {
                 {tasks.length === 0 && (
                     <div style={style.notasks}>
                         <div
-                            className="text-center row"
+                            className="text-center row task-filter-none"
                             style={{ margin: '10px' }}
                         >
-                            <em>There are no tasks for this filter</em>
+                            <em>There are no tasks for this filter.</em>
                         </div>
                     </div>
                 )}
