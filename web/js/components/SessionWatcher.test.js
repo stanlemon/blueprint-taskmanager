@@ -143,4 +143,34 @@ describe('<SessionWatcher />', () => {
         // Unauthed user is redirected to the login screen
         expect(destUrl).toEqual('/login');
     });
+
+    it('user is authenticated on an authenticated page - noop', () => {
+        let destUrl;
+
+        const navigateTo = r => {
+            destUrl = r;
+        };
+
+        // Initial state user is null, unauthed
+        const view = shallow(
+            <SessionWatcher
+                path="/page1"
+                navigateTo={navigateTo}
+                actions={actions}
+                loaded={['user']}
+                user={{}}
+            >
+                <h1>Hello World</h1>
+            </SessionWatcher>
+        );
+
+        // User gets logged out
+        view.setProps({
+            path: '/page2',
+            user: {},
+        });
+
+        // navigateTo() should not be called, so this should remain undefined
+        expect(destUrl).toEqual(undefined);
+    });
 });

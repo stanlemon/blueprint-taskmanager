@@ -194,4 +194,17 @@ describe('<TaskForm />', () => {
             format(nowMidnight, 'MM/dd/yyyy h:mma')
         );
     });
+
+    it('renders errors from actions', () => {
+        const errorMessages = {
+            description: ['Error message about description'],
+            due: ['Error message about due'],
+        };
+
+        const view = mount(<TaskForm save={t => t} errors={errorMessages} />);
+
+        const errors = view.find('.has-error .help-block');
+
+        expect(errors.length).toBe(2);
+    });
 });

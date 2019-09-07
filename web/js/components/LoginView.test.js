@@ -2,6 +2,7 @@ import React from 'react';
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import LoginView from './LoginView';
+import Error from './Error';
 
 configure({ adapter: new Adapter() });
 
@@ -80,5 +81,16 @@ describe('<LoginView />', () => {
         button.simulate('click');
 
         expect(route).toBe('/register');
+    });
+
+    it('errors from actions render', () => {
+        const view = mount(
+            <LoginView
+                errors={{ main: ['Error message'] }}
+                navigateTo={navigateTo}
+            />
+        );
+
+        expect(view.find(Error).length).toBe(1);
     });
 });

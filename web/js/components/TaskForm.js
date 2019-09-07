@@ -29,8 +29,8 @@ export default class TaskForm extends React.Component {
         super(props);
 
         this.state = {
-            data: this.props.task || {},
-            errors: this.props.errors || {},
+            data: this.props.task,
+            errors: this.props.errors,
         };
     }
 

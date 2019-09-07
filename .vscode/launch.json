@@ -11,17 +11,26 @@
             "program": "${workspaceFolder}/app.js"
         },
         {
-            "name": "Debug Jest Tests",
             "type": "node",
             "request": "launch",
-            "runtimeArgs": [
-              "--inspect-brk",
-              "${workspaceRoot}/node_modules/.bin/jest",
-              "--runInBand"
+            "name": "Jest All",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
+            "args": ["--runInBand"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Jest Current File",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
+            "args": [
+            "${fileBasenameNoExtension}",
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
-            "port": 9229      
+            "disableOptimisticBPs": true
         }
     ]
 }

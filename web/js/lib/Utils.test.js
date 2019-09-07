@@ -55,6 +55,11 @@ describe('Utils', () => {
         });
     });
 
+    it('mapErrors with no input does not break', () => {
+        const output = mapErrors();
+        expect(output).toEqual({});
+    });
+
     // The goal of this method is to ensure tasks are sorted properly
     // - Overdue tasks (uncompleted) appear ordered by their due date, with the longest overdue first
     // - Not due yet tasks appear ordered by their creation date, with the most recently created at the top
@@ -104,7 +109,13 @@ describe('Utils', () => {
                 completed: subDays(new Date(), 4),
             },
             {
-                name: 'Eighth task, no due date, already completed, oldest',
+                name: 'Eighth task, no due date, already completed',
+                createdAt: subDays(new Date(), 3),
+                due: null,
+                completed: subDays(new Date(), 7),
+            },
+            {
+                name: 'Ninth task, no due date, already completed, oldest',
                 createdAt: subDays(new Date(), 3),
                 due: null,
                 completed: subDays(new Date(), 8),
