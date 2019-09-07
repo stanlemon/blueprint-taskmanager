@@ -23,7 +23,7 @@ export function mapErrors(errors = []) {
 export function sortTasksByDate(tasks) {
     return tasks
         .concat()
-        .sort((a, b) => isAfter(a.createdAt, b.createdAt))
+        .sort((a, b) => (isAfter(a.createdAt, b.createdAt) ? -1 : 1))
         .sort((a, b) => {
             if (!a.due && !b.due) {
                 return 0;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow, configure } from 'enzyme';
+import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import LoginView from './LoginView';
 
@@ -66,5 +66,19 @@ describe('<LoginView />', () => {
 
         expect(username).toBe(expectedUsername);
         expect(password).toBe(expectedPassword);
+    });
+
+    it('clicking the button to go to the register screen should trigger navigateTo', () => {
+        let route;
+
+        const view = mount(<LoginView navigateTo={r => (route = r)} />);
+
+        const button = view.findWhere(
+            n => n.type() === 'button' && n.text() === 'Create one now.'
+        );
+
+        button.simulate('click');
+
+        expect(route).toBe('/register');
     });
 });

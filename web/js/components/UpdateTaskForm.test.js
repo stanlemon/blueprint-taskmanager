@@ -69,14 +69,26 @@ describe('<UpdateTaskForm />', () => {
             target: { name: 'description', value: newDescription },
         });
 
+        // Click the checkbox to toggle it
+        completed.simulate('change', {
+            target: { type: 'checkbox', name: 'completed', checked: false },
+        });
+
+        view.update();
+
+        expect(completed.props().checked).toEqual(true);
+
         const form = view.find('form');
 
         form.simulate('submit');
 
         // When we submit we should have the original task, but with the new name and description fields
         expect(lastSavedTask).toEqual({
-            ...task,
-            ...{ name: newName, description: newDescription },
+            id: task.id,
+            name: newName,
+            description: newDescription,
+            due: task.due, // field is unchanged
+            completed: false,
         });
     });
 });

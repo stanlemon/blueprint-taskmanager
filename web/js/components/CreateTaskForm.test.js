@@ -70,4 +70,25 @@ describe('<CreateTaskForm />', () => {
 
         expect(lastSavedTask).toEqual(task);
     });
+
+    it('submitting a form without a task name triggers an error', () => {
+        const navigateTo = () => {};
+
+        const view = mount(
+            <CreateTaskForm task={{}} actions={{}} navigateTo={navigateTo} />
+        );
+
+        const form = view.find('form');
+
+        // Submit, the handler should fire and lastSavedTask updated to match our task object
+        form.simulate('submit');
+
+        const errors = view.find('.has-error .help-block');
+
+        expect(errors.length).toBe(1);
+
+        expect(errors.at(0).text()).toBe(
+            'You must enter a name for this task.'
+        );
+    });
 });

@@ -56,15 +56,6 @@ export default class TaskForm extends React.Component {
         this.setState({ errors: {}, data: result });
     };
 
-    setError = (key, error) => {
-        this.setState(state => {
-            return {
-                ...state,
-                ...{ errors: { ...state.errors, ...{ [key]: error } } },
-            };
-        });
-    };
-
     setDueDate = due => {
         this.setData('due', due);
     };
@@ -164,36 +155,33 @@ export default class TaskForm extends React.Component {
                                 )}
                             </label>
                         </div>
-                        {task &&
-                            task.id && (
-                                <div className="checkbox">
-                                    <label
-                                        htmlFor="completed"
-                                        className="control-label"
-                                    >
-                                        <input
-                                            name="completed"
-                                            type="checkbox"
-                                            checked={
-                                                task.completed ? true : false
-                                            }
-                                            onChange={this.setValue}
-                                        />
-                                        Completed
-                                        {task.completed &&
-                                            !isBoolean(task.completed) && (
-                                                <em>
-                                                    {' '}
-                                                    on{' '}
-                                                    {format(
-                                                        task.completed,
-                                                        'MMMM do yyyy, h:mm:ssa'
-                                                    )}
-                                                </em>
-                                            )}
-                                    </label>
-                                </div>
-                            )}
+                        {task && task.id && (
+                            <div className="checkbox">
+                                <label
+                                    htmlFor="completed"
+                                    className="control-label"
+                                >
+                                    <input
+                                        name="completed"
+                                        type="checkbox"
+                                        checked={task.completed ? true : false}
+                                        onChange={this.setValue}
+                                    />
+                                    Completed
+                                    {task.completed &&
+                                        !isBoolean(task.completed) && (
+                                            <em>
+                                                {' '}
+                                                on{' '}
+                                                {format(
+                                                    task.completed,
+                                                    'MMMM do yyyy, h:mm:ssa'
+                                                )}
+                                            </em>
+                                        )}
+                                </label>
+                            </div>
+                        )}
                         <div className="form-group">
                             <button
                                 name="saveTask"

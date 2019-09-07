@@ -7,6 +7,9 @@ export default class LoginView extends React.Component {
     static propTypes = {
         navigateTo: PropTypes.func.isRequired,
         actions: PropTypes.object.isRequired,
+        errors: PropTypes.shape({
+            main: PropTypes.arrayOf(PropTypes.string),
+        }),
     };
 
     static defaultProps = {
