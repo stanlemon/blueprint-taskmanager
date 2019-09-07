@@ -25,7 +25,7 @@ const store = compose(applyMiddleware(thunk.withExtraArgument(services)))(
 export default function App() {
     return (
         <Provider store={store}>
-            <div>
+            <>
                 {React.createElement(
                     connect(
                         state => state,
@@ -34,7 +34,7 @@ export default function App() {
                         })
                     )(Routes)
                 )}
-            </div>
+            </>
         </Provider>
     );
 }

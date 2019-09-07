@@ -17,7 +17,7 @@ import {
     DELETE_TASK_ERROR,
 } from '../actions/';
 
-function tasks(state = [], action) {
+export function tasks(state, action) {
     switch (action.type) {
         case LOAD_TASKS_SUCCESS:
             return [...action.tasks];
@@ -36,7 +36,7 @@ function tasks(state = [], action) {
     }
 }
 
-function user(state = null, action) {
+export function user(state, action) {
     switch (action.type) {
         case UNAUTHENTICATED_USER:
             return null;
@@ -47,7 +47,7 @@ function user(state = null, action) {
     }
 }
 
-function errors(state = null, action) {
+export function errors(state, action) {
     switch (action.type) {
         case ERROR:
         case LOAD_TASKS_ERROR:
@@ -64,7 +64,7 @@ function errors(state = null, action) {
     }
 }
 
-function loaded(state = [], action) {
+export function loaded(state, action) {
     switch (action.type) {
         case LOAD_TASKS_SUCCESS:
             return uniq([...state, 'tasks']);
@@ -76,7 +76,10 @@ function loaded(state = [], action) {
     }
 }
 
-export default function(state = {}, action) {
+export default function(
+    state = { user: null, tasks: [], loaded: [], errors: [] },
+    action
+) {
     return {
         user: user(state.user, action),
         tasks: tasks(state.tasks, action),
