@@ -41,13 +41,13 @@ export default class SessionWatcher extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        // User was not authenticated and is now
+        // User was authenticated and logged out
         if (
             includes(prevProps.loaded, 'user') &&
             this.props.user === null &&
             prevProps.user !== null
         ) {
-            this.props.navigateTo('/');
+            this.props.navigateTo('/login');
             return;
         }
 
