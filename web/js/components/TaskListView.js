@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { sortTasksByDate } from '../lib/Utils';
-import TaskForm from './CreateTaskForm';
+import CreateTaskForm from './CreateTaskForm';
 import TaskItem from './TaskItem';
 
 const ALL = 'all';
@@ -156,7 +156,7 @@ export default class TaskListView extends React.Component {
 
                 <br />
 
-                <TaskForm actions={actions} errors={errors} />
+                <CreateTaskForm actions={actions} errors={errors} />
             </div>
         );
     }

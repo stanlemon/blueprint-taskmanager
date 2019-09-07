@@ -4,7 +4,7 @@ import format from 'date-fns/format';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Error from './Error';
-import TaskForm from './UpdateTaskForm';
+import UpdateTaskForm from './UpdateTaskForm';
 
 export default function TaskView({
     actions,
@@ -35,7 +35,7 @@ export default function TaskView({
 
     return (
         <div>
-            <TaskForm
+            <UpdateTaskForm
                 task={task}
                 errors={errors}
                 navigateTo={navigateTo}

@@ -9,7 +9,6 @@ import isEmpty from 'lodash/isEmpty';
 export default class TaskForm extends React.Component {
     static propTypes = {
         save: PropTypes.func.isRequired,
-        actions: PropTypes.object.isRequired,
         task: PropTypes.object,
         errors: PropTypes.object,
     };
@@ -29,8 +28,8 @@ export default class TaskForm extends React.Component {
         super(props);
 
         this.state = {
-            data: props.task || {},
-            errors: props.errors || {},
+            data: this.props.task || {},
+            errors: this.props.errors || {},
         };
     }
 
@@ -53,10 +52,12 @@ export default class TaskForm extends React.Component {
 
         const result = this.props.save(this.state.data);
 
+        // TODO: Should this check to see if anything was returned before resetting 'data'?
         this.setState({ errors: {}, data: result });
     };
 
     setDueDate = due => {
+        console.log('setDueDate()', due);
         this.setData('due', due);
     };
 
