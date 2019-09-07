@@ -115,7 +115,7 @@ describe('Utils', () => {
         const input = [].concat(shuffle(tasks));
 
         const actual = sortTasksByDate(input);
-
+        console.log(actual);
         expect(actual).toEqual(tasks);
     });
 });
