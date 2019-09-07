@@ -74,7 +74,7 @@ describe('<LoginView />', () => {
         const view = mount(<LoginView navigateTo={r => (route = r)} />);
 
         const button = view.findWhere(
-            n => n.type() === 'button' && n.text() === 'Create one now.'
+            n => n.type() === 'button' && n.text() === 'Create Account'
         );
 
         button.simulate('click');
