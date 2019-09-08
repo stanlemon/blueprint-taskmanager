@@ -18,6 +18,12 @@ export default class CreateTaskForm extends React.Component {
     };
 
     render() {
-        return <TaskForm actions={this.props.actions} save={this.handleSave} />;
+        return (
+            <TaskForm
+                className="task-create-form"
+                actions={this.props.actions}
+                save={this.handleSave}
+            />
+        );
     }
 }

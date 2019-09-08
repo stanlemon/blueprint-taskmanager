@@ -23,35 +23,41 @@ test('end to end', async done => {
 
     await page.goto('http://localhost:' + process.env.PORT);
 
+    await page.waitForSelector('.login-form');
+
     const createAccountButton = await page.$('#register-button');
 
     createAccountButton.click();
 
-    const nameInput = await page.waitForSelector('input[name="name"]');
-    await nameInput.type('Stan Lemon');
+    await page.waitForSelector('.register-form');
 
-    const emailInput = await page.$('input[name=email]');
-    await emailInput.type('stanlemon@users.noreply.github.com');
+    const nameInput1 = await await page.$('input[name="name"]');
+    await nameInput1.type('Stan Lemon');
 
-    const passwordInput = await page.$('input[name=password]');
-    await passwordInput.type('p@$$w0rd!');
+    const emailInput1 = await page.$('input[name=email]');
+    await emailInput1.type('stanlemon@users.noreply.github.com');
 
-    const submitButton = await page.$('button[type=submit]');
-    await submitButton.click();
+    const passwordInput1 = await page.$('input[name=password]');
+    await passwordInput1.type('p@$$w0rd!');
 
-    await page.waitForSelector('.jumbotron');
+    const submitButton1 = await page.$('button[type=submit]');
+    await submitButton1.click();
 
-    const taskNameInput = await page.$('input[name="name"]');
-    await taskNameInput.focus();
-    await taskNameInput.type('First task name');
+    await page.waitForSelector('.task-create-form');
 
-    const saveButton = await page.$('button[name=saveTask]');
-    await saveButton.click();
+    const taskNameInput1 = await page.$('input[name="name"]');
+    await taskNameInput1.focus();
+    await taskNameInput1.type('First task name');
 
-    const taskRow = await page.waitForSelector('.task-row');
-    expect(taskRow).toMatch('First task name');
+    const saveButton1 = await page.$('button[name=saveTask]');
+    await saveButton1.click();
 
-    await taskRow.click();
+    const taskRow1 = await page.waitForSelector('.task-row');
+    expect(taskRow1).toMatch('First task name');
+
+    await taskRow1.click();
+
+    await page.waitForSelector('.task-update-form');
 
     // Unnecessary pause
     await new Promise(resolve => setTimeout(resolve, 10000));

@@ -12,6 +12,7 @@ export default class TaskForm extends React.Component {
         save: PropTypes.func.isRequired,
         task: PropTypes.object,
         errors: PropTypes.object,
+        className: PropTypes.string,
     };
 
     static defaultProps = {
@@ -22,6 +23,7 @@ export default class TaskForm extends React.Component {
             completed: false,
             due: null,
         },
+        className: '',
         errors: {},
     };
 
@@ -84,9 +86,13 @@ export default class TaskForm extends React.Component {
         const task = this.state.data;
         const errors = this.state.errors;
 
+        const classes = classNames('task-form', {
+            [this.props.className]: !isEmpty(this.props.className),
+        });
+
         return (
-            <div className="well">
-                <form onSubmit={this.handleSubmit}>
+            <form className={classes} onSubmit={this.handleSubmit}>
+                <div className="well">
                     <div>
                         <div
                             className={classNames('form-group', {
@@ -193,8 +199,8 @@ export default class TaskForm extends React.Component {
                         </div>
                         <div className="clearfix" />
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         );
     }
 }

@@ -109,7 +109,10 @@ export default class LoginView extends React.Component {
                             </div>
                             <div className="panel-body">
                                 <div className="form-horizontal">
-                                    <form onSubmit={this.handleSubmit}>
+                                    <form
+                                        className="login-form"
+                                        onSubmit={this.handleSubmit}
+                                    >
                                         <div className="form-group">
                                             <label htmlFor="username">
                                                 <div className="col-sm-3 control-label">

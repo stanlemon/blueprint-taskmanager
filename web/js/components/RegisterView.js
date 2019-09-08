@@ -110,7 +110,10 @@ export default class RegisterView extends React.Component {
                         <div className="panel panel-info">
                             <div className="panel-body">
                                 <div className="form-horizontal">
-                                    <form onSubmit={this.handleSubmit}>
+                                    <form
+                                        className="register-form"
+                                        onSubmit={this.handleSubmit}
+                                    >
                                         <div
                                             className={classNames(
                                                 'form-group',
