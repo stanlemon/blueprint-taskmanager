@@ -177,6 +177,7 @@ export default class LoginView extends React.Component {
                 <div className="row">
                     <div className="text-center">
                         <button
+                            id="register-button"
                             type="button"
                             className="btn btn-link"
                             onClick={this.handleClickToRegister}

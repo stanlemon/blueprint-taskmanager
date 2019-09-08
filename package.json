@@ -17,12 +17,14 @@
         "prettier": "prettier --write \"{app.js,models/*.js,web/**/*.js,web/**/*.less}\"",
         "build": "NODE_ENV=production parcel build web/index.html",
         "test": "NODE_ENV=test jest --coverage",
-        "test-watch": "NODE_ENV=test jest --watchAll --coverage"
+        "test-watch": "NODE_ENV=test jest --watchAll --coverage",
+        "test-e2e": "NODE_ENV=test jest ./app.test.js -t 'end to end' --detectOpenHandles"
     },
     "jest": {
+        "preset": "jest-puppeteer",
         "verbose": true,
         "automock": false,
-        "testRegex": "web/js/.*\\.test.js$",
+        "testRegex": ".*\\.test.js$",
         "transform": {
             ".*": "<rootDir>/node_modules/babel-jest"
         },
@@ -45,6 +47,7 @@
         "font-awesome": "^4.7.0",
         "helmet": "^3.21.0",
         "history": "^4.9.0",
+        "killable": "^1.0.1",
         "lodash": "^4.17.15",
         "morgan": "^1.9.1",
         "passport": "^0.4.0",
@@ -80,11 +83,14 @@
         "eslint-plugin-prettier": "^3.1.0",
         "eslint-plugin-react": "^7.14.3",
         "jest": "^24.9.0",
+        "jest-puppeteer": "^4.3.0",
         "less": "^3.10.3",
         "parcel-bundler": "^1.12.3",
         "parcel-plugin-bundle-visualiser": "^1.2.0",
         "prettier": "^1.18.2",
+        "puppeteer": "^1.19.0",
         "react-test-renderer": "^16.9.0",
-        "sqlite3": "^4.1.0"
+        "sqlite3": "^4.1.0",
+        "wait-for-expect": "^2.0.0"
     }
 }

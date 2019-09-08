@@ -1,6 +1,7 @@
 /*eslint no-console: "off"*/
 const path = require('path');
 const http = require('http');
+const killable = require('killable');
 const express = require('express');
 const helmet = require('helmet');
 const serveStatic = require('serve-static');
@@ -210,8 +211,6 @@ if (ENV === DEV) {
     });
 }
 
-app.listen();
-
 const server = http.createServer(app);
 
 server.listen(PORT, err => {
@@ -229,3 +228,7 @@ server.listen(PORT, err => {
     console.log('Starting in %s mode', ENV);
     console.log('Listening at http://%s:%s', host, port);
 });
+
+killable(server);
+
+module.exports = { server, db };

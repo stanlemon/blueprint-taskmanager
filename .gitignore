@@ -6,3 +6,4 @@ web/assets/
 coverage/
 dist/
 .cache/
+test-database-*.sqlite
