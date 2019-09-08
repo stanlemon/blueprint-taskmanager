@@ -22,6 +22,7 @@
     },
     "jest": {
         "preset": "jest-puppeteer",
+        "testEnvironment": "jsdom",
         "verbose": true,
         "automock": false,
         "testRegex": ".*\\.test.js$",
