@@ -9,6 +9,17 @@ process.env.DATABASE_URL = 'sqlite://' + databaseFile;
 
 const { server, db } = require('./app.js');
 
+// Make sure the jumbotron has our text
+async function waitForTextInSelector(page, selector, text) {
+    return page.waitForFunction(
+        'document.querySelector("' +
+            selector +
+            '").innerText.includes("' +
+            text +
+            '")'
+    );
+}
+
 test('end to end', async done => {
     db.sequelize.sync({ force: true });
 
@@ -16,12 +27,14 @@ test('end to end', async done => {
         expect(server.listening).toEqual(true);
     });
 
-    await new Promise(resolve => setTimeout(resolve, 500));
-
     const username = 'stanlemon@users.noreply.github.com';
     const password = 'p@$$w0rd!';
 
-    const browser = await puppeteer.launch({ headless: false, devtools: true });
+    const browser = await puppeteer.launch({
+        //headless: false,
+        //devtools: true,
+        args: ['--disable-dev-shm-usage'],
+    });
     const page = await browser.newPage();
 
     await page.goto('http://localhost:' + process.env.PORT);
@@ -72,11 +85,42 @@ test('end to end', async done => {
     await saveButton1.click();
 
     const taskRow1 = await page.waitForSelector('.task-row');
-    expect(taskRow1).toMatch('First task name');
+    await waitForTextInSelector(page, '.task-row', 'First task name');
 
     await taskRow1.click();
 
     await page.waitForSelector('.task-update-form');
+
+    const taskNameInput2 = await page.$('input[name="name"]');
+    await taskNameInput2.focus();
+    await taskNameInput2.type('First task name, now updated');
+
+    const saveButton2 = await page.$('button[name=saveTask]');
+    await saveButton2.click();
+
+    const taskRow2 = await page.waitForSelector('.task-row');
+    await waitForTextInSelector(
+        page,
+        '.task-row',
+        'First task name, now updated'
+    );
+
+    const completeCheckbox1 = await page.$('.complete-task');
+    await completeCheckbox1.click();
+
+    await page.waitForSelector('.task-row.task-completed');
+
+    const deleteTaskButton = await page.$('.delete-task');
+    await deleteTaskButton.click();
+
+    await page.waitForSelector('.jumbotron h1');
+
+    // Make sure the jumbotron has our text
+    await waitForTextInSelector(
+        page,
+        '.jumbotron h1',
+        "You don't have any tasks!"
+    );
 
     await browser.close();
 
@@ -88,6 +132,6 @@ test('end to end', async done => {
         // Take a brief pause before calling it quits
         setTimeout(() => {
             done();
-        }, 2000);
+        }, 1000);
     });
 }, 60000);
