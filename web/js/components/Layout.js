@@ -51,6 +51,7 @@ export default class Layout extends React.Component {
                         <ul className="nav navbar-nav navbar-right">
                             <li>
                                 <i
+                                    id="logout"
                                     role="button"
                                     style={{ cursor: 'pointer' }}
                                     className="navbar-brand fa fa-sign-out"

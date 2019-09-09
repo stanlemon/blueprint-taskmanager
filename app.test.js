@@ -18,6 +18,9 @@ test('end to end', async done => {
 
     await new Promise(resolve => setTimeout(resolve, 500));
 
+    const username = 'stanlemon@users.noreply.github.com';
+    const password = 'p@$$w0rd!';
+
     const browser = await puppeteer.launch({ headless: false, devtools: true });
     const page = await browser.newPage();
 
@@ -35,13 +38,29 @@ test('end to end', async done => {
     await nameInput1.type('Stan Lemon');
 
     const emailInput1 = await page.$('input[name=email]');
-    await emailInput1.type('stanlemon@users.noreply.github.com');
+    await emailInput1.type(username);
 
     const passwordInput1 = await page.$('input[name=password]');
-    await passwordInput1.type('p@$$w0rd!');
+    await passwordInput1.type(password);
 
     const submitButton1 = await page.$('button[type=submit]');
     await submitButton1.click();
+
+    await page.waitForSelector('.task-create-form');
+
+    const logoutButton = await page.$('#logout');
+    await logoutButton.click();
+
+    await page.waitForSelector('.login-form');
+
+    const loginUsernameInput = await page.$('input[name=username]');
+    await loginUsernameInput.type(username);
+
+    const loginPasswordInput = await page.$('input[name=password]');
+    await loginPasswordInput.type(password);
+
+    const loginSubmitButton = await page.$('button[type=submit]');
+    await loginSubmitButton.click();
 
     await page.waitForSelector('.task-create-form');
 
@@ -59,9 +78,6 @@ test('end to end', async done => {
 
     await page.waitForSelector('.task-update-form');
 
-    // Unnecessary pause
-    await new Promise(resolve => setTimeout(resolve, 10000));
-
     await browser.close();
 
     fs.unlinkSync('./' + databaseFile);
@@ -74,4 +90,4 @@ test('end to end', async done => {
             done();
         }, 2000);
     });
-}, 30000);
+}, 60000);
