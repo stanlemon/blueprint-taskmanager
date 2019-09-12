@@ -86,8 +86,8 @@ describe("reducers", () => {
             tasks([], {
                 type: LOAD_TASKS_SUCCESS,
                 tasks: [{ id: 1, name: "Task One" }],
-            })
-        ).toEqual([{ id: 1, name: "Task One" }]);
+            })[0]
+        ).toMatchObject({ id: 1, name: "Task One" });
 
         // Task loading is not additive
         expect(
@@ -95,21 +95,24 @@ describe("reducers", () => {
                 type: LOAD_TASKS_SUCCESS,
                 tasks: [{ id: 2, name: "Task Two" }],
             })
-        ).toEqual([{ id: 2, name: "Task Two" }]);
+        ).toMatchObject([{ id: 2, name: "Task Two" }]);
 
         expect(
             tasks([{ id: 1, name: "Task One" }], {
                 type: CREATE_TASK_SUCCESS,
                 task: { id: 2, name: "Task Two" },
             })
-        ).toEqual([{ id: 1, name: "Task One" }, { id: 2, name: "Task Two" }]);
+        ).toMatchObject([
+            { id: 1, name: "Task One" },
+            { id: 2, name: "Task Two" },
+        ]);
 
         expect(
             tasks([{ id: 1, name: "Task One" }, { id: 2, name: "Task Two" }], {
                 type: UPDATE_TASK_SUCCESS,
                 task: { id: 1, name: "Task One Now Has A Longer Name" },
             })
-        ).toEqual([
+        ).toMatchObject([
             { id: 1, name: "Task One Now Has A Longer Name" },
             { id: 2, name: "Task Two" },
         ]);
@@ -119,12 +122,15 @@ describe("reducers", () => {
                 type: DELETE_TASK_SUCCESS,
                 taskId: 2,
             })
-        ).toEqual([{ id: 1, name: "Task One" }]);
+        ).toMatchObject([{ id: 1, name: "Task One" }]);
 
         expect(
             tasks([{ id: 1, name: "Task One" }, { id: 2, name: "Task Two" }], {
                 type: "unknown",
             })
-        ).toEqual([{ id: 1, name: "Task One" }, { id: 2, name: "Task Two" }]);
+        ).toMatchObject([
+            { id: 1, name: "Task One" },
+            { id: 2, name: "Task Two" },
+        ]);
     });
 });

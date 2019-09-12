@@ -1,13 +1,19 @@
+import mapValues from "lodash/mapValues";
+import isDate from "date-fns/isDate";
+import format from "date-fns/format";
 import RestService from "./RestService";
 
 export default class TaskService extends RestService {
     formatTask(task) {
-        return Object.assign({}, task, {
-            createdAt: new Date(task.createdAt),
-            updatedAt: new Date(task.updatedAt),
-            completed: task.completed ? new Date(task.completed) : null,
-            due: task.due ? new Date(task.due) : null,
-        });
+        // Ensure that if complete or due are not set we make them null
+        return mapValues(
+            Object.assign({}, task, {
+                completed: task.completed ? task.completed : null,
+                due: task.due ? task.due : null,
+            }),
+            // Any date objects should be formatted
+            v => (isDate(v) ? format(v) : v)
+        );
     }
 
     loadTasks() {

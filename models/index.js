@@ -100,8 +100,16 @@ module.exports = () => {
             },
         },
         description: Sequelize.STRING,
-        due: Sequelize.DATE,
-        completed: Sequelize.DATE,
+        due: { type: Sequelize.DATE, defaultValue: null },
+        completed: { type: Sequelize.DATE, defaultValue: null },
+        createdAt: {
+            type: Sequelize.DATE,
+            defaultValue: Sequelize.NOW,
+        },
+        updatedAt: {
+            type: Sequelize.DATE,
+            defaultValue: Sequelize.NOW,
+        },
     });
 
     Task.belongsTo(User, { as: "user" });

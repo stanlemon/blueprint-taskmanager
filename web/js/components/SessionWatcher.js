@@ -7,10 +7,6 @@ import { checkSession } from "../actions/";
 import { withRouter } from "react-router";
 
 export class SessionWatcher extends React.Component {
-    static defaultProps = {
-        pollInterval: 10000,
-    };
-
     interval;
 
     componentDidMount() {
@@ -62,6 +58,11 @@ export class SessionWatcher extends React.Component {
         return this.props.children;
     }
 }
+
+SessionWatcher.defaultProps = {
+    pollInterval: 30000,
+    loaded: [],
+};
 
 SessionWatcher.propTypes = {
     navigateTo: PropTypes.func.isRequired,

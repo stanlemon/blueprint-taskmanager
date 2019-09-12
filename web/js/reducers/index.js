@@ -17,16 +17,26 @@ import {
     DELETE_TASK_ERROR,
 } from "../actions/";
 
+// Ensure that we have valid dates in our tasks objects
+function formatTaskDates(task) {
+    return Object.assign({}, task, {
+        createdAt: new Date(task.createdAt),
+        updatedAt: new Date(task.updatedAt),
+        completed: task.completed ? new Date(task.completed) : null,
+        due: task.due ? new Date(task.due) : null,
+    });
+}
+
 export function tasks(state, action) {
     switch (action.type) {
         case LOAD_TASKS_SUCCESS:
-            return [...action.tasks];
+            return [...action.tasks.map(d => formatTaskDates(d))];
         case CREATE_TASK_SUCCESS:
-            return [...state, action.task];
+            return [...state, formatTaskDates(action.task)];
         case UPDATE_TASK_SUCCESS:
             return state.map(task =>
                 task.id === action.task.id
-                    ? Object.assign({}, action.task)
+                    ? Object.assign({}, formatTaskDates(action.task))
                     : task
             );
         case DELETE_TASK_SUCCESS:

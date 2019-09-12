@@ -17,25 +17,29 @@ export default class TaskForm extends React.Component {
     };
 
     static defaultProps = {
-        // Define the full form here, otherwise you'll get an error about switching between controlled & uncontrolled components
+        className: "",
+        errors: {},
         task: {
             name: "",
             description: "",
             completed: false,
             due: null,
         },
-        className: "",
-        errors: {},
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: this.props.task,
-            errors: this.props.errors,
-        };
-    }
+    // Doing it this way ensure that if a task is loaded we default to it,
+    // without blowing away the state on any component reload
+    // See: https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
+    state = {
+        data: {
+            id: this.props.task.id || null,
+            name: this.props.task.name || "",
+            description: this.props.task.description || "",
+            completed: this.props.task.completed || null,
+            due: this.props.task.due || null,
+        },
+        errors: this.props.errors,
+    };
 
     handleSubmit = e => {
         e.preventDefault();
@@ -64,6 +68,14 @@ export default class TaskForm extends React.Component {
         e.preventDefault();
 
         this.props.navigateTo("/");
+    };
+
+    setCompleted = e => {
+        if (e.target.checked) {
+            this.setData("completed", Date.now());
+        } else {
+            this.setData("completed", null);
+        }
     };
 
     setDueDate = due => {
@@ -171,15 +183,12 @@ export default class TaskForm extends React.Component {
                         </div>
                         {task && task.id && (
                             <div className="checkbox">
-                                <label
-                                    htmlFor="completed"
-                                    className="control-label"
-                                >
+                                <label className="control-label task-completed">
                                     <input
                                         name="completed"
                                         type="checkbox"
                                         checked={task.completed ? true : false}
-                                        onChange={this.setValue}
+                                        onChange={this.setCompleted}
                                     />
                                     Completed
                                     {task.completed &&

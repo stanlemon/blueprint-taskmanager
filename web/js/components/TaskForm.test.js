@@ -20,10 +20,11 @@ describe("<TaskForm />", () => {
         };
 
         const task = {
+            id: null,
             name: "Test Task",
             description: "A brief description",
             due: null,
-            completed: false,
+            completed: null,
         };
 
         const view = mount(<TaskForm save={save} />);
@@ -120,8 +121,7 @@ describe("<TaskForm />", () => {
 
         expect(completed.props().checked).toEqual(true);
 
-        const completedLabel = view.find('label[htmlFor="completed"]');
-
+        const completedLabel = view.find("label.task-completed");
         expect(completedLabel.text()).toEqual(
             "Completed on June 12th 2017, 7:08AM"
         );
@@ -157,7 +157,7 @@ describe("<TaskForm />", () => {
             name: newName,
             description: newDescription,
             due: task.due, // field is unchanged
-            completed: false,
+            completed: null,
         });
     });
 

@@ -17,10 +17,11 @@ describe("<CreateTaskForm />", () => {
         };
 
         const task = {
+            id: null,
             name: "Test Task",
             description: "A brief description",
             due: null,
-            completed: false,
+            completed: null,
         };
 
         const navigateTo = () => {};
