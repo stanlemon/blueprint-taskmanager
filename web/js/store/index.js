@@ -5,13 +5,13 @@ import UserService from "../lib/UserService";
 import TaskService from "../lib/TaskService";
 
 const services = {
-    userService: new UserService(),
-    taskService: new TaskService(),
+  userService: new UserService(),
+  taskService: new TaskService(),
 };
 
 const store = createStore(
-    reducer,
-    applyMiddleware(thunk.withExtraArgument(services))
+  reducer,
+  applyMiddleware(thunk.withExtraArgument(services))
 );
 
 export default store;

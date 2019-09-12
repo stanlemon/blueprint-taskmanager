@@ -9,202 +9,200 @@ import TaskForm from "./TaskForm";
 configure({ adapter: new Adapter() });
 
 describe("<TaskForm />", () => {
-    it("should render an empty form with and submit a new task in it", () => {
-        let lastSavedTask = null;
+  it("should render an empty form with and submit a new task in it", () => {
+    let lastSavedTask = null;
 
-        const save = task => {
-            // Store the task so that we can reference it later
-            lastSavedTask = task;
-            // Returning the value updates the form's state
-            return task;
-        };
+    const save = task => {
+      // Store the task so that we can reference it later
+      lastSavedTask = task;
+      // Returning the value updates the form's state
+      return task;
+    };
 
-        const task = {
-            id: null,
-            name: "Test Task",
-            description: "A brief description",
-            due: null,
-            completed: null,
-        };
+    const task = {
+      id: null,
+      name: "Test Task",
+      description: "A brief description",
+      due: null,
+      completed: null,
+    };
 
-        const view = mount(<TaskForm save={save} />);
+    const view = mount(<TaskForm save={save} />);
 
-        const name = view.find('input[name="name"]');
+    const name = view.find('input[name="name"]');
 
-        expect(name.props().value).toEqual("");
+    expect(name.props().value).toEqual("");
 
-        const description = view.find('textarea[name="description"]');
+    const description = view.find('textarea[name="description"]');
 
-        expect(description.props().value).toEqual("");
+    expect(description.props().value).toEqual("");
 
-        const due = view.find('input[name="due"]');
+    const due = view.find('input[name="due"]');
 
-        expect(due.props().value).toEqual("");
+    expect(due.props().value).toEqual("");
 
-        const completed = view.find('input[name="completed"]');
+    const completed = view.find('input[name="completed"]');
 
-        // Create form does not include the completed checkbox
-        expect(completed.exists()).toBe(false);
+    // Create form does not include the completed checkbox
+    expect(completed.exists()).toBe(false);
 
-        // Set the name field
-        name.simulate("change", {
-            target: { name: "name", value: task.name },
-        });
-
-        // Set the description field
-        description.simulate("change", {
-            target: { name: "description", value: task.description },
-        });
-
-        // Update the component
-        view.update();
-
-        const form = view.find("form");
-
-        // Submit, the handler should fire and lastSavedTask updated to match our task object
-        form.simulate("submit");
-
-        expect(lastSavedTask).toEqual(task);
+    // Set the name field
+    name.simulate("change", {
+      target: { name: "name", value: task.name },
     });
 
-    it("submitting a form without a task name triggers an error", () => {
-        const save = r => r;
-
-        const view = mount(<TaskForm save={save} />);
-
-        const form = view.find("form");
-
-        // Submit, the handler should fire and lastSavedTask updated to match our task object
-        form.simulate("submit");
-
-        const errors = view.find(".has-error .help-block");
-
-        expect(errors.length).toBe(1);
-
-        expect(errors.at(0).text()).toBe(
-            "You must enter a name for this task."
-        );
+    // Set the description field
+    description.simulate("change", {
+      target: { name: "description", value: task.description },
     });
 
-    it("should render a form with an existing task and update it", () => {
-        let lastSavedTask = null;
+    // Update the component
+    view.update();
 
-        const save = task => {
-            // Store the task so that we can reference it later
-            lastSavedTask = task;
-            return task;
-        };
+    const form = view.find("form");
 
-        const task = {
-            id: 1,
-            name: "Test Task",
-            description: "A brief description",
-            due: parseISO("2018-06-12T07:08"),
-            completed: parseISO("2017-06-12T07:08"),
-        };
+    // Submit, the handler should fire and lastSavedTask updated to match our task object
+    form.simulate("submit");
 
-        const view = mount(<TaskForm task={task} save={save} />);
+    expect(lastSavedTask).toEqual(task);
+  });
 
-        const name = view.find('input[name="name"]');
+  it("submitting a form without a task name triggers an error", () => {
+    const save = r => r;
 
-        expect(name.props().value).toEqual(task.name);
+    const view = mount(<TaskForm save={save} />);
 
-        const description = view.find('textarea[name="description"]');
+    const form = view.find("form");
 
-        expect(description.props().value).toEqual(task.description);
+    // Submit, the handler should fire and lastSavedTask updated to match our task object
+    form.simulate("submit");
 
-        const due = view.find('input[name="due"]');
+    const errors = view.find(".has-error .help-block");
 
-        expect(due.props().value).toEqual("06/12/2018 7:08AM");
+    expect(errors.length).toBe(1);
 
-        const completed = view.find('input[name="completed"]');
+    expect(errors.at(0).text()).toBe("You must enter a name for this task.");
+  });
 
-        expect(completed.props().checked).toEqual(true);
+  it("should render a form with an existing task and update it", () => {
+    let lastSavedTask = null;
 
-        const completedLabel = view.find("label.task-completed");
-        expect(completedLabel.text()).toEqual(
-            "Completed on June 12th 2017, 7:08AM"
-        );
+    const save = task => {
+      // Store the task so that we can reference it later
+      lastSavedTask = task;
+      return task;
+    };
 
-        // Update the task name
-        const newName = "New Task Name";
-        name.simulate("change", {
-            target: { name: "name", value: newName },
-        });
+    const task = {
+      id: 1,
+      name: "Test Task",
+      description: "A brief description",
+      due: parseISO("2018-06-12T07:08"),
+      completed: parseISO("2017-06-12T07:08"),
+    };
 
-        // Update the task description
-        const newDescription = "New Task Description";
-        description.simulate("change", {
-            target: { name: "description", value: newDescription },
-        });
+    const view = mount(<TaskForm task={task} save={save} />);
 
-        // Click the checkbox to toggle it
-        completed.simulate("change", {
-            target: { type: "checkbox", name: "completed", checked: false },
-        });
+    const name = view.find('input[name="name"]');
 
-        view.update();
+    expect(name.props().value).toEqual(task.name);
 
-        expect(completed.props().checked).toEqual(true);
+    const description = view.find('textarea[name="description"]');
 
-        const form = view.find("form");
+    expect(description.props().value).toEqual(task.description);
 
-        form.simulate("submit");
+    const due = view.find('input[name="due"]');
 
-        // When we submit we should have the original task, but with the new name and description fields
-        expect(lastSavedTask).toEqual({
-            id: task.id,
-            name: newName,
-            description: newDescription,
-            due: task.due, // field is unchanged
-            completed: null,
-        });
+    expect(due.props().value).toEqual("06/12/2018 7:08AM");
+
+    const completed = view.find('input[name="completed"]');
+
+    expect(completed.props().checked).toEqual(true);
+
+    const completedLabel = view.find("label.task-completed");
+    expect(completedLabel.text()).toEqual(
+      "Completed on June 12th 2017, 7:08AM"
+    );
+
+    // Update the task name
+    const newName = "New Task Name";
+    name.simulate("change", {
+      target: { name: "name", value: newName },
     });
 
-    it("clicking  on due opens a pop up", () => {
-        const save = r => r;
-
-        const view = mount(<TaskForm save={save} />);
-
-        const dueInput = view.find('input[name="due"]');
-
-        expect(dueInput.length).toBe(1);
-
-        dueInput.simulate("click");
-
-        const datepicker = view.find(".react-datepicker");
-
-        // For some reason in this test after clicking we have two datepicker instances rendered
-        expect(datepicker.length).toBeGreaterThanOrEqual(0);
-
-        // The datepicker is open now, find today and click on it
-        view.find(".react-datepicker__day--today").simulate("click");
-
-        // Selecting 'today' should set the internal form state to be today's date
-        expect(isSameDay(new Date(), view.state().data.due)).toBe(true);
-
-        // Create a date for today at midnight
-        const nowMidnight = parseISO(
-            format(Date.now(), "yyyy-MM-dd") + "T00:00:00"
-        );
-
-        // Our input should have our today midnight value
-        // We have to re-find it here, rather than use 'dueInput' because the datepicker component creates a new node
-        expect(view.find('input[name="due"]').props().value).toEqual(
-            format(nowMidnight, "MM/dd/yyyy h:mma")
-        );
+    // Update the task description
+    const newDescription = "New Task Description";
+    description.simulate("change", {
+      target: { name: "description", value: newDescription },
     });
 
-    it("renders errors from actions", () => {
-        const errorMessages = {
-            description: ["Error message about description"],
-            due: ["Error message about due"],
-        };
-
-        const view = mount(<TaskForm save={t => t} errors={errorMessages} />);
-
-        const errors = view.find(".has-error .help-block");
-
-        expect(errors.length).toBe(2);
+    // Click the checkbox to toggle it
+    completed.simulate("change", {
+      target: { type: "checkbox", name: "completed", checked: false },
     });
+
+    view.update();
+
+    expect(completed.props().checked).toEqual(true);
+
+    const form = view.find("form");
+
+    form.simulate("submit");
+
+    // When we submit we should have the original task, but with the new name and description fields
+    expect(lastSavedTask).toEqual({
+      id: task.id,
+      name: newName,
+      description: newDescription,
+      due: task.due, // field is unchanged
+      completed: null,
+    });
+  });
+
+  it("clicking  on due opens a pop up", () => {
+    const save = r => r;
+
+    const view = mount(<TaskForm save={save} />);
+
+    const dueInput = view.find('input[name="due"]');
+
+    expect(dueInput.length).toBe(1);
+
+    dueInput.simulate("click");
+
+    const datepicker = view.find(".react-datepicker");
+
+    // For some reason in this test after clicking we have two datepicker instances rendered
+    expect(datepicker.length).toBeGreaterThanOrEqual(0);
+
+    // The datepicker is open now, find today and click on it
+    view.find(".react-datepicker__day--today").simulate("click");
+
+    // Selecting 'today' should set the internal form state to be today's date
+    expect(isSameDay(new Date(), view.state().data.due)).toBe(true);
+
+    // Create a date for today at midnight
+    const nowMidnight = parseISO(
+      format(Date.now(), "yyyy-MM-dd") + "T00:00:00"
+    );
+
+    // Our input should have our today midnight value
+    // We have to re-find it here, rather than use 'dueInput' because the datepicker component creates a new node
+    expect(view.find('input[name="due"]').props().value).toEqual(
+      format(nowMidnight, "MM/dd/yyyy h:mma")
+    );
+  });
+
+  it("renders errors from actions", () => {
+    const errorMessages = {
+      description: ["Error message about description"],
+      due: ["Error message about due"],
+    };
+
+    const view = mount(<TaskForm save={t => t} errors={errorMessages} />);
+
+    const errors = view.find(".has-error .help-block");
+
+    expect(errors.length).toBe(2);
+  });
 });

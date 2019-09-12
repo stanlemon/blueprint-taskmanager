@@ -1,7 +1,7 @@
 export default class ServiceException {
-    errors = {};
+  errors = {};
 
-    constructor(errors = {}) {
-        this.errors = errors;
-    }
+  constructor(errors = {}) {
+    this.errors = errors;
+  }
 }

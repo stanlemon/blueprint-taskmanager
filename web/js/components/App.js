@@ -5,11 +5,11 @@ import { hot } from "react-hot-loader";
 import store from "../store";
 
 export function App() {
-    return (
-        <Provider store={store}>
-            <Routes />
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <Routes />
+    </Provider>
+  );
 }
 
 export default hot(module)(App);

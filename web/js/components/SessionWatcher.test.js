@@ -6,175 +6,175 @@ import { SessionWatcher } from "./SessionWatcher";
 configure({ adapter: new Adapter() });
 
 describe("<SessionWatcher />", () => {
-    const checkSession = () => {};
+  const checkSession = () => {};
 
-    const makeRouterParams = path => ({ location: { pathname: path } });
+  const makeRouterParams = path => ({ location: { pathname: path } });
 
-    it("renders children", () => {
-        // Initial state user is null, unauthed
-        const view = shallow(
-            <SessionWatcher
-                history={makeRouterParams("/")}
-                navigateTo={r => r}
-                checkSession={checkSession}
-            >
-                <h1>Hello World</h1>
-            </SessionWatcher>
-        );
+  it("renders children", () => {
+    // Initial state user is null, unauthed
+    const view = shallow(
+      <SessionWatcher
+        history={makeRouterParams("/")}
+        navigateTo={r => r}
+        checkSession={checkSession}
+      >
+        <h1>Hello World</h1>
+      </SessionWatcher>
+    );
 
-        // SessionWatcher is purely routing logic, it should always render its children
-        expect(view.children.length).toBe(1);
+    // SessionWatcher is purely routing logic, it should always render its children
+    expect(view.children.length).toBe(1);
 
-        expect(view.internal).not.toBe(null);
+    expect(view.internal).not.toBe(null);
 
-        view.unmount();
+    view.unmount();
 
-        // After unmounting the interval has been cleared
-        expect(view.internal).toBe(undefined);
+    // After unmounting the interval has been cleared
+    expect(view.internal).toBe(undefined);
+  });
+
+  it("unauthenticated user is on root", () => {
+    let destUrl;
+
+    const navigateTo = r => {
+      destUrl = r;
+    };
+
+    // Initial state user is null, unauthed
+    const view = shallow(
+      <SessionWatcher
+        history={makeRouterParams("/login")}
+        navigateTo={navigateTo}
+        checkSession={checkSession}
+        loaded={["user"]}
+        user={null}
+      >
+        <h1>Hello World</h1>
+      </SessionWatcher>
+    );
+
+    // Request from unauth user  to an authed page
+    view.setProps({
+      history: makeRouterParams("/"),
     });
 
-    it("unauthenticated user is on root", () => {
-        let destUrl;
+    // Unauthed user is redirected to the login screen
+    expect(destUrl).toEqual("/login");
+  });
 
-        const navigateTo = r => {
-            destUrl = r;
-        };
+  it("unauthenticated user is on an authenticated page", () => {
+    let destUrl;
 
-        // Initial state user is null, unauthed
-        const view = shallow(
-            <SessionWatcher
-                history={makeRouterParams("/login")}
-                navigateTo={navigateTo}
-                checkSession={checkSession}
-                loaded={["user"]}
-                user={null}
-            >
-                <h1>Hello World</h1>
-            </SessionWatcher>
-        );
+    const navigateTo = r => {
+      destUrl = r;
+    };
 
-        // Request from unauth user  to an authed page
-        view.setProps({
-            history: makeRouterParams("/"),
-        });
+    // Initial state user is null, unauthed
+    const view = shallow(
+      <SessionWatcher
+        history={makeRouterParams("/login")}
+        navigateTo={navigateTo}
+        checkSession={checkSession}
+        loaded={["user"]}
+        user={null}
+      >
+        <h1>Hello World</h1>
+      </SessionWatcher>
+    );
 
-        // Unauthed user is redirected to the login screen
-        expect(destUrl).toEqual("/login");
+    // Request from unauth user  to an authed page
+    view.setProps({
+      history: makeRouterParams("/page"),
     });
 
-    it("unauthenticated user is on an authenticated page", () => {
-        let destUrl;
+    // Unauthed user is redirected to the login screen
+    expect(destUrl).toEqual("/login");
+  });
 
-        const navigateTo = r => {
-            destUrl = r;
-        };
+  it("authenticated user is on an unauthenticated page", () => {
+    let destUrl;
 
-        // Initial state user is null, unauthed
-        const view = shallow(
-            <SessionWatcher
-                history={makeRouterParams("/login")}
-                navigateTo={navigateTo}
-                checkSession={checkSession}
-                loaded={["user"]}
-                user={null}
-            >
-                <h1>Hello World</h1>
-            </SessionWatcher>
-        );
+    const navigateTo = r => {
+      destUrl = r;
+    };
 
-        // Request from unauth user  to an authed page
-        view.setProps({
-            history: makeRouterParams("/page"),
-        });
+    // Initial state user is null, unauthed
+    const view = shallow(
+      <SessionWatcher
+        history={makeRouterParams("/login")}
+        navigateTo={navigateTo}
+        checkSession={checkSession}
+      >
+        <h1>Hello World</h1>
+      </SessionWatcher>
+    );
 
-        // Unauthed user is redirected to the login screen
-        expect(destUrl).toEqual("/login");
+    // A request for the session has been made, but the user is not logged in
+    view.setProps({
+      loaded: ["user"],
+      user: {},
     });
 
-    it("authenticated user is on an unauthenticated page", () => {
-        let destUrl;
+    // Unauthed user is redirected to the login screen
+    expect(destUrl).toEqual("/");
+  });
 
-        const navigateTo = r => {
-            destUrl = r;
-        };
+  it("user was authenticated and logged out", () => {
+    let destUrl;
 
-        // Initial state user is null, unauthed
-        const view = shallow(
-            <SessionWatcher
-                history={makeRouterParams("/login")}
-                navigateTo={navigateTo}
-                checkSession={checkSession}
-            >
-                <h1>Hello World</h1>
-            </SessionWatcher>
-        );
+    const navigateTo = r => {
+      destUrl = r;
+    };
 
-        // A request for the session has been made, but the user is not logged in
-        view.setProps({
-            loaded: ["user"],
-            user: {},
-        });
+    // Initial state user is null, unauthed
+    const view = shallow(
+      <SessionWatcher
+        history={makeRouterParams("/page")}
+        navigateTo={navigateTo}
+        checkSession={checkSession}
+        loaded={["user"]}
+        user={{}}
+      >
+        <h1>Hello World</h1>
+      </SessionWatcher>
+    );
 
-        // Unauthed user is redirected to the login screen
-        expect(destUrl).toEqual("/");
+    // User gets logged out
+    view.setProps({
+      user: null,
     });
 
-    it("user was authenticated and logged out", () => {
-        let destUrl;
+    // Unauthed user is redirected to the login screen
+    expect(destUrl).toEqual("/login");
+  });
 
-        const navigateTo = r => {
-            destUrl = r;
-        };
+  it("user is authenticated on an authenticated page - noop", () => {
+    let destUrl;
 
-        // Initial state user is null, unauthed
-        const view = shallow(
-            <SessionWatcher
-                history={makeRouterParams("/page")}
-                navigateTo={navigateTo}
-                checkSession={checkSession}
-                loaded={["user"]}
-                user={{}}
-            >
-                <h1>Hello World</h1>
-            </SessionWatcher>
-        );
+    const navigateTo = r => {
+      destUrl = r;
+    };
 
-        // User gets logged out
-        view.setProps({
-            user: null,
-        });
+    // Initial state user is null, unauthed
+    const view = shallow(
+      <SessionWatcher
+        history={makeRouterParams("/page1")}
+        navigateTo={navigateTo}
+        checkSession={checkSession}
+        loaded={["user"]}
+        user={{}}
+      >
+        <h1>Hello World</h1>
+      </SessionWatcher>
+    );
 
-        // Unauthed user is redirected to the login screen
-        expect(destUrl).toEqual("/login");
+    // User gets logged out
+    view.setProps({
+      history: makeRouterParams("/page2"),
+      user: {},
     });
 
-    it("user is authenticated on an authenticated page - noop", () => {
-        let destUrl;
-
-        const navigateTo = r => {
-            destUrl = r;
-        };
-
-        // Initial state user is null, unauthed
-        const view = shallow(
-            <SessionWatcher
-                history={makeRouterParams("/page1")}
-                navigateTo={navigateTo}
-                checkSession={checkSession}
-                loaded={["user"]}
-                user={{}}
-            >
-                <h1>Hello World</h1>
-            </SessionWatcher>
-        );
-
-        // User gets logged out
-        view.setProps({
-            history: makeRouterParams("/page2"),
-            user: {},
-        });
-
-        // navigateTo() should not be called, so this should remain undefined
-        expect(destUrl).toEqual(undefined);
-    });
+    // navigateTo() should not be called, so this should remain undefined
+    expect(destUrl).toEqual(undefined);
+  });
 });

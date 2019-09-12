@@ -8,5 +8,5 @@ render(<App />, document.getElementById("root"));
 
 // Only used in dev for hot-reloading
 if (module.hot) {
-    module.hot.accept();
+  module.hot.accept();
 }

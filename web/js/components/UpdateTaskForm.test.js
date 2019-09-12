@@ -7,88 +7,84 @@ import parseISO from "date-fns/parseISO";
 configure({ adapter: new Adapter() });
 
 describe("<UpdateTaskForm />", () => {
-    it("should render a form with an existing task and update it", () => {
-        let lastSavedTask = null;
+  it("should render a form with an existing task and update it", () => {
+    let lastSavedTask = null;
 
-        const actions = {
-            updateTask: task => {
-                // Store the task so that we can reference it later
-                lastSavedTask = task;
-            },
-        };
+    const actions = {
+      updateTask: task => {
+        // Store the task so that we can reference it later
+        lastSavedTask = task;
+      },
+    };
 
-        const task = {
-            id: 1,
-            name: "Test Task",
-            description: "A brief description",
-            due: parseISO("2018-06-12T07:08"),
-            completed: parseISO("2017-06-12T07:08"),
-        };
+    const task = {
+      id: 1,
+      name: "Test Task",
+      description: "A brief description",
+      due: parseISO("2018-06-12T07:08"),
+      completed: parseISO("2017-06-12T07:08"),
+    };
 
-        const navigateTo = () => {};
+    const navigateTo = () => {};
 
-        const view = mount(
-            <UpdateTaskForm
-                task={task}
-                actions={actions}
-                navigateTo={navigateTo}
-            />
-        );
+    const view = mount(
+      <UpdateTaskForm task={task} actions={actions} navigateTo={navigateTo} />
+    );
 
-        const name = view.find('input[name="name"]');
+    const name = view.find('input[name="name"]');
 
-        expect(name.props().value).toEqual(task.name);
+    expect(name.props().value).toEqual(task.name);
 
-        const description = view.find('textarea[name="description"]');
+    const description = view.find('textarea[name="description"]');
 
-        expect(description.props().value).toEqual(task.description);
+    expect(description.props().value).toEqual(task.description);
 
-        const due = view.find('input[name="due"]');
+    const due = view.find('input[name="due"]');
 
-        expect(due.props().value).toEqual("06/12/2018 7:08AM");
+    expect(due.props().value).toEqual("06/12/2018 7:08AM");
 
-        const completed = view.find('input[name="completed"]');
+    const completed = view.find('input[name="completed"]');
 
-        expect(completed.props().checked).toEqual(true);
+    expect(completed.props().checked).toEqual(true);
 
-        const completedLabel = view.find("label.task-completed");
+    const completedLabel = view.find("label.task-completed");
 
-        expect(completedLabel.text()).toEqual(
-            "Completed on June 12th 2017, 7:08AM"
-        );
+    expect(completedLabel.text()).toEqual(
+      "Completed on June 12th 2017, 7:08AM"
+    );
 
-        // Update the task name
-        const newName = "New Task Name";
-        name.simulate("change", {
-            target: { name: "name", value: newName },
-        });
-
-        // Update the task description
-        const newDescription = "New Task Description";
-        description.simulate("change", {
-            target: { name: "description", value: newDescription },
-        });
-
-        // Click the checkbox to toggle it
-        completed.simulate("change", {
-            target: { type: "checkbox", name: "completed", checked: false },
-        });
-
-        view.update();
-
-        expect(completed.props().checked).toEqual(true);
-
-        const form = view.find("form");
-
-        form.simulate("submit");
-
-        // When we submit we should have the original task, but with the new name and description fields
-        expect(lastSavedTask).toEqual({
-            id: task.id,
-            name: newName,
-            description: newDescription,
-            due: task.due, // field is unchanged
-            completed: null,
-        });
+    // Update the task name
+    const newName = "New Task Name";
+    name.simulate("change", {
+      target: { name: "name", value: newName },
     });
+
+    // Update the task description
+    const newDescription = "New Task Description";
+    description.simulate("change", {
+      target: { name: "description", value: newDescription },
+    });
+
+    // Click the checkbox to toggle it
+    completed.simulate("change", {
+      target: { type: "checkbox", name: "completed", checked: false },
+    });
+
+    view.update();
+
+    expect(completed.props().checked).toEqual(true);
+
+    const form = view.find("form");
+
+    form.simulate("submit");
+
+    // When we submit we should have the original task, but with the new name and description fields
+    expect(lastSavedTask).toEqual({
+      id: task.id,
+      name: newName,
+      description: newDescription,
+      due: task.due, // field is unchanged
+      completed: null,
+    });
+  });
 });
