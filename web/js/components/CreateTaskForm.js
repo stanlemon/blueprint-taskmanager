@@ -5,6 +5,7 @@ import TaskForm from './TaskForm';
 export default class CreateTaskForm extends React.Component {
     static propTypes = {
         actions: PropTypes.object.isRequired,
+        navigateTo: PropTypes.func,
     };
 
     constructor(props) {
@@ -21,6 +22,7 @@ export default class CreateTaskForm extends React.Component {
         return (
             <TaskForm
                 className="task-create-form"
+                navigateTo={this.props.navigateTo}
                 actions={this.props.actions}
                 save={this.handleSave}
             />

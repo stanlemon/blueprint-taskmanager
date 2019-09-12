@@ -1,22 +1,12 @@
 import includes from 'lodash/includes';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { logout, loadTasks } from '../actions/';
 
-export default class Layout extends React.Component {
-    static propTypes = {
-        navigateTo: PropTypes.func.isRequired,
-        children: PropTypes.node.isRequired,
-        actions: PropTypes.object.isRequired,
-        loaded: PropTypes.array,
-    };
-
-    static defaultProps = {
-        actions: {},
-        loaded: [],
-    };
-
+export class Layout extends React.Component {
     componentDidMount() {
-        this.props.actions.loadTasks();
+        this.props.loadTasks();
     }
 
     handleClickToHome = () => {
@@ -24,8 +14,7 @@ export default class Layout extends React.Component {
     };
 
     handleClickToLogout = () => {
-        this.props.actions.logout();
-        this.props.actions.clearErrors();
+        this.props.logout();
         this.props.navigateTo('/login');
     };
 
@@ -63,10 +52,21 @@ export default class Layout extends React.Component {
                         </ul>
                     </div>
                 </nav>
-                <div className="container">
-                    {React.cloneElement(this.props.children, this.props)}
-                </div>
+                <div className="container">{this.props.children}</div>
             </div>
         );
     }
 }
+
+Layout.propTypes = {
+    navigateTo: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
+    logout: PropTypes.func.isRequired,
+    loadTasks: PropTypes.func.isRequired,
+    loaded: PropTypes.array,
+};
+
+export default connect(
+    state => ({ loaded: state.loaded }),
+    { logout, loadTasks }
+)(Layout);

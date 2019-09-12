@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import TaskView from './TaskView';
+import { TaskView } from './TaskView';
 import UpdateTaskForm from './UpdateTaskForm';
 import Error from './Error';
 import { format, subDays } from 'date-fns';
@@ -38,7 +38,7 @@ describe('<TaskView />', () => {
             <TaskView
                 loaded={['tasks']}
                 tasks={tasks}
-                taskId={2}
+                match={{ params: { id: 2 } }}
                 errors={{}}
                 navigateTo={navigateTo}
                 actions={{}}
@@ -96,7 +96,7 @@ describe('<TaskView />', () => {
             <TaskView
                 loaded={['tasks']}
                 tasks={tasks}
-                taskId={3}
+                match={{ params: { id: 3 } }}
                 errors={{}}
                 navigateTo={r => (destUrl = r)}
                 actions={{}}
@@ -117,7 +117,7 @@ describe('<TaskView />', () => {
             <TaskView
                 loaded={[]}
                 tasks={[]}
-                taskId={3}
+                match={{ params: { id: 3 } }}
                 errors={{}}
                 navigateTo={navigateTo}
                 actions={{}}

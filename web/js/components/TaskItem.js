@@ -9,12 +9,13 @@ import { makeDateTime } from '../lib/Utils';
 export default class TaskItem extends React.Component {
     static propTypes = {
         navigateTo: PropTypes.func.isRequired,
-        actions: PropTypes.object.isRequired,
+        deleteTask: PropTypes.func.isRequired,
+        updateTask: PropTypes.func.isRequired,
         task: PropTypes.object.isRequired,
     };
 
     deleteTask = () => {
-        this.props.actions.deleteTask(this.props.task.id);
+        this.props.deleteTask(this.props.task.id);
     };
 
     viewTask = () => {
@@ -23,7 +24,7 @@ export default class TaskItem extends React.Component {
 
     completeTask = event => {
         const checked = event.target.checked;
-        this.props.actions.updateTask(
+        this.props.updateTask(
             Object.assign({}, this.props.task, {
                 completed: checked ? makeDateTime() : null,
             })
@@ -74,7 +75,9 @@ export default class TaskItem extends React.Component {
                                 >
                                     <i
                                         className="fa fa-trash-o"
-                                        style={{ padding: '3px' }}
+                                        style={{
+                                            padding: '3px',
+                                        }}
                                     />
                                 </button>
                             </div>

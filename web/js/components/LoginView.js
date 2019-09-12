@@ -1,21 +1,11 @@
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { login } from '../actions/';
 import Error from './Error';
 
-export default class LoginView extends React.Component {
-    static propTypes = {
-        navigateTo: PropTypes.func.isRequired,
-        actions: PropTypes.object.isRequired,
-        errors: PropTypes.shape({
-            main: PropTypes.arrayOf(PropTypes.string),
-        }),
-    };
-
-    static defaultProps = {
-        actions: {},
-    };
-
+export class LoginView extends React.Component {
     constructor(props) {
         super(props);
 
@@ -58,7 +48,7 @@ export default class LoginView extends React.Component {
             return { ...state, errors: {} };
         });
 
-        this.props.actions.login(this.state.data);
+        this.props.login(this.state.data);
     };
 
     setValue = e => {
@@ -193,3 +183,16 @@ export default class LoginView extends React.Component {
         );
     }
 }
+
+LoginView.propTypes = {
+    navigateTo: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
+    errors: PropTypes.shape({
+        main: PropTypes.arrayOf(PropTypes.string),
+    }),
+};
+
+export default connect(
+    state => ({ errors: state.errors }),
+    { login }
+)(LoginView);

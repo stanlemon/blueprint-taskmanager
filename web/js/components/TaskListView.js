@@ -5,12 +5,15 @@ import classNames from 'classnames';
 import { sortTasksByDate } from '../lib/Utils';
 import CreateTaskForm from './CreateTaskForm';
 import TaskItem from './TaskItem';
+import { connect } from 'react-redux';
+import * as actions from '../actions/';
+import { bindActionCreators } from 'redux';
 
 const ALL = 'all';
 const INCOMPLETE = 'incomplete';
 const COMPLETE = 'complete';
 
-export default class TaskListView extends React.Component {
+export class TaskListView extends React.Component {
     static propTypes = {
         actions: PropTypes.object.isRequired,
         navigateTo: PropTypes.func.isRequired,
@@ -149,6 +152,8 @@ export default class TaskListView extends React.Component {
 
                 {tasks.map(task => (
                     <TaskItem
+                        updateTask={this.props.actions.updateTask}
+                        deleteTask={this.props.actions.deleteTask}
                         key={task.id}
                         actions={actions}
                         navigateTo={navigateTo}
@@ -163,3 +168,10 @@ export default class TaskListView extends React.Component {
         );
     }
 }
+
+export default connect(
+    state => state,
+    dispatch => ({
+        actions: bindActionCreators(actions, dispatch),
+    })
+)(TaskListView);

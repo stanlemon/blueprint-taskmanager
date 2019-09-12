@@ -13,6 +13,7 @@ export default class TaskForm extends React.Component {
         task: PropTypes.object,
         errors: PropTypes.object,
         className: PropTypes.string,
+        navigateTo: PropTypes.func,
     };
 
     static defaultProps = {
@@ -57,6 +58,12 @@ export default class TaskForm extends React.Component {
 
         // TODO: Should this check to see if anything was returned before resetting 'data'?
         this.setState({ errors: {}, data: result });
+    };
+
+    cancelTask = e => {
+        e.preventDefault();
+
+        this.props.navigateTo('/');
     };
 
     setDueDate = due => {
@@ -196,6 +203,16 @@ export default class TaskForm extends React.Component {
                             >
                                 Save
                             </button>
+                            {task.id && (
+                                <button
+                                    style={{ marginLeft: 20 }}
+                                    name="saveTask"
+                                    className="btn btn-secondary col-sm-2"
+                                    onClick={this.cancelTask}
+                                >
+                                    Cancel
+                                </button>
+                            )}
                         </div>
                         <div className="clearfix" />
                     </div>

@@ -3,23 +3,29 @@ import isEmpty from 'lodash/isEmpty';
 import format from 'date-fns/format';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import Error from './Error';
 import UpdateTaskForm from './UpdateTaskForm';
 import { DATE_FORMAT_LONG } from '../lib/Utils';
+import { connect } from 'react-redux';
+import * as actions from '../actions/';
+import { bindActionCreators } from 'redux';
 
-export default function TaskView({
+export function TaskView({
     actions,
     loaded,
-    taskId,
     tasks,
     navigateTo,
     errors,
+    match,
 }) {
     if (!includes(loaded, 'tasks')) {
         return <div />;
     }
 
     const handleReturnToList = () => navigateTo('/');
+
+    const taskId = parseInt(match.params.id, 10);
 
     const task = Object.assign({}, tasks.filter(t => t.id === taskId)[0]);
 
@@ -58,7 +64,7 @@ export default function TaskView({
 TaskView.propTypes = {
     actions: PropTypes.object.isRequired,
     navigateTo: PropTypes.func.isRequired,
-    taskId: PropTypes.number.isRequired,
+    match: PropTypes.object.isRequired,
     tasks: PropTypes.array.isRequired,
     errors: PropTypes.object,
     loaded: PropTypes.array,
@@ -70,3 +76,10 @@ TaskView.defaultProps = {
     loaded: [],
     tasks: [],
 };
+
+export default connect(
+    state => state,
+    dispatch => ({
+        actions: bindActionCreators(actions, dispatch),
+    })
+)(withRouter(TaskView));

@@ -14,7 +14,6 @@ export const UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
 export const UPDATE_TASK_ERROR = 'UPDATE_TASK_ERROR';
 export const DELETE_TASK_SUCCESS = 'DELETE_TASK_SUCCESS';
 export const DELETE_TASK_ERROR = 'DELETE_TASK_ERROR';
-export const STORE_PATH = 'STORE_PATH';
 
 export function addErrors(errors) {
     return { type: ERROR, errors };
@@ -154,8 +153,4 @@ export function login(user) {
                 dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
             });
     };
-}
-
-export function storePath(path) {
-    return { type: STORE_PATH, path };
 }

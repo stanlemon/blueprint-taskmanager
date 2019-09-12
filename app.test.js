@@ -41,12 +41,14 @@ test('end to end', async done => {
 
     await page.waitForSelector('.login-form');
 
+    console.log('Click create account button');
     const createAccountButton = await page.$('#register-button');
 
     createAccountButton.click();
 
     await page.waitForSelector('.register-form');
 
+    console.log('Fill out register account form');
     const nameInput1 = await await page.$('input[name="name"]');
     await nameInput1.type('Stan Lemon');
 
@@ -56,27 +58,32 @@ test('end to end', async done => {
     const passwordInput1 = await page.$('input[name=password]');
     await passwordInput1.type(password);
 
+    console.log('Submit register account form');
     const submitButton1 = await page.$('button[type=submit]');
     await submitButton1.click();
 
     await page.waitForSelector('.task-create-form');
 
+    console.log('Click button to logout');
     const logoutButton = await page.$('#logout');
     await logoutButton.click();
 
     await page.waitForSelector('.login-form');
 
+    console.log('Enter username and password');
     const loginUsernameInput = await page.$('input[name=username]');
     await loginUsernameInput.type(username);
 
     const loginPasswordInput = await page.$('input[name=password]');
     await loginPasswordInput.type(password);
 
+    console.log('Click button to login');
     const loginSubmitButton = await page.$('button[type=submit]');
     await loginSubmitButton.click();
 
     await page.waitForSelector('.task-create-form');
 
+    console.log('Create a new task');
     const taskNameInput1 = await page.$('input[name="name"]');
     await taskNameInput1.focus();
     await taskNameInput1.type('First task name');
@@ -87,14 +94,17 @@ test('end to end', async done => {
     const taskRow1 = await page.waitForSelector('.task-row');
     await waitForTextInSelector(page, '.task-row', 'First task name');
 
+    console.log('Click on task to go to edit page');
     await taskRow1.click();
 
     await page.waitForSelector('.task-update-form');
 
+    console.log('Update task name');
     const taskNameInput2 = await page.$('input[name="name"]');
     await taskNameInput2.focus();
     await taskNameInput2.type('First task name, now updated');
 
+    console.log('Click button to save task');
     const saveButton2 = await page.$('button[name=saveTask]');
     await saveButton2.click();
 
@@ -105,16 +115,19 @@ test('end to end', async done => {
         'First task name, now updated'
     );
 
+    console.log('Click checkbox on task to mark it complete');
     const completeCheckbox1 = await page.$('.complete-task');
     await completeCheckbox1.click();
 
     await page.waitForSelector('.task-row.task-completed');
 
+    console.log('Click button to delete task');
     const deleteTaskButton = await page.$('.delete-task');
     await deleteTaskButton.click();
 
     await page.waitForSelector('.jumbotron h1');
 
+    console.log('Verify there are no tasks');
     // Make sure the jumbotron has our text
     await waitForTextInSelector(
         page,
@@ -122,10 +135,13 @@ test('end to end', async done => {
         "You don't have any tasks!"
     );
 
+    console.log('Close the browser');
     await browser.close();
 
+    console.log('Cleanup database');
     fs.unlinkSync('./' + databaseFile);
 
+    console.log('Kill server');
     server.kill(() => {
         console.log('Killing server');
 

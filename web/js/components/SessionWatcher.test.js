@@ -1,19 +1,23 @@
 import React from 'react';
 import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import SessionWatcher from './SessionWatcher';
+import { SessionWatcher } from './SessionWatcher';
 
 configure({ adapter: new Adapter() });
 
 describe('<SessionWatcher />', () => {
-    const actions = {
-        checkSession: () => {},
-    };
+    const checkSession = () => {};
+
+    const makeRouterParams = path => ({ location: { pathname: path } });
 
     it('renders children', () => {
         // Initial state user is null, unauthed
         const view = shallow(
-            <SessionWatcher path="/" navigateTo={r => r} actions={actions}>
+            <SessionWatcher
+                history={makeRouterParams('/')}
+                navigateTo={r => r}
+                checkSession={checkSession}
+            >
                 <h1>Hello World</h1>
             </SessionWatcher>
         );
@@ -39,9 +43,9 @@ describe('<SessionWatcher />', () => {
         // Initial state user is null, unauthed
         const view = shallow(
             <SessionWatcher
-                path="/login"
+                history={makeRouterParams('/login')}
                 navigateTo={navigateTo}
-                actions={actions}
+                checkSession={checkSession}
                 loaded={['user']}
                 user={null}
             >
@@ -51,7 +55,7 @@ describe('<SessionWatcher />', () => {
 
         // Request from unauth user  to an authed page
         view.setProps({
-            path: '/',
+            history: makeRouterParams('/'),
         });
 
         // Unauthed user is redirected to the login screen
@@ -68,9 +72,9 @@ describe('<SessionWatcher />', () => {
         // Initial state user is null, unauthed
         const view = shallow(
             <SessionWatcher
-                path="/login"
+                history={makeRouterParams('/login')}
                 navigateTo={navigateTo}
-                actions={actions}
+                checkSession={checkSession}
                 loaded={['user']}
                 user={null}
             >
@@ -80,7 +84,7 @@ describe('<SessionWatcher />', () => {
 
         // Request from unauth user  to an authed page
         view.setProps({
-            path: '/page',
+            history: makeRouterParams('/page'),
         });
 
         // Unauthed user is redirected to the login screen
@@ -97,9 +101,9 @@ describe('<SessionWatcher />', () => {
         // Initial state user is null, unauthed
         const view = shallow(
             <SessionWatcher
-                path="/login"
+                history={makeRouterParams('/login')}
                 navigateTo={navigateTo}
-                actions={actions}
+                checkSession={checkSession}
             >
                 <h1>Hello World</h1>
             </SessionWatcher>
@@ -125,9 +129,9 @@ describe('<SessionWatcher />', () => {
         // Initial state user is null, unauthed
         const view = shallow(
             <SessionWatcher
-                path="/page"
+                history={makeRouterParams('/page')}
                 navigateTo={navigateTo}
-                actions={actions}
+                checkSession={checkSession}
                 loaded={['user']}
                 user={{}}
             >
@@ -154,9 +158,9 @@ describe('<SessionWatcher />', () => {
         // Initial state user is null, unauthed
         const view = shallow(
             <SessionWatcher
-                path="/page1"
+                history={makeRouterParams('/page1')}
                 navigateTo={navigateTo}
-                actions={actions}
+                checkSession={checkSession}
                 loaded={['user']}
                 user={{}}
             >
@@ -166,7 +170,7 @@ describe('<SessionWatcher />', () => {
 
         // User gets logged out
         view.setProps({
-            path: '/page2',
+            history: makeRouterParams('/page2'),
             user: {},
         });
 

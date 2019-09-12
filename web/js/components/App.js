@@ -1,40 +1,15 @@
 import React from 'react';
-import {
-    compose,
-    createStore,
-    applyMiddleware,
-    bindActionCreators,
-} from 'redux';
-import { connect, Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import reducer from '../reducers/';
-import UserService from '../lib/UserService';
-import TaskService from '../lib/TaskService';
-import * as actions from '../actions/';
+import { Provider } from 'react-redux';
 import Routes from './Routes';
+import { hot } from 'react-hot-loader';
+import store from '../store';
 
-const services = {
-    userService: new UserService(),
-    taskService: new TaskService(),
-};
-
-const store = compose(applyMiddleware(thunk.withExtraArgument(services)))(
-    createStore
-)(reducer);
-
-export default function App() {
+export function App() {
     return (
         <Provider store={store}>
-            <>
-                {React.createElement(
-                    connect(
-                        state => state,
-                        dispatch => ({
-                            actions: bindActionCreators(actions, dispatch),
-                        })
-                    )(Routes)
-                )}
-            </>
+            <Routes />
         </Provider>
     );
 }
+
+export default hot(module)(App);

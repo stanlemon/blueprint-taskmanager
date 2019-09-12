@@ -85,6 +85,5 @@ export default function(
         tasks: tasks(state.tasks, action),
         loaded: loaded(state.loaded, action),
         errors: errors(state.errors, action),
-        path: action.path,
     };
 }

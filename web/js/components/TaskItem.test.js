@@ -12,6 +12,8 @@ configure({ adapter: new Adapter() });
 
 describe('<TaskItem />', () => {
     const navigateTo = () => {};
+    const updateTask = () => {};
+    const deleteTask = () => {};
 
     it('should render the task name', () => {
         const task = {
@@ -20,7 +22,12 @@ describe('<TaskItem />', () => {
             completed: null,
         };
         const wrapper = shallow(
-            <TaskItem task={task} navigateTo={navigateTo} actions={{}} />
+            <TaskItem
+                task={task}
+                navigateTo={navigateTo}
+                updateTask={updateTask}
+                deleteTask={deleteTask}
+            />
         );
         expect(wrapper.contains(task.name)).toBe(true);
 
@@ -36,7 +43,12 @@ describe('<TaskItem />', () => {
             completed: makeDateTime(),
         };
         const wrapper = shallow(
-            <TaskItem task={task} navigateTo={navigateTo} actions={{}} />
+            <TaskItem
+                task={task}
+                navigateTo={navigateTo}
+                updateTask={updateTask}
+                deleteTask={deleteTask}
+            />
         );
 
         expect(wrapper.find('input').is('[checked=true]')).toBe(true);
@@ -54,7 +66,12 @@ describe('<TaskItem />', () => {
             due: subDays(Date.now(), 2),
         };
         const wrapper = shallow(
-            <TaskItem task={task} navigateTo={navigateTo} actions={{}} />
+            <TaskItem
+                task={task}
+                navigateTo={navigateTo}
+                updateTask={updateTask}
+                deleteTask={deleteTask}
+            />
         );
 
         expect(wrapper.find('input').is('[checked=true]')).toBe(false);
@@ -72,7 +89,12 @@ describe('<TaskItem />', () => {
             due: addDays(Date.now(), 2),
         };
         const wrapper = shallow(
-            <TaskItem task={task} navigateTo={navigateTo} actions={{}} />
+            <TaskItem
+                task={task}
+                navigateTo={navigateTo}
+                updateTask={updateTask}
+                deleteTask={deleteTask}
+            />
         );
 
         expect(wrapper.find('input').is('[checked=true]')).toBe(false);
@@ -96,7 +118,8 @@ describe('<TaskItem />', () => {
             <TaskItem
                 task={task}
                 navigateTo={u => (destUrl = u)}
-                actions={{}}
+                updateTask={updateTask}
+                deleteTask={deleteTask}
             />
         );
 
@@ -120,7 +143,8 @@ describe('<TaskItem />', () => {
             <TaskItem
                 task={task}
                 navigateTo={navigateTo}
-                actions={{ deleteTask: id => (deletedTaskId = id) }}
+                updateTask={updateTask}
+                deleteTask={id => (deletedTaskId = id)}
             />
         );
 
@@ -144,11 +168,10 @@ describe('<TaskItem />', () => {
             <TaskItem
                 task={task}
                 navigateTo={navigateTo}
-                actions={{
-                    updateTask: t => {
-                        updatedTask = t;
-                    },
+                updateTask={t => {
+                    updatedTask = t;
                 }}
+                deleteTask={deleteTask}
             />
         );
 
@@ -186,11 +209,10 @@ describe('<TaskItem />', () => {
             <TaskItem
                 task={task}
                 navigateTo={navigateTo}
-                actions={{
-                    updateTask: t => {
-                        updatedTask = t;
-                    },
+                updateTask={t => {
+                    updatedTask = t;
                 }}
+                deleteTask={deleteTask}
             />
         );
 

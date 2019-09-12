@@ -4,19 +4,10 @@ import isLength from 'validator/lib/isLength';
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { registerUser } from '../actions/';
 
-export default class RegisterView extends React.Component {
-    static propTypes = {
-        actions: PropTypes.object.isRequired,
-        navigateTo: PropTypes.func.isRequired,
-        errors: PropTypes.object,
-    };
-
-    static defaultProps = {
-        actions: {},
-        errors: {},
-    };
-
+export class RegisterView extends React.Component {
     constructor(props) {
         super(props);
 
@@ -78,7 +69,7 @@ export default class RegisterView extends React.Component {
             return { ...state, errors: {} };
         });
 
-        this.props.actions.registerUser(this.state.data);
+        this.props.registerUser(this.state.data);
     };
 
     setValue = e => {
@@ -235,3 +226,14 @@ export default class RegisterView extends React.Component {
         );
     }
 }
+
+RegisterView.propTypes = {
+    navigateTo: PropTypes.func.isRequired,
+    registerUser: PropTypes.func.isRequired,
+    errors: PropTypes.object,
+};
+
+export default connect(
+    state => ({ errors: state.errors }),
+    { registerUser }
+)(RegisterView);

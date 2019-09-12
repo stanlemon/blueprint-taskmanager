@@ -26,7 +26,6 @@ const app = express();
 
 app.use(logger);
 app.use(compression());
-app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(flash());
@@ -194,7 +193,12 @@ if (ENV === DEV) {
     const Bundler = require('parcel-bundler');
 
     const file = path.join(__dirname, 'web', 'index.html');
-    const options = {};
+
+    const options = {
+        cache: false,
+        hmr: true,
+        production: false,
+    };
 
     // Initialize a new parcel bundler
     const bundler = new Bundler(file, options);
@@ -203,8 +207,11 @@ if (ENV === DEV) {
     app.use(bundler.middleware());
     /* eslint-enable */
 } else {
+    app.use(helmet());
+
     // Serve assets compiled by parcel
     app.use(serveStatic(path.join(__dirname, 'dist')));
+
     // All other requests get routed to our SPA
     app.get('/*', (req, res) => {
         res.sendFile(path.join(__dirname, 'dist', 'index.html'));

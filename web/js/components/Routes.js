@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Router, Switch, Route } from 'react-router-dom';
 import SessionWatcher from './SessionWatcher';
 import Layout from './Layout';
@@ -9,59 +8,38 @@ import TaskListView from './TaskListView';
 import TaskView from './TaskView';
 import { createBrowserHistory } from 'history';
 
-const history = createBrowserHistory();
+export default class Routes extends React.Component {
+    history = createBrowserHistory();
 
-export default function Routes(props) {
-    // Allows us to abstract away react router & the history implementation from our stuff
-    function navigateTo(route) {
-        history.push(route);
-        // Capture our route in redux, this is important to ensure navigation changes state
-        // in the SessionWatcher correctly.
-        props.actions.storePath(route);
-    }
+    render() {
+        // Allows us to abstract away react router & the history implementation from our stuff
+        const navigateTo = route => {
+            this.history.push(route);
+        };
 
-    return (
-        <Router history={history}>
-            <SessionWatcher
-                {...props}
-                path={history.location.pathname}
-                navigateTo={navigateTo}
-            >
-                <Switch>
-                    <Route exact path="/login">
-                        <LoginView {...props} navigateTo={navigateTo} />
-                    </Route>
-                    <Route exact path="/register">
-                        <RegisterView {...props} navigateTo={navigateTo} />
-                    </Route>
-                    npm
-                    <Route exact path="/">
-                        <Layout {...props} navigateTo={navigateTo}>
-                            <TaskListView {...props} navigateTo={navigateTo} />
-                        </Layout>
-                    </Route>
-                    <Route
-                        exact
-                        path="/view/:id"
-                        render={router => (
-                            <Layout {...props} navigateTo={navigateTo}>
-                                <TaskView
-                                    {...props}
-                                    navigateTo={navigateTo}
-                                    taskId={parseInt(
-                                        router.match.params.id,
-                                        10
-                                    )}
-                                />
+        return (
+            <Router history={this.history}>
+                <SessionWatcher navigateTo={navigateTo}>
+                    <Switch>
+                        <Route exact path="/login">
+                            <LoginView navigateTo={navigateTo} />
+                        </Route>
+                        <Route exact path="/register">
+                            <RegisterView navigateTo={navigateTo} />
+                        </Route>
+                        <Route exact path="/">
+                            <Layout navigateTo={navigateTo}>
+                                <TaskListView navigateTo={navigateTo} />
                             </Layout>
-                        )}
-                    />
-                </Switch>
-            </SessionWatcher>
-        </Router>
-    );
+                        </Route>
+                        <Route exact path="/view/:id">
+                            <Layout navigateTo={navigateTo}>
+                                <TaskView navigateTo={navigateTo} />
+                            </Layout>
+                        </Route>
+                    </Switch>
+                </SessionWatcher>
+            </Router>
+        );
+    }
 }
-
-Routes.propTypes = {
-    actions: PropTypes.object.isRequired,
-};

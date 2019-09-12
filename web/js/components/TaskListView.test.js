@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import TaskListView from './TaskListView';
+import { TaskListView } from './TaskListView';
 import TaskItem from './TaskItem';
 import CreateTaskForm from './CreateTaskForm';
 
