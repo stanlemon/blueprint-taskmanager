@@ -1,17 +1,17 @@
-import includes from 'lodash/includes';
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { sortTasksByDate } from '../lib/Utils';
-import CreateTaskForm from './CreateTaskForm';
-import TaskItem from './TaskItem';
-import { connect } from 'react-redux';
-import * as actions from '../actions/';
-import { bindActionCreators } from 'redux';
+import includes from "lodash/includes";
+import React from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { sortTasksByDate } from "../lib/Utils";
+import CreateTaskForm from "./CreateTaskForm";
+import TaskItem from "./TaskItem";
+import { connect } from "react-redux";
+import * as actions from "../actions/";
+import { bindActionCreators } from "redux";
 
-const ALL = 'all';
-const INCOMPLETE = 'incomplete';
-const COMPLETE = 'complete';
+const ALL = "all";
+const INCOMPLETE = "incomplete";
+const COMPLETE = "complete";
 
 export class TaskListView extends React.Component {
     static propTypes = {
@@ -45,11 +45,11 @@ export class TaskListView extends React.Component {
         const { filter } = this.state;
         const { actions, loaded, errors, navigateTo } = this.props;
 
-        if (!includes(loaded, 'tasks')) {
+        if (!includes(loaded, "tasks")) {
             return (
                 <div className="text-center">
                     <i
-                        style={{ fontSize: '10em' }}
+                        style={{ fontSize: "10em" }}
                         className="text-primary fa fa-refresh fa-spin"
                     />
                 </div>
@@ -80,26 +80,26 @@ export class TaskListView extends React.Component {
         );
 
         const btnClasses = classNames(
-            'btn',
-            'btn-sm',
-            'btn-info',
-            'btn-default'
+            "btn",
+            "btn-sm",
+            "btn-info",
+            "btn-default"
         );
-        const btnAll = classNames(btnClasses, 'task-filter-all', {
+        const btnAll = classNames(btnClasses, "task-filter-all", {
             active: filter === ALL,
         });
-        const btnIncomplete = classNames(btnClasses, 'task-filter-incomplete', {
+        const btnIncomplete = classNames(btnClasses, "task-filter-incomplete", {
             active: filter === INCOMPLETE,
         });
-        const btnComplete = classNames(btnClasses, 'task-filter-complete', {
+        const btnComplete = classNames(btnClasses, "task-filter-complete", {
             active: filter === COMPLETE,
         });
 
         const style = {
             notasks: {
-                border: '1px solid #e3e3e3',
-                borderRadius: '4px',
-                marginBottom: '8px',
+                border: "1px solid #e3e3e3",
+                borderRadius: "4px",
+                marginBottom: "8px",
             },
         };
 
@@ -143,7 +143,7 @@ export class TaskListView extends React.Component {
                     <div style={style.notasks}>
                         <div
                             className="text-center row task-filter-none"
-                            style={{ margin: '10px' }}
+                            style={{ margin: "10px" }}
                         >
                             <em>There are no tasks for this filter.</em>
                         </div>

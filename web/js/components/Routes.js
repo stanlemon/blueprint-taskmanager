@@ -1,12 +1,12 @@
-import React from 'react';
-import { Router, Switch, Route } from 'react-router-dom';
-import SessionWatcher from './SessionWatcher';
-import Layout from './Layout';
-import LoginView from './LoginView';
-import RegisterView from './RegisterView';
-import TaskListView from './TaskListView';
-import TaskView from './TaskView';
-import { createBrowserHistory } from 'history';
+import React from "react";
+import { Router, Switch, Route } from "react-router-dom";
+import SessionWatcher from "./SessionWatcher";
+import Layout from "./Layout";
+import LoginView from "./LoginView";
+import RegisterView from "./RegisterView";
+import TaskListView from "./TaskListView";
+import TaskView from "./TaskView";
+import { createBrowserHistory } from "history";
 
 export default class Routes extends React.Component {
     history = createBrowserHistory();

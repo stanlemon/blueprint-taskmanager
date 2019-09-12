@@ -1,12 +1,12 @@
 /*eslint no-console: "off"*/
-const bcrypt = require('bcryptjs');
-const uuid = require('uuid');
-const fs = require('fs');
-const Sequelize = require('sequelize');
+const bcrypt = require("bcryptjs");
+const uuid = require("uuid");
+const fs = require("fs");
+const Sequelize = require("sequelize");
 
 module.exports = () => {
-    const DEV_DATABASE_PATH = 'database.sqlite';
-    const DEV_DATABASE_URL = 'sqlite://' + DEV_DATABASE_PATH;
+    const DEV_DATABASE_PATH = "database.sqlite";
+    const DEV_DATABASE_URL = "sqlite://" + DEV_DATABASE_PATH;
 
     const DATABASE_URL = process.env.DATABASE_URL || DEV_DATABASE_URL;
 
@@ -16,13 +16,13 @@ module.exports = () => {
         operatorsAliases: false,
     });
 
-    const User = sequelize.define('User', {
+    const User = sequelize.define("User", {
         name: {
             type: Sequelize.STRING,
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'You must enter a name.',
+                    msg: "You must enter a name.",
                 },
             },
         },
@@ -32,10 +32,10 @@ module.exports = () => {
             unique: true,
             validate: {
                 isEmail: {
-                    msg: 'You must enter a valid email address.',
+                    msg: "You must enter a valid email address.",
                 },
                 notEmpty: {
-                    msg: 'You must enter a email address.',
+                    msg: "You must enter a email address.",
                 },
             },
         },
@@ -51,10 +51,10 @@ module.exports = () => {
                 len: {
                     args: [8, 64],
                     msg:
-                        'Your password must be between 8 and 64 characters long',
+                        "Your password must be between 8 and 64 characters long",
                 },
                 notEmpty: {
-                    msg: 'You must enter a password',
+                    msg: "You must enter a password",
                 },
             },
         },
@@ -90,12 +90,12 @@ module.exports = () => {
         return Promise.resolve(user);
     });
 
-    const Task = sequelize.define('Task', {
+    const Task = sequelize.define("Task", {
         name: {
             type: Sequelize.STRING,
             validate: {
                 notEmpty: {
-                    msg: 'You must enter a name for this task.',
+                    msg: "You must enter a name for this task.",
                 },
             },
         },
@@ -104,7 +104,7 @@ module.exports = () => {
         completed: Sequelize.DATE,
     });
 
-    Task.belongsTo(User, { as: 'user' });
+    Task.belongsTo(User, { as: "user" });
 
     // Uncomment this to create a sqlite database file in dev mode
     if (

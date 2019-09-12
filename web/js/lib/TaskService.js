@@ -1,4 +1,4 @@
-import RestService from './RestService';
+import RestService from "./RestService";
 
 export default class TaskService extends RestService {
     formatTask(task) {
@@ -17,7 +17,7 @@ export default class TaskService extends RestService {
     }
 
     createTask(task) {
-        return this.fetch(`${this.baseUrl}/api/tasks/`, 'post', task).then(
+        return this.fetch(`${this.baseUrl}/api/tasks/`, "post", task).then(
             data => this.formatTask(data)
         );
     }
@@ -25,12 +25,12 @@ export default class TaskService extends RestService {
     updateTask(task) {
         return this.fetch(
             `${this.baseUrl}/api/tasks/${task.id}`,
-            'put',
+            "put",
             task
         ).then(data => this.formatTask(data));
     }
 
     deleteTask(taskId) {
-        return this.fetch(`${this.baseUrl}/api/tasks/${taskId}`, 'delete');
+        return this.fetch(`${this.baseUrl}/api/tasks/${taskId}`, "delete");
     }
 }

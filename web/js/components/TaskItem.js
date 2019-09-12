@@ -1,10 +1,10 @@
-import classNames from 'classnames';
-import React from 'react';
-import PropTypes from 'prop-types';
-import isAfter from 'date-fns/isAfter';
-import isBefore from 'date-fns/isBefore';
-import subDays from 'date-fns/subDays';
-import { makeDateTime } from '../lib/Utils';
+import classNames from "classnames";
+import React from "react";
+import PropTypes from "prop-types";
+import isAfter from "date-fns/isAfter";
+import isBefore from "date-fns/isBefore";
+import subDays from "date-fns/subDays";
+import { makeDateTime } from "../lib/Utils";
 
 export default class TaskItem extends React.Component {
     static propTypes = {
@@ -34,21 +34,21 @@ export default class TaskItem extends React.Component {
     render() {
         const { task } = this.props;
 
-        const rowClasses = classNames('task-row', {
+        const rowClasses = classNames("task-row", {
             // Tasks due in the next day
-            'bg-warning task-due-soon':
+            "bg-warning task-due-soon":
                 task.due &&
                 !task.completed &&
                 isAfter(task.due, subDays(new Date(), 2)),
             // Tasks that are are over due
-            'bg-danger task-overdue':
+            "bg-danger task-overdue":
                 task.due && !task.completed && isBefore(task.due, new Date()),
-            'task-completed': task.completed ? true : false,
+            "task-completed": task.completed ? true : false,
         });
 
         return (
             <div className={rowClasses}>
-                <div className="row" style={{ margin: '10px' }}>
+                <div className="row" style={{ margin: "10px" }}>
                     <div
                         role="button"
                         className="task-name col-xs-9 col-sm-9 col-md-10"
@@ -76,7 +76,7 @@ export default class TaskItem extends React.Component {
                                     <i
                                         className="fa fa-trash-o"
                                         style={{
-                                            padding: '3px',
+                                            padding: "3px",
                                         }}
                                     />
                                 </button>

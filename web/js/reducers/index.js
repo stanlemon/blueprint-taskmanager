@@ -1,5 +1,5 @@
 /* @flow weak */
-import uniq from 'lodash/uniq';
+import uniq from "lodash/uniq";
 import {
     ERROR,
     CLEAR_ERRORS,
@@ -15,7 +15,7 @@ import {
     UPDATE_TASK_ERROR,
     DELETE_TASK_SUCCESS,
     DELETE_TASK_ERROR,
-} from '../actions/';
+} from "../actions/";
 
 export function tasks(state, action) {
     switch (action.type) {
@@ -67,10 +67,10 @@ export function errors(state, action) {
 export function loaded(state, action) {
     switch (action.type) {
         case LOAD_TASKS_SUCCESS:
-            return uniq([...state, 'tasks']);
+            return uniq([...state, "tasks"]);
         case UNAUTHENTICATED_USER:
         case AUTHENTICATED_USER:
-            return uniq([...state, 'user']);
+            return uniq([...state, "user"]);
         default:
             return state;
     }

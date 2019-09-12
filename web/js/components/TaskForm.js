@@ -1,11 +1,11 @@
-import isBoolean from 'lodash/isBoolean';
-import classNames from 'classnames';
-import format from 'date-fns/format';
-import React from 'react';
-import PropTypes from 'prop-types';
-import DatePicker from 'react-datepicker';
-import isEmpty from 'lodash/isEmpty';
-import { DATE_FORMAT_LONG } from '../lib/Utils';
+import isBoolean from "lodash/isBoolean";
+import classNames from "classnames";
+import format from "date-fns/format";
+import React from "react";
+import PropTypes from "prop-types";
+import DatePicker from "react-datepicker";
+import isEmpty from "lodash/isEmpty";
+import { DATE_FORMAT_LONG } from "../lib/Utils";
 
 export default class TaskForm extends React.Component {
     static propTypes = {
@@ -19,12 +19,12 @@ export default class TaskForm extends React.Component {
     static defaultProps = {
         // Define the full form here, otherwise you'll get an error about switching between controlled & uncontrolled components
         task: {
-            name: '',
-            description: '',
+            name: "",
+            description: "",
             completed: false,
             due: null,
         },
-        className: '',
+        className: "",
         errors: {},
     };
 
@@ -43,7 +43,7 @@ export default class TaskForm extends React.Component {
         const errors = {};
 
         if (isEmpty(this.state.data) || isEmpty(this.state.data.name)) {
-            errors['name'] = 'You must enter a name for this task.';
+            errors["name"] = "You must enter a name for this task.";
         }
 
         // If there are any errors, bail
@@ -63,11 +63,11 @@ export default class TaskForm extends React.Component {
     cancelTask = e => {
         e.preventDefault();
 
-        this.props.navigateTo('/');
+        this.props.navigateTo("/");
     };
 
     setDueDate = due => {
-        this.setData('due', due);
+        this.setData("due", due);
     };
 
     setData = (key, value) => {
@@ -82,7 +82,7 @@ export default class TaskForm extends React.Component {
     };
 
     setValue = e => {
-        if (e.target.type && e.target.type === 'checkbox') {
+        if (e.target.type && e.target.type === "checkbox") {
             this.setData(e.target.name, e.target.checked);
         } else {
             this.setData(e.target.name, e.target.value);
@@ -93,7 +93,7 @@ export default class TaskForm extends React.Component {
         const task = this.state.data;
         const errors = this.state.errors;
 
-        const classes = classNames('task-form', {
+        const classes = classNames("task-form", {
             [this.props.className]: !isEmpty(this.props.className),
         });
 
@@ -102,8 +102,8 @@ export default class TaskForm extends React.Component {
                 <div className="well">
                     <div>
                         <div
-                            className={classNames('form-group', {
-                                'has-error': errors.name,
+                            className={classNames("form-group", {
+                                "has-error": errors.name,
                             })}
                         >
                             <label htmlFor="name" className="control-label">
@@ -123,8 +123,8 @@ export default class TaskForm extends React.Component {
                             </label>
                         </div>
                         <div
-                            className={classNames('form-group', {
-                                'has-error': errors.description,
+                            className={classNames("form-group", {
+                                "has-error": errors.description,
                             })}
                         >
                             <label
@@ -146,8 +146,8 @@ export default class TaskForm extends React.Component {
                             </label>
                         </div>
                         <div
-                            className={classNames('form-group', {
-                                'has-error': errors.due,
+                            className={classNames("form-group", {
+                                "has-error": errors.due,
                             })}
                         >
                             <label htmlFor="due" className="control-label">
@@ -185,8 +185,8 @@ export default class TaskForm extends React.Component {
                                     {task.completed &&
                                         !isBoolean(task.completed) && (
                                             <em>
-                                                {' '}
-                                                on{' '}
+                                                {" "}
+                                                on{" "}
                                                 {format(
                                                     task.completed,
                                                     DATE_FORMAT_LONG

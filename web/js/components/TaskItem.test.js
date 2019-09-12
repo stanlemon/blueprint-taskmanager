@@ -1,24 +1,24 @@
-import { shallow, configure } from 'enzyme';
-import subDays from 'date-fns/subDays';
-import addDays from 'date-fns/addDays';
-import isSameDay from 'date-fns/isSameDay';
-import parseISO from 'date-fns/parseISO';
-import Adapter from 'enzyme-adapter-react-16';
-import { makeDateTime } from '../../js/lib/Utils';
-import React from 'react';
-import TaskItem from '../../../web/js/components/TaskItem';
+import { shallow, configure } from "enzyme";
+import subDays from "date-fns/subDays";
+import addDays from "date-fns/addDays";
+import isSameDay from "date-fns/isSameDay";
+import parseISO from "date-fns/parseISO";
+import Adapter from "enzyme-adapter-react-16";
+import { makeDateTime } from "../../js/lib/Utils";
+import React from "react";
+import TaskItem from "../../../web/js/components/TaskItem";
 
 configure({ adapter: new Adapter() });
 
-describe('<TaskItem />', () => {
+describe("<TaskItem />", () => {
     const navigateTo = () => {};
     const updateTask = () => {};
     const deleteTask = () => {};
 
-    it('should render the task name', () => {
+    it("should render the task name", () => {
         const task = {
             id: 1,
-            name: 'Foobar',
+            name: "Foobar",
             completed: null,
         };
         const wrapper = shallow(
@@ -31,15 +31,15 @@ describe('<TaskItem />', () => {
         );
         expect(wrapper.contains(task.name)).toBe(true);
 
-        expect(wrapper.hasClass('task-completed')).toBe(false);
-        expect(wrapper.hasClass('task-overdue')).toBe(false);
-        expect(wrapper.hasClass('task-due-soon')).toBe(false);
+        expect(wrapper.hasClass("task-completed")).toBe(false);
+        expect(wrapper.hasClass("task-overdue")).toBe(false);
+        expect(wrapper.hasClass("task-due-soon")).toBe(false);
     });
 
-    it('should render a completed task with a checked checkbox', () => {
+    it("should render a completed task with a checked checkbox", () => {
         const task = {
             id: 1,
-            name: 'Foobar',
+            name: "Foobar",
             completed: makeDateTime(),
         };
         const wrapper = shallow(
@@ -51,17 +51,17 @@ describe('<TaskItem />', () => {
             />
         );
 
-        expect(wrapper.find('input').is('[checked=true]')).toBe(true);
+        expect(wrapper.find("input").is("[checked=true]")).toBe(true);
 
-        expect(wrapper.hasClass('task-completed')).toBe(true);
-        expect(wrapper.hasClass('task-overdue')).toBe(false);
-        expect(wrapper.hasClass('task-due-soon')).toBe(false);
+        expect(wrapper.hasClass("task-completed")).toBe(true);
+        expect(wrapper.hasClass("task-overdue")).toBe(false);
+        expect(wrapper.hasClass("task-due-soon")).toBe(false);
     });
 
-    it('should render an overdue task', () => {
+    it("should render an overdue task", () => {
         const task = {
             id: 1,
-            name: 'Foobar',
+            name: "Foobar",
             completed: null,
             due: subDays(Date.now(), 2),
         };
@@ -74,17 +74,17 @@ describe('<TaskItem />', () => {
             />
         );
 
-        expect(wrapper.find('input').is('[checked=true]')).toBe(false);
+        expect(wrapper.find("input").is("[checked=true]")).toBe(false);
 
-        expect(wrapper.hasClass('task-completed')).toBe(false);
-        expect(wrapper.hasClass('task-overdue')).toBe(true);
-        expect(wrapper.hasClass('task-due-soon')).toBe(false);
+        expect(wrapper.hasClass("task-completed")).toBe(false);
+        expect(wrapper.hasClass("task-overdue")).toBe(true);
+        expect(wrapper.hasClass("task-due-soon")).toBe(false);
     });
 
-    it('should render an uncompleted task that is due soon', () => {
+    it("should render an uncompleted task that is due soon", () => {
         const task = {
             id: 1,
-            name: 'Foobar',
+            name: "Foobar",
             completed: null,
             due: addDays(Date.now(), 2),
         };
@@ -97,17 +97,17 @@ describe('<TaskItem />', () => {
             />
         );
 
-        expect(wrapper.find('input').is('[checked=true]')).toBe(false);
+        expect(wrapper.find("input").is("[checked=true]")).toBe(false);
 
-        expect(wrapper.hasClass('task-completed')).toBe(false);
-        expect(wrapper.hasClass('task-overdue')).toBe(false);
-        expect(wrapper.hasClass('task-due-soon')).toBe(true);
+        expect(wrapper.hasClass("task-completed")).toBe(false);
+        expect(wrapper.hasClass("task-overdue")).toBe(false);
+        expect(wrapper.hasClass("task-due-soon")).toBe(true);
     });
 
     it("clicking on a task's name navigates to view it", () => {
         const task = {
             id: 1,
-            name: 'Foobar',
+            name: "Foobar",
             completed: null,
             due: addDays(Date.now(), 2),
         };
@@ -123,16 +123,16 @@ describe('<TaskItem />', () => {
             />
         );
 
-        wrapper.find('.task-name').simulate('click');
+        wrapper.find(".task-name").simulate("click");
 
         // TODO: Establish constants for URLs
-        expect(destUrl).toEqual('/view/1');
+        expect(destUrl).toEqual("/view/1");
     });
 
     it("clicking on a task's delete button calls the delete action with the right id", () => {
         const task = {
             id: 1234,
-            name: 'Foobar',
+            name: "Foobar",
             completed: null,
             due: addDays(Date.now(), 2),
         };
@@ -148,7 +148,7 @@ describe('<TaskItem />', () => {
             />
         );
 
-        wrapper.find('button.delete-task').simulate('click');
+        wrapper.find("button.delete-task").simulate("click");
 
         // TODO: Establish constants for URLs
         expect(deletedTaskId).toEqual(task.id);
@@ -157,7 +157,7 @@ describe('<TaskItem />', () => {
     it("clicking on an incomplete task's checkbox marks it complete", () => {
         const task = {
             id: 1234,
-            name: 'Foobar',
+            name: "Foobar",
             completed: null,
             due: addDays(Date.now(), 2),
         };
@@ -184,7 +184,7 @@ describe('<TaskItem />', () => {
         // A click will fire the change event, with the checked property set to 'true'
         wrapper
             .find('input[type="checkbox"].complete-task')
-            .simulate('change', { target: { checked: true } });
+            .simulate("change", { target: { checked: true } });
 
         expect(updatedTask.id).toEqual(task.id);
         expect(updatedTask.completed).not.toBe(null);
@@ -198,7 +198,7 @@ describe('<TaskItem />', () => {
     it("clicking on a completed task's checkbox clears it's completed date", () => {
         const task = {
             id: 1234,
-            name: 'Foobar',
+            name: "Foobar",
             completed: makeDateTime(Date.now()),
             due: addDays(Date.now(), 2),
         };
@@ -225,7 +225,7 @@ describe('<TaskItem />', () => {
         // A click will fire the change event, with the checked property set to 'true'
         wrapper
             .find('input[type="checkbox"].complete-task')
-            .simulate('change', { target: { checked: false } });
+            .simulate("change", { target: { checked: false } });
 
         expect(updatedTask.id).toEqual(task.id);
         expect(updatedTask.completed).toBe(null);

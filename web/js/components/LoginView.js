@@ -1,9 +1,9 @@
-import isEmpty from 'lodash/isEmpty';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { login } from '../actions/';
-import Error from './Error';
+import isEmpty from "lodash/isEmpty";
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { login } from "../actions/";
+import Error from "./Error";
 
 export class LoginView extends React.Component {
     constructor(props) {
@@ -12,14 +12,14 @@ export class LoginView extends React.Component {
         this.state = {
             errors: {},
             data: {
-                username: '',
-                password: '',
+                username: "",
+                password: "",
             },
         };
     }
 
     handleClickToRegister = () => {
-        this.props.navigateTo('/register');
+        this.props.navigateTo("/register");
     };
 
     handleSubmit = e => {
@@ -28,11 +28,11 @@ export class LoginView extends React.Component {
         const errors = {};
 
         if (isEmpty(this.state.data) || isEmpty(this.state.data.username)) {
-            errors['username'] = 'You must enter your username.';
+            errors["username"] = "You must enter your username.";
         }
 
         if (isEmpty(this.state.data) || isEmpty(this.state.data.password)) {
-            errors['password'] = 'You must enter your password.';
+            errors["password"] = "You must enter your password.";
         }
 
         // If there are any errors, bail
@@ -166,7 +166,7 @@ export class LoginView extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div style={{ minHeight: '15px' }} />
+                <div style={{ minHeight: "15px" }} />
                 <div className="row">
                     <div className="text-center">
                         <button

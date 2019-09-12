@@ -1,27 +1,27 @@
 /*eslint no-console: "off"*/
-const path = require('path');
-const http = require('http');
-const killable = require('killable');
-const express = require('express');
-const helmet = require('helmet');
-const serveStatic = require('serve-static');
-const bodyParser = require('body-parser');
-const compression = require('compression');
-const morgan = require('morgan');
-const finale = require('finale-rest');
-const session = require('client-sessions');
-const flash = require('connect-flash');
-const passport = require('passport');
-const bcrypt = require('bcryptjs');
-const { Strategy: LocalStrategy } = require('passport-local');
+const path = require("path");
+const http = require("http");
+const killable = require("killable");
+const express = require("express");
+const helmet = require("helmet");
+const serveStatic = require("serve-static");
+const bodyParser = require("body-parser");
+const compression = require("compression");
+const morgan = require("morgan");
+const finale = require("finale-rest");
+const session = require("client-sessions");
+const flash = require("connect-flash");
+const passport = require("passport");
+const bcrypt = require("bcryptjs");
+const { Strategy: LocalStrategy } = require("passport-local");
 
-const db = require('./models')();
+const db = require("./models")();
 
-const DEV = 'development';
+const DEV = "development";
 const ENV = process.env.NODE_ENV || DEV;
 const PORT = process.env.PORT || 3000;
 
-const logger = morgan('combined');
+const logger = morgan("combined");
 const app = express();
 
 app.use(logger);
@@ -32,9 +32,9 @@ app.use(flash());
 
 app.use(
     session({
-        cookieName: 'blueprint', // cookie name dictates the key name added to the request object
-        requestKey: 'session',
-        secret: 'theredballonfloatssouthintheslowwindsofazkaban', // should be a large unguessable string
+        cookieName: "blueprint", // cookie name dictates the key name added to the request object
+        requestKey: "session",
+        secret: "theredballonfloatssouthintheslowwindsofazkaban", // should be a large unguessable string
         duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
         activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration, session is extended by activeDuration
     })
@@ -49,12 +49,12 @@ passport.use(
             .then(user => {
                 if (!user) {
                     return done(null, false, {
-                        message: 'Incorrect email or password.',
+                        message: "Incorrect email or password.",
                     });
                 }
                 if (!bcrypt.compareSync(password, user.password)) {
                     return done(null, false, {
-                        message: 'Incorrect email or password.',
+                        message: "Incorrect email or password.",
                     });
                 }
                 return done(null, user);
@@ -77,34 +77,34 @@ passport.deserializeUser((id, done) => {
         });
 });
 
-app.get('/auth/login', (req, res) => {
-    const messages = req.flash('error');
+app.get("/auth/login", (req, res) => {
+    const messages = req.flash("error");
     if (messages.length > 0) {
         res.json({
             errors: messages,
         });
     } else {
-        res.redirect('/session');
+        res.redirect("/session");
     }
 });
 
 app.post(
-    '/auth/login',
-    passport.authenticate('local', {
-        failureRedirect: '/auth/login',
+    "/auth/login",
+    passport.authenticate("local", {
+        failureRedirect: "/auth/login",
         failureFlash: true,
     }),
     (req, res) => {
-        res.redirect('/auth/session');
+        res.redirect("/auth/session");
     }
 );
 
-app.get('/auth/logout', (req, res) => {
+app.get("/auth/logout", (req, res) => {
     req.logout();
-    res.redirect('/auth/session');
+    res.redirect("/auth/session");
 });
 
-app.get('/auth/session', (req, res) => {
+app.get("/auth/session", (req, res) => {
     if (req.isAuthenticated()) {
         res.status(200).json({
             user: {
@@ -120,7 +120,7 @@ app.get('/auth/session', (req, res) => {
 });
 
 finale.initialize({
-    base: '/api',
+    base: "/api",
     app,
     sequelize: db.sequelize,
 });
@@ -128,12 +128,12 @@ finale.initialize({
 const resources = {
     Task: finale.resource({
         model: db.models.Task,
-        endpoints: ['/tasks', '/tasks/:id'],
+        endpoints: ["/tasks", "/tasks/:id"],
     }),
     User: finale.resource({
-        actions: ['create'],
+        actions: ["create"],
         model: db.models.User,
-        endpoints: ['/users'],
+        endpoints: ["/users"],
     }),
 };
 
@@ -141,7 +141,7 @@ const resources = {
 resources.Task.all.auth((req, res, context) => {
     // We optionally let a bearer token be passed in, and we'll log the user in using that'
     if (req.headers && req.headers.authorization) {
-        const parts = req.headers.authorization.split(' ');
+        const parts = req.headers.authorization.split(" ");
 
         if (parts.length === 2) {
             const scheme = parts[0];
@@ -152,7 +152,7 @@ resources.Task.all.auth((req, res, context) => {
                     if (user) {
                         req.login(user, () => context.continue());
                     } else {
-                        res.status(401).send({ message: 'Unauthorized' });
+                        res.status(401).send({ message: "Unauthorized" });
                         context.stop();
                     }
                 });
@@ -161,7 +161,7 @@ resources.Task.all.auth((req, res, context) => {
     } else if (req.isAuthenticated()) {
         context.continue();
     } else {
-        context.error(403, 'You must be logged in to access this resource.');
+        context.error(403, "You must be logged in to access this resource.");
     }
 });
 
@@ -190,9 +190,9 @@ resources.User.create.write.after((req, res, context) => {
 
 if (ENV === DEV) {
     /* eslint-disable global-require, import/no-extraneous-dependencies */
-    const Bundler = require('parcel-bundler');
+    const Bundler = require("parcel-bundler");
 
-    const file = path.join(__dirname, 'web', 'index.html');
+    const file = path.join(__dirname, "web", "index.html");
 
     const options = {
         cache: false,
@@ -210,11 +210,11 @@ if (ENV === DEV) {
     app.use(helmet());
 
     // Serve assets compiled by parcel
-    app.use(serveStatic(path.join(__dirname, 'dist')));
+    app.use(serveStatic(path.join(__dirname, "dist")));
 
     // All other requests get routed to our SPA
-    app.get('/*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    app.get("/*", (req, res) => {
+        res.sendFile(path.join(__dirname, "dist", "index.html"));
     });
 }
 
@@ -227,13 +227,13 @@ server.listen(PORT, err => {
     }
 
     const host =
-        server.address().address === '::'
-            ? 'localhost'
+        server.address().address === "::"
+            ? "localhost"
             : server.address().address;
     const port = server.address().port;
 
-    console.log('Starting in %s mode', ENV);
-    console.log('Listening at http://%s:%s', host, port);
+    console.log("Starting in %s mode", ENV);
+    console.log("Listening at http://%s:%s", host, port);
 });
 
 killable(server);

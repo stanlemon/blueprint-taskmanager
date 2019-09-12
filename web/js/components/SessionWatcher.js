@@ -1,10 +1,10 @@
-import isEqual from 'lodash/isEqual';
-import includes from 'lodash/includes';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { checkSession } from '../actions/';
-import { withRouter } from 'react-router';
+import isEqual from "lodash/isEqual";
+import includes from "lodash/includes";
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { checkSession } from "../actions/";
+import { withRouter } from "react-router";
 
 export class SessionWatcher extends React.Component {
     static defaultProps = {
@@ -35,25 +35,25 @@ export class SessionWatcher extends React.Component {
 
         // User was authenticated and logged out
         if (
-            includes(prevProps.loaded, 'user') &&
+            includes(prevProps.loaded, "user") &&
             this.props.user === null &&
             prevProps.user !== null
         ) {
-            this.props.navigateTo('/login');
+            this.props.navigateTo("/login");
             return;
         }
 
-        const unauthPaths = ['/login', '/register'];
+        const unauthPaths = ["/login", "/register"];
 
         // Authenticated user is on an unauthenticated page
         if (this.props.user !== null && unauthPaths.indexOf(path) > -1) {
-            this.props.navigateTo('/');
+            this.props.navigateTo("/");
             return;
         }
 
         // Unauthenticated user is on an authenticated page
         if (this.props.user === null && unauthPaths.indexOf(path) === -1) {
-            this.props.navigateTo('/login');
+            this.props.navigateTo("/login");
             return;
         }
     }

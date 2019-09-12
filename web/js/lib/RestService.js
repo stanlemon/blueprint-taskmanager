@@ -1,18 +1,18 @@
-import { mapErrors } from '../lib/Utils';
-import RestServiceException from './RestServiceException';
+import { mapErrors } from "../lib/Utils";
+import RestServiceException from "./RestServiceException";
 
 export default class RestService {
     baseUrl;
     options;
 
-    constructor(baseUrl = '', options = {}) {
+    constructor(baseUrl = "", options = {}) {
         this.baseUrl = baseUrl;
         this.options = options;
     }
 
     hasError(response) {
         return (
-            {}.hasOwnProperty.call(response, 'errors') &&
+            {}.hasOwnProperty.call(response, "errors") &&
             Array.isArray(response.errors) &&
             response.errors.length > 0
         );
@@ -26,13 +26,13 @@ export default class RestService {
         return response;
     }
 
-    fetch(url, method = 'get', data = null) {
+    fetch(url, method = "get", data = null) {
         const options = {
-            credentials: 'same-origin',
+            credentials: "same-origin",
             method,
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
         };
 

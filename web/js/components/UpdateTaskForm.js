@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import TaskForm from './TaskForm';
+import React from "react";
+import PropTypes from "prop-types";
+import TaskForm from "./TaskForm";
 
 export default class UpdateTaskForm extends React.Component {
     handleSave = data => {
         this.props.actions.updateTask(data);
-        this.props.navigateTo('/');
+        this.props.navigateTo("/");
         return data;
     };
 

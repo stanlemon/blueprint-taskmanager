@@ -1,8 +1,8 @@
-import includes from 'lodash/includes';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { logout, loadTasks } from '../actions/';
+import includes from "lodash/includes";
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { logout, loadTasks } from "../actions/";
 
 export class Layout extends React.Component {
     componentDidMount() {
@@ -10,16 +10,16 @@ export class Layout extends React.Component {
     }
 
     handleClickToHome = () => {
-        this.props.navigateTo('/');
+        this.props.navigateTo("/");
     };
 
     handleClickToLogout = () => {
         this.props.logout();
-        this.props.navigateTo('/login');
+        this.props.navigateTo("/login");
     };
 
     render() {
-        if (!includes(this.props.loaded, 'user')) {
+        if (!includes(this.props.loaded, "user")) {
             return <div />;
         }
 
@@ -29,7 +29,7 @@ export class Layout extends React.Component {
                     <div className="container">
                         <div className="navbar-header">
                             <button
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: "pointer" }}
                                 className="navbar-brand btn-link"
                                 onClick={this.handleClickToHome}
                             >
@@ -42,7 +42,7 @@ export class Layout extends React.Component {
                                 <i
                                     id="logout"
                                     role="button"
-                                    style={{ cursor: 'pointer' }}
+                                    style={{ cursor: "pointer" }}
                                     className="navbar-brand fa fa-sign-out"
                                     onClick={this.handleClickToLogout}
                                     onKeyDown={this.handleClickToLogout}

@@ -1,11 +1,11 @@
-import isEmpty from 'lodash/isEmpty';
-import isEmail from 'validator/lib/isEmail';
-import isLength from 'validator/lib/isLength';
-import classNames from 'classnames';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { registerUser } from '../actions/';
+import isEmpty from "lodash/isEmpty";
+import isEmail from "validator/lib/isEmail";
+import isLength from "validator/lib/isLength";
+import classNames from "classnames";
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { registerUser } from "../actions/";
 
 export class RegisterView extends React.Component {
     constructor(props) {
@@ -13,15 +13,15 @@ export class RegisterView extends React.Component {
 
         this.state = {
             data: {
-                name: '',
-                email: '',
-                password: '',
+                name: "",
+                email: "",
+                password: "",
             },
         };
     }
 
     handleClickToLogin = () => {
-        this.props.navigateTo('/login');
+        this.props.navigateTo("/login");
     };
 
     handleSubmit = e => {
@@ -30,30 +30,30 @@ export class RegisterView extends React.Component {
         const errors = {};
 
         if (isEmpty(this.state.data) || isEmpty(this.state.data.name)) {
-            errors['name'] = 'You must enter your name.';
+            errors["name"] = "You must enter your name.";
         }
 
         if (isEmpty(this.state.data) || isEmpty(this.state.data.email)) {
-            errors['email'] = 'You must enter your email.';
+            errors["email"] = "You must enter your email.";
         }
 
         if (
             !isEmpty(this.state.data.email) &&
             !isEmail(this.state.data.email)
         ) {
-            errors['email'] = 'You must enter a valid email address.';
+            errors["email"] = "You must enter a valid email address.";
         }
 
         if (isEmpty(this.state.data) || isEmpty(this.state.data.password)) {
-            errors['password'] = 'You must enter your password.';
+            errors["password"] = "You must enter your password.";
         }
 
         if (
             !isEmpty(this.state.data.password) &&
             !isLength(this.state.data.password, { min: 8, max: 64 })
         ) {
-            errors['password'] =
-                'Your password must be between 8 and 64 characters in length.';
+            errors["password"] =
+                "Your password must be between 8 and 64 characters in length.";
         }
 
         // If there are any errors, bail
@@ -107,8 +107,8 @@ export class RegisterView extends React.Component {
                                     >
                                         <div
                                             className={classNames(
-                                                'form-group',
-                                                { 'has-error': errors.name }
+                                                "form-group",
+                                                { "has-error": errors.name }
                                             )}
                                         >
                                             <label htmlFor="name">
@@ -136,8 +136,8 @@ export class RegisterView extends React.Component {
                                         </div>
                                         <div
                                             className={classNames(
-                                                'form-group',
-                                                { 'has-error': errors.email }
+                                                "form-group",
+                                                { "has-error": errors.email }
                                             )}
                                         >
                                             <label htmlFor="email">
@@ -166,9 +166,9 @@ export class RegisterView extends React.Component {
                                         </div>
                                         <div
                                             className={classNames(
-                                                'form-group',
+                                                "form-group",
                                                 {
-                                                    'has-error':
+                                                    "has-error":
                                                         errors.password,
                                                 }
                                             )}
@@ -211,7 +211,7 @@ export class RegisterView extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div style={{ minHeight: '2em' }} />
+                        <div style={{ minHeight: "2em" }} />
                         <div className="text-center">
                             <button
                                 className="btn btn-link"

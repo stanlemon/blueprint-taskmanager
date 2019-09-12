@@ -1,15 +1,15 @@
-import includes from 'lodash/includes';
-import isEmpty from 'lodash/isEmpty';
-import format from 'date-fns/format';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
-import Error from './Error';
-import UpdateTaskForm from './UpdateTaskForm';
-import { DATE_FORMAT_LONG } from '../lib/Utils';
-import { connect } from 'react-redux';
-import * as actions from '../actions/';
-import { bindActionCreators } from 'redux';
+import includes from "lodash/includes";
+import isEmpty from "lodash/isEmpty";
+import format from "date-fns/format";
+import React from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router";
+import Error from "./Error";
+import UpdateTaskForm from "./UpdateTaskForm";
+import { DATE_FORMAT_LONG } from "../lib/Utils";
+import { connect } from "react-redux";
+import * as actions from "../actions/";
+import { bindActionCreators } from "redux";
 
 export function TaskView({
     actions,
@@ -19,11 +19,11 @@ export function TaskView({
     errors,
     match,
 }) {
-    if (!includes(loaded, 'tasks')) {
+    if (!includes(loaded, "tasks")) {
         return <div />;
     }
 
-    const handleReturnToList = () => navigateTo('/');
+    const handleReturnToList = () => navigateTo("/");
 
     const taskId = parseInt(match.params.id, 10);
 
