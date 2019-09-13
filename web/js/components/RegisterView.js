@@ -171,13 +171,14 @@ export class RegisterView extends React.Component {
 
                     <br />
                     <div className="col-sm-6 col-sm-offset-3">
-                      <a
+                      <button
                         id="register-button"
+                        type="submit"
                         onClick={this.handleSubmit}
                         className="btn btn-primary btn-block"
                       >
                         Register
-                      </a>
+                      </button>
                     </div>
                   </form>
                 </div>

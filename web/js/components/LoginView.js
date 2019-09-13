@@ -143,13 +143,14 @@ export class LoginView extends React.Component {
                     </div>
                     <br />
                     <div className="col-sm-10 col-sm-offset-1">
-                      <a
+                      <button
                         id="login-button"
+                        type="submit"
                         onClick={this.handleSubmit}
                         className="btn btn-primary btn-block"
                       >
                         Login
-                      </a>
+                      </button>
                     </div>
                   </form>
                 </div>

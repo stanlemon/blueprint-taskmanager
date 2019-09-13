@@ -187,12 +187,13 @@ export default class TaskForm extends React.Component {
               </div>
             )}
             <div className="form-group">
-              <a
+              <button
+                type="submit"
                 className="btn btn-primary col-sm-2 save-task"
                 onClick={this.handleSubmit}
               >
                 Save
-              </a>
+              </button>
               {task.id && (
                 <a
                   style={{ marginLeft: 20 }}
