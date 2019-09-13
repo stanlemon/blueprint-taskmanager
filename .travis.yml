@@ -19,5 +19,13 @@ before_script:
   - npm run lint
   - npm run build
 
-before_script:
+script:
   - npm run test-all
+
+notifications:
+  email:
+    recipients:
+      # Please don't spam me!
+      - travisci-notifications@stanlemon.com
+    on_success: always
+    on_failure: always
