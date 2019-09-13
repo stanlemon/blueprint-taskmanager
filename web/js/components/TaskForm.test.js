@@ -27,7 +27,7 @@ describe("<TaskForm />", () => {
       completed: null,
     };
 
-    const view = mount(<TaskForm save={save} />);
+    const view = mount(<TaskForm onSubmit={save} />);
 
     const name = view.find('input[name="name"]');
 
@@ -70,7 +70,7 @@ describe("<TaskForm />", () => {
   it("submitting a form without a task name triggers an error", () => {
     const save = r => r;
 
-    const view = mount(<TaskForm save={save} />);
+    const view = mount(<TaskForm onSubmit={save} />);
 
     const form = view.find("form");
 
@@ -101,7 +101,7 @@ describe("<TaskForm />", () => {
       completed: parseISO("2017-06-12T07:08"),
     };
 
-    const view = mount(<TaskForm task={task} save={save} />);
+    const view = mount(<TaskForm task={task} onSubmit={save} />);
 
     const name = view.find('input[name="name"]');
 
@@ -162,7 +162,7 @@ describe("<TaskForm />", () => {
   it("clicking  on due opens a pop up", () => {
     const save = r => r;
 
-    const view = mount(<TaskForm save={save} />);
+    const view = mount(<TaskForm onSubmit={save} />);
 
     const dueInput = view.find('input[name="due"]');
 
@@ -199,7 +199,7 @@ describe("<TaskForm />", () => {
       due: ["Error message about due"],
     };
 
-    const view = mount(<TaskForm save={t => t} errors={errorMessages} />);
+    const view = mount(<TaskForm onSubmit={t => t} errors={errorMessages} />);
 
     const errors = view.find(".has-error .help-block");
 

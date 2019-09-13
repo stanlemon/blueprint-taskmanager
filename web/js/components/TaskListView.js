@@ -13,7 +13,6 @@ const COMPLETE = "complete";
 
 export class TaskListView extends React.Component {
   static propTypes = {
-    navigateTo: PropTypes.func.isRequired,
     tasks: PropTypes.array.isRequired,
     errors: PropTypes.object,
     loaded: PropTypes.array,
@@ -39,7 +38,7 @@ export class TaskListView extends React.Component {
 
   render() {
     const { filter } = this.state;
-    const { loaded, errors, navigateTo } = this.props;
+    const { loaded, errors } = this.props;
 
     if (!includes(loaded, "tasks")) {
       return (
@@ -139,7 +138,7 @@ export class TaskListView extends React.Component {
         )}
 
         {tasks.map(task => (
-          <TaskItem key={task.id} navigateTo={navigateTo} task={task} />
+          <TaskItem key={task.id} task={task} />
         ))}
 
         <br />

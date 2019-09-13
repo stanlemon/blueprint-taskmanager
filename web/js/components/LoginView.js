@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { login } from "../actions/";
+import { navigateTo } from "../lib/navigateTo";
 import Error from "./Error";
 
 export class LoginView extends React.Component {
@@ -19,7 +20,7 @@ export class LoginView extends React.Component {
   }
 
   handleClickToRegister = () => {
-    this.props.navigateTo("/register");
+    navigateTo("/register");
   };
 
   handleSubmit = e => {
@@ -174,7 +175,6 @@ export class LoginView extends React.Component {
 }
 
 LoginView.propTypes = {
-  navigateTo: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   errors: PropTypes.shape({
     main: PropTypes.arrayOf(PropTypes.string),

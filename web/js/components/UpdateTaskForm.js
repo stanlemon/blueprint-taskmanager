@@ -2,12 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import TaskForm from "./TaskForm";
 import { connect } from "react-redux";
+import { navigateTo } from "../lib/navigateTo";
 import { updateTask } from "../actions";
 
 export class UpdateTaskForm extends React.Component {
   handleSave = data => {
     this.props.updateTask(data);
-    this.props.navigateTo("/");
+    navigateTo("/");
     return data;
   };
 
@@ -15,17 +16,15 @@ export class UpdateTaskForm extends React.Component {
     return (
       <TaskForm
         className="task-update-form"
-        navigateTo={this.props.navigateTo}
         task={this.props.task}
         errors={this.props.errors}
-        save={this.handleSave}
+        onSubmit={this.handleSave}
       />
     );
   }
 }
 
 UpdateTaskForm.propTypes = {
-  navigateTo: PropTypes.func.isRequired,
   updateTask: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
   errors: PropTypes.object,

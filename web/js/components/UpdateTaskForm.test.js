@@ -23,15 +23,7 @@ describe("<UpdateTaskForm />", () => {
       completed: parseISO("2017-06-12T07:08"),
     };
 
-    const navigateTo = () => {};
-
-    const view = mount(
-      <UpdateTaskForm
-        task={task}
-        navigateTo={navigateTo}
-        updateTask={updateTask}
-      />
-    );
+    const view = mount(<UpdateTaskForm task={task} updateTask={updateTask} />);
 
     const name = view.find('input[name="name"]');
 

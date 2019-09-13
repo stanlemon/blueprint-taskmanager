@@ -7,10 +7,10 @@ import Error from "./Error";
 import UpdateTaskForm from "./UpdateTaskForm";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
 import { connect } from "react-redux";
-import { getRouteParams } from "../lib/navigateTo";
+import { getRouteParams, navigateTo } from "../lib/navigateTo";
 import { ROUTE_TASK_VIEW } from "./Routes";
 
-export function TaskView({ loaded, tasks, navigateTo }) {
+export function TaskView({ loaded, tasks }) {
   if (!includes(loaded, "tasks")) {
     return <div />;
   }
@@ -35,7 +35,7 @@ export function TaskView({ loaded, tasks, navigateTo }) {
 
   return (
     <div>
-      <UpdateTaskForm task={task} navigateTo={navigateTo} />
+      <UpdateTaskForm task={task} />
 
       <p>
         <strong>Created: </strong>
@@ -50,7 +50,6 @@ export function TaskView({ loaded, tasks, navigateTo }) {
 }
 
 TaskView.propTypes = {
-  navigateTo: PropTypes.func.isRequired,
   tasks: PropTypes.array.isRequired,
   loaded: PropTypes.array,
 };

@@ -6,11 +6,11 @@ import isBefore from "date-fns/isBefore";
 import subDays from "date-fns/subDays";
 import { connect } from "react-redux";
 import { makeDateTime } from "../lib/Utils";
+import { navigateTo } from "../lib/navigateTo";
 import { updateTask, deleteTask } from "../actions";
 
 export class TaskItem extends React.Component {
   static propTypes = {
-    navigateTo: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
     task: PropTypes.object.isRequired,
@@ -21,7 +21,7 @@ export class TaskItem extends React.Component {
   };
 
   viewTask = () => {
-    this.props.navigateTo(`/view/${this.props.task.id}`);
+    navigateTo(`/view/${this.props.task.id}`);
   };
 
   completeTask = event => {

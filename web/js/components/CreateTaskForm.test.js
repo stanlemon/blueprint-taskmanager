@@ -22,15 +22,7 @@ describe("<CreateTaskForm />", () => {
       completed: null,
     };
 
-    const navigateTo = () => {};
-
-    const view = mount(
-      <CreateTaskForm
-        task={task}
-        createTask={createTask}
-        navigateTo={navigateTo}
-      />
-    );
+    const view = mount(<CreateTaskForm task={task} createTask={createTask} />);
 
     const name = view.find('input[name="name"]');
 

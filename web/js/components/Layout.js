@@ -2,6 +2,7 @@ import includes from "lodash/includes";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { navigateTo } from "../lib/navigateTo";
 import { logout, loadTasks } from "../actions/";
 
 export class Layout extends React.Component {
@@ -10,12 +11,12 @@ export class Layout extends React.Component {
   }
 
   handleClickToHome = () => {
-    this.props.navigateTo("/");
+    navigateTo("/");
   };
 
   handleClickToLogout = () => {
     this.props.logout();
-    this.props.navigateTo("/login");
+    navigateTo("/login");
   };
 
   render() {
@@ -59,7 +60,6 @@ export class Layout extends React.Component {
 }
 
 Layout.propTypes = {
-  navigateTo: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
   logout: PropTypes.func.isRequired,
   loadTasks: PropTypes.func.isRequired,

@@ -7,12 +7,11 @@ import Error from "./Error";
 import { format, subDays } from "date-fns";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
 import { history } from "../lib/navigateTo";
+import { ROUTE_ROOT } from "./Routes";
 
 configure({ adapter: new Adapter() });
 
 describe("<TaskView />", () => {
-  const navigateTo = () => {};
-
   it("should render a task", () => {
     const tasks = [
       {
@@ -38,13 +37,7 @@ describe("<TaskView />", () => {
     history.replace("/view/2");
 
     const view = shallow(
-      <TaskView
-        loaded={["tasks"]}
-        tasks={tasks}
-        errors={{}}
-        navigateTo={navigateTo}
-        actions={{}}
-      />
+      <TaskView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
     );
 
     expect(view.find(UpdateTaskForm).length).toBe(1);
@@ -92,18 +85,10 @@ describe("<TaskView />", () => {
       },
     ];
 
-    let destUrl;
-
     history.replace("/view/3");
 
     const view = shallow(
-      <TaskView
-        loaded={["tasks"]}
-        tasks={tasks}
-        errors={{}}
-        navigateTo={r => (destUrl = r)}
-        actions={{}}
-      />
+      <TaskView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
     );
 
     expect(view.find(Error).length).toBe(1);
@@ -112,18 +97,12 @@ describe("<TaskView />", () => {
 
     view.find(".btn").simulate("click");
 
-    expect(destUrl).toBe("/");
+    expect(history.location.pathname).toBe(ROUTE_ROOT);
   });
 
   it("should not render anything if tasks have not loaded", () => {
     const view = shallow(
-      <TaskView
-        loaded={[]}
-        tasks={[]}
-        errors={{}}
-        navigateTo={navigateTo}
-        actions={{}}
-      />
+      <TaskView loaded={[]} tasks={[]} errors={{}} actions={{}} />
     );
 
     expect(view.find(UpdateTaskForm).length).toBe(0);

@@ -5,15 +5,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import isEmpty from "lodash/isEmpty";
+import { navigateTo } from "../lib/navigateTo";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
 
 export default class TaskForm extends React.Component {
   static propTypes = {
-    save: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
     task: PropTypes.object,
     errors: PropTypes.object,
     className: PropTypes.string,
-    navigateTo: PropTypes.func,
   };
 
   static defaultProps = {
@@ -58,7 +58,7 @@ export default class TaskForm extends React.Component {
       return;
     }
 
-    const result = this.props.save(this.state.data);
+    const result = this.props.onSubmit(this.state.data);
 
     // TODO: Should this check to see if anything was returned before resetting 'data'?
     this.setState({ errors: {}, data: result });
@@ -67,7 +67,7 @@ export default class TaskForm extends React.Component {
   cancelTask = e => {
     e.preventDefault();
 
-    this.props.navigateTo("/");
+    navigateTo("/");
   };
 
   setCompleted = e => {

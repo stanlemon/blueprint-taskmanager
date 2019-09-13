@@ -5,6 +5,7 @@ import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { navigateTo } from "../lib/navigateTo";
 import { registerUser } from "../actions/";
 
 export class RegisterView extends React.Component {
@@ -21,7 +22,7 @@ export class RegisterView extends React.Component {
   }
 
   handleClickToLogin = () => {
-    this.props.navigateTo("/login");
+    navigateTo("/login");
   };
 
   handleSubmit = e => {
@@ -196,7 +197,6 @@ export class RegisterView extends React.Component {
 }
 
 RegisterView.propTypes = {
-  navigateTo: PropTypes.func.isRequired,
   registerUser: PropTypes.func.isRequired,
   errors: PropTypes.object,
 };

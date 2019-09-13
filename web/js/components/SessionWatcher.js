@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { checkSession } from "../actions/";
-import { getCurrentPathname } from "../lib/navigateTo";
+import { getCurrentPathname, navigateTo } from "../lib/navigateTo";
 
 export class SessionWatcher extends React.Component {
   interval;
@@ -35,7 +35,7 @@ export class SessionWatcher extends React.Component {
       this.props.user === null &&
       prevProps.user !== null
     ) {
-      this.props.navigateTo("/login");
+      navigateTo("/login");
       return;
     }
 
@@ -43,13 +43,13 @@ export class SessionWatcher extends React.Component {
 
     // Authenticated user is on an unauthenticated page
     if (this.props.user !== null && unauthPaths.indexOf(path) > -1) {
-      this.props.navigateTo("/");
+      navigateTo("/");
       return;
     }
 
     // Unauthenticated user is on an authenticated page
     if (this.props.user === null && unauthPaths.indexOf(path) === -1) {
-      this.props.navigateTo("/login");
+      navigateTo("/login");
       return;
     }
   }
@@ -65,7 +65,6 @@ SessionWatcher.defaultProps = {
 };
 
 SessionWatcher.propTypes = {
-  navigateTo: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
   pollInterval: PropTypes.number,
   checkSession: PropTypes.func.isRequired,

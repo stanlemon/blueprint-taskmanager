@@ -4,7 +4,8 @@ import addDays from "date-fns/addDays";
 import isSameDay from "date-fns/isSameDay";
 import parseISO from "date-fns/parseISO";
 import Adapter from "enzyme-adapter-react-16";
-import { makeDateTime } from "../../js/lib/Utils";
+import { makeDateTime } from "../lib/Utils";
+import { history } from "../lib/navigateTo";
 import React from "react";
 import { TaskItem } from "./TaskItem";
 import { makeRoute } from "../lib/navigateTo";
@@ -13,7 +14,6 @@ import { ROUTE_TASK_VIEW } from "./Routes";
 configure({ adapter: new Adapter() });
 
 describe("<TaskItem />", () => {
-  const navigateTo = () => {};
   const updateTask = () => {};
   const deleteTask = () => {};
 
@@ -24,12 +24,7 @@ describe("<TaskItem />", () => {
       completed: null,
     };
     const wrapper = shallow(
-      <TaskItem
-        task={task}
-        navigateTo={navigateTo}
-        updateTask={updateTask}
-        deleteTask={deleteTask}
-      />
+      <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
     expect(wrapper.contains(task.name)).toBe(true);
 
@@ -45,12 +40,7 @@ describe("<TaskItem />", () => {
       completed: makeDateTime(),
     };
     const wrapper = shallow(
-      <TaskItem
-        task={task}
-        navigateTo={navigateTo}
-        updateTask={updateTask}
-        deleteTask={deleteTask}
-      />
+      <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
     expect(wrapper.find("input").is("[checked=true]")).toBe(true);
@@ -68,12 +58,7 @@ describe("<TaskItem />", () => {
       due: subDays(Date.now(), 2),
     };
     const wrapper = shallow(
-      <TaskItem
-        task={task}
-        navigateTo={navigateTo}
-        updateTask={updateTask}
-        deleteTask={deleteTask}
-      />
+      <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
     expect(wrapper.find("input").is("[checked=true]")).toBe(false);
@@ -91,12 +76,7 @@ describe("<TaskItem />", () => {
       due: addDays(Date.now(), 2),
     };
     const wrapper = shallow(
-      <TaskItem
-        task={task}
-        navigateTo={navigateTo}
-        updateTask={updateTask}
-        deleteTask={deleteTask}
-      />
+      <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
     expect(wrapper.find("input").is("[checked=true]")).toBe(false);
@@ -114,20 +94,15 @@ describe("<TaskItem />", () => {
       due: addDays(Date.now(), 2),
     };
 
-    let destUrl;
-
     const wrapper = shallow(
-      <TaskItem
-        task={task}
-        navigateTo={u => (destUrl = u)}
-        updateTask={updateTask}
-        deleteTask={deleteTask}
-      />
+      <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
     wrapper.find(".task-name").simulate("click");
 
-    expect(destUrl).toEqual(makeRoute(ROUTE_TASK_VIEW, { id: 1 }));
+    expect(history.location.pathname).toEqual(
+      makeRoute(ROUTE_TASK_VIEW, { id: 1 })
+    );
   });
 
   it("clicking on a task's delete button calls the delete action with the right id", () => {
@@ -143,7 +118,6 @@ describe("<TaskItem />", () => {
     const wrapper = shallow(
       <TaskItem
         task={task}
-        navigateTo={navigateTo}
         updateTask={updateTask}
         deleteTask={id => (deletedTaskId = id)}
       />
@@ -167,7 +141,6 @@ describe("<TaskItem />", () => {
     const wrapper = shallow(
       <TaskItem
         task={task}
-        navigateTo={navigateTo}
         updateTask={t => {
           updatedTask = t;
         }}
@@ -206,7 +179,6 @@ describe("<TaskItem />", () => {
     const wrapper = shallow(
       <TaskItem
         task={task}
-        navigateTo={navigateTo}
         updateTask={t => {
           updatedTask = t;
         }}

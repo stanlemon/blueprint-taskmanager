@@ -1,16 +1,16 @@
 import React from "react";
 import { mount, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import { history } from "../lib/navigateTo";
 import { LoginView } from "./LoginView";
 import Error from "./Error";
+import { ROUTE_REGISTER } from "./Routes";
 
 configure({ adapter: new Adapter() });
 
 describe("<LoginView />", () => {
-  const navigateTo = () => {};
-
   it("should render a login screen with empty fields", () => {
-    const view = mount(<LoginView login={() => {}} navigateTo={navigateTo} />);
+    const view = mount(<LoginView login={() => {}} />);
 
     const username = view.find('input[name="username"]');
 
@@ -22,7 +22,7 @@ describe("<LoginView />", () => {
   });
 
   it("should error when fields are submitted blank", () => {
-    const view = mount(<LoginView login={() => {}} navigateTo={navigateTo} />);
+    const view = mount(<LoginView login={() => {}} />);
 
     view.find("form").simulate("submit");
 
@@ -42,7 +42,7 @@ describe("<LoginView />", () => {
       username = data.username;
       password = data.password;
     };
-    const view = mount(<LoginView login={login} navigateTo={navigateTo} />);
+    const view = mount(<LoginView login={login} />);
 
     const expectedUsername = "test@test.com";
     const expectedPassword = "p@$$w0rd";
@@ -66,11 +66,7 @@ describe("<LoginView />", () => {
   });
 
   it("clicking the button to go to the register screen should trigger navigateTo", () => {
-    let route;
-
-    const view = mount(
-      <LoginView login={() => {}} navigateTo={r => (route = r)} />
-    );
+    const view = mount(<LoginView login={() => {}} />);
 
     const button = view.findWhere(
       n => n.type() === "a" && n.text() === "Create Account"
@@ -78,16 +74,12 @@ describe("<LoginView />", () => {
 
     button.simulate("click");
 
-    expect(route).toBe("/register");
+    expect(history.location.pathname).toBe(ROUTE_REGISTER);
   });
 
   it("errors from actions render", () => {
     const view = mount(
-      <LoginView
-        login={() => {}}
-        errors={{ main: ["Error message"] }}
-        navigateTo={navigateTo}
-      />
+      <LoginView login={() => {}} errors={{ main: ["Error message"] }} />
     );
 
     expect(view.find(Error).length).toBe(1);
