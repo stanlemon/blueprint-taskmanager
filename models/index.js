@@ -15,7 +15,6 @@ module.exports = () => {
     operatorsAliases: false,
     define: {
       underscored: true,
-      freezeTableName: true,
     },
   });
 
