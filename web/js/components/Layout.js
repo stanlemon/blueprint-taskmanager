@@ -46,8 +46,6 @@ export class Layout extends React.Component {
                   style={{ cursor: "pointer" }}
                   className="navbar-brand fa fa-sign-out"
                   onClick={this.handleClickToLogout}
-                  onKeyDown={this.handleClickToLogout}
-                  tabIndex={0}
                 />
               </li>
             </ul>

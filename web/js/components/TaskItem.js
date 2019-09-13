@@ -36,7 +36,7 @@ export class TaskItem extends React.Component {
   render() {
     const { task } = this.props;
 
-    const rowClasses = classNames("task-row", {
+    const rowClasses = classNames("row", "row-no-gutters", "task-row", {
       // Tasks due in the next day
       "bg-warning task-due-soon":
         task.due &&
@@ -50,40 +50,43 @@ export class TaskItem extends React.Component {
 
     return (
       <div className={rowClasses}>
-        <div className="row" style={{ margin: "10px" }}>
-          <div
-            role="button"
-            className="task-name col-xs-9 col-sm-9 col-md-10"
-            onClick={this.viewTask}
-            onKeyDown={this.viewTask}
-            tabIndex={0}
-          >
-            {task.name}
+        <div
+          role="button"
+          className="task-name col-xs-10 col-sm-11 col-md-11"
+          onClick={this.viewTask}
+          style={{
+            outline: 0,
+            paddingTop: 10,
+            paddingBottom: 10,
+            paddingLeft: 20,
+          }}
+        >
+          {task.name}
+        </div>
+        <div
+          className="col-xs-2 col-sm-1 col-md-1"
+          style={{ paddingTop: 10, paddingBottom: 10, paddingRight: 20 }}
+        >
+          <div className="col-xs-6 col-sm-6 text-left">
+            <input
+              type="checkbox"
+              className="complete-task"
+              checked={this.props.task.completed !== null}
+              onChange={this.completeTask}
+            />
           </div>
-          <div className="col-xs-3 col-sm-3 col-md-2">
-            <div className="row">
-              <div className="col-xs-6 col-sm-6 text-right">
-                <input
-                  type="checkbox"
-                  className="complete-task"
-                  checked={this.props.task.completed !== null}
-                  onChange={this.completeTask}
-                />
-              </div>
-              <div className="col-xs-6 col-sm-6 text-right">
-                <a
-                  className="btn btn-xs btn-danger delete-task"
-                  onClick={this.deleteTask}
-                >
-                  <i
-                    className="fa fa-trash-o"
-                    style={{
-                      padding: "3px",
-                    }}
-                  />
-                </a>
-              </div>
-            </div>
+          <div className="col-xs-6 col-sm-6 text-right">
+            <a
+              className="btn btn-xs btn-danger delete-task"
+              onClick={this.deleteTask}
+            >
+              <i
+                className="fa fa-trash-o"
+                style={{
+                  padding: "3px",
+                }}
+              />
+            </a>
           </div>
         </div>
       </div>
