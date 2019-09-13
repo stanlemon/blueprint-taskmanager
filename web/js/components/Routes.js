@@ -28,14 +28,17 @@ export default class Routes extends React.Component {
             <Route exact path={ROUTE_REGISTER}>
               <RegisterView />
             </Route>
-            <Route exact path={ROUTE_ROOT}>
+            <Route>
+              {/* Everything container herein requires an authenticated user */}
               <Layout>
-                <TaskListView />
-              </Layout>
-            </Route>
-            <Route exact path={ROUTE_TASK_VIEW}>
-              <Layout>
-                <TaskView />
+                <Switch>
+                  <Route exact path={ROUTE_ROOT}>
+                    <TaskListView />
+                  </Route>
+                  <Route exact path={ROUTE_TASK_VIEW}>
+                    <TaskView />
+                  </Route>
+                </Switch>
               </Layout>
             </Route>
           </Switch>
