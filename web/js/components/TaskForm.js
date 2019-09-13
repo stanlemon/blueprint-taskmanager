@@ -199,7 +199,7 @@ export default class TaskForm extends React.Component {
                   className="btn btn-default col-sm-2 cancel-task"
                   onClick={this.cancelTask}
                 >
-                  Cancel!
+                  Cancel
                 </a>
               )}
             </div>
