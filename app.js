@@ -125,20 +125,7 @@ finale.initialize({
   sequelize: db.sequelize,
 });
 
-const resources = {
-  Task: finale.resource({
-    model: db.models.Task,
-    endpoints: ["/tasks", "/tasks/:id"],
-  }),
-  User: finale.resource({
-    actions: ["create"],
-    model: db.models.User,
-    endpoints: ["/users"],
-  }),
-};
-
-// Require an authenticated user for all operations
-resources.Task.all.auth((req, res, context) => {
+const apiAuth = (req, res, context) => {
   // We optionally let a bearer token be passed in, and we'll log the user in using that'
   if (req.headers && req.headers.authorization) {
     const parts = req.headers.authorization.split(" ");
@@ -163,18 +150,38 @@ resources.Task.all.auth((req, res, context) => {
   } else {
     context.error(403, "You must be logged in to access this resource.");
   }
+};
+
+const resources = {};
+
+Object.keys(db.models).forEach(k => {
+  if (k === "User") {
+    return;
+  }
+  resources[k] = finale.resource({
+    model: db.models[k],
+  });
+
+  // Require an authenticated user for all operations
+  resources[k].all.auth(apiAuth);
+
+  // Restrict all fetch requests to the authenticated user
+  resources[k].all.fetch_before((req, res, context) => {
+    req.query.userId = req.user.id;
+    return context.continue;
+  });
+
+  // Set the authenticated user on all writes
+  resources[k].create.write.before((req, res, context) => {
+    req.body.userId = req.user.id;
+    return context.continue;
+  });
 });
 
-// Restrict all fetch requests to the authenticated user
-resources.Task.all.fetch_before((req, res, context) => {
-  req.query.userId = req.user.id;
-  return context.continue;
-});
-
-// Set the authenticated user on all writes
-resources.Task.create.write.before((req, res, context) => {
-  req.body.userId = req.user.id;
-  return context.continue;
+resources.User = finale.resource({
+  actions: ["create"],
+  model: db.models.User,
+  endpoints: ["/users"],
 });
 
 // Auto login a user after they register

@@ -102,6 +102,8 @@ module.exports = () => {
     },
   });
 
+  Tag.belongsTo(User, { as: "user" });
+
   const TaskTag = sequelize.define(
     "TasksTags",
     {
@@ -117,6 +119,8 @@ module.exports = () => {
 
   Tag.belongsToMany(Task, {
     through: TaskTag,
+    foreignKey: "taskId",
+    otherKey: "tagId",
   });
 
   // Will add new tables if anything is missing
