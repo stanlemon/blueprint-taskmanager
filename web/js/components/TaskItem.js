@@ -4,9 +4,11 @@ import PropTypes from "prop-types";
 import isAfter from "date-fns/isAfter";
 import isBefore from "date-fns/isBefore";
 import subDays from "date-fns/subDays";
+import { connect } from "react-redux";
 import { makeDateTime } from "../lib/Utils";
+import { updateTask, deleteTask } from "../actions";
 
-export default class TaskItem extends React.Component {
+export class TaskItem extends React.Component {
   static propTypes = {
     navigateTo: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
@@ -69,7 +71,7 @@ export default class TaskItem extends React.Component {
                 />
               </div>
               <div className="col-xs-6 col-sm-6 text-right">
-                <button
+                <a
                   className="btn btn-xs btn-danger delete-task"
                   onClick={this.deleteTask}
                 >
@@ -79,7 +81,7 @@ export default class TaskItem extends React.Component {
                       padding: "3px",
                     }}
                   />
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -88,3 +90,8 @@ export default class TaskItem extends React.Component {
     );
   }
 }
+
+export default connect(
+  state => state,
+  { updateTask, deleteTask }
+)(TaskItem);

@@ -1,7 +1,7 @@
 import React from "react";
 import { configure, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import UpdateTaskForm from "./UpdateTaskForm";
+import { UpdateTaskForm } from "./UpdateTaskForm";
 import parseISO from "date-fns/parseISO";
 
 configure({ adapter: new Adapter() });
@@ -10,11 +10,9 @@ describe("<UpdateTaskForm />", () => {
   it("should render a form with an existing task and update it", () => {
     let lastSavedTask = null;
 
-    const actions = {
-      updateTask: task => {
-        // Store the task so that we can reference it later
-        lastSavedTask = task;
-      },
+    const updateTask = task => {
+      // Store the task so that we can reference it later
+      lastSavedTask = task;
     };
 
     const task = {
@@ -28,7 +26,11 @@ describe("<UpdateTaskForm />", () => {
     const navigateTo = () => {};
 
     const view = mount(
-      <UpdateTaskForm task={task} actions={actions} navigateTo={navigateTo} />
+      <UpdateTaskForm
+        task={task}
+        navigateTo={navigateTo}
+        updateTask={updateTask}
+      />
     );
 
     const name = view.find('input[name="name"]');

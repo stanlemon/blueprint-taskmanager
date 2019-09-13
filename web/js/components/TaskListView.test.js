@@ -2,6 +2,7 @@ import React from "react";
 import { mount, shallow, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { TaskListView } from "./TaskListView";
+// Use the connected version because we're just using it for a lookup
 import TaskItem from "./TaskItem";
 import CreateTaskForm from "./CreateTaskForm";
 
@@ -56,16 +57,19 @@ describe("<TaskListView />", () => {
 
     // List of tasks contains our first task
     expect(
-      view.contains(
-        <TaskItem navigateTo={navigateTo} actions={{}} task={tasks[0]} />
-      )
-    ).toBe(true);
+      view
+        .find(TaskItem)
+        .at(0)
+        .props().task
+    ).toEqual(tasks[0]);
+
     // List of tasks contains our second task
     expect(
-      view.contains(
-        <TaskItem navigateTo={navigateTo} actions={{}} task={tasks[1]} />
-      )
-    ).toBe(true);
+      view
+        .find(TaskItem)
+        .at(1)
+        .props().task
+    ).toEqual(tasks[1]);
   });
 
   it("should not render a list if there are no tasks", () => {

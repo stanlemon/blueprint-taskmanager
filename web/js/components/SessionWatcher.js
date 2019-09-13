@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { checkSession } from "../actions/";
-import { withRouter } from "react-router";
+import { getCurrentPathname } from "../lib/navigateTo";
 
 export class SessionWatcher extends React.Component {
   interval;
@@ -27,7 +27,7 @@ export class SessionWatcher extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const path = this.props.history.location.pathname;
+    const path = getCurrentPathname();
 
     // User was authenticated and logged out
     if (
@@ -81,4 +81,4 @@ SessionWatcher.propTypes = {
 export default connect(
   state => ({ loaded: state.loaded, user: state.user }),
   { checkSession }
-)(withRouter(SessionWatcher));
+)(SessionWatcher);

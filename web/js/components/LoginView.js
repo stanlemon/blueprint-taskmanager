@@ -142,12 +142,13 @@ export class LoginView extends React.Component {
                     </div>
                     <br />
                     <div className="col-sm-10 col-sm-offset-1">
-                      <button
-                        type="submit"
+                      <a
+                        id="login-button"
+                        onClick={this.handleSubmit}
                         className="btn btn-primary btn-block"
                       >
                         Login
-                      </button>
+                      </a>
                     </div>
                   </form>
                 </div>
@@ -158,14 +159,13 @@ export class LoginView extends React.Component {
         <div style={{ minHeight: "15px" }} />
         <div className="row">
           <div className="text-center">
-            <button
-              id="register-button"
-              type="button"
+            <a
+              id="create-account-button"
               className="btn btn-link"
               onClick={this.handleClickToRegister}
             >
               Create Account
-            </button>
+            </a>
           </div>
         </div>
       </div>

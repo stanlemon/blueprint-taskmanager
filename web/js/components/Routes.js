@@ -6,33 +6,36 @@ import LoginView from "./LoginView";
 import RegisterView from "./RegisterView";
 import TaskListView from "./TaskListView";
 import TaskView from "./TaskView";
-import { createBrowserHistory } from "history";
+import { history, navigateTo } from "../lib/navigateTo";
+
+// Routes should be declared here, then used in the <Route /> component.
+// This allows them to be referenced consistently from other places in code.
+
+export const ROUTE_LOGIN = "/login";
+export const ROUTE_REGISTER = "/register";
+export const ROUTE_ROOT = "/";
+export const ROUTE_TASK_VIEW = "/view/:id";
+
+// TODO: Stop passing navigateTo() around everywhere
 
 export default class Routes extends React.Component {
-  history = createBrowserHistory();
-
   render() {
-    // Allows us to abstract away react router & the history implementation from our stuff
-    const navigateTo = route => {
-      this.history.push(route);
-    };
-
     return (
-      <Router history={this.history}>
+      <Router history={history}>
         <SessionWatcher navigateTo={navigateTo}>
           <Switch>
-            <Route exact path="/login">
+            <Route exact path={ROUTE_LOGIN}>
               <LoginView navigateTo={navigateTo} />
             </Route>
-            <Route exact path="/register">
+            <Route exact path={ROUTE_REGISTER}>
               <RegisterView navigateTo={navigateTo} />
             </Route>
-            <Route exact path="/">
+            <Route exact path={ROUTE_ROOT}>
               <Layout navigateTo={navigateTo}>
                 <TaskListView navigateTo={navigateTo} />
               </Layout>
             </Route>
-            <Route exact path="/view/:id">
+            <Route exact path={ROUTE_TASK_VIEW}>
               <Layout navigateTo={navigateTo}>
                 <TaskView navigateTo={navigateTo} />
               </Layout>

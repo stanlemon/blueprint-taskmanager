@@ -6,7 +6,9 @@ import parseISO from "date-fns/parseISO";
 import Adapter from "enzyme-adapter-react-16";
 import { makeDateTime } from "../../js/lib/Utils";
 import React from "react";
-import TaskItem from "../../../web/js/components/TaskItem";
+import { TaskItem } from "./TaskItem";
+import { makeRoute } from "../lib/navigateTo";
+import { ROUTE_TASK_VIEW } from "./Routes";
 
 configure({ adapter: new Adapter() });
 
@@ -125,8 +127,7 @@ describe("<TaskItem />", () => {
 
     wrapper.find(".task-name").simulate("click");
 
-    // TODO: Establish constants for URLs
-    expect(destUrl).toEqual("/view/1");
+    expect(destUrl).toEqual(makeRoute(ROUTE_TASK_VIEW, { id: 1 }));
   });
 
   it("clicking on a task's delete button calls the delete action with the right id", () => {
@@ -148,9 +149,8 @@ describe("<TaskItem />", () => {
       />
     );
 
-    wrapper.find("button.delete-task").simulate("click");
+    wrapper.find(".delete-task").simulate("click");
 
-    // TODO: Establish constants for URLs
     expect(deletedTaskId).toEqual(task.id);
   });
 

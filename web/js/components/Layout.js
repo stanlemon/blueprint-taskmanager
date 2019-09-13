@@ -28,14 +28,14 @@ export class Layout extends React.Component {
         <nav className="navbar navbar-inverse navbar-fixed-top custom-navbar">
           <div className="container">
             <div className="navbar-header">
-              <button
+              <a
                 style={{ cursor: "pointer" }}
                 className="navbar-brand btn-link"
                 onClick={this.handleClickToHome}
               >
                 <i className="fa fa-cloud" />
                 &nbsp; Blueprint
-              </button>
+              </a>
             </div>
             <ul className="nav navbar-nav navbar-right">
               <li>

@@ -1,7 +1,7 @@
 import React from "react";
 import { mount, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import CreateTaskForm from "./CreateTaskForm";
+import { CreateTaskForm } from "./CreateTaskForm";
 
 configure({ adapter: new Adapter() });
 
@@ -9,11 +9,9 @@ describe("<CreateTaskForm />", () => {
   it("should render an empty form with and submit a new task in it", () => {
     let lastSavedTask = null;
 
-    const actions = {
-      createTask: task => {
-        // Store the task so that we can reference it later
-        lastSavedTask = task;
-      },
+    const createTask = task => {
+      // Store the task so that we can reference it later
+      lastSavedTask = task;
     };
 
     const task = {
@@ -27,7 +25,11 @@ describe("<CreateTaskForm />", () => {
     const navigateTo = () => {};
 
     const view = mount(
-      <CreateTaskForm task={task} actions={actions} navigateTo={navigateTo} />
+      <CreateTaskForm
+        task={task}
+        createTask={createTask}
+        navigateTo={navigateTo}
+      />
     );
 
     const name = view.find('input[name="name"]');

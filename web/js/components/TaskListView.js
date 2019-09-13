@@ -6,8 +6,6 @@ import { sortTasksByDate } from "../lib/Utils";
 import CreateTaskForm from "./CreateTaskForm";
 import TaskItem from "./TaskItem";
 import { connect } from "react-redux";
-import * as actions from "../actions/";
-import { bindActionCreators } from "redux";
 
 const ALL = "all";
 const INCOMPLETE = "incomplete";
@@ -15,7 +13,6 @@ const COMPLETE = "complete";
 
 export class TaskListView extends React.Component {
   static propTypes = {
-    actions: PropTypes.object.isRequired,
     navigateTo: PropTypes.func.isRequired,
     tasks: PropTypes.array.isRequired,
     errors: PropTypes.object,
@@ -23,7 +20,6 @@ export class TaskListView extends React.Component {
   };
 
   static defaultProps = {
-    actions: {},
     tasks: [],
     errors: {},
     loaded: [],
@@ -43,7 +39,7 @@ export class TaskListView extends React.Component {
 
   render() {
     const { filter } = this.state;
-    const { actions, loaded, errors, navigateTo } = this.props;
+    const { loaded, errors, navigateTo } = this.props;
 
     if (!includes(loaded, "tasks")) {
       return (
@@ -59,7 +55,7 @@ export class TaskListView extends React.Component {
         <div className="jumbotron">
           <h1>You don't have any tasks!</h1>
           <p>Use the form below to get started and add your first task.</p>
-          <CreateTaskForm actions={actions} errors={errors} />
+          <CreateTaskForm errors={errors} />
         </div>
       );
     }
@@ -143,27 +139,18 @@ export class TaskListView extends React.Component {
         )}
 
         {tasks.map(task => (
-          <TaskItem
-            updateTask={this.props.actions.updateTask}
-            deleteTask={this.props.actions.deleteTask}
-            key={task.id}
-            actions={actions}
-            navigateTo={navigateTo}
-            task={task}
-          />
+          <TaskItem key={task.id} navigateTo={navigateTo} task={task} />
         ))}
 
         <br />
 
-        <CreateTaskForm actions={actions} errors={errors} />
+        <CreateTaskForm />
       </div>
     );
   }
 }
 
 export default connect(
-  state => state,
-  dispatch => ({
-    actions: bindActionCreators(actions, dispatch),
-  })
+  state => ({ loaded: state.loaded, tasks: state.tasks }),
+  {}
 )(TaskListView);

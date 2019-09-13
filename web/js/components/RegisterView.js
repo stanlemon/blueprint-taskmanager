@@ -170,12 +170,13 @@ export class RegisterView extends React.Component {
 
                     <br />
                     <div className="col-sm-6 col-sm-offset-3">
-                      <button
-                        type="submit"
+                      <a
+                        id="register-button"
+                        onClick={this.handleSubmit}
                         className="btn btn-primary btn-block"
                       >
                         Register
-                      </button>
+                      </a>
                     </div>
                   </form>
                 </div>
@@ -183,12 +184,9 @@ export class RegisterView extends React.Component {
             </div>
             <div style={{ minHeight: "2em" }} />
             <div className="text-center">
-              <button
-                className="btn btn-link"
-                onClick={this.handleClickToLogin}
-              >
+              <a className="btn btn-link" onClick={this.handleClickToLogin}>
                 Return to Login
-              </button>
+              </a>
             </div>
           </div>
         </div>

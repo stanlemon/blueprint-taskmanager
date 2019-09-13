@@ -192,7 +192,7 @@ describe("<RegisterView />", () => {
     );
 
     const button = view.findWhere(
-      n => n.type() === "button" && n.text() === "Return to Login"
+      n => n.type() === "a" && n.text() === "Return to Login"
     );
 
     button.simulate("click");

@@ -187,18 +187,20 @@ export default class TaskForm extends React.Component {
               </div>
             )}
             <div className="form-group">
-              <button name="saveTask" className="btn btn-primary col-sm-2">
+              <a
+                className="btn btn-primary col-sm-2 save-task"
+                onClick={this.handleSubmit}
+              >
                 Save
-              </button>
+              </a>
               {task.id && (
-                <button
+                <a
                   style={{ marginLeft: 20 }}
-                  name="saveTask"
-                  className="btn btn-secondary col-sm-2"
+                  className="btn btn-default col-sm-2 cancel-task"
                   onClick={this.cancelTask}
                 >
-                  Cancel
-                </button>
+                  Cancel!
+                </a>
               )}
             </div>
             <div className="clearfix" />

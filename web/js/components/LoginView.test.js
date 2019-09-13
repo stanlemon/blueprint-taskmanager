@@ -73,7 +73,7 @@ describe("<LoginView />", () => {
     );
 
     const button = view.findWhere(
-      n => n.type() === "button" && n.text() === "Create Account"
+      n => n.type() === "a" && n.text() === "Create Account"
     );
 
     button.simulate("click");

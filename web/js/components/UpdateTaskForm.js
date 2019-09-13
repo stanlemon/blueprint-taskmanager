@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import TaskForm from "./TaskForm";
+import { connect } from "react-redux";
+import { updateTask } from "../actions";
 
-export default class UpdateTaskForm extends React.Component {
+export class UpdateTaskForm extends React.Component {
   handleSave = data => {
-    this.props.actions.updateTask(data);
+    this.props.updateTask(data);
     this.props.navigateTo("/");
     return data;
   };
@@ -14,7 +16,6 @@ export default class UpdateTaskForm extends React.Component {
       <TaskForm
         className="task-update-form"
         navigateTo={this.props.navigateTo}
-        actions={this.props.actions}
         task={this.props.task}
         errors={this.props.errors}
         save={this.handleSave}
@@ -25,7 +26,12 @@ export default class UpdateTaskForm extends React.Component {
 
 UpdateTaskForm.propTypes = {
   navigateTo: PropTypes.func.isRequired,
-  actions: PropTypes.object.isRequired,
+  updateTask: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
   errors: PropTypes.object,
 };
+
+export default connect(
+  state => ({ errors: state.errors }),
+  { updateTask }
+)(UpdateTaskForm);

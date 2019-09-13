@@ -3,29 +3,22 @@ import isEmpty from "lodash/isEmpty";
 import format from "date-fns/format";
 import React from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router";
 import Error from "./Error";
 import UpdateTaskForm from "./UpdateTaskForm";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
 import { connect } from "react-redux";
-import * as actions from "../actions/";
-import { bindActionCreators } from "redux";
+import { getRouteParams } from "../lib/navigateTo";
+import { ROUTE_TASK_VIEW } from "./Routes";
 
-export function TaskView({
-  actions,
-  loaded,
-  tasks,
-  navigateTo,
-  errors,
-  match,
-}) {
+export function TaskView({ loaded, tasks, navigateTo }) {
   if (!includes(loaded, "tasks")) {
     return <div />;
   }
 
   const handleReturnToList = () => navigateTo("/");
 
-  const taskId = parseInt(match.params.id, 10);
+  const { id } = getRouteParams(ROUTE_TASK_VIEW);
+  const taskId = parseInt(id, 10);
 
   const task = Object.assign({}, tasks.filter(t => t.id === taskId)[0]);
 
@@ -33,21 +26,16 @@ export function TaskView({
     return (
       <div>
         <Error message="Task does not exist." />
-        <button className="btn btn-link" onClick={handleReturnToList}>
+        <a className="btn btn-link" onClick={handleReturnToList}>
           Go back to list
-        </button>
+        </a>
       </div>
     );
   }
 
   return (
     <div>
-      <UpdateTaskForm
-        task={task}
-        errors={errors}
-        navigateTo={navigateTo}
-        actions={actions}
-      />
+      <UpdateTaskForm task={task} navigateTo={navigateTo} />
 
       <p>
         <strong>Created: </strong>
@@ -62,24 +50,17 @@ export function TaskView({
 }
 
 TaskView.propTypes = {
-  actions: PropTypes.object.isRequired,
   navigateTo: PropTypes.func.isRequired,
-  match: PropTypes.object.isRequired,
   tasks: PropTypes.array.isRequired,
-  errors: PropTypes.object,
   loaded: PropTypes.array,
 };
 
 TaskView.defaultProps = {
-  actions: {},
-  errors: {},
   loaded: [],
   tasks: [],
 };
 
 export default connect(
-  state => state,
-  dispatch => ({
-    actions: bindActionCreators(actions, dispatch),
-  })
-)(withRouter(TaskView));
+  state => ({ loaded: state.loaded, tasks: state.tasks }),
+  {}
+)(TaskView);

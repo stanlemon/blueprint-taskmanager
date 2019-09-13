@@ -6,6 +6,7 @@ import UpdateTaskForm from "./UpdateTaskForm";
 import Error from "./Error";
 import { format, subDays } from "date-fns";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
+import { history } from "../lib/navigateTo";
 
 configure({ adapter: new Adapter() });
 
@@ -34,11 +35,12 @@ describe("<TaskView />", () => {
       },
     ];
 
+    history.replace("/view/2");
+
     const view = shallow(
       <TaskView
         loaded={["tasks"]}
         tasks={tasks}
-        match={{ params: { id: 2 } }}
         errors={{}}
         navigateTo={navigateTo}
         actions={{}}
@@ -92,11 +94,12 @@ describe("<TaskView />", () => {
 
     let destUrl;
 
+    history.replace("/view/3");
+
     const view = shallow(
       <TaskView
         loaded={["tasks"]}
         tasks={tasks}
-        match={{ params: { id: 3 } }}
         errors={{}}
         navigateTo={r => (destUrl = r)}
         actions={{}}
@@ -105,9 +108,9 @@ describe("<TaskView />", () => {
 
     expect(view.find(Error).length).toBe(1);
 
-    expect(view.find("button").length).toBe(1);
+    expect(view.find(".btn").length).toBe(1);
 
-    view.find("button").simulate("click");
+    view.find(".btn").simulate("click");
 
     expect(destUrl).toBe("/");
   });
@@ -117,7 +120,6 @@ describe("<TaskView />", () => {
       <TaskView
         loaded={[]}
         tasks={[]}
-        match={{ params: { id: 3 } }}
         errors={{}}
         navigateTo={navigateTo}
         actions={{}}
