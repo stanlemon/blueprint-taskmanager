@@ -2,7 +2,7 @@ import React from "react";
 import { shallow, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { SessionWatcher } from "./SessionWatcher";
-import { history } from "../lib/navigateTo";
+import { history } from "../lib/Navigation";
 import { ROUTE_LOGIN, ROUTE_ROOT } from "./Routes";
 
 configure({ adapter: new Adapter() });

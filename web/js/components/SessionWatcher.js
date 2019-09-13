@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { checkSession } from "../actions/";
-import { getCurrentPathname, navigateTo } from "../lib/navigateTo";
+import { getCurrentPathname, navigateTo } from "../lib/Navigation";
 
 export class SessionWatcher extends React.Component {
   interval;

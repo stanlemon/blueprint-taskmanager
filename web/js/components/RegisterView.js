@@ -5,7 +5,7 @@ import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { navigateTo } from "../lib/navigateTo";
+import { navigateTo } from "../lib/Navigation";
 import { registerUser } from "../actions/";
 
 export class RegisterView extends React.Component {

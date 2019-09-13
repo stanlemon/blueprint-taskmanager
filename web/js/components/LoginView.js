@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { login } from "../actions/";
-import { navigateTo } from "../lib/navigateTo";
+import { navigateTo } from "../lib/Navigation";
 import Error from "./Error";
 
 export class LoginView extends React.Component {

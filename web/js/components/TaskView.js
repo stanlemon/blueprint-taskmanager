@@ -7,7 +7,7 @@ import Error from "./Error";
 import UpdateTaskForm from "./UpdateTaskForm";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
 import { connect } from "react-redux";
-import { getRouteParams, navigateTo } from "../lib/navigateTo";
+import { getRouteParams, navigateTo } from "../lib/Navigation";
 import { ROUTE_TASK_VIEW } from "./Routes";
 
 export function TaskView({ loaded, tasks }) {

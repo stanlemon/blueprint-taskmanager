@@ -6,7 +6,7 @@ import isBefore from "date-fns/isBefore";
 import subDays from "date-fns/subDays";
 import { connect } from "react-redux";
 import { makeDateTime } from "../lib/Utils";
-import { navigateTo } from "../lib/navigateTo";
+import { navigateTo } from "../lib/Navigation";
 import { updateTask, deleteTask } from "../actions";
 
 export class TaskItem extends React.Component {

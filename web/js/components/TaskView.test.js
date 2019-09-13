@@ -6,7 +6,7 @@ import UpdateTaskForm from "./UpdateTaskForm";
 import Error from "./Error";
 import { format, subDays } from "date-fns";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
-import { history } from "../lib/navigateTo";
+import { history } from "../lib/Navigation";
 import { ROUTE_ROOT } from "./Routes";
 
 configure({ adapter: new Adapter() });

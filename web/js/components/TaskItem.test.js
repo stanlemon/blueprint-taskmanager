@@ -5,17 +5,17 @@ import isSameDay from "date-fns/isSameDay";
 import parseISO from "date-fns/parseISO";
 import Adapter from "enzyme-adapter-react-16";
 import { makeDateTime } from "../lib/Utils";
-import { history } from "../lib/navigateTo";
+import { history } from "../lib/Navigation";
 import React from "react";
 import { TaskItem } from "./TaskItem";
-import { makeRoute } from "../lib/navigateTo";
+import { makeRoute } from "../lib/Navigation";
 import { ROUTE_TASK_VIEW } from "./Routes";
 
 configure({ adapter: new Adapter() });
 
 describe("<TaskItem />", () => {
-  const updateTask = () => {};
-  const deleteTask = () => {};
+  const updateTask = () => { };
+  const deleteTask = () => { };
 
   it("should render the task name", () => {
     const task = {

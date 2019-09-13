@@ -5,7 +5,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import isEmpty from "lodash/isEmpty";
-import { navigateTo } from "../lib/navigateTo";
+import { navigateTo } from "../lib/Navigation";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
 
 export default class TaskForm extends React.Component {

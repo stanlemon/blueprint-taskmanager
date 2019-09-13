@@ -6,7 +6,7 @@ import LoginView from "./LoginView";
 import RegisterView from "./RegisterView";
 import TaskListView from "./TaskListView";
 import TaskView from "./TaskView";
-import { history } from "../lib/navigateTo";
+import { history } from "../lib/Navigation";
 
 // Routes should be declared here, then used in the <Route /> component.
 // This allows them to be referenced consistently from other places in code.

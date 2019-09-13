@@ -2,7 +2,7 @@ import includes from "lodash/includes";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { navigateTo } from "../lib/navigateTo";
+import { navigateTo } from "../lib/Navigation";
 import { logout, loadTasks } from "../actions/";
 
 export class Layout extends React.Component {

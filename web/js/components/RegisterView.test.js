@@ -2,14 +2,14 @@ import React from "react";
 import { mount, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { RegisterView } from "./RegisterView";
-import { history } from "../lib/navigateTo";
+import { history } from "../lib/Navigation";
 import { ROUTE_LOGIN } from "./Routes";
 
 configure({ adapter: new Adapter() });
 
 describe("<RegisterView />", () => {
   it("should render a register screen with empty fields", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(<RegisterView registerUser={() => { }} />);
 
     const name = view.find('input[name="name"]');
 
@@ -25,7 +25,7 @@ describe("<RegisterView />", () => {
   });
 
   it("should render errors when submitted with empty fields", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(<RegisterView registerUser={() => { }} />);
 
     view.find("form").simulate("submit");
 
@@ -40,7 +40,7 @@ describe("<RegisterView />", () => {
   });
 
   it("should render an error when an invalid email is entered", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(<RegisterView registerUser={() => { }} />);
 
     const name = view.find('input[name="name"]');
     name.simulate("change", {
@@ -68,7 +68,7 @@ describe("<RegisterView />", () => {
   });
 
   it("should render an error when a password is too short", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(<RegisterView registerUser={() => { }} />);
 
     const name = view.find('input[name="name"]');
     name.simulate("change", {
@@ -98,7 +98,7 @@ describe("<RegisterView />", () => {
   });
 
   it("should render an error when a password is too long", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(<RegisterView registerUser={() => { }} />);
 
     const name = view.find('input[name="name"]');
     name.simulate("change", {
@@ -173,7 +173,7 @@ describe("<RegisterView />", () => {
   });
 
   it("clicking the button to return to the login screen should trigger navigateTo", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(<RegisterView registerUser={() => { }} />);
 
     const button = view.findWhere(
       n => n.type() === "a" && n.text() === "Return to Login"
