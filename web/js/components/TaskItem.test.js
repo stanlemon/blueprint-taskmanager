@@ -14,8 +14,8 @@ import { ROUTE_TASK_VIEW } from "./Routes";
 configure({ adapter: new Adapter() });
 
 describe("<TaskItem />", () => {
-  const updateTask = () => { };
-  const deleteTask = () => { };
+  const updateTask = () => {};
+  const deleteTask = () => {};
 
   it("should render the task name", () => {
     const task = {

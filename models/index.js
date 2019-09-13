@@ -1,7 +1,6 @@
 /*eslint no-console: "off"*/
 const bcrypt = require("bcryptjs");
 const uuid = require("uuid");
-const fs = require("fs");
 const Sequelize = require("sequelize");
 
 module.exports = () => {
@@ -14,6 +13,10 @@ module.exports = () => {
     logging: () => null,
     // We don't use this, but it's deprecated and defaults on and I dislike warnings in my console.
     operatorsAliases: false,
+    define: {
+      underscored: true,
+      freezeTableName: true,
+    },
   });
 
   const User = sequelize.define("User", {
@@ -57,22 +60,6 @@ module.exports = () => {
         },
       },
     },
-    createdAt: {
-      type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW,
-      validate: {
-        notEmpty: true,
-        isDate: true,
-      },
-    },
-    updatedAt: {
-      type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW,
-      validate: {
-        notEmpty: true,
-        isDate: true,
-      },
-    },
     active: {
       type: Sequelize.BOOLEAN,
       defaultValue: true,
@@ -101,31 +88,48 @@ module.exports = () => {
     description: Sequelize.STRING,
     due: { type: Sequelize.DATE, defaultValue: null },
     completed: { type: Sequelize.DATE, defaultValue: null },
-    createdAt: {
-      type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW,
-    },
-    updatedAt: {
-      type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW,
-    },
   });
 
   Task.belongsTo(User, { as: "user" });
 
-  // Uncomment this to create a sqlite database file in dev mode
-  if (DATABASE_URL === DEV_DATABASE_URL && !fs.existsSync(DEV_DATABASE_PATH)) {
-    console.log(
-      "In DEV mode and a database file doesn't exist yet, so I'm creating one!"
-    );
-    sequelize.sync({ force: true });
-  }
+  const Tag = sequelize.define("Tag", {
+    name: {
+      type: Sequelize.STRING,
+      validate: {
+        notEmpty: {
+          msg: "You must enter a name for this tag.",
+        },
+      },
+    },
+  });
+
+  const TaskTag = sequelize.define(
+    "TasksTags",
+    {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+      },
+    },
+    {
+      timestamps: false,
+    }
+  );
+
+  Tag.belongsToMany(Task, {
+    through: TaskTag,
+  });
+
+  // Will add new tables if anything is missing
+  sequelize.sync();
 
   return {
     sequelize,
     models: {
       User,
       Task,
+      Tag,
+      TaskTag,
     },
   };
 };
