@@ -13,6 +13,7 @@ const session = require("client-sessions");
 const flash = require("connect-flash");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
+const isObject = require("lodash/isObject");
 const { Strategy: LocalStrategy } = require("passport-local");
 
 const db = require("./models")();
@@ -152,45 +153,69 @@ const apiAuth = (req, res, context) => {
   }
 };
 
-const userScrubber = (req, res, context) => {
-  // If there is a relationship to user, clear it out from the data we return in the api
-
-  if (!context.instance) {
-    return context.continue;
-  }
-
-  if (context.instance.dataValues) {
-    if (context.instance.dataValues.user) {
-      delete context.instance.dataValues.user;
-    }
-
-    if (context.instance.dataValues.userId) {
-      delete context.instance.dataValues.userId;
-    }
-
-    if (context.instance.dataValues.users) {
-      delete context.instance.dataValues.users;
-    }
-  }
-
-  if (Array.isArray(context.instance)) {
-    context.instance.forEach((v, i) => {
-      if (v.user) {
-        delete context.instance[i].dataValues.user;
-      }
-
-      if (v.userId) {
-        delete context.instance[i].dataValues.userId;
-      }
-
-      if (v.users) {
-        delete context.instance[i].dataValues.users;
-      }
-    });
-  }
-
+// Note that excludeAttributes does not work on FKs, which is why we do this the hard way
+const scrubUser = (req, res, context) => {
+  clearUser(context.instance);
   return context.continue;
 };
+
+function clearUser(obj) {
+  if (!isObject(obj)) {
+    return;
+  }
+
+  if (obj.userId !== undefined) {
+    delete obj.userId;
+  }
+
+  if (obj.user !== undefined) {
+    delete obj.user;
+  }
+
+  if (obj.users !== undefined) {
+    delete obj.users;
+  }
+
+  Object.keys(obj).forEach(k => {
+    // Don't bother checking internal sequelize properties
+    if (k.substring(0, 1) === "_") {
+      return;
+    }
+
+    // If it's a object, clear the user
+    if (isObject(obj[k]) && !Array.isArray(obj[k])) {
+      clearUser(obj[k]);
+    }
+
+    if (Array.isArray(obj[k])) {
+      obj[k].forEach(q => {
+        clearUser(q);
+      });
+    }
+  });
+}
+
+function setUserId(obj, userId) {
+  if (!isObject(obj)) {
+    return obj;
+  }
+
+  // Set the user id property
+  obj.userId = userId;
+
+  Object.keys(obj).forEach(k => {
+    // If it's a object, set the user id property
+    if (isObject(obj[k]) && !Array.isArray(obj[k])) {
+      obj[k] = setUserId(obj[k], userId);
+    }
+    // If it's an array of objects, set the user id property
+    if (Array.isArray(obj[k])) {
+      obj[k] = obj[k].map(v => setUserId(v, userId));
+    }
+  });
+
+  return obj;
+}
 
 const resources = {};
 
@@ -204,10 +229,19 @@ Object.keys(db.models).forEach(k => {
     // This will include all relationships out to the mapping tables
     include: [{ all: true }],
     associations: true,
+    sort: {
+      param: "orderBy",
+    },
   });
 
   // Require an authenticated user for all operations
   resources[k].all.auth(apiAuth);
+
+  resources[k].all.send((req, res, context) => {
+    console.log(res);
+    clearUser(context.instance);
+    return context.continue;
+  });
 
   // Restrict all read requests to the authenticated user
   resources[k].all.fetch.before((req, res, context) => {
@@ -217,14 +251,14 @@ Object.keys(db.models).forEach(k => {
 
   // Set the authenticated user on all write requests
   resources[k].create.write.before((req, res, context) => {
-    req.body.userId = req.user.id;
+    req.body = setUserId(req.body, req.user.id);
     return context.continue;
   });
 
   // Clean user out of data api requests
-  resources[k].all.data(userScrubber);
+  resources[k].all.data(scrubUser);
   // Clean user out of write api requests
-  resources[k].all.write.after(userScrubber);
+  resources[k].all.write.after(scrubUser);
 });
 
 resources.User = finale.resource({
