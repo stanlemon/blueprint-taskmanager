@@ -98,7 +98,7 @@ describe("<TaskForm />", () => {
       name: "Test Task",
       description: "A brief description",
       due: parseISO("2018-06-12T07:08"),
-      completed: parseISO("2017-06-12T07:08"),
+      completed: null, // Note that you can't set completion when creating
     };
 
     const view = mount(<TaskForm task={task} onSubmit={save} />);
@@ -117,12 +117,9 @@ describe("<TaskForm />", () => {
 
     const completed = view.find('input[name="completed"]');
 
-    expect(completed.props().checked).toEqual(true);
-
-    const completedLabel = view.find("label.task-completed");
-    expect(completedLabel.text()).toEqual(
-      "Completed on June 12th 2017, 7:08AM"
-    );
+    expect(completed.props().checked).toEqual(false);
+    //  Form state is tracked here
+    expect(view.state().data.completed).toEqual(null);
 
     // Update the task name
     const newName = "New Task Name";
@@ -136,30 +133,43 @@ describe("<TaskForm />", () => {
       target: { name: "description", value: newDescription },
     });
 
-    // Click the checkbox to toggle it
     completed.simulate("change", {
-      target: { type: "checkbox", name: "completed", checked: false },
+      target: { type: "checkbox", name: "completed", checked: true },
     });
 
     view.update();
 
-    expect(completed.props().checked).toEqual(true);
+    expect(view.state().data.completed).not.toEqual(null);
+    expect(isSameDay(new Date(), view.state().data.completed)).toBe(true);
+
+    // Find our node fresh, because
+    expect(view.find('input[name="completed"]').props().checked).toEqual(true);
 
     const form = view.find("form");
 
     form.simulate("submit");
 
     // When we submit we should have the original task, but with the new name and description fields
-    expect(lastSavedTask).toEqual({
+    expect(lastSavedTask).toMatchObject({
       id: task.id,
       name: newName,
       description: newDescription,
       due: task.due, // field is unchanged
-      completed: null,
+      // Leave out completed, we'll check it next
     });
+
+    expect(isSameDay(new Date(), lastSavedTask.completed)).toBe(true);
+
+    const completedLabel = view.find("label.task-completed");
+
+    expect(
+      completedLabel
+        .text()
+        .includes("Completed on " + format(Date.now(), "MMMM do yyyy"))
+    ).toBe(true);
   });
 
-  it("clicking  on due opens a pop up", () => {
+  it("clicking on due opens a pop up", () => {
     const save = r => r;
 
     const view = mount(<TaskForm onSubmit={save} />);
