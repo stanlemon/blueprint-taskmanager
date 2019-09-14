@@ -10,15 +10,15 @@ module.exports = () => {
   const DATABASE_URL = process.env.DATABASE_URL || DEV_DATABASE_URL;
 
   const sequelize = new Sequelize(DATABASE_URL, {
-    logging: () => null,
     // We don't use this, but it's deprecated and defaults on and I dislike warnings in my console.
-    operatorsAliases: false,
     define: {
       underscored: true,
+      // Prevents sequelize from changing the table names defined
+      freezeTableName: true,
     },
   });
 
-  const User = sequelize.define("User", {
+  const User = sequelize.define("users", {
     name: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -75,7 +75,7 @@ module.exports = () => {
     return Promise.resolve(user);
   });
 
-  const Task = sequelize.define("Task", {
+  const Task = sequelize.define("tasks", {
     name: {
       type: Sequelize.STRING,
       validate: {
@@ -91,21 +91,34 @@ module.exports = () => {
 
   Task.belongsTo(User, { as: "user" });
 
-  const Tag = sequelize.define("Tag", {
-    name: {
-      type: Sequelize.STRING,
-      validate: {
-        notEmpty: {
-          msg: "You must enter a name for this tag.",
+  const Tag = sequelize.define(
+    "tags",
+    {
+      name: {
+        type: Sequelize.STRING,
+        // Avoid duplicate tag names
+        validate: {
+          notEmpty: {
+            msg: "You must enter a name for this tag.",
+          },
         },
       },
     },
-  });
+    {
+      indexes: [
+        {
+          unique: true,
+          // Tags are unique per user
+          fields: ["user_id", "name"],
+        },
+      ],
+    }
+  );
 
   Tag.belongsTo(User, { as: "user" });
 
   const TaskTag = sequelize.define(
-    "TasksTags",
+    "task_tags",
     {
       id: {
         type: Sequelize.INTEGER,
@@ -119,8 +132,12 @@ module.exports = () => {
 
   Tag.belongsToMany(Task, {
     through: TaskTag,
-    foreignKey: "taskId",
-    otherKey: "tagId",
+    foreignKey: "task_id",
+  });
+
+  Task.belongsToMany(Tag, {
+    through: TaskTag,
+    foreignKey: "tag_id",
   });
 
   // Will add new tables if anything is missing

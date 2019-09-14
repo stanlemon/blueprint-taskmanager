@@ -152,36 +152,84 @@ const apiAuth = (req, res, context) => {
   }
 };
 
+const userScrubber = (req, res, context) => {
+  // If there is a relationship to user, clear it out from the data we return in the api
+
+  if (!context.instance) {
+    return context.continue;
+  }
+
+  if (context.instance.dataValues) {
+    if (context.instance.dataValues.user) {
+      delete context.instance.dataValues.user;
+    }
+
+    if (context.instance.dataValues.userId) {
+      delete context.instance.dataValues.userId;
+    }
+
+    if (context.instance.dataValues.users) {
+      delete context.instance.dataValues.users;
+    }
+  }
+
+  if (Array.isArray(context.instance)) {
+    context.instance.forEach((v, i) => {
+      if (v.user) {
+        delete context.instance[i].dataValues.user;
+      }
+
+      if (v.userId) {
+        delete context.instance[i].dataValues.userId;
+      }
+
+      if (v.users) {
+        delete context.instance[i].dataValues.users;
+      }
+    });
+  }
+
+  return context.continue;
+};
+
 const resources = {};
 
 Object.keys(db.models).forEach(k => {
+  // For security reasons, user is treated separately
   if (k === "User") {
     return;
   }
   resources[k] = finale.resource({
     model: db.models[k],
+    // This will include all relationships out to the mapping tables
+    include: [{ all: true }],
+    associations: true,
   });
 
   // Require an authenticated user for all operations
   resources[k].all.auth(apiAuth);
 
-  // Restrict all fetch requests to the authenticated user
-  resources[k].all.fetch_before((req, res, context) => {
-    req.query.userId = req.user.id;
+  // Restrict all read requests to the authenticated user
+  resources[k].all.fetch.before((req, res, context) => {
+    context.criteria.userId = req.user.id;
     return context.continue;
   });
 
-  // Set the authenticated user on all writes
+  // Set the authenticated user on all write requests
   resources[k].create.write.before((req, res, context) => {
     req.body.userId = req.user.id;
     return context.continue;
   });
+
+  // Clean user out of data api requests
+  resources[k].all.data(userScrubber);
+  // Clean user out of write api requests
+  resources[k].all.write.after(userScrubber);
 });
 
 resources.User = finale.resource({
   actions: ["create"],
   model: db.models.User,
-  endpoints: ["/users"],
 });
 
 // Auto login a user after they register
@@ -202,7 +250,7 @@ if (ENV === DEV) {
   const file = path.join(__dirname, "web", "index.html");
 
   const options = {
-    cache: false,
+    //cache: false,
     hmr: true,
     production: false,
   };
