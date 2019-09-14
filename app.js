@@ -237,12 +237,6 @@ Object.keys(db.models).forEach(k => {
   // Require an authenticated user for all operations
   resources[k].all.auth(apiAuth);
 
-  resources[k].all.send((req, res, context) => {
-    console.log(res);
-    clearUser(context.instance);
-    return context.continue;
-  });
-
   // Restrict all read requests to the authenticated user
   resources[k].all.fetch.before((req, res, context) => {
     context.criteria.userId = req.user.id;
