@@ -2,7 +2,6 @@
 const bcrypt = require("bcryptjs");
 const uuid = require("uuid");
 const Sequelize = require("sequelize");
-const forEach = require("lodash/forEach");
 const isEqual = require("lodash/isEqual");
 
 module.exports = () => {
