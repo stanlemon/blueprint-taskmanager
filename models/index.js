@@ -2,6 +2,8 @@
 const bcrypt = require("bcryptjs");
 const uuid = require("uuid");
 const Sequelize = require("sequelize");
+const forEach = require("lodash/forEach");
+const isEqual = require("lodash/isEqual");
 
 module.exports = () => {
   const DEV_DATABASE_PATH = "database.sqlite";
@@ -15,6 +17,52 @@ module.exports = () => {
       underscored: true,
       // Prevents sequelize from changing the table names defined
       freezeTableName: true,
+      hooks: {
+        // Handle flipping associated rows to be updated
+        beforeValidate: obj => {
+          // Look up the definition of the object
+          const modelDef = sequelize.model(obj.constructor.tableName);
+
+          // Pull the associations and get just their  names
+          const modelAssociations = Object.keys(modelDef.associations);
+
+          // We'll check each association now
+          modelAssociations.forEach(modelAssociation => {
+            // There is none on this object, so there's nothing to manipulate
+            if (obj[modelAssociation] == undefined) {
+              return;
+            }
+
+            // Look up the definition of the associated object
+            const assocModel = sequelize.model(modelAssociation);
+            // Pull the field names that are its primary keys
+            const primaryKeys = Object.keys(assocModel.primaryKeys);
+
+            // If the association is not an array skip over it, for now
+            // TODO: Support direct one to one relationships
+            if (!Array.isArray(obj[modelAssociation])) {
+              return;
+            }
+
+            // For each associated row
+            obj[modelAssociation].forEach(association => {
+              const foundPks = [];
+
+              // Track the PKs in this particular row
+              primaryKeys.forEach(pk => {
+                if (association[pk] !== undefined && association[pk] !== null) {
+                  foundPks.push(pk);
+                }
+              });
+
+              // If all the pk's on this row match the pk's for this association we're good to treat this like an update
+              if (isEqual(primaryKeys, foundPks)) {
+                association.isNewRecord = false;
+              }
+            });
+          });
+        }, // End beforeValidate
+      },
     },
   });
 
