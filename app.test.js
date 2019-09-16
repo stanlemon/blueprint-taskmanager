@@ -6,10 +6,9 @@ const fs = require("fs");
 const puppeteer = require("puppeteer");
 const waitForExpect = require("wait-for-expect");
 
-const databaseFile = "test-database-" + new Date().getTime() + ".sqlite";
-
 process.env.PORT = "19292";
-process.env.DATABASE_URL = "sqlite://" + databaseFile;
+process.env.DATABASE_NAME = "test-database-" + new Date().getTime() + ".sqlite";
+process.env.DATABASE_URL = "sqlite://" + process.env.DATABASE_NAME;
 
 const { server, db } = require("./app.js");
 
@@ -143,7 +142,7 @@ test("end to end", async done => {
   await browser.close();
 
   console.log("Cleanup database");
-  fs.unlinkSync("./" + databaseFile);
+  fs.unlinkSync("./" + process.env.DATABASE_NAME);
 
   console.log("Kill server");
   server.kill(() => {

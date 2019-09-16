@@ -6,12 +6,17 @@ const camelCase = require("lodash/camelCase");
 const mapKeys = require("lodash/mapKeys");
 const format = require("date-fns/format");
 
-const config = process.env.DATABASE_URL
-  ? { client: "pg", connection: process.env.DATABASE_URL }
-  : {
-      client: "sqlite3",
-      connection: { filename: "./database.sqlite" },
-    };
+if (!process.env.DATABASE_NAME) {
+  process.env.DATABASE_NAME = "database.sqlite";
+}
+
+const config =
+  process.env.NODE_ENV == "production"
+    ? { client: "pg", connection: process.env.DATABASE_URL }
+    : {
+        client: "sqlite3",
+        connection: { filename: process.env.DATABASE_NAME },
+      };
 
 const knex = require("knex")(config);
 
