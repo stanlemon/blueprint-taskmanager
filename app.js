@@ -120,6 +120,37 @@ app.get("/auth/session", (req, res) => {
   }
 });
 
+function api2Auth(req, res, next) {
+  // We optionally let a bearer token be passed in, and we'll log the user in using that'
+  if (req.headers && req.headers.authorization) {
+    const parts = req.headers.authorization.split(" ");
+
+    if (parts.length === 2) {
+      const scheme = parts[0];
+      const token = parts[1];
+
+      if (/^Bearer$/i.test(scheme)) {
+        db.models.User.findOne({ where: { token } }).then(user => {
+          if (user) {
+            req.login(user, () => next());
+          } else {
+            res.status(401).send({ message: "Unauthorized" });
+          }
+        });
+      }
+    }
+  } else if (req.isAuthenticated()) {
+    next();
+  } else {
+    res
+      .status(403)
+      .send({ error: "You must be logged in to access this resource." });
+  }
+}
+
+app.use("/api2", api2Auth);
+app.use("/api2", require("./src/routes/api"));
+
 finale.initialize({
   base: "/api",
   app,
