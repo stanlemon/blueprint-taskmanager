@@ -10,7 +10,7 @@ configure({ adapter: new Adapter() });
 
 describe("<LoginView />", () => {
   it("should render a login screen with empty fields", () => {
-    const view = mount(<LoginView login={() => { }} />);
+    const view = mount(<LoginView login={() => {}} />);
 
     const username = view.find('input[name="username"]');
 
@@ -22,7 +22,7 @@ describe("<LoginView />", () => {
   });
 
   it("should error when fields are submitted blank", () => {
-    const view = mount(<LoginView login={() => { }} />);
+    const view = mount(<LoginView login={() => {}} />);
 
     view.find("form").simulate("submit");
 
@@ -66,7 +66,7 @@ describe("<LoginView />", () => {
   });
 
   it("clicking the button to go to the register screen should trigger navigateTo", () => {
-    const view = mount(<LoginView login={() => { }} />);
+    const view = mount(<LoginView login={() => {}} />);
 
     const button = view.findWhere(
       n => n.type() === "a" && n.text() === "Create Account"
@@ -79,7 +79,7 @@ describe("<LoginView />", () => {
 
   it("errors from actions render", () => {
     const view = mount(
-      <LoginView login={() => { }} errors={{ main: "Error message" }} />
+      <LoginView login={() => {}} errors={{ main: "Error message" }} />
     );
 
     expect(view.find(Error).length).toBe(1);
