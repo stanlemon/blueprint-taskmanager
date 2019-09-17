@@ -6,10 +6,9 @@ const fs = require("fs");
 const puppeteer = require("puppeteer");
 const waitForExpect = require("wait-for-expect");
 const setupSchema = require("./src/db/tables");
+const config = require("./knexfile")[process.env.NODE_ENV];
 
 process.env.PORT = "19292";
-process.env.DATABASE_NAME = "test-database-" + new Date().getTime() + ".sqlite";
-process.env.DATABASE_URL = "sqlite://" + process.env.DATABASE_NAME;
 
 // Require this after we change the env variables so they 'take';
 const connection = require("./src/connection");
@@ -146,7 +145,7 @@ test("end to end", async done => {
   await browser.close();
 
   console.log("Cleanup database");
-  fs.unlinkSync("./" + process.env.DATABASE_NAME);
+  fs.unlinkSync(config.connection.filename);
 
   console.log("Kill server");
   server.kill(() => {

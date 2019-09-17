@@ -1,15 +1,18 @@
-if (!process.env.DATABASE_NAME) {
-  process.env.DATABASE_NAME = "database.sqlite";
-}
-
 module.exports = {
   development: {
     client: "sqlite3",
     connection: {
-      filename: "./" + process.env.DATABASE_NAME,
+      filename: "./database.sqlite",
     },
     migrations: {
       tableName: "knex_migrations",
+    },
+  },
+
+  test: {
+    client: "sqlite3",
+    connection: {
+      filename: "test-database-" + new Date().getTime() + ".sqlite",
     },
   },
 
