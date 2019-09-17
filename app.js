@@ -10,7 +10,13 @@ const morgan = require("morgan");
 const session = require("client-sessions");
 
 const DEV = "development";
-const ENV = process.env.NODE_ENV || DEV;
+
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = DEV;
+}
+
+const ENV = process.env.NODE_ENV;
+
 const PORT = process.env.PORT || 3000;
 
 const logger = morgan("combined");

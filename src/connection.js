@@ -2,17 +2,8 @@ if (!process.env.DATABASE_NAME) {
   process.env.DATABASE_NAME = "database.sqlite";
 }
 
-const config =
-  process.env.NODE_ENV == "production"
-    ? { client: "pg", connection: process.env.DATABASE_URL }
-    : {
-        //debug: true,
-        client: "sqlite3",
-        connection: {
-          filename: __dirname + "/../" + process.env.DATABASE_NAME,
-        },
-      };
+const config = require("../knexfile");
 
-const knex = require("knex")(config);
+const knex = require("knex")(config[process.env.NODE_ENV]);
 
 module.exports = knex;
