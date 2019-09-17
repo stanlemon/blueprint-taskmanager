@@ -1,19 +1,4 @@
 {
-    "presets": [
-        "@babel/preset-react",
-        [
-            "@babel/preset-env", {
-                "useBuiltIns": "usage",
-                "corejs": 3,
-                "targets": {
-                    "node": "current", 
-                    "edge": "16",
-                    "firefox": "59",
-                    "safari": "11", 
-                    "ios": "11"
-                }
-            }
-        ]
-    ],
-    "plugins": ["@babel/plugin-proposal-class-properties", "react-hot-loader/babel"]
+  "presets": ["@babel/preset-react", "@babel/preset-env"],
+  "plugins": ["@babel/plugin-proposal-class-properties", "react-hot-loader/babel"]
 }

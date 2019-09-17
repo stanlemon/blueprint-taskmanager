@@ -74,9 +74,7 @@ export class LoginView extends React.Component {
       // These errors came from the component's validation that occurred on a submit
       ...this.state.errors,
       // Errors are a map keyed to an array here, but we only want the first message off of the main key
-      ...(isEmpty(this.props.errors)
-        ? {}
-        : { main: this.props.errors.main[0] }),
+      ...this.props.errors,
     };
 
     const { username, password } = this.state.data;
@@ -178,7 +176,7 @@ export class LoginView extends React.Component {
 LoginView.propTypes = {
   login: PropTypes.func.isRequired,
   errors: PropTypes.shape({
-    main: PropTypes.arrayOf(PropTypes.string),
+    main: PropTypes.string,
   }),
 };
 

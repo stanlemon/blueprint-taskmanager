@@ -22,7 +22,7 @@ export default class TaskForm extends React.Component {
     task: {
       name: "",
       description: "",
-      completed: false,
+      completed: null,
       due: null,
     },
   };
@@ -38,10 +38,10 @@ export default class TaskForm extends React.Component {
       completed: this.props.task.completed || null,
       due: this.props.task.due || null,
     },
-    errors: this.props.errors,
+    errors: {},
   };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
 
     const errors = {};
@@ -58,9 +58,8 @@ export default class TaskForm extends React.Component {
       return;
     }
 
-    const result = this.props.onSubmit(this.state.data);
+    const result = await this.props.onSubmit(this.state.data);
 
-    // TODO: Should this check to see if anything was returned before resetting 'data'?
     this.setState({ errors: {}, data: result });
   };
 
@@ -103,7 +102,7 @@ export default class TaskForm extends React.Component {
 
   render() {
     const task = this.state.data;
-    const errors = this.state.errors;
+    const errors = Object.assign({}, this.state.errors, this.props.errors);
 
     const classes = classNames("task-form", {
       [this.props.className]: !isEmpty(this.props.className),

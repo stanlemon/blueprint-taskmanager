@@ -6,10 +6,14 @@ import { navigateTo } from "../lib/Navigation";
 import { updateTask } from "../actions";
 
 export class UpdateTaskForm extends React.Component {
-  handleSave = data => {
-    this.props.updateTask(data);
+  handleSave = async data => {
+    const response = await this.props.updateTask(data);
+
+    if (response.errors) {
+      return data;
+    }
+
     navigateTo("/");
-    return data;
   };
 
   render() {

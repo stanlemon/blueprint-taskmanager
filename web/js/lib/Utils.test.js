@@ -1,7 +1,7 @@
 import addDays from "date-fns/addDays";
 import subDays from "date-fns/subDays";
 import shuffle from "lodash/shuffle";
-import { makeDateTime, mapErrors, sortTasksByDate } from "./Utils";
+import { makeDateTime, sortTasksByDate } from "./Utils";
 
 describe("Utils", () => {
   it("makeDateTime formats mysql friendly dates", () => {
@@ -20,41 +20,6 @@ describe("Utils", () => {
     expect(
       makeDateTime(new Date("June 2, 2014 11:30:00")).substring(0, 23)
     ).toEqual("2014-06-02 11:30:00.000");
-  });
-
-  it("mapErrors restructures validation errors by field name", () => {
-    const input = [
-      {
-        field: "name",
-        message: "You must enter a name.",
-      },
-      {
-        field: "email",
-        message: "You must enter a valid email address",
-      },
-    ];
-
-    const output = mapErrors(input);
-
-    expect(output).toEqual({
-      email: [input[1].message],
-      name: [input[0].message],
-    });
-  });
-
-  it("mapErrors restructures validation errors not keyed by field", () => {
-    const input = ["User already exists"];
-
-    const output = mapErrors(input);
-
-    expect(output).toEqual({
-      main: [input[0]],
-    });
-  });
-
-  it("mapErrors with no input does not break", () => {
-    const output = mapErrors();
-    expect(output).toEqual({});
   });
 
   // The goal of this method is to ensure tasks are sorted properly

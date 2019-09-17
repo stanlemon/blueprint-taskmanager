@@ -51,7 +51,7 @@ export function user(state, action) {
     case UNAUTHENTICATED_USER:
       return null;
     case AUTHENTICATED_USER:
-      return Object.assign(action.user);
+      return Object.assign({}, action.user);
     default:
       return state;
   }
@@ -90,10 +90,11 @@ export default function(
   state = { user: null, tasks: [], loaded: [], errors: [] },
   action
 ) {
-  return {
+  const y = {
     user: user(state.user, action),
     tasks: tasks(state.tasks, action),
     loaded: loaded(state.loaded, action),
     errors: errors(state.errors, action),
   };
+  return y;
 }

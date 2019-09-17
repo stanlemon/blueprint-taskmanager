@@ -15,14 +15,22 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "lint": "eslint --ext .jsx --ext .js app.js models/* web/js/**",
-    "prettier": "prettier --write \"{app.js,models/*.js,web/**/*.js,web/**/*.less}\"",
+    "lint": "eslint --ext .jsx --ext .js app.js src/** web/js/**",
+    "prettier": "prettier --write \"{app.js,src/**/*.js,web/**/*.js,web/**/*.less}\"",
     "build": "NODE_ENV=production parcel build web/index.html",
     "test": "NODE_ENV=test jest --coverage --testRegex web/js/.*\\.test.js$",
     "test-watch": "NODE_ENV=test jest --watchAll  --testRegex web/js/.*\\.test.js$",
     "test-e2e": "NODE_ENV=test jest ./app.test.js -t 'end to end' --detectOpenHandles",
     "test-all": "NODE_ENV=test jest  --detectOpenHandles --coverage --testRegex .*\\.test.js$"
   },
+  "browserslist": [
+    "Firefox > 59",
+    "Safari > 11",
+    "iOS > 11",
+    "Chrome > 55",
+    "node > 10",
+    "Edge > 16"
+  ],
   "jest": {
     "verbose": true,
     "automock": false,
@@ -41,6 +49,7 @@
     ]
   },
   "dependencies": {
+    "@hapi/joi": "^16.0.1",
     "@hot-loader/react-dom": "^16.9.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -49,11 +58,8 @@
     "classnames": "^2.2.6",
     "client-sessions": "^0.8.0",
     "compression": "^1.7.4",
-    "connect-flash": "^0.1.1",
-    "core-js": "^3.2.1",
     "date-fns": "^2.2.1",
     "express": "^4.17.1",
-    "finale-rest": "^1.0.7",
     "font-awesome": "^4.7.0",
     "helmet": "^3.21.0",
     "history": "^4.10.1",
@@ -74,7 +80,6 @@
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
-    "sequelize": "^5.18.4",
     "serve-static": "^1.14.1",
     "uuid": "^3.3.3",
     "validator": "^11.1.0",

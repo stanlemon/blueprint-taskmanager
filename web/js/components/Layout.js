@@ -2,11 +2,16 @@ import includes from "lodash/includes";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { navigateTo } from "../lib/Navigation";
-import { logout, loadTasks } from "../actions/";
+import { navigateTo, history } from "../lib/Navigation";
+import { logout, loadTasks, clearErrors } from "../actions/";
 
 export class Layout extends React.Component {
   componentDidMount() {
+    // When the route changes, clear our errors
+    history.listen(() => {
+      this.props.clearErrors();
+    });
+
     this.props.loadTasks();
   }
 
@@ -61,10 +66,11 @@ Layout.propTypes = {
   children: PropTypes.node.isRequired,
   logout: PropTypes.func.isRequired,
   loadTasks: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   loaded: PropTypes.array,
 };
 
 export default connect(
   state => ({ loaded: state.loaded }),
-  { logout, loadTasks }
+  { logout, loadTasks, clearErrors }
 )(Layout);

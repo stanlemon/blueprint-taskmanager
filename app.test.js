@@ -5,12 +5,16 @@
 const fs = require("fs");
 const puppeteer = require("puppeteer");
 const waitForExpect = require("wait-for-expect");
+const setupSchema = require("./src/db/tables");
 
 process.env.PORT = "19292";
 process.env.DATABASE_NAME = "test-database-" + new Date().getTime() + ".sqlite";
 process.env.DATABASE_URL = "sqlite://" + process.env.DATABASE_NAME;
 
-const { server, db } = require("./app.js");
+// Require this after we change the env variables so they 'take';
+const connection = require("./src/connection");
+
+const { server } = require("./app.js");
 
 // Make sure the jumbotron has our text
 async function waitForTextInSelector(page, selector, text) {
@@ -24,7 +28,7 @@ async function waitForTextInSelector(page, selector, text) {
 }
 
 test("end to end", async done => {
-  db.sequelize.sync({ force: true });
+  await setupSchema(connection);
 
   waitForExpect(() => {
     expect(server.listening).toEqual(true);

@@ -14,6 +14,6 @@ export default class UserService extends RestService {
   }
 
   register(user) {
-    return this.fetch("/api/users", "post", user);
+    return this.fetch("/auth/register", "post", user);
   }
 }
