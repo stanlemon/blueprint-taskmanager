@@ -1,9 +1,9 @@
 import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
+import loadable from "@loadable/component";
 import SessionWatcher from "./SessionWatcher";
 import Layout from "./Layout";
 import LoginView from "./LoginView";
-import RegisterView from "./RegisterView";
 import TaskListView from "./TaskListView";
 import TaskView from "./TaskView";
 import { history } from "../lib/Navigation";
@@ -15,6 +15,8 @@ export const ROUTE_LOGIN = "/login";
 export const ROUTE_REGISTER = "/register";
 export const ROUTE_ROOT = "/";
 export const ROUTE_TASK_VIEW = "/view/:id";
+
+const RegisterView = loadable(() => import("./RegisterView"));
 
 export default class Routes extends React.Component {
   render() {
