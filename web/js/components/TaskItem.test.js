@@ -73,7 +73,7 @@ describe("<TaskItem />", () => {
       id: 1,
       name: "Foobar",
       completed: null,
-      due: addDays(Date.now(), 2),
+      due: addDays(Date.now(), 1),
     };
     const wrapper = shallow(
       <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />

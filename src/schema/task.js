@@ -1,6 +1,10 @@
 const Joi = require("@hapi/joi");
 
 const schema = Joi.object().keys({
+  id: Joi.number()
+    .allow(null)
+    .optional()
+    .label("Task id"),
   name: Joi.string()
     .required()
     .label("Task name"),

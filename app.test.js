@@ -5,7 +5,6 @@
 const fs = require("fs");
 const puppeteer = require("puppeteer");
 const waitForExpect = require("wait-for-expect");
-const setupSchema = require("./src/db/tables");
 const config = require("./knexfile")[process.env.NODE_ENV];
 
 process.env.PORT = "19292";
@@ -27,8 +26,6 @@ async function waitForTextInSelector(page, selector, text) {
 }
 
 test("end to end", async done => {
-  await setupSchema(connection);
-
   waitForExpect(() => {
     expect(server.listening).toEqual(true);
   });

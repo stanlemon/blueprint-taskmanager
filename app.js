@@ -7,6 +7,7 @@ const serveStatic = require("serve-static");
 const bodyParser = require("body-parser");
 const compression = require("compression");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 const session = require("client-sessions");
 
 const DEV = "development";
@@ -24,6 +25,7 @@ const app = express();
 
 app.use(logger);
 app.use(compression());
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

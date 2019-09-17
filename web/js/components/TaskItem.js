@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import isAfter from "date-fns/isAfter";
 import isBefore from "date-fns/isBefore";
-import subDays from "date-fns/subDays";
+import addDays from "date-fns/addDays";
 import { connect } from "react-redux";
 import { makeDateTime } from "../lib/Utils";
 import { navigateTo } from "../lib/Navigation";
@@ -41,10 +41,13 @@ export class TaskItem extends React.Component {
       "bg-warning task-due-soon":
         task.due &&
         !task.completed &&
-        isAfter(task.due, subDays(new Date(), 2)),
+        // Is after now
+        isAfter(task.due, Date.now()) &&
+        // Is before 2 days from now
+        isBefore(task.due, addDays(Date.now(), 2)),
       // Tasks that are are over due
       "bg-danger task-overdue":
-        task.due && !task.completed && isBefore(task.due, new Date()),
+        task.due && !task.completed && isBefore(task.due, Date.now()),
       "task-completed": task.completed ? true : false,
     });
 
