@@ -4,15 +4,17 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const isEmpty = require("lodash/isEmpty");
 const format = require("date-fns/format");
+const addMinutes = require("date-fns/addMinutes");
 const passport = require("passport");
 const { Strategy: LocalStrategy } = require("passport-local");
-const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
+const { Strategy: JwtStrategy } = require("passport-jwt");
 const knex = require("../../connection");
 const asyncHandler = require("../../helpers/asyncHandler");
-const { convertCamelCase, convertSnakeCase } = require("../../helpers");
+
+const JWT_EXPIRES_IN_MIN = 10;
 
 if (process.env.JWT_SECRET === undefined) {
-  console.warn("JWT secret has not been set, defaulting to insecure one");
+  console.warn("Jwt secret has not been set!");
   process.env.JWT_SECRET = "dyKSdvTaXRS3KWbgMBDz9QlOwZZC3BlH";
 }
 
@@ -23,15 +25,22 @@ async function getUserById(id) {
     .first();
 }
 
+function cookieExtractor(req) {
+  if (req && req.signedCookies && req.signedCookies.jwt) {
+    return req.signedCookies.jwt;
+  }
+  return null;
+}
+
 passport.use(
   "jwt",
   new JwtStrategy(
     {
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: cookieExtractor,
       secretOrKey: process.env.JWT_SECRET,
-      issuer: "blueprint",
+      // NOTE: Setting options like 'issuer' here must also be set when the token is signed below
       jsonWebTokenOptions: {
-        expiresIn: "10m", // Every 10 minutes this token will need to be refreshed
+        expiresIn: JWT_EXPIRES_IN_MIN + "m", // Every 10 minutes this token will need to be refreshed
       },
     },
     (payload, done) => {
@@ -81,32 +90,49 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-router.post("/auth/login", passport.authenticate("local"), (req, res) => {
+function generateJwtCookie(user, res) {
+  const token = jwt.sign(user, process.env.JWT_SECRET);
+
+  res.cookie("jwt", token, {
+    // Options set here must also be set in the strategy
+    expires: addMinutes(Date.now(), JWT_EXPIRES_IN_MIN),
+    httpOnly: true,
+    signed: true,
+  });
+}
+
+router.post("/auth/login", passport.authenticate(["local"]), (req, res) => {
+  // Cookie must be set here so that the redirect works
+  generateJwtCookie(req.user, res);
   res.redirect("/auth/session");
 });
 
 router.get("/auth/logout", (req, res) => {
+  res.clearCookie("jwt");
   req.logout();
   res.redirect("/auth/session");
 });
 
-router.get("/auth/session", (req, res) => {
-  if (req.isAuthenticated()) {
-    const token = jwt.sign(req.user, process.env.JWT_SECRET);
+router.get(
+  "/auth/session",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    if (req.isAuthenticated()) {
+      generateJwtCookie(req.user, res);
 
-    res.status(200).json({
-      user: {
-        id: req.user.id,
-        createdAt: req.user.createdAt,
-      },
-      token,
-    });
-  } else {
-    res.status(401).json({
-      user: false,
-    });
+      res.status(200).json({
+        user: {
+          id: req.user.id,
+          createdAt: req.user.createdAt,
+        },
+      });
+    } else {
+      res.status(401).json({
+        user: false,
+      });
+    }
   }
-});
+);
 
 router.post(
   "/auth/register",
@@ -114,10 +140,10 @@ router.post(
     const user = req.body;
 
     user.password = bcrypt.hashSync(user.password, 10);
-    user.createdAt = format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
-    user.updatedAt = user.createdAt;
+    user.created_at = format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
+    user.updated_at = user.created_at;
 
-    const [id] = await knex("users").insert(convertSnakeCase(user));
+    const [id] = await knex("users").insert(user);
 
     const data = await knex("users")
       .select()
@@ -128,23 +154,10 @@ router.post(
       res.status(500).json({ message: "An error has occurred" });
     }
 
-    req.login(data, err => {
-      if (err) {
-        // TODO: Render errors to the API output
-        console.error(err);
-        res
-          .status(500)
-          .json({ error: "An error has occurred while registering." });
-      }
+    generateJwtCookie(data, res);
 
-      res.status(200).json(convertCamelCase(data));
-    });
+    res.redirect("/auth/session");
   })
 );
 
-module.exports = [
-  passport.initialize(),
-  // Default strategy for now is both jwt & session, note I think that passing jwt this way will enable a session
-  passport.authenticate(["jwt", "session"]),
-  router,
-];
+module.exports = [passport.initialize(), router];

@@ -4,6 +4,7 @@ module.exports = {
     connection: {
       filename: "./database.sqlite",
     },
+    useNullAsDefault: true,
     migrations: {
       directory: __dirname + "/src/db/migrations",
       tableName: "knex_migrations",
@@ -15,6 +16,7 @@ module.exports = {
     connection: {
       filename: "test-database-" + new Date().getTime() + ".sqlite",
     },
+    useNullAsDefault: true,
     migrations: {
       directory: __dirname + "/src/db/migrations",
       tableName: "knex_migrations",

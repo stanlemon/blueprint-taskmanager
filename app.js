@@ -7,13 +7,18 @@ const serveStatic = require("serve-static");
 const bodyParser = require("body-parser");
 const compression = require("compression");
 const morgan = require("morgan");
+const passport = require("passport");
 const cookieParser = require("cookie-parser");
-const session = require("client-sessions");
 
 const DEV = "development";
 
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = DEV;
+}
+
+if (!process.env.COOKIE_SECRET) {
+  console.warn("Cookie secret has not been set!");
+  process.env.COOKIE_SECRET = "process.env.COOKIE_SECRET";
 }
 
 const ENV = process.env.NODE_ENV;
@@ -24,25 +29,14 @@ const logger = morgan("combined");
 const app = express();
 
 app.use(logger);
-app.use(compression());
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(
-  session({
-    cookieName: "blueprint", // cookie name dictates the key name added to the request object
-    requestKey: "session",
-    secret: "theredballonfloatssouthintheslowwindsofazkaban", // should be a large unguessable string
-    duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
-    activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration, session is extended by activeDuration
-  })
-);
-
-// Routes for login, logout, session status
+// Routes for login, logout, session status + passport setup
 app.use(require("./src/routes/auth"));
 
 app.use("/api", [
+  passport.authenticate("jwt", { session: false }),
   // Secure authentication to the API
   require("./src/helpers/checkAuth"),
   // API routes
@@ -68,6 +62,7 @@ if (ENV === DEV) {
   app.use(bundler.middleware());
   /* eslint-enable */
 } else {
+  app.use(compression());
   app.use(helmet());
 
   // Serve assets compiled by parcel
