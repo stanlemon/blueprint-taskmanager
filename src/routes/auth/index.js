@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const isEmpty = require("lodash/isEmpty");
 const format = require("date-fns/format");
@@ -8,21 +7,19 @@ const addMinutes = require("date-fns/addMinutes");
 const passport = require("passport");
 const { Strategy: LocalStrategy } = require("passport-local");
 const { Strategy: JwtStrategy } = require("passport-jwt");
-const knex = require("../../connection");
 const asyncHandler = require("../../helpers/asyncHandler");
+const {
+  getUserById,
+  getUserByEmailAndPassword,
+  createUser,
+  updateUser,
+} = require("../../db/users");
 
 const JWT_EXPIRES_IN_MIN = 10;
 
 if (process.env.JWT_SECRET === undefined) {
   console.warn("Jwt secret has not been set!");
   process.env.JWT_SECRET = "dyKSdvTaXRS3KWbgMBDz9QlOwZZC3BlH";
-}
-
-async function getUserById(id) {
-  return knex("users")
-    .select()
-    .where({ id })
-    .first();
 }
 
 function cookieExtractor(req) {
@@ -54,21 +51,14 @@ passport.use(
 passport.use(
   "local",
   new LocalStrategy((username, password, done) => {
-    knex("users")
-      .select()
-      .where({ email: username, active: true })
-      .first()
+    getUserByEmailAndPassword(username, password)
       .then(user => {
         if (!user) {
           return done(null, false, {
             message: "Incorrect email or password.",
           });
         }
-        if (!bcrypt.compareSync(password, user.password)) {
-          return done(null, false, {
-            message: "Incorrect email or password.",
-          });
-        }
+
         return done(null, user);
       })
       .catch(error => done(error, null));
@@ -105,11 +95,9 @@ router.post(
   "/auth/login",
   passport.authenticate(["local"]),
   async (req, res) => {
-    await knex("users")
-      .update({
-        last_logged_in: format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
-      })
-      .where("id", req.user.id);
+    await updateUser(req.user.id, {
+      last_logged_in: format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
+    });
 
     // Cookie must be set here so that the redirect works
     generateJwtCookie(req.user, res);
@@ -145,14 +133,7 @@ router.get("/auth/session", function(req, res, next) {
       generateJwtCookie(req.user, res);
 
       // Return back some of our details
-      res.status(200).json({
-        user: {
-          id: req.user.id,
-          email: req.user.email,
-          created_at: req.user.created_at,
-          updated_at: req.user.updated_at,
-        },
-      });
+      res.status(200).json(req.user);
     });
   })(req, res, next);
 });
@@ -160,24 +141,13 @@ router.get("/auth/session", function(req, res, next) {
 router.post(
   "/auth/register",
   asyncHandler(async (req, res) => {
-    const user = req.body;
+    const user = await createUser(req.body);
 
-    user.password = bcrypt.hashSync(user.password, 10);
-    user.created_at = format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
-    user.updated_at = user.created_at;
-
-    const [id] = await knex("users").insert(user);
-
-    const data = await knex("users")
-      .select()
-      .where({ id })
-      .first();
-
-    if (isEmpty(data)) {
+    if (isEmpty(user)) {
       res.status(500).json({ message: "An error has occurred" });
     }
 
-    generateJwtCookie(data, res);
+    generateJwtCookie(user, res);
 
     res.redirect("/auth/session");
   })

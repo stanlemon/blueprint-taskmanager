@@ -14,7 +14,7 @@ module.exports = {
   test: {
     client: "sqlite3",
     connection: {
-      filename: "test-database-" + new Date().getTime() + ".sqlite",
+      filename: "./test-database-" + new Date().getTime() + ".sqlite",
     },
     useNullAsDefault: true,
     migrations: {

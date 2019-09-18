@@ -1,3 +1,4 @@
+const format = require("date-fns/format");
 const knex = require("../connection");
 
 function getTags(userId) {
@@ -22,4 +23,15 @@ function getTagsByTaskId(userId, taskId) {
     .then(tags => tags.map(t => t.name));
 }
 
-module.exports = { getTags, getTagsByTaskId };
+function createTag(userId, name) {
+  const now = format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
+
+  return knex("tags").insert({
+    user_id: userId,
+    name,
+    created_at: now,
+    updated_at: now,
+  });
+}
+
+module.exports = { getTags, getTagsByTaskId, createTag };

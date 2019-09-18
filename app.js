@@ -9,6 +9,7 @@ const compression = require("compression");
 const morgan = require("morgan");
 const passport = require("passport");
 const cookieParser = require("cookie-parser");
+const knex = require("./src/connection");
 
 const DEV = "development";
 
@@ -73,6 +74,9 @@ if (ENV === DEV) {
     res.sendFile(path.join(__dirname, "dist", "index.html"));
   });
 }
+
+// Ensure the database is up to date
+knex.migrate.latest();
 
 const server = http.createServer(app);
 

@@ -18,8 +18,8 @@
     "lint": "eslint --ext .jsx --ext .js app.js src/** web/js/**",
     "prettier": "prettier --write \"{app.js,src/**/*.js,web/**/*.js,web/**/*.less}\"",
     "build": "NODE_ENV=production parcel build web/index.html",
-    "test": "NODE_ENV=test jest --coverage --testRegex web/js/.*\\.test.js$",
-    "test-watch": "NODE_ENV=test jest --watchAll  --testRegex web/js/.*\\.test.js$",
+    "test": "NODE_ENV=test jest --coverage --testRegex \"(web/js|src)/.*\\.test.js$\"",
+    "test-watch": "NODE_ENV=test jest --watchAll --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test-e2e": "NODE_ENV=test jest ./app.test.js -t 'end to end' --detectOpenHandles",
     "test-all": "NODE_ENV=test jest  --detectOpenHandles --coverage --testRegex .*\\.test.js$"
   },
