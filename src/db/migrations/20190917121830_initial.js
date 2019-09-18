@@ -62,7 +62,7 @@ exports.up = async knex => {
   ]);
 };
 
-exports.down = async knex => {
+exports.down = async () => {
   // This migration cannot be reversed
   return new Promise(null);
 };

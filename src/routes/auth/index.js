@@ -116,7 +116,7 @@ router.get("/auth/logout", (req, res) => {
 
 router.get("/auth/session", function(req, res, next) {
   /* look at the 2nd parameter to the below call */
-  passport.authenticate("jwt", { session: false }, (err, user, info) => {
+  passport.authenticate("jwt", { session: false }, (err, user) => {
     if (err) {
       return next(err);
     }
