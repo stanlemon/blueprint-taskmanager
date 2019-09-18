@@ -102,6 +102,7 @@ function generateJwtCookie(user, res) {
 }
 
 router.post("/auth/login", passport.authenticate(["local"]), (req, res) => {
+  // TODO: Add a new column to the user to track the last login date
   // Cookie must be set here so that the redirect works
   generateJwtCookie(req.user, res);
   res.redirect("/auth/session");
@@ -113,26 +114,38 @@ router.get("/auth/logout", (req, res) => {
   res.redirect("/auth/session");
 });
 
-router.get(
-  "/auth/session",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    if (req.isAuthenticated()) {
-      generateJwtCookie(req.user, res);
-
-      res.status(200).json({
-        user: {
-          id: req.user.id,
-          createdAt: req.user.createdAt,
-        },
-      });
-    } else {
-      res.status(401).json({
+router.get("/auth/session", function(req, res, next) {
+  /* look at the 2nd parameter to the below call */
+  passport.authenticate("jwt", { session: false }, (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.status(401).json({
         user: false,
       });
     }
-  }
-);
+
+    req.logIn(user, err => {
+      if (err) {
+        return next(err);
+      }
+
+      // We have a valid user, generate a cookie with the jwt token
+      generateJwtCookie(req.user, res);
+
+      // Return back some of our details
+      res.status(200).json({
+        user: {
+          id: req.user.id,
+          email: req.user.email,
+          created_at: req.user.created_at,
+          updated_at: req.user.updated_at,
+        },
+      });
+    });
+  })(req, res, next);
+});
 
 router.post(
   "/auth/register",
