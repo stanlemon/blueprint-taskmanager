@@ -1,6 +1,7 @@
 const knex = require("../connection");
 const omit = require("lodash/omit");
 const format = require("date-fns/format");
+const { getTagsByTaskId } = require("./tags");
 
 const columns = [
   "id",
@@ -23,7 +24,13 @@ function getTaskById(userId, taskId) {
     .select(columns)
     .where("user_id", userId)
     .where("id", taskId)
-    .first();
+    .first()
+    .then(task => {
+      return getTagsByTaskId(userId, taskId).then(tags => {
+        task.tags = tags;
+        return task;
+      });
+    });
 }
 
 function deleteTaskById(userId, taskId) {

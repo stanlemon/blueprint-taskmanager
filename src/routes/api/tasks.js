@@ -13,7 +13,7 @@ router.get(
   "/tasks",
   asyncHandler(async req => {
     const tasks = await getTasks(req.user.id);
-
+    console.log(tasks);
     return tasks.map(v => convertCamelCase(v));
   })
 );
