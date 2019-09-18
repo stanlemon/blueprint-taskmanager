@@ -101,12 +101,22 @@ function generateJwtCookie(user, res) {
   });
 }
 
-router.post("/auth/login", passport.authenticate(["local"]), (req, res) => {
-  // TODO: Add a new column to the user to track the last login date
-  // Cookie must be set here so that the redirect works
-  generateJwtCookie(req.user, res);
-  res.redirect("/auth/session");
-});
+router.post(
+  "/auth/login",
+  passport.authenticate(["local"]),
+  async (req, res) => {
+    await knex("users")
+      .update({
+        last_logged_in: format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
+      })
+      .where("id", req.user.id);
+
+    // Cookie must be set here so that the redirect works
+    generateJwtCookie(req.user, res);
+
+    res.redirect("/auth/session");
+  }
+);
 
 router.get("/auth/logout", (req, res) => {
   res.clearCookie("jwt");

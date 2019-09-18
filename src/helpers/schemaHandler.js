@@ -2,9 +2,11 @@ const asyncHandler = require("./asyncHandler");
 
 const schemaHandler = (schema, fn) => async (req, res, next) => {
   // Validate the input schema
-  const { error } = await schema.validate(req.body, {
-    // TODO: Remove this
-    allowUnknown: true,
+  const { value, error } = await schema.validate(req.body, {
+    // False here will not allow keys that are not part of the schema
+    allowUnknown: false,
+    // True here will strip the unknown keys from the returned value
+    stripUnknown: true,
     // Ensure that all rules are evaluated, by default Joi stops on the first error
     abortEarly: false,
     // Customized error messages
@@ -23,6 +25,9 @@ const schemaHandler = (schema, fn) => async (req, res, next) => {
     });
     return;
   }
+
+  console.log(req.body, value);
+  req.body = value;
 
   // Wrap all of these in our async handler
   await asyncHandler(fn)(req, res, next);
