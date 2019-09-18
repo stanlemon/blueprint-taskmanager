@@ -26,7 +26,7 @@ const schemaHandler = (schema, fn) => async (req, res, next) => {
     return;
   }
 
-  console.log(req.body, value);
+  // eslint-disable-next-line require-atomic-updates
   req.body = value;
 
   // Wrap all of these in our async handler
