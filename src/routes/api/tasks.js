@@ -62,15 +62,18 @@ router.put(
   })
 );
 
-router.delete("/tasks/:taskId", async (req, res) => {
-  const status = await deleteTask(req.user.id, req.params.taskId);
+router.delete(
+  "/tasks/:taskId",
+  asyncHandler(async (req, res) => {
+    const status = await deleteTask(req.user.id, req.params.taskId);
 
-  if (!status) {
-    res.status(404).json({ message: "Not Found" });
-    return;
-  }
+    if (!status) {
+      res.status(404).json({ message: "Not Found" });
+      return;
+    }
 
-  res.status(200).json({ success: true });
-});
+    res.status(200).json({ success: true });
+  })
+);
 
 module.exports = router;
