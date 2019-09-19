@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import isEmpty from "lodash/isEmpty";
 import isFunction from "lodash/isFunction";
+import uniq from "lodash/uniq";
+import Tags from "react-tag-autocomplete";
 import { navigateTo } from "../lib/Navigation";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
 
@@ -25,6 +27,7 @@ export default class TaskForm extends React.Component {
       description: "",
       completed: null,
       due: null,
+      tags: [],
     },
   };
 
@@ -38,6 +41,7 @@ export default class TaskForm extends React.Component {
       description: this.props.task.description || "",
       completed: this.props.task.completed || null,
       due: this.props.task.due || null,
+      tags: this.props.task.tags || [],
     },
     errors: {},
   };
@@ -100,6 +104,21 @@ export default class TaskForm extends React.Component {
         },
       };
     });
+  };
+
+  addTag = tag => {
+    this.setData(
+      "tags",
+      // We flip these before uniquing them to ensure the latest is retained
+      uniq([...this.state.data.tags, tag.name].reverse()).reverse()
+    );
+  };
+
+  removeTag = index => {
+    this.setData(
+      "tags",
+      [...this.state.data.tags].filter((e, i) => i !== index)
+    );
   };
 
   setValue = e => {
@@ -195,6 +214,21 @@ export default class TaskForm extends React.Component {
                 </label>
               </div>
             )}
+            <div className="form-group">
+              <label htmlFor="due" className="control-label">
+                Tags
+                <div>
+                  <Tags
+                    delimiterChars={[","]}
+                    tags={task.tags.map(t => ({ name: t }))}
+                    allowNew={true}
+                    //suggestions={this.state.suggestions}
+                    handleDelete={this.removeTag}
+                    handleAddition={this.addTag}
+                  />
+                </div>
+              </label>
+            </div>
             <div className="form-group">
               <button
                 type="submit"

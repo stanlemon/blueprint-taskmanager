@@ -26,6 +26,21 @@ function getTagsByTaskId(userId, taskId) {
     .then(tags => tags.map(t => t.name));
 }
 
+/**
+ * Get tags for a set of tasks.
+ * @param {int} userId User id the tasks belong to
+ * @param {int[]} taskIds Task ids to get tags for
+ */
+function getTagsForTaskIds(userId, taskIds) {
+  return knex
+    .from("tags")
+    .innerJoin("task_tags", "tags.id", "task_tags.tag_id")
+    .select(["name", "task_tags.task_id"])
+    .where("user_id", userId)
+    .whereIn("task_tags.task_id", taskIds)
+    .orderBy("name");
+}
+
 function getTagsByName(userId, names) {
   if (!Array.isArray(names)) {
     return Promise.resolve([]);
@@ -96,6 +111,7 @@ function createTags(userId, names) {
 module.exports = {
   getTags,
   getTagsByTaskId,
+  getTagsForTaskIds,
   upsertTags,
   createTag,
   createTags,

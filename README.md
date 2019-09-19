@@ -42,4 +42,8 @@ Once you're there click the 'Register' link to setup an account.
 
 Feedback is welcome, drop me a line or a [tweet](http://twitter.com/stanlemon).
 
-
+## Todo
+- [ ] Delete task_tags when deleting a task
+- [ ] Load tags when for tasks in getTasks()
+- [ ] Load all tags on load and populate suggestions (needs new action)
+- [ ] Write tests for the new rest api

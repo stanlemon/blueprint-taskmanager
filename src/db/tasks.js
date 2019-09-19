@@ -2,9 +2,12 @@ const knex = require("../connection");
 const omit = require("lodash/omit");
 const includes = require("lodash/includes");
 const isObject = require("lodash/isObject");
+const keyBy = require("lodash/keyBy");
+const mapKeys = require("lodash/mapKeys");
+const mapValues = require("lodash/mapValues");
 const format = require("date-fns/format");
 const isDate = require("date-fns/isDate");
-const { upsertTags, getTagsByTaskId } = require("./tags");
+const { upsertTags, getTagsByTaskId, getTagsForTaskIds } = require("./tags");
 
 const columns = [
   "id",
@@ -29,6 +32,25 @@ async function getTasks(userId) {
     .select(columns)
     .where("user_id", userId)
     .orderBy("created_at");
+
+  const tags = await getTagsForTaskIds(userId, tasks.map(t => t.id));
+
+  const tagsByTaskId = {};
+
+  tags.forEach(t => {
+    const taskId = parseInt(t.task_id);
+
+    if (!tagsByTaskId[taskId]) {
+      tagsByTaskId[taskId] = [];
+    }
+    tagsByTaskId[taskId].push(t.name);
+  });
+
+  tasks.forEach((task, i) => {
+    if (tagsByTaskId[task.id] != undefined) {
+      tasks[i].tags = tagsByTaskId[task.id];
+    }
+  });
 
   return tasks.map(omitUserId);
 }
