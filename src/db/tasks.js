@@ -24,32 +24,32 @@ function omitUserId(o) {
   return omit(o, ["user_id"]);
 }
 
-function getTasks(userId) {
-  return knex("tasks")
+async function getTasks(userId) {
+  const tasks = await knex("tasks")
     .select(columns)
     .where("user_id", userId)
-    .orderBy("created_at")
-    .then(tasks => tasks.map(omitUserId));
+    .orderBy("created_at");
+
+  return tasks.map(omitUserId);
 }
 
-function _getTaskById(userId, taskId) {
-  return knex("tasks")
+async function _getTaskById(userId, taskId) {
+  const task = await knex("tasks")
     .select(columns)
     .where("user_id", userId)
     .where("id", taskId)
-    .first()
-    .then(task => {
-      if (!task) {
-        return null;
-      }
-      return getTagsByTaskId(userId, taskId).then(tags => {
-        task.tags = tags;
-        return task;
-      });
-    });
+    .first();
+
+  if (!task) {
+    return null;
+  }
+  return getTagsByTaskId(userId, taskId).then(tags => {
+    task.tags = tags;
+    return task;
+  });
 }
 
-function getTaskById(userId, taskId) {
+async function getTaskById(userId, taskId) {
   return _getTaskById(userId, taskId).then(omitUserId);
 }
 

@@ -14,7 +14,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "NODE_ENV=development nodemon app.js",
+    "dev": "NODE_ENV=development nodemon --trace-warnings app.js",
     "lint": "eslint --ext .jsx --ext .js app.js src/** web/js/**",
     "prettier": "prettier --write \"{app.js,src/**/*.js,web/**/*.js,web/**/*.less}\"",
     "build": "NODE_ENV=production parcel build web/index.html",
