@@ -3,7 +3,7 @@ const asyncHandler = fn => async (req, res, next) => {
     const result = await fn(req, res, next);
 
     // If a value is returned we'll assume that we need to render it as JSON
-    if (result != undefined) {
+    if (result !== undefined) {
       res.status(200).json(result);
     }
   } catch (ex) {

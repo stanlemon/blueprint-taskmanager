@@ -28,6 +28,7 @@ router.get(
 
     if (task === null) {
       res.status(404).json({ message: "Not Found" });
+      return;
     }
 
     return convertCamelCase(task);

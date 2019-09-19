@@ -1,7 +1,9 @@
 const knex = require("../connection");
 const omit = require("lodash/omit");
 const includes = require("lodash/includes");
+const isObject = require("lodash/isObject");
 const format = require("date-fns/format");
+const isDate = require("date-fns/isDate");
 const { upsertTags, getTagsByTaskId } = require("./tags");
 
 const columns = [
@@ -16,6 +18,9 @@ const columns = [
 ];
 
 function omitUserId(o) {
+  if (!isObject(o)) {
+    return o;
+  }
   return omit(o, ["user_id"]);
 }
 
@@ -75,6 +80,12 @@ function updateTask(userId, taskId, task) {
       {
         user_id: userId,
         updated_at: format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
+        due: isDate(task.due)
+          ? format(task.due, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
+          : task.due,
+        completed: isDate(task.completed)
+          ? format(task.completed, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
+          : task.completed,
       }
     );
 
@@ -143,6 +154,12 @@ function createTask(userId, task) {
       user_id: userId,
       created_at: now,
       updated_at: now,
+      due: isDate(task.due)
+        ? format(task.due, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
+        : task.due,
+      completed: isDate(task.completed)
+        ? format(task.completed, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
+        : task.completed,
     }),
     ["tags"] // We'll deal with this later
   );

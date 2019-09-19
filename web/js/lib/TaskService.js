@@ -12,7 +12,7 @@ export default class TaskService extends RestService {
         due: task.due ? task.due : null,
       }),
       // Any date objects should be formatted
-      v => (isDate(v) ? format(v) : v)
+      v => (isDate(v) ? format(v, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : v)
     );
   }
 
@@ -23,14 +23,18 @@ export default class TaskService extends RestService {
   }
 
   createTask(task) {
-    return this.fetch(`${this.baseUrl}/api/tasks/`, "post", task).then(data =>
-      this.formatTask(data)
+    return this.fetch(
+      `${this.baseUrl}/api/tasks/`,
+      "post",
+      this.formatTask(task)
     );
   }
 
   updateTask(task) {
-    return this.fetch(`${this.baseUrl}/api/tasks/${task.id}`, "put", task).then(
-      data => this.formatTask(data)
+    return this.fetch(
+      `${this.baseUrl}/api/tasks/${task.id}`,
+      "put",
+      this.formatTask(task)
     );
   }
 
