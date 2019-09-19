@@ -20,6 +20,9 @@ const schema = Joi.object().keys({
     .allow(null)
     .optional()
     .label("Task due date"),
+  tags: Joi.array()
+    .optional()
+    .items(Joi.string()),
 });
 
 module.exports = schema;

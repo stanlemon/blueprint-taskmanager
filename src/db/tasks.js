@@ -1,7 +1,9 @@
 const knex = require("../connection");
 const omit = require("lodash/omit");
+const includes = require("lodash/includes");
+const isEmpty = require("lodash/isEmpty");
 const format = require("date-fns/format");
-const { getTagsByTaskId } = require("./tags");
+const { upsertTags, getTagsByTaskId } = require("./tags");
 
 const columns = [
   "id",
@@ -66,11 +68,11 @@ function updateTask(userId, taskId, task) {
     if (!verify || verify.user_id !== userId) {
       return null;
     }
-
+    const { tags } = task;
     const data = Object.assign(
       {},
       // Exclude the following properties
-      omit(task, ["created_at", "updated_at", "user_id"]),
+      omit(task, ["created_at", "updated_at", "user_id", "tags"]),
       {
         user_id: userId,
         updated_at: format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
@@ -80,27 +82,79 @@ function updateTask(userId, taskId, task) {
     return knex("tasks")
       .where({ id: taskId })
       .update(data)
-      .then(() => {
+      .then(() => upsertTaskTags(userId, taskId, tags))
+      .then(() =>
         // Refresh the task that we return after updating it.
-        return getTaskById(userId, taskId);
+        getTaskById(userId, taskId)
+      );
+  });
+}
+
+/**
+ * Given a list of tags, create the ones that don't exist and map them all to the given task
+ * @param {int} userId - User id to whom the tags and task belong
+ * @param {int} taskId - Task id to which the tags belong
+ * @param {string[]} names - List of tag names
+ */
+function upsertTaskTags(userId, taskId, tags) {
+  // Tags essentially not being set changes nothing, an empty array clears them
+  if (tags === undefined) {
+    return Promise.resolve([]);
+  }
+
+  return upsertTags(userId, tags).then(tags => {
+    const tagIds = tags.map(t => t.id);
+    return knex("task_tags")
+      .select()
+      .where("task_id", taskId)
+      .whereIn("tag_id", tagIds)
+      .then(taskTags => {
+        // Ids of all the task tags that  currently exist, some of these may be extra
+        const taskTagIds = taskTags.map(t => t.tag_id);
+        // Any that don't exist we need to create
+        const missing = tagIds
+          .filter(id => !includes(taskTagIds, id))
+          .map(id => ({
+            tag_id: id,
+            task_id: taskId,
+          }));
+        return createTaskTags(missing).then(() => {
+          // Delete any tags for this tag that we weren't mapping
+          return knex("task_tags")
+            .delete()
+            .where("task_id", taskId)
+            .whereNotIn("tag_id", tagIds);
+        });
       });
   });
+}
+
+function createTaskTags(taskTags) {
+  return knex.batchInsert("task_tags", taskTags);
 }
 
 function createTask(userId, task) {
   // Make a sql friendly date for now
   const now = format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
+  // Extract tags from the task
+  const { tags } = task;
   // Build a copy of the input with our required fields
-  const data = Object.assign({}, task, {
-    user_id: userId,
-    created_at: now,
-    updated_at: now,
-  });
+  const data = omit(
+    Object.assign({}, task, {
+      user_id: userId,
+      created_at: now,
+      updated_at: now,
+    }),
+    ["tags"] // We'll deal with this later
+  );
 
   return knex("tasks")
     .insert(data)
     .then(([id]) => {
-      return getTaskById(userId, id);
+      // This needs to be nested so that we can access the newly created task's id
+      return upsertTaskTags(userId, id, tags).then(() => {
+        return getTaskById(userId, id);
+      });
     });
 }
 

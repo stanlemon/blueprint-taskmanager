@@ -8,10 +8,6 @@ const schema = Joi.object().keys({
   name: Joi.string()
     .required()
     .label("Tag name"),
-  description: Joi.string()
-    .allow(null, "")
-    .optional()
-    .label("Task description"),
 });
 
 module.exports = schema;

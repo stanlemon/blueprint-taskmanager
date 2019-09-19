@@ -8,6 +8,7 @@ const {
   updateTask,
   deleteTask,
 } = require("./tasks");
+const { createTag } = require("./tags");
 const { createUser } = require("./users");
 
 beforeEach(async done => {
@@ -88,6 +89,39 @@ describe("tasks database access", () => {
     const tasks2 = await getTasks(user.id);
 
     expect([]).toMatchObject(tasks2);
+
+    done();
+  });
+
+  it("getTaskById() with tags", async done => {
+    const user = await setupUser();
+
+    await createTag(user.id, "baz");
+    await createTag(user.id, "buzz");
+
+    // This should create two new tags and map an existing one
+    const tags1 = ["bar", "baz", "foo"]; // Sorted alphabetically
+    const task = await createTask(user.id, { name: "Task1", tags: tags1 });
+
+    const refresh1 = await getTaskById(user.id, task.id);
+
+    expect(refresh1.tags).toMatchObject(tags1);
+
+    // This should delete two tags, add one existing that's not mapped and one new one
+    const tags2 = ["bar", "buzz", "fizz"];
+    const refresh2 = await updateTask(user.id, task.id, { tags: tags2 });
+
+    expect(refresh2.tags).toMatchObject(tags2);
+
+    // Change something else about the task, don't set tags at all, they should all remain
+    const refresh3 = await updateTask(user.id, task.id, { name: "New name" });
+
+    expect(refresh3.tags).toMatchObject(tags2);
+
+    // An empty array should clear out all of the tags for the task
+    const refresh4 = await updateTask(user.id, task.id, { tags: [] });
+
+    expect(refresh4.tags).toMatchObject([]);
 
     done();
   });
