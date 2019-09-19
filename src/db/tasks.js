@@ -1,7 +1,6 @@
 const knex = require("../connection");
 const omit = require("lodash/omit");
 const includes = require("lodash/includes");
-const isEmpty = require("lodash/isEmpty");
 const format = require("date-fns/format");
 const { upsertTags, getTagsByTaskId } = require("./tags");
 
