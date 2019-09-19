@@ -9,13 +9,15 @@ const compression = require("compression");
 const morgan = require("morgan");
 const passport = require("passport");
 const cookieParser = require("cookie-parser");
-const knex = require("./src/connection");
 
 const DEV = "development";
 
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = DEV;
 }
+
+// Require it at this point to ensure we have a node env specified
+const knex = require("./src/connection");
 
 if (!process.env.COOKIE_SECRET) {
   console.warn("Cookie secret has not been set!");
