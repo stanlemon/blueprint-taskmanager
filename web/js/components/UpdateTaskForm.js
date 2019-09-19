@@ -13,7 +13,12 @@ export class UpdateTaskForm extends React.Component {
       return data;
     }
 
-    navigateTo("/");
+    // Default behavior here is to set state, but we can provide
+    // a callback to handle state setting in a custm manner, or to
+    // execute custom code after this is complete
+    return () => {
+      navigateTo("/");
+    };
   };
 
   render() {
