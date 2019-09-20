@@ -189,6 +189,10 @@ function createTask(userId, task) {
 
   return knex("tasks")
     .insert(data)
+    .then(r => {
+      console.log("post insert", r);
+      return r;
+    })
     .then(([id]) => {
       // This needs to be nested so that we can access the newly created task's id
       return upsertTaskTags(userId, id, tags).then(() => {
