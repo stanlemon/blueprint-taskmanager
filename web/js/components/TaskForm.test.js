@@ -25,6 +25,7 @@ describe("<TaskForm />", () => {
       description: "A brief description",
       due: null,
       completed: null,
+      tags: [],
     };
 
     const view = mount(<TaskForm onSubmit={save} />);

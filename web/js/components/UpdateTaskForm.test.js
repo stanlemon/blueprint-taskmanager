@@ -21,6 +21,7 @@ describe("<UpdateTaskForm />", () => {
       description: "A brief description",
       due: parseISO("2018-06-12T07:08"),
       completed: parseISO("2017-06-12T07:08"),
+      tags: [],
     };
 
     const view = mount(<UpdateTaskForm task={task} updateTask={updateTask} />);
@@ -79,6 +80,7 @@ describe("<UpdateTaskForm />", () => {
       description: newDescription,
       due: task.due, // field is unchanged
       completed: null,
+      tags: [],
     });
   });
 });

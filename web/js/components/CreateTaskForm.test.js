@@ -20,6 +20,7 @@ describe("<CreateTaskForm />", () => {
       description: "A brief description",
       due: null,
       completed: null,
+      tags: [],
     };
 
     const view = mount(<CreateTaskForm task={task} createTask={createTask} />);
