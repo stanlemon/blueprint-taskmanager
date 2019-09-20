@@ -182,7 +182,9 @@ function createTask(userId, task) {
         ? format(task.completed, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
         : task.completed,
     }),
-    ["tags"] // We'll deal with this later
+    ["id", "tags"]
+    // Id can't be set because this is a new row
+    // We'll deal with tags later
   );
 
   return knex("tasks")
