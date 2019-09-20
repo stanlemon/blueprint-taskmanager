@@ -189,6 +189,7 @@ function createTask(userId, task) {
 
   return knex("tasks")
     .insert(data)
+    .returning("id")
     .then(r => {
       console.log("post insert", r);
       return r;
