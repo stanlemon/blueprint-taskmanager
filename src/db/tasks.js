@@ -78,6 +78,8 @@ function deleteTask(userId, taskId) {
       return false;
     }
 
+    // TODO: Delete task_tag rows
+
     return knex("tasks")
       .where("user_id", userId)
       .where("id", taskId)

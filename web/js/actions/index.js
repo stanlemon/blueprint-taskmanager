@@ -50,6 +50,8 @@ export function logout() {
   };
 }
 
+// TODO: Add action for loading tags
+
 export function loadTasks() {
   return (dispatch, getState, { taskService }) => {
     taskService

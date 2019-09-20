@@ -36,6 +36,7 @@ const setupUser = () => {
 };
 
 describe("tasks database access", () => {
+  // TODO: Add assertions for task tags
   it("createTask() and getTasks() and getTaskById()", async done => {
     const user = await setupUser();
 
