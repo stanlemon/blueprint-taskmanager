@@ -78,13 +78,16 @@ function deleteTask(userId, taskId) {
       return false;
     }
 
-    // TODO: Delete task_tag rows
-
-    return knex("tasks")
-      .where("user_id", userId)
-      .where("id", taskId)
+    return knex("task_tags")
+      .where("task_id", taskId)
       .delete()
-      .then(() => true);
+      .then(() => {
+        return knex("tasks")
+          .where("user_id", userId)
+          .where("id", taskId)
+          .delete()
+          .then(() => true);
+      });
   });
 }
 
@@ -190,10 +193,6 @@ function createTask(userId, task) {
   return knex("tasks")
     .insert(data)
     .returning("id")
-    .then(r => {
-      console.log("post insert", r);
-      return r;
-    })
     .then(([id]) => {
       // This needs to be nested so that we can access the newly created task's id
       return upsertTaskTags(userId, id, tags).then(() => {
