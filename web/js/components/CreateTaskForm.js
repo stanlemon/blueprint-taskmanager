@@ -8,6 +8,7 @@ export class CreateTaskForm extends React.Component {
   static propTypes = {
     createTask: PropTypes.func.isRequired,
     errors: PropTypes.object,
+    tags: PropTypes.arrayOf(PropTypes.string),
   };
 
   constructor(props) {
@@ -30,6 +31,7 @@ export class CreateTaskForm extends React.Component {
       <TaskForm
         className="task-create-form"
         onSubmit={this.handleSave}
+        tags={this.props.tags}
         errors={this.props.errors}
       />
     );
@@ -37,6 +39,6 @@ export class CreateTaskForm extends React.Component {
 }
 
 export default connect(
-  state => ({ errors: state.errors }),
+  state => ({ tags: state.tags, errors: state.errors }),
   { createTask }
 )(CreateTaskForm);

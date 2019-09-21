@@ -12,6 +12,10 @@ const schemaHandler = (schema, fn) => async (req, res, next) => {
     // Customized error messages
     messages: {
       "any.required": "{{#label}} is required",
+      "string.empty": "{{#label}} is not allowed to be empty",
+      "string.email": "{{#label}} must be a valid email address",
+      "string.min": "{{#label}} must be at least {{#limit}} characters long",
+      "string.max": "{{#label}} cannot be more than {{#limit}} characters long",
       "date.base": "{{#label}} must be a valid date",
     },
   });

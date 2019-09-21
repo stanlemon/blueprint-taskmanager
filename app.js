@@ -53,7 +53,7 @@ if (ENV === DEV) {
   const file = path.join(__dirname, "web", "index.html");
 
   const options = {
-    //cache: false,
+    cache: false,
     hmr: true,
     production: false,
   };

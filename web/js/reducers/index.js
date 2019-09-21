@@ -7,6 +7,8 @@ import {
   UNAUTHENTICATED_USER,
   AUTHENTICATION_ERROR,
   REGISTER_ERROR,
+  LOAD_TAGS_SUCCESS,
+  LOAD_TAGS_ERROR,
   LOAD_TASKS_SUCCESS,
   LOAD_TASKS_ERROR,
   CREATE_TASK_SUCCESS,
@@ -25,6 +27,15 @@ function formatTaskDates(task) {
     completed: task.completed ? new Date(task.completed) : null,
     due: task.due ? new Date(task.due) : null,
   });
+}
+
+export function tags(state, action) {
+  switch (action.type) {
+    case LOAD_TAGS_SUCCESS:
+      return [...action.tags];
+    default:
+      return state;
+  }
 }
 
 export function tasks(state, action) {
@@ -60,6 +71,7 @@ export function user(state, action) {
 export function errors(state, action) {
   switch (action.type) {
     case ERROR:
+    case LOAD_TAGS_ERROR:
     case LOAD_TASKS_ERROR:
     case CREATE_TASK_ERROR:
     case UPDATE_TASK_ERROR:
@@ -92,6 +104,7 @@ export default function(
 ) {
   const y = {
     user: user(state.user, action),
+    tags: tags(state.tags, action),
     tasks: tasks(state.tasks, action),
     loaded: loaded(state.loaded, action),
     errors: errors(state.errors, action),

@@ -14,6 +14,7 @@ import { DATE_FORMAT_LONG } from "../lib/Utils";
 export default class TaskForm extends React.Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string),
     task: PropTypes.object,
     errors: PropTypes.object,
     className: PropTypes.string,
@@ -22,6 +23,7 @@ export default class TaskForm extends React.Component {
   static defaultProps = {
     className: "",
     errors: {},
+    tags: [],
     task: {
       name: "",
       description: "",
@@ -222,7 +224,9 @@ export default class TaskForm extends React.Component {
                     delimiterChars={[","]}
                     tags={task.tags.map(t => ({ name: t }))}
                     allowNew={true}
-                    //suggestions={this.state.suggestions}
+                    suggestions={this.props.tags.map(tag => ({
+                      name: tag,
+                    }))}
                     handleDelete={this.removeTag}
                     handleAddition={this.addTag}
                   />

@@ -25,6 +25,7 @@ export class UpdateTaskForm extends React.Component {
     return (
       <TaskForm
         className="task-update-form"
+        tags={this.props.tags}
         task={this.props.task}
         errors={this.props.errors}
         onSubmit={this.handleSave}
@@ -36,10 +37,11 @@ export class UpdateTaskForm extends React.Component {
 UpdateTaskForm.propTypes = {
   updateTask: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string),
   errors: PropTypes.object,
 };
 
 export default connect(
-  state => ({ errors: state.errors }),
+  state => ({ tags: state.tags, errors: state.errors }),
   { updateTask }
 )(UpdateTaskForm);

@@ -4,15 +4,14 @@ const isEmpty = require("lodash/isEmpty");
 const mapKeys = require("lodash/mapKeys");
 const has = require("lodash/has");
 
-function getTags(userId) {
-  return (
-    knex("tags")
-      .select(["name"])
-      .where("user_id", userId)
-      .orderBy("name")
-      // Remap the tags so that they're just a list of strings
-      .then(tags => tags.map(t => t.name))
-  );
+async function getTags(userId) {
+  const tags = await knex("tags")
+    .select(["name"])
+    .where("user_id", userId)
+    .orderBy("name");
+
+  // Remap the tags so that they're just a list of strings
+  return tags.map(t => t.name);
 }
 
 function getTagsByTaskId(userId, taskId) {

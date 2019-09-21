@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { navigateTo, history } from "../lib/Navigation";
-import { logout, loadTasks, clearErrors } from "../actions/";
+import { logout, loadTasks, loadTags, clearErrors } from "../actions/";
 
 export class Layout extends React.Component {
   componentDidMount() {
@@ -13,6 +13,7 @@ export class Layout extends React.Component {
     });
 
     this.props.loadTasks();
+    this.props.loadTags();
   }
 
   handleClickToHome = () => {
@@ -66,11 +67,12 @@ Layout.propTypes = {
   children: PropTypes.node.isRequired,
   logout: PropTypes.func.isRequired,
   loadTasks: PropTypes.func.isRequired,
+  loadTags: PropTypes.func.isRequired,
   clearErrors: PropTypes.func.isRequired,
   loaded: PropTypes.array,
 };
 
 export default connect(
   state => ({ loaded: state.loaded }),
-  { logout, loadTasks, clearErrors }
+  { logout, loadTasks, loadTags, clearErrors }
 )(Layout);

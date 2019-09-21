@@ -6,6 +6,8 @@ export const AUTHENTICATED_USER = "AUTHENTICATED_USER";
 export const UNAUTHENTICATED_USER = "UNAUTHENTICATED_USER";
 export const AUTHENTICATION_ERROR = "AUTHENTICATION_ERROR";
 export const REGISTER_ERROR = "REGISTER_ERROR";
+export const LOAD_TAGS_SUCCESS = "LOAD_TAGS_SUCCESS";
+export const LOAD_TAGS_ERROR = "LOAD_TAGS_ERROR";
 export const LOAD_TASKS_SUCCESS = "LOAD_TASKS_SUCCESS";
 export const LOAD_TASKS_ERROR = "LOAD_TASKS_ERROR";
 export const CREATE_TASK_SUCCESS = "CREATE_TASK_SUCCESS";
@@ -50,7 +52,18 @@ export function logout() {
   };
 }
 
-// TODO: Add action for loading tags
+export function loadTags() {
+  return (dispatch, getState, { tagService }) => {
+    tagService
+      .loadTags()
+      .then(tags => {
+        dispatch({ type: LOAD_TAGS_SUCCESS, tags });
+      })
+      .catch(ex => {
+        dispatch({ type: LOAD_TAGS_ERROR, errors: ex.errors });
+      });
+  };
+}
 
 export function loadTasks() {
   return (dispatch, getState, { taskService }) => {

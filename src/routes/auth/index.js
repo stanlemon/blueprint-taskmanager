@@ -7,7 +7,8 @@ const addMinutes = require("date-fns/addMinutes");
 const passport = require("passport");
 const { Strategy: LocalStrategy } = require("passport-local");
 const { Strategy: JwtStrategy } = require("passport-jwt");
-const asyncHandler = require("../../helpers/asyncHandler");
+const schemaHandler = require("../../helpers/schemaHandler");
+const schema = require("../../schema/user");
 const {
   getUserById,
   getUserByEmailAndPassword,
@@ -140,7 +141,7 @@ router.get("/auth/session", function(req, res, next) {
 
 router.post(
   "/auth/register",
-  asyncHandler(async (req, res) => {
+  schemaHandler(schema, async (req, res) => {
     const user = await createUser(req.body);
 
     if (isEmpty(user)) {
