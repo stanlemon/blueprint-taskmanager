@@ -30,7 +30,7 @@ afterAll(() => {
 const setupUser = () => {
   return createUser({
     name: "Test",
-    email: "test@test.com",
+    email: "test" + Date.now() + "@test.com",
     password: "password",
   });
 };
@@ -127,6 +127,50 @@ describe("tasks database access", () => {
     done();
   });
 
-  // TODO Test that you can't delete someone elses task
-  // TODO Test that you can't update someone elses taks
+  it("deleteTask() for other user", async done => {
+    const user1 = await setupUser();
+    const user2 = await setupUser();
+
+    const task1 = await createTask(user1.id, { name: "Task1" });
+
+    const tasks1 = await getTasks(user1.id);
+
+    expect(tasks1[0].id).toEqual(task1.id);
+
+    const status = await deleteTask(user2.id, task1.id);
+
+    expect(status).toBe(false);
+
+    const tasks2 = await getTasks(user1.id);
+
+    // Task is still there!
+    expect(tasks2[0].id).toEqual(task1.id);
+
+    done();
+  });
+
+  it("updateTask() for other user", async done => {
+    const user1 = await setupUser();
+    const user2 = await setupUser();
+
+    const name = "Task1" + Date.now();
+    const task1 = await createTask(user1.id, { name });
+
+    const tasks1 = await getTasks(user1.id);
+
+    expect(tasks1[0].id).toEqual(task1.id);
+    expect(tasks1[0].name).toEqual(task1.name);
+
+    await updateTask(user2.id, task1.id, {
+      name: "Not " + name,
+    });
+
+    const tasks2 = await getTasks(user1.id);
+
+    // Task hasn't changed!
+    expect(tasks2[0].id).toEqual(task1.id);
+    expect(tasks2[0].name).toEqual(task1.name);
+
+    done();
+  });
 });
