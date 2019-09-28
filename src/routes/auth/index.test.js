@@ -9,7 +9,6 @@ const knex = require("../../connection");
 const config = require("../../../knexfile")[process.env.NODE_ENV];
 const api = require("./index");
 const { createUser } = require("../../db/users");
-const { createTag } = require("../../db/tags");
 
 beforeEach(async done => {
   // Ensures that the database has been setup correctly.
