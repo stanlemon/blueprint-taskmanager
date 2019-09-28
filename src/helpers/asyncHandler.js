@@ -1,3 +1,5 @@
+const InvalidArgument = require("../db/invalidargument");
+
 const asyncHandler = fn => async (req, res, next) => {
   try {
     const result = await fn(req, res, next);
@@ -7,6 +9,13 @@ const asyncHandler = fn => async (req, res, next) => {
       res.status(200).json(result);
     }
   } catch (ex) {
+    console.log(ex);
+    // An upstream validation error
+    if (ex instanceof InvalidArgument) {
+      res.status(400).json({ errors: { [ex.key]: ex.message } });
+      return;
+    }
+
     if (
       process.env.NODE_ENV === "development" ||
       process.env.NODE_ENV === "test"

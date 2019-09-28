@@ -1,6 +1,4 @@
-const fs = require("fs");
 const knex = require("../connection");
-const config = require("../../knexfile")[process.env.NODE_ENV];
 const {
   getTaskById,
   getTasks,
@@ -11,20 +9,18 @@ const {
 const { createTag } = require("./tags");
 const { createUser } = require("./users");
 
-beforeEach(async done => {
-  // Ensures that the database has been setup correctly.
-  await knex.migrate.latest();
+beforeAll(async done => {
+  await knex.test.setup();
   done();
 });
 
-beforeEach(async () => {
-  await knex.truncate("task_tags");
-  await knex.truncate("tasks");
-  await knex.truncate("tags");
+beforeEach(async done => {
+  await knex.test.cleanup();
+  done();
 });
 
 afterAll(() => {
-  fs.unlinkSync(config.connection.filename);
+  knex.test.teardown();
 });
 
 const setupUser = () => {

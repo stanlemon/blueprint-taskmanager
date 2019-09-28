@@ -152,12 +152,11 @@ describe("/auth/register", () => {
       })
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
-      .expect(500)
+      .expect(400)
       .end((err, res) => {
-        // TODO: There needs to be a way to pass up a validation error to asyncHandler()
-        expect(res.body.error).toEqual(
-          "A user with this email address already exists"
-        );
+        expect(res.body.errors).toEqual({
+          email: "A user with this email address already exists",
+        });
 
         done();
       });

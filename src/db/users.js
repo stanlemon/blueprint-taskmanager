@@ -3,6 +3,7 @@ const format = require("date-fns/format");
 const omit = require("lodash/omit");
 const isEmpty = require("lodash/isEmpty");
 const knex = require("../connection");
+const InvalidArgument = require("./invalidargument");
 
 function omitPassword(o) {
   return omit(o, ["password"]);
@@ -53,7 +54,10 @@ async function createUser(data) {
   const verify = await _getUserByEmail(data.email);
 
   if (!isEmpty(verify)) {
-    throw new Error("A user with this email address already exists");
+    throw new InvalidArgument(
+      "email",
+      "A user with this email address already exists"
+    );
   }
 
   return knex("users")

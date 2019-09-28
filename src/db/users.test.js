@@ -1,6 +1,4 @@
 const knex = require("../connection");
-const fs = require("fs");
-const config = require("../../knexfile")[process.env.NODE_ENV];
 const { parseISO, isSameDay } = require("date-fns");
 const { omit } = require("lodash");
 const {
@@ -12,17 +10,17 @@ const {
 } = require("./users");
 
 beforeAll(async done => {
-  // Ensures that the database has been setup correctly.
-  await knex.migrate.latest();
+  await knex.test.setup();
   done();
 });
 
-beforeEach(async () => {
-  await knex.truncate("users");
+beforeEach(async done => {
+  await knex.test.cleanup();
+  done();
 });
 
 afterAll(() => {
-  fs.unlinkSync(config.connection.filename);
+  knex.test.teardown();
 });
 
 describe("users database access", () => {
@@ -89,6 +87,7 @@ describe("users database access", () => {
     // Create the first user  with this email address
     await createUser({ email, password, name });
 
+    // Actually an InvalidArgument, but this expectation doesn't work with that
     /* eslint-disable-next-line jest/valid-expect */
     expect(createUser({ email, password, name })).rejects.toEqual(
       new Error("A user with this email address already exists")
