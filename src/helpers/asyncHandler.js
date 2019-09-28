@@ -7,7 +7,10 @@ const asyncHandler = fn => async (req, res, next) => {
       res.status(200).json(result);
     }
   } catch (ex) {
-    if (process.env.NODE_ENV === "development") {
+    if (
+      process.env.NODE_ENV === "development" ||
+      process.env.NODE_ENV === "test"
+    ) {
       console.error(ex);
 
       res.status(500).json({ error: ex.message });

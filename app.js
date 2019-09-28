@@ -1,39 +1,14 @@
 const path = require("path");
 const http = require("http");
 const killable = require("killable");
-const express = require("express");
-const helmet = require("helmet");
 const serveStatic = require("serve-static");
-const bodyParser = require("body-parser");
-const compression = require("compression");
-const morgan = require("morgan");
 const passport = require("passport");
-const cookieParser = require("cookie-parser");
 
-const DEV = "development";
+require("dotenv").config();
 
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = DEV;
-}
-
-// Require it at this point to ensure we have a node env specified
+// Require at this point because our env variables should be defaulted
+const app = require("./src/app");
 const knex = require("./src/connection");
-
-if (!process.env.COOKIE_SECRET) {
-  console.warn("Cookie secret has not been set!");
-  process.env.COOKIE_SECRET = "process.env.COOKIE_SECRET";
-}
-
-const ENV = process.env.NODE_ENV;
-
-const PORT = process.env.PORT || 3000;
-
-const logger = morgan("combined");
-const app = express();
-
-app.use(logger);
-app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(bodyParser.json());
 
 // Routes for login, logout, session status + passport setup
 app.use(require("./src/routes/auth"));
@@ -46,7 +21,7 @@ app.use("/api", [
   require("./src/routes/api"),
 ]);
 
-if (ENV === DEV) {
+if (process.env.NODE_ENV === "development") {
   /* eslint-disable-line global-require, import/no-extraneous-dependencies */
   const Bundler = require("parcel-bundler");
 
@@ -65,9 +40,6 @@ if (ENV === DEV) {
   app.use(bundler.middleware());
   /* eslint-enable */
 } else {
-  app.use(compression());
-  app.use(helmet());
-
   // Serve assets compiled by parcel
   app.use(serveStatic(path.join(__dirname, "dist")));
 
@@ -83,7 +55,7 @@ knex.migrate.latest();
 const server = http.createServer(app);
 
 /*eslint no-console: "off"*/
-server.listen(PORT, err => {
+server.listen(process.env.PORT, err => {
   if (err) {
     console.error(err);
     return;
@@ -93,7 +65,7 @@ server.listen(PORT, err => {
     server.address().address === "::" ? "localhost" : server.address().address;
   const port = server.address().port;
 
-  console.log("Starting in %s mode", ENV);
+  console.log("Starting in %s mode", process.env.NODE_ENV);
   console.log("Listening at http://%s:%s", host, port);
 });
 

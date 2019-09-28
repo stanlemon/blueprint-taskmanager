@@ -1,34 +1,24 @@
-process.env.JWT_SECRET = "JWT_SECRET";
-
 const request = require("supertest");
-const express = require("express");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const fs = require("fs");
 const knex = require("../../connection");
-const config = require("../../../knexfile")[process.env.NODE_ENV];
+const app = require("../../app");
 const api = require("./index");
 const { createUser } = require("../../db/users");
 
-beforeEach(async done => {
-  // Ensures that the database has been setup correctly.
-  await knex.migrate.latest();
+beforeAll(async done => {
+  await knex.test.setup();
   done();
 });
 
-beforeEach(async () => {
-  await knex.truncate("tags");
-  await knex.truncate("users");
+beforeEach(async done => {
+  await knex.test.cleanup();
+  done();
 });
 
 afterAll(() => {
-  fs.unlinkSync(config.connection.filename);
+  knex.test.teardown();
 });
 
 describe("/auth/register", () => {
-  const app = express();
-  app.use(bodyParser.json());
-  app.use(cookieParser("COOKIE_SECRET"));
   app.use(api);
 
   it("POST creates a user", async done => {
@@ -46,7 +36,8 @@ describe("/auth/register", () => {
       // Upon successful creation the user will be redirected to the session endpoint
       .expect(302)
       .expect("Location", "/auth/session")
-      .end(err => {
+      .end((err, res) => {
+        console.log(res.body);
         if (err) {
           throw err;
         }
@@ -164,7 +155,9 @@ describe("/auth/register", () => {
       .expect(500)
       .end((err, res) => {
         // TODO: There needs to be a way to pass up a validation error to asyncHandler()
-        expect(res.body.error).toEqual("Something went wrong");
+        expect(res.body.error).toEqual(
+          "A user with this email address already exists"
+        );
 
         done();
       });

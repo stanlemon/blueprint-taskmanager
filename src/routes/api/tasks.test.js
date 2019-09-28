@@ -1,9 +1,8 @@
 const request = require("supertest");
 const knex = require("../../connection");
 const app = require("../../app");
-const api = require("./tags");
+const api = require("./tasks");
 const { createUser } = require("../../db/users");
-const { createTag } = require("../../db/tags");
 
 beforeAll(async done => {
   await knex.test.setup();
@@ -19,16 +18,12 @@ afterAll(() => {
   knex.test.teardown();
 });
 
-describe("/api/tags", () => {
+describe("/api/tasks", () => {
   it("GET lists tags in the database", async done => {
     const user = await createUser({
       email: "test@test.com",
       password: "password",
     });
-
-    await createTag(user.id, "foo");
-    await createTag(user.id, "bar");
-    await createTag(user.id, "baz");
 
     function checkAuth(req, res, next) {
       req.user = user;
@@ -39,7 +34,7 @@ describe("/api/tags", () => {
     app.use(api);
 
     request(app)
-      .get("/tags")
+      .get("/tasks")
       .expect("Content-Type", /json/)
       .expect(200)
       .end((err, res) => {
@@ -47,7 +42,7 @@ describe("/api/tags", () => {
           throw err;
         }
 
-        expect(res.body).toEqual(["bar", "baz", "foo"]);
+        expect(res.body).toEqual([]);
 
         done();
       });
