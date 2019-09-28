@@ -17,10 +17,10 @@ beforeEach(async done => {
   done();
 });
 
-beforeEach(() => {
-  knex.truncate("task_tags");
-  knex.truncate("tasks");
-  knex.truncate("tags");
+beforeEach(async () => {
+  await knex.truncate("task_tags");
+  await knex.truncate("tasks");
+  await knex.truncate("tags");
 });
 
 afterAll(() => {

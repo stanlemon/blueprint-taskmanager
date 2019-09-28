@@ -17,8 +17,8 @@ beforeAll(async done => {
   done();
 });
 
-beforeEach(() => {
-  knex.truncate("users");
+beforeEach(async () => {
+  await knex.truncate("users");
 });
 
 afterAll(() => {
@@ -35,6 +35,7 @@ describe("users database access", () => {
 
     expect(user.name).toEqual(name);
     expect(user.email).toEqual(email);
+    expect(user.password).toBe(undefined);
     expect(isSameDay(parseISO(user.created_at), Date.now())).toBe(true);
     expect(user.created_at).toEqual(user.updated_at);
     expect(user.active).toBe(1);
@@ -76,6 +77,22 @@ describe("users database access", () => {
     );
 
     expect(refresh2.updated_at).not.toEqual(refresh1.updated_at);
+
+    done();
+  });
+
+  it("createUser() with existing username", async done => {
+    const name = "Test Test";
+    const email = "test@test.com";
+    const password = "password";
+
+    // Create the first user  with this email address
+    await createUser({ email, password, name });
+
+    /* eslint-disable-next-line jest/valid-expect */
+    expect(createUser({ email, password, name })).rejects.toEqual(
+      new Error("A user with this email address already exists")
+    );
 
     done();
   });

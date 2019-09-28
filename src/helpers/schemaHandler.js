@@ -2,7 +2,7 @@ const asyncHandler = require("./asyncHandler");
 
 const schemaHandler = (schema, fn) => async (req, res, next) => {
   // Validate the input schema
-  const { value, error } = await schema.validate(req.body, {
+  const { value, error } = schema.validate(req.body, {
     // False here will not allow keys that are not part of the schema
     allowUnknown: false,
     // True here will strip the unknown keys from the returned value

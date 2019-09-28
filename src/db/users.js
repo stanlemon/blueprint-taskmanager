@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const format = require("date-fns/format");
 const omit = require("lodash/omit");
+const isEmpty = require("lodash/isEmpty");
 const knex = require("../connection");
 
 function omitPassword(o) {
@@ -23,8 +24,9 @@ function _getUserByEmail(email) {
     .first();
 }
 
-function getUserByEmail(email) {
-  return _getUserByEmail(email).then(omitPassword);
+async function getUserByEmail(email) {
+  const user = await _getUserByEmail(email);
+  return omitPassword(user);
 }
 
 function getUserByEmailAndPassword(email, password) {
@@ -38,7 +40,7 @@ function getUserByEmailAndPassword(email, password) {
     .then(omitPassword);
 }
 
-function createUser(data) {
+async function createUser(data) {
   const now = format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
 
   const user = Object.assign({}, data, {
@@ -48,7 +50,11 @@ function createUser(data) {
     updated_at: now,
   });
 
-  // TODO: Validate if there is an existing username
+  const verify = await _getUserByEmail(data.email);
+
+  if (!isEmpty(verify)) {
+    throw new Error("A user with this email address already exists");
+  }
 
   return knex("users")
     .insert(user)
