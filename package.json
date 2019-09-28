@@ -115,6 +115,7 @@
     "puppeteer": "^1.20.0",
     "react-test-renderer": "^16.9.0",
     "sqlite3": "^4.1.0",
+    "supertest": "^4.0.2",
     "wait-for-expect": "^2.0.0"
   },
   "alias": {
