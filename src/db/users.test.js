@@ -96,7 +96,4 @@ describe("users database access", () => {
 
     done();
   });
-
-  // TODO: Test a failed user creation
-  // TODO: Test a user with a bad password
 });
