@@ -36,11 +36,10 @@ const setupUser = () => {
 };
 
 describe("tasks database access", () => {
-  // TODO: Add assertions for task tags
   it("createTask() and getTasks() and getTaskById()", async done => {
     const user = await setupUser();
 
-    const task1 = await createTask(user.id, { name: "Task1" });
+    const task1 = await createTask(user.id, { name: "Task1", tags: ["foo"] });
     const task2 = await createTask(user.id, { name: "Task1" });
     const task3 = await createTask(user.id, { name: "Task1" });
 
@@ -59,10 +58,18 @@ describe("tasks database access", () => {
     const user = await setupUser();
 
     const description = "A task description should go unchanged.";
-    const task1 = await createTask(user.id, { name: "Task1", description });
+    const tags = ["foo", "bar"];
+    const task1 = await createTask(user.id, {
+      name: "Task1",
+      description,
+      tags,
+    });
 
     const name = "Task1 Updated";
-    const update1 = await updateTask(user.id, task1.id, { name });
+    const update1 = await updateTask(user.id, task1.id, {
+      name,
+      tags: ["foo", "baz"],
+    });
 
     const task2 = await getTaskById(user.id, task1.id);
 
@@ -72,6 +79,7 @@ describe("tasks database access", () => {
     expect(update1.description).toEqual(task1.description);
     // This should have been updated
     expect(update1.updated_at).not.toEqual(task1.updated_at);
+    expect(update1.tags).toEqual(["baz", "foo"]);
 
     done();
   });
