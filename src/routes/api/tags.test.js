@@ -13,8 +13,9 @@ beforeEach(async done => {
   done();
 });
 
-beforeEach(() => {
-  knex.truncate("tags");
+beforeEach(async () => {
+  await knex.truncate("tags");
+  await knex.truncate("users");
 });
 
 afterAll(() => {

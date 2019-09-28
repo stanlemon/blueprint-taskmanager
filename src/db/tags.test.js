@@ -10,8 +10,8 @@ beforeEach(async done => {
   done();
 });
 
-beforeEach(() => {
-  knex.truncate("tags");
+beforeEach(async () => {
+  await knex.truncate("tags");
 });
 
 afterAll(() => {
