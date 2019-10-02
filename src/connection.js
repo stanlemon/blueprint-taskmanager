@@ -30,7 +30,7 @@ knex.test = {
    * Destroy the test database.
    */
   teardown: () => {
-    fs.unlinkSync(config.connection.filename);
+    // Noop, here as a placeholder
   },
 };
 

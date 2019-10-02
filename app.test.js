@@ -141,9 +141,6 @@ test("end to end", async done => {
   console.log("Close the browser");
   await browser.close();
 
-  console.log("Cleanup database");
-  fs.unlinkSync(config.connection.filename);
-
   console.log("Kill server");
   server.kill(() => {
     console.log("Killing server");
