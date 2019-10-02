@@ -1,5 +1,3 @@
-const fs = require("fs");
-
 require("dotenv").config();
 
 const config = require("../knexfile")[process.env.NODE_ENV];
