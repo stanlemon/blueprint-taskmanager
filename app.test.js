@@ -36,7 +36,7 @@ test("end to end", async done => {
   const browser = await puppeteer.launch({
     //headless: false,
     //devtools: true,
-    args: ["--disable-dev-shm-usage"],
+    args: ["--disable-dev-shm-usage", "--no-sandbox"],
   });
   const page = await browser.newPage();
 
