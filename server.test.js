@@ -2,17 +2,12 @@
 // Ensure that the app's assets have been built. This is an end to end test
 // that will start a full server in a production-like mode.
 
-const fs = require("fs");
 const puppeteer = require("puppeteer");
 const waitForExpect = require("wait-for-expect");
-const config = require("./knexfile")[process.env.NODE_ENV];
 
 process.env.PORT = "19292";
 
-// Require this after we change the env variables so they 'take';
-const connection = require("./src/connection");
-
-const { server } = require("./app.js");
+const { server } = require("./server.js");
 
 // Make sure the jumbotron has our text
 async function waitForTextInSelector(page, selector, text) {
