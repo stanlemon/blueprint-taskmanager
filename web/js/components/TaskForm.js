@@ -48,6 +48,14 @@ export default class TaskForm extends React.Component {
     errors: {},
   };
 
+  constructor(props) {
+    super(props);
+
+    this.nameInputRef = React.createRef();
+    this.datePickerRef = React.createRef();
+    this.tagsInputRef = React.createRef();
+  }
+
   handleSubmit = async e => {
     e.preventDefault();
 
@@ -55,6 +63,9 @@ export default class TaskForm extends React.Component {
 
     if (isEmpty(this.state.data) || isEmpty(this.state.data.name)) {
       errors["name"] = "You must enter a name for this task.";
+      // If we add more fields with error states, this won't scale, but for now if this field has an error
+      // focus on it immediately so it can be addressed.
+      this.nameInputRef.current.focus();
     }
 
     // If there are any errors, bail
@@ -64,6 +75,10 @@ export default class TaskForm extends React.Component {
       });
       return;
     }
+
+    // On successful submit, blur our active fields (the ones an enter can trigger a submit)
+    this.nameInputRef.current.blur();
+    this.tagsInputRef.current.input.input.blur();
 
     const result = await this.props.onSubmit(this.state.data);
 
@@ -151,6 +166,7 @@ export default class TaskForm extends React.Component {
               <label htmlFor="name" className="control-label">
                 Name
                 <input
+                  ref={this.nameInputRef}
                   tabIndex="1"
                   name="name"
                   type="text"
@@ -191,14 +207,32 @@ export default class TaskForm extends React.Component {
                 Due
                 <div>
                   <DatePicker
+                    ref={this.datePickerRef}
                     tabIndex="3"
                     name="due"
                     className="form-control"
                     selected={task.due}
                     onChange={this.setDueDate}
+                    todayButton="Today"
                     isClearable={true}
+                    shouldCloseOnSelect={true}
                     showTimeSelect
                     dateFormat="MM/dd/yyyy h:mma"
+                    onKeyDown={e => {
+                      // If a date has already been selected, the enter key advanced the focus to the next form field.
+                      if (e.keyCode === 13) {
+                        // If a date has not been selected on the calendar, do the normal thing
+                        if (isEmpty(this.datePickerRef.current.input.value)) {
+                          return;
+                        }
+
+                        // Close calendar
+                        this.datePickerRef.current.setOpen(false);
+                        // Focus on the next input, the tags
+                        // The ref is to <ReactTags/> which has an <Input/> reference that has a reference to the actual form <input/>
+                        this.tagsInputRef.current.input.input.focus();
+                      }
+                    }}
                   />
                 </div>
                 {errors.due && <span className="help-block">{errors.due}</span>}
@@ -208,6 +242,7 @@ export default class TaskForm extends React.Component {
               <div className="checkbox">
                 <label className="control-label task-completed">
                   <input
+                    tabIndex="4"
                     name="completed"
                     type="checkbox"
                     checked={task.completed ? true : false}
@@ -225,7 +260,8 @@ export default class TaskForm extends React.Component {
                 Tags
                 <div>
                   <Tags
-                    inputAttributes={{ tabIndex: 4 }}
+                    ref={this.tagsInputRef}
+                    inputAttributes={{ tabIndex: 5 }}
                     autofocus={false}
                     delimiterChars={[","]}
                     tags={task.tags.map(t => ({ name: t }))}
@@ -242,7 +278,7 @@ export default class TaskForm extends React.Component {
             <div className="form-group">
               <button
                 // Note to self: This is a mac specific thing is 'All Controls' is selected under Keyboard settings
-                tabIndex="5"
+                tabIndex="6"
                 type="submit"
                 className="btn btn-primary col-sm-2 save-task"
                 onClick={this.handleSubmit}
