@@ -221,6 +221,7 @@ export default class TaskForm extends React.Component {
                 Tags
                 <div>
                   <Tags
+                    autofocus={false}
                     delimiterChars={[","]}
                     tags={task.tags.map(t => ({ name: t }))}
                     allowNew={true}
