@@ -151,6 +151,7 @@ export default class TaskForm extends React.Component {
               <label htmlFor="name" className="control-label">
                 Name
                 <input
+                  tabIndex="1"
                   name="name"
                   type="text"
                   className="form-control"
@@ -170,6 +171,7 @@ export default class TaskForm extends React.Component {
               <label htmlFor="description" className="control-label">
                 Description
                 <textarea
+                  tabIndex="2"
                   name="description"
                   className="form-control"
                   onChange={this.setValue}
@@ -189,10 +191,12 @@ export default class TaskForm extends React.Component {
                 Due
                 <div>
                   <DatePicker
+                    tabIndex="3"
                     name="due"
                     className="form-control"
                     selected={task.due}
                     onChange={this.setDueDate}
+                    isClearable={true}
                     showTimeSelect
                     dateFormat="MM/dd/yyyy h:mma"
                   />
@@ -221,6 +225,7 @@ export default class TaskForm extends React.Component {
                 Tags
                 <div>
                   <Tags
+                    inputAttributes={{ tabIndex: 4 }}
                     autofocus={false}
                     delimiterChars={[","]}
                     tags={task.tags.map(t => ({ name: t }))}
@@ -236,6 +241,8 @@ export default class TaskForm extends React.Component {
             </div>
             <div className="form-group">
               <button
+                // Note to self: This is a mac specific thing is 'All Controls' is selected under Keyboard settings
+                tabIndex="5"
                 type="submit"
                 className="btn btn-primary col-sm-2 save-task"
                 onClick={this.handleSubmit}
