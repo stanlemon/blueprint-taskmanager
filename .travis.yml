@@ -1,7 +1,10 @@
 language: node_js
 
 node_js:
-  - 12
+  - 12.12
+
+# Puppeteer requires trusty, libnss3, and the items in before_install - this is for our integration tests
+dist: trusty
 
 addons:
   apt:
