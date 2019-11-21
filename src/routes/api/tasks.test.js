@@ -42,54 +42,48 @@ describe("/api/tasks", () => {
       });
   });
 
-  it("POST new task to the database", async () => {
+  it("POST, GET and PUT task", async () => {
     const newTask = {
       name: "Test Task",
       description: "Description of a test task",
     };
 
-    await request(app)
+    const { body: savedTask } = await request(app)
       .post("/tasks")
       .send(newTask)
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
-      .expect(200)
-      .then(res => {
-        // Copy this so we can reference it later
-        const task = res.body;
+      .expect(200);
 
-        // The task is returned when successfully created
-        expect(task).toMatchObject(newTask);
-        expect(task.id).not.toBe(undefined);
-        expect(isToday(parseISO(task.createdAt))).toBe(true);
-        expect(task.createdAt).toEqual(task.updatedAt);
+    // The task is returned when successfully created
+    expect(savedTask).toMatchObject(newTask);
+    expect(savedTask.id).not.toBe(undefined);
+    expect(isToday(parseISO(savedTask.createdAt))).toBe(true);
+    expect(savedTask.createdAt).toEqual(savedTask.updatedAt);
 
-        // Go back to the API and retrieve it, make sure that it exists
-        return request(app)
-          .get("/tasks/" + task.id)
-          .expect("Content-Type", /json/)
-          .expect(200)
-          .then(res => {
-            expect(res.body).toEqual(task);
+    // Go back to the API and retrieve it, make sure that it exists
+    const { body: theTask } = await request(app)
+      .get("/tasks/" + savedTask.id)
+      .expect("Content-Type", /json/)
+      .expect(200);
 
-            const updatedTaskName = "Updated task name!!";
+    expect(theTask).toEqual(savedTask);
 
-            // Go back to the API and retrieve it, make sure that it exists
-            return request(app)
-              .put("/tasks/" + task.id)
-              .send({ name: updatedTaskName })
-              .expect("Content-Type", /json/)
-              .expect(200)
-              .then(res => {
-                expect(res.body).toMatchObject({
-                  // Filter out updatedAt because it should have changed from the original task
-                  ...omit(task, ["updatedAt"]),
-                  // Override the existing task name
-                  ...{ name: updatedTaskName },
-                });
-                expect(isToday(parseISO(res.body.updatedAt))).toBe(true);
-              });
-          });
-      });
+    const updatedTaskName = "Updated task name!!";
+
+    // Go back to the API and retrieve it, make sure that it exists
+    const { body: updatedTask } = await request(app)
+      .put("/tasks/" + savedTask.id)
+      .send({ name: updatedTaskName })
+      .expect("Content-Type", /json/)
+      .expect(200);
+
+    expect(updatedTask).toMatchObject({
+      // Filter out updatedAt because it should have changed from the original task
+      ...omit(savedTask, ["updatedAt"]),
+      // Override the existing task name
+      ...{ name: updatedTaskName },
+    });
+    expect(isToday(parseISO(updatedTask.updatedAt))).toBe(true);
   });
 });
