@@ -9,7 +9,7 @@ export class UpdateTaskForm extends React.Component {
   handleSave = async data => {
     const response = await this.props.updateTask(data);
 
-    if (response.errors) {
+    if (response && response.errors) {
       return data;
     }
 

@@ -26,7 +26,6 @@
   "browserslist": [
     "last 1 year, not dead",
     "edge >= 18",
-    "current node",
     "not ie 11",
     "not ie_mob 11",
     "not samsung < 1000",
@@ -71,7 +70,7 @@
     "history": "^4.10.1",
     "jsonwebtoken": "^8.5.1",
     "killable": "^1.0.1",
-    "knex": "^0.19.5",
+    "knex": "^0.20.2",
     "lodash": "^4.17.15",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",

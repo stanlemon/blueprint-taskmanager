@@ -91,16 +91,16 @@ function createTags(userId, names) {
 
   const now = format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
 
-  return knex
-    .batchInsert(
-      "tags",
-      names.map(name => ({
-        user_id: userId,
-        name,
-        created_at: now,
-        updated_at: now,
-      }))
-    )
+  const tags = names.map(name => ({
+    user_id: userId,
+    name,
+    created_at: now,
+    updated_at: now,
+  }));
+
+  return knex("tags")
+    .insert(tags)
+    .returning("id")
     .then(() => {
       // Refresh the full record so we have ids
       return getTagsByName(userId, names);

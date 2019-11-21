@@ -2,6 +2,7 @@ const knex = require("../connection");
 const omit = require("lodash/omit");
 const includes = require("lodash/includes");
 const isObject = require("lodash/isObject");
+const isEmpty = require("lodash/isEmpty");
 const format = require("date-fns/format");
 const isDate = require("date-fns/isDate");
 const { upsertTags, getTagsByTaskId, getTagsForTaskIds } = require("./tags");
@@ -167,7 +168,11 @@ function upsertTaskTags(userId, taskId, tags) {
 }
 
 function createTaskTags(taskTags) {
-  return knex.batchInsert("task_tags", taskTags);
+  if (isEmpty(taskTags)) {
+    return Promise.resolve([]);
+  }
+
+  return knex("task_tags").insert(taskTags);
 }
 
 function createTask(userId, task) {
