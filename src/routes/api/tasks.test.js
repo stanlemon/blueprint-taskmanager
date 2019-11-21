@@ -4,14 +4,22 @@ const app = require("../../app");
 const api = require("./tasks");
 const { omit } = require("lodash");
 const { isToday, parseISO } = require("date-fns");
-const { createUser } = require("../../db/users");
+const { createUser, getUserByEmail } = require("../../db/users");
+const { createTask } = require("../../db/tasks");
+
+const email = "test@test.com";
 
 beforeAll(async () => {
   await knex.test.setup();
+});
+
+beforeEach(async () => {
+  await knex.test.cleanup();
 
   const user = await createUser({
-    email: "test@test.com",
+    email,
     password: "password",
+    active: true,
   });
 
   function checkAuth(req, res, next) {
@@ -21,10 +29,6 @@ beforeAll(async () => {
 
   app.use(checkAuth);
   app.use(api);
-});
-
-beforeEach(async () => {
-  await knex.test.cleanup();
 });
 
 afterAll(() => {
@@ -85,5 +89,40 @@ describe("/api/tasks", () => {
       ...{ name: updatedTaskName },
     });
     expect(isToday(parseISO(updatedTask.updatedAt))).toBe(true);
+  });
+
+  it("GET list of tasks", async () => {
+    const user = await getUserByEmail(email);
+
+    const task1 = {
+      name: "Test task 1",
+      description: "Description of a test task",
+    };
+    const task2 = {
+      name: "Test task 2",
+      completed: new Date(),
+      tags: ["foo", "bar"],
+    };
+
+    const task1Data = await createTask(user.id, task1);
+    const task2Data = await createTask(user.id, task2);
+
+    const { body: allTasks } = await request(app)
+      .get("/tasks")
+      .expect("Content-Type", /json/)
+      .expect(200);
+
+    expect(allTasks).toMatchObject([
+      {
+        ...omit(task1Data, ["created_at", "updated_at"]),
+        createdAt: task1Data.created_at,
+        updatedAt: task1Data.updated_at,
+      },
+      {
+        ...omit(task2Data, ["created_at", "updated_at"]),
+        createdAt: task2Data.created_at,
+        updatedAt: task2Data.updated_at,
+      },
+    ]);
   });
 });

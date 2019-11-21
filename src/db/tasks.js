@@ -31,10 +31,7 @@ async function getTasks(userId) {
     .where("user_id", userId)
     .orderBy("created_at");
 
-  const tags = await getTagsForTaskIds(
-    userId,
-    tasks.map(t => t.id)
-  );
+  const tags = await getTagsForTaskIds(userId, tasks.map(t => t.id));
 
   const tagsByTaskId = {};
 
@@ -48,6 +45,9 @@ async function getTasks(userId) {
   });
 
   tasks.forEach((task, i) => {
+    // Every task should have a tag array
+    tasks[i].tags = [];
+
     if (tagsByTaskId[task.id] != undefined) {
       tasks[i].tags = tagsByTaskId[task.id];
     }
