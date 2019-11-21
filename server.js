@@ -30,7 +30,6 @@ if (process.env.NODE_ENV === "development") {
   const options = {
     cache: false,
     hmr: true,
-    production: false,
   };
 
   // Initialize a new parcel bundler

@@ -17,19 +17,22 @@
     "dev": "NODE_ENV=development nodemon --trace-warnings server.js",
     "lint": "eslint --ext .jsx --ext .js server.js src/** web/js/**",
     "prettier": "prettier --write \"{server.js,src/**/*.js,web/**/*.js,web/**/*.less}\"",
-    "build": "NODE_ENV=production parcel build web/index.html",
+    "build": "rm -rf ./dist/* && NODE_ENV=production parcel build web/index.html",
     "test": "NODE_ENV=test jest --coverage --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test-watch": "NODE_ENV=test jest --watchAll --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test-e2e": "NODE_ENV=test jest ./server.test.js -t 'end to end' --detectOpenHandles",
     "test-all": "NODE_ENV=test jest  --detectOpenHandles --coverage --testRegex .*\\.test.js$"
   },
   "browserslist": [
-    "Firefox > 59",
-    "Safari > 11",
-    "iOS > 11",
-    "Chrome > 55",
-    "node > 10",
-    "Edge > 16"
+    "last 1 year, not dead",
+    "edge >= 18",
+    "current node",
+    "not ie 11",
+    "not ie_mob 11",
+    "not samsung < 1000",
+    "not opera < 1000",
+    "not kaios < 1000",
+    "not android < 1000"
   ],
   "jest": {
     "verbose": true,
@@ -88,8 +91,7 @@
     "redux-thunk": "^2.3.0",
     "serve-static": "^1.14.1",
     "uuid": "^3.3.3",
-    "validator": "^11.1.0",
-    "whatwg-fetch": "^3.0.0"
+    "validator": "^11.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -111,7 +113,6 @@
     "less": "^3.10.3",
     "nodemon": "^1.19.4",
     "parcel-bundler": "^1.12.4",
-    "parcel-plugin-bundle-visualiser": "^1.2.0",
     "prettier": "^1.18.2",
     "puppeteer": "^1.20.0",
     "react-test-renderer": "^16.10.2",
