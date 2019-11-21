@@ -18,7 +18,7 @@ export class CreateTaskForm extends React.Component {
   handleSave = async data => {
     const response = await this.props.createTask(data);
 
-    if (response.errors) {
+    if (response && response.errors) {
       return data;
     }
 

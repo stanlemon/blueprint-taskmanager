@@ -168,6 +168,7 @@ export default class TaskForm extends React.Component {
                 <input
                   ref={this.nameInputRef}
                   tabIndex="1"
+                  id="name"
                   name="name"
                   type="text"
                   className="form-control"
@@ -188,6 +189,7 @@ export default class TaskForm extends React.Component {
                 Description
                 <textarea
                   tabIndex="2"
+                  id="description"
                   name="description"
                   className="form-control"
                   onChange={this.setValue}
@@ -209,6 +211,7 @@ export default class TaskForm extends React.Component {
                   <DatePicker
                     ref={this.datePickerRef}
                     tabIndex="3"
+                    id="due"
                     name="due"
                     className="form-control"
                     selected={task.due}
@@ -243,6 +246,7 @@ export default class TaskForm extends React.Component {
                 <label className="control-label task-completed">
                   <input
                     tabIndex="4"
+                    id="completed"
                     name="completed"
                     type="checkbox"
                     checked={task.completed ? true : false}
