@@ -2,14 +2,12 @@ const knex = require("../connection");
 const { getTags, createTag } = require("./tags");
 const { createUser } = require("./users");
 
-beforeAll(async done => {
+beforeAll(async () => {
   await knex.test.setup();
-  done();
 });
 
-beforeEach(async done => {
+beforeEach(async () => {
   await knex.test.cleanup();
-  done();
 });
 
 afterAll(() => {
@@ -17,7 +15,7 @@ afterAll(() => {
 });
 
 describe("tags database access", () => {
-  it("getTags()", async done => {
+  it("getTags()", async () => {
     const user = await createUser({
       name: "test",
       email: "test",
@@ -30,7 +28,5 @@ describe("tags database access", () => {
     const tags = await getTags(user.id);
 
     expect(tags).toEqual(["bar", "baz", "foo"]);
-
-    done();
   });
 });

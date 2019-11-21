@@ -9,14 +9,12 @@ const {
 const { createTag } = require("./tags");
 const { createUser } = require("./users");
 
-beforeAll(async done => {
+beforeAll(async () => {
   await knex.test.setup();
-  done();
 });
 
-beforeEach(async done => {
+beforeEach(async () => {
   await knex.test.cleanup();
-  done();
 });
 
 afterAll(() => {
@@ -32,7 +30,7 @@ const setupUser = () => {
 };
 
 describe("tasks database access", () => {
-  it("createTask() and getTasks() and getTaskById()", async done => {
+  it("createTask() and getTasks() and getTaskById()", async () => {
     const user = await setupUser();
 
     const task1 = await createTask(user.id, { name: "Task1", tags: ["foo"] });
@@ -46,11 +44,9 @@ describe("tasks database access", () => {
     const refresh1 = await getTaskById(user.id, task1.id);
 
     expect(task1).toEqual(refresh1);
-
-    done();
   });
 
-  it("updateTask()", async done => {
+  it("updateTask()", async () => {
     const user = await setupUser();
 
     const description = "A task description should go unchanged.";
@@ -76,11 +72,9 @@ describe("tasks database access", () => {
     // This should have been updated
     expect(update1.updated_at).not.toEqual(task1.updated_at);
     expect(update1.tags).toEqual(["baz", "foo"]);
-
-    done();
   });
 
-  it("deleteTask()", async done => {
+  it("deleteTask()", async () => {
     const user = await setupUser();
 
     const task1 = await createTask(user.id, { name: "Task1" });
@@ -94,11 +88,9 @@ describe("tasks database access", () => {
     const tasks2 = await getTasks(user.id);
 
     expect([]).toMatchObject(tasks2);
-
-    done();
   });
 
-  it("getTaskById() with tags", async done => {
+  it("getTaskById() with tags", async () => {
     const user = await setupUser();
 
     await createTag(user.id, "baz");
@@ -127,11 +119,9 @@ describe("tasks database access", () => {
     const refresh4 = await updateTask(user.id, task.id, { tags: [] });
 
     expect(refresh4.tags).toMatchObject([]);
-
-    done();
   });
 
-  it("deleteTask() for other user", async done => {
+  it("deleteTask() for other user", async () => {
     const user1 = await setupUser();
     const user2 = await setupUser();
 
@@ -149,11 +139,9 @@ describe("tasks database access", () => {
 
     // Task is still there!
     expect(tasks2[0].id).toEqual(task1.id);
-
-    done();
   });
 
-  it("updateTask() for other user", async done => {
+  it("updateTask() for other user", async () => {
     const user1 = await setupUser();
     const user2 = await setupUser();
 
@@ -174,7 +162,5 @@ describe("tasks database access", () => {
     // Task hasn't changed!
     expect(tasks2[0].id).toEqual(task1.id);
     expect(tasks2[0].name).toEqual(task1.name);
-
-    done();
   });
 });

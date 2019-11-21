@@ -5,14 +5,12 @@ const api = require("./tags");
 const { createUser } = require("../../db/users");
 const { createTag } = require("../../db/tags");
 
-beforeAll(async done => {
+beforeAll(async () => {
   await knex.test.setup();
-  done();
 });
 
-beforeEach(async done => {
+beforeEach(async () => {
   await knex.test.cleanup();
-  done();
 });
 
 afterAll(() => {
@@ -20,7 +18,7 @@ afterAll(() => {
 });
 
 describe("/api/tags", () => {
-  it("GET lists tags in the database", async done => {
+  it("GET lists tags in the database", async () => {
     const user = await createUser({
       email: "test@test.com",
       password: "password",
@@ -38,18 +36,12 @@ describe("/api/tags", () => {
     app.use(checkAuth);
     app.use(api);
 
-    request(app)
+    await request(app)
       .get("/tags")
       .expect("Content-Type", /json/)
       .expect(200)
-      .end((err, res) => {
-        if (err) {
-          throw err;
-        }
-
+      .then(res => {
         expect(res.body).toEqual(["bar", "baz", "foo"]);
-
-        done();
       });
   });
 });

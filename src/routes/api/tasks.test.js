@@ -6,7 +6,7 @@ const { omit } = require("lodash");
 const { isToday, parseISO } = require("date-fns");
 const { createUser } = require("../../db/users");
 
-beforeAll(async done => {
+beforeAll(async () => {
   await knex.test.setup();
 
   const user = await createUser({
@@ -21,13 +21,10 @@ beforeAll(async done => {
 
   app.use(checkAuth);
   app.use(api);
-
-  done();
 });
 
-beforeEach(async done => {
+beforeEach(async () => {
   await knex.test.cleanup();
-  done();
 });
 
 afterAll(() => {
@@ -35,39 +32,29 @@ afterAll(() => {
 });
 
 describe("/api/tasks", () => {
-  it("GET empty list of tasks", async done => {
-    request(app)
+  it("GET empty list of tasks", async () => {
+    await request(app)
       .get("/tasks")
       .expect("Content-Type", /json/)
       .expect(200)
-      .end((err, res) => {
-        if (err) {
-          throw err;
-        }
-
+      .then(res => {
         expect(res.body).toEqual([]);
-
-        done();
       });
   });
 
-  it("POST new task to the database", async done => {
+  it("POST new task to the database", async () => {
     const newTask = {
       name: "Test Task",
       description: "Description of a test task",
     };
 
-    request(app)
+    await request(app)
       .post("/tasks")
       .send(newTask)
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200)
-      .end((err, res) => {
-        if (err) {
-          throw err;
-        }
-
+      .then(res => {
         // Copy this so we can reference it later
         const task = res.body;
 
@@ -78,30 +65,22 @@ describe("/api/tasks", () => {
         expect(task.createdAt).toEqual(task.updatedAt);
 
         // Go back to the API and retrieve it, make sure that it exists
-        request(app)
+        return request(app)
           .get("/tasks/" + task.id)
           .expect("Content-Type", /json/)
           .expect(200)
-          .end((err, res) => {
-            if (err) {
-              throw err;
-            }
-
+          .then(res => {
             expect(res.body).toEqual(task);
 
             const updatedTaskName = "Updated task name!!";
 
             // Go back to the API and retrieve it, make sure that it exists
-            request(app)
+            return request(app)
               .put("/tasks/" + task.id)
               .send({ name: updatedTaskName })
               .expect("Content-Type", /json/)
               .expect(200)
-              .end((err, res) => {
-                if (err) {
-                  throw err;
-                }
-
+              .then(res => {
                 expect(res.body).toMatchObject({
                   // Filter out updatedAt because it should have changed from the original task
                   ...omit(task, ["updatedAt"]),
@@ -109,11 +88,7 @@ describe("/api/tasks", () => {
                   ...{ name: updatedTaskName },
                 });
                 expect(isToday(parseISO(res.body.updatedAt))).toBe(true);
-
-                done();
               });
-
-            done();
           });
       });
   });

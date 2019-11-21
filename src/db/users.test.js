@@ -9,14 +9,12 @@ const {
   getUserByEmailAndPassword,
 } = require("./users");
 
-beforeAll(async done => {
+beforeAll(async () => {
   await knex.test.setup();
-  done();
 });
 
-beforeEach(async done => {
+beforeEach(async () => {
   await knex.test.cleanup();
-  done();
 });
 
 afterAll(() => {
@@ -24,7 +22,7 @@ afterAll(() => {
 });
 
 describe("users database access", () => {
-  it("createUser() and getUserBy...()", async done => {
+  it("createUser() and getUserBy...()", async () => {
     const name = "Test Test";
     const email = "test@test.com";
     const password = "password";
@@ -49,11 +47,9 @@ describe("users database access", () => {
     const refresh3 = await getUserByEmailAndPassword(user.email, password);
 
     expect(refresh3).toEqual(user);
-
-    done();
   });
 
-  it("updateUser()", async done => {
+  it("updateUser()", async () => {
     const user = await createUser({
       name: "Test",
       email: "test@test.com",
@@ -75,11 +71,9 @@ describe("users database access", () => {
     );
 
     expect(refresh2.updated_at).not.toEqual(refresh1.updated_at);
-
-    done();
   });
 
-  it("createUser() with existing username", async done => {
+  it("createUser() with existing username", async () => {
     const name = "Test Test";
     const email = "test@test.com";
     const password = "password";
@@ -92,7 +86,5 @@ describe("users database access", () => {
     expect(createUser({ email, password, name })).rejects.toEqual(
       new Error("A user with this email address already exists")
     );
-
-    done();
   });
 });
