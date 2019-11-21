@@ -105,29 +105,53 @@ describe("reducers", () => {
         type: CREATE_TASK_SUCCESS,
         task: { id: 2, name: "Task Two" },
       })
-    ).toMatchObject([{ id: 1, name: "Task One" }, { id: 2, name: "Task Two" }]);
+    ).toMatchObject([
+      { id: 1, name: "Task One" },
+      { id: 2, name: "Task Two" },
+    ]);
 
     expect(
-      tasks([{ id: 1, name: "Task One" }, { id: 2, name: "Task Two" }], {
-        type: UPDATE_TASK_SUCCESS,
-        task: { id: 1, name: "Task One Now Has A Longer Name" },
-      })
+      tasks(
+        [
+          { id: 1, name: "Task One" },
+          { id: 2, name: "Task Two" },
+        ],
+        {
+          type: UPDATE_TASK_SUCCESS,
+          task: { id: 1, name: "Task One Now Has A Longer Name" },
+        }
+      )
     ).toMatchObject([
       { id: 1, name: "Task One Now Has A Longer Name" },
       { id: 2, name: "Task Two" },
     ]);
 
     expect(
-      tasks([{ id: 1, name: "Task One" }, { id: 2, name: "Task Two" }], {
-        type: DELETE_TASK_SUCCESS,
-        taskId: 2,
-      })
+      tasks(
+        [
+          { id: 1, name: "Task One" },
+          { id: 2, name: "Task Two" },
+        ],
+        {
+          type: DELETE_TASK_SUCCESS,
+          taskId: 2,
+        }
+      )
     ).toMatchObject([{ id: 1, name: "Task One" }]);
 
     expect(
-      tasks([{ id: 1, name: "Task One" }, { id: 2, name: "Task Two" }], {
-        type: "unknown",
-      })
-    ).toMatchObject([{ id: 1, name: "Task One" }, { id: 2, name: "Task Two" }]);
+      tasks(
+        [
+          { id: 1, name: "Task One" },
+          { id: 2, name: "Task Two" },
+        ],
+        {
+          type: "unknown",
+        }
+      )
+    ).toMatchObject([
+      { id: 1, name: "Task One" },
+      { id: 2, name: "Task Two" },
+    ]);
   });
 });

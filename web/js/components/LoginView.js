@@ -180,7 +180,6 @@ LoginView.propTypes = {
   }),
 };
 
-export default connect(
-  state => ({ errors: state.errors }),
-  { login }
-)(LoginView);
+export default connect(state => ({ errors: state.errors }), { login })(
+  LoginView
+);

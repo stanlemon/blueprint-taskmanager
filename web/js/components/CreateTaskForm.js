@@ -38,7 +38,6 @@ export class CreateTaskForm extends React.Component {
   }
 }
 
-export default connect(
-  state => ({ tags: state.tags, errors: state.errors }),
-  { createTask }
-)(CreateTaskForm);
+export default connect(state => ({ tags: state.tags, errors: state.errors }), {
+  createTask,
+})(CreateTaskForm);

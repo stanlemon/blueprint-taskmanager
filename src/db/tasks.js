@@ -30,7 +30,10 @@ async function getTasks(userId) {
     .where("user_id", userId)
     .orderBy("created_at");
 
-  const tags = await getTagsForTaskIds(userId, tasks.map(t => t.id));
+  const tags = await getTagsForTaskIds(
+    userId,
+    tasks.map(t => t.id)
+  );
 
   const tagsByTaskId = {};
 

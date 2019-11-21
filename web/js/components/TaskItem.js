@@ -97,7 +97,4 @@ export class TaskItem extends React.Component {
   }
 }
 
-export default connect(
-  state => state,
-  { updateTask, deleteTask }
-)(TaskItem);
+export default connect(state => state, { updateTask, deleteTask })(TaskItem);

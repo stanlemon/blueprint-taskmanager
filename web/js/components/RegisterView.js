@@ -202,7 +202,6 @@ RegisterView.propTypes = {
   errors: PropTypes.object,
 };
 
-export default connect(
-  state => ({ errors: state.errors }),
-  { registerUser }
-)(RegisterView);
+export default connect(state => ({ errors: state.errors }), { registerUser })(
+  RegisterView
+);

@@ -41,7 +41,6 @@ UpdateTaskForm.propTypes = {
   errors: PropTypes.object,
 };
 
-export default connect(
-  state => ({ tags: state.tags, errors: state.errors }),
-  { updateTask }
-)(UpdateTaskForm);
+export default connect(state => ({ tags: state.tags, errors: state.errors }), {
+  updateTask,
+})(UpdateTaskForm);

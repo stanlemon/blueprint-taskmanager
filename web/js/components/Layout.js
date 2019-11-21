@@ -72,7 +72,9 @@ Layout.propTypes = {
   loaded: PropTypes.array,
 };
 
-export default connect(
-  state => ({ loaded: state.loaded }),
-  { logout, loadTasks, loadTags, clearErrors }
-)(Layout);
+export default connect(state => ({ loaded: state.loaded }), {
+  logout,
+  loadTasks,
+  loadTags,
+  clearErrors,
+})(Layout);
