@@ -44,7 +44,7 @@ test("end to end", async done => {
 
   createAccountButton.click();
 
-  await page.waitForSelector(".register-form");
+  await page.waitForSelector("#register-form");
 
   console.log("Fill out register account form");
   const nameInput1 = await await page.$('input[name="name"]');
@@ -55,6 +55,9 @@ test("end to end", async done => {
 
   const passwordInput1 = await page.$("input[name=password]");
   await passwordInput1.type(password);
+
+  const repeatPasswordInput1 = await page.$("input[name=repeat_password]");
+  await repeatPasswordInput1.type(password);
 
   console.log("Submit register account form");
   const submitButton1 = await page.$("#register-button");
@@ -106,7 +109,7 @@ test("end to end", async done => {
   const saveButton2 = await page.$(".save-task");
   await saveButton2.click();
 
-  const taskRow2 = await page.waitForSelector(".task-row");
+  await page.waitForSelector(".task-row");
   await waitForTextInSelector(
     page,
     ".task-row",

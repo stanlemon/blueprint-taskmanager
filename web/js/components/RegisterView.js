@@ -46,6 +46,14 @@ export class RegisterView extends React.Component {
       errors["password"] = "You must enter your password.";
     }
 
+    // Ensure that they've entered their password twice
+    if (
+      !isEmpty(this.state.data.password) &&
+      this.state.data.password != this.state.data.repeat_password
+    ) {
+      errors["repeat_password"] = "Your password does not match.";
+    }
+
     if (
       !isEmpty(this.state.data.password) &&
       !isLength(this.state.data.password, { min: 8, max: 64 })
@@ -90,101 +98,108 @@ export class RegisterView extends React.Component {
   render() {
     const errors = { ...this.props.errors, ...this.state.errors };
 
-    // TODO: Add double entry of password
     return (
       <div className="container">
         <div className="row">
           <div className="col-xs-10 col-sm-8 col-xs-offset-1 col-sm-offset-2">
             <h2>Register an Account</h2>
-            <div className="panel panel-info">
-              <div className="panel-body">
-                <div className="form-horizontal">
-                  <form className="register-form" onSubmit={this.handleSubmit}>
-                    <div
-                      className={classNames("form-group", {
-                        "has-error": errors.name,
-                      })}
-                    >
-                      <label htmlFor="name">
-                        <div className="col-sm-2 control-label">Name</div>
-                        <div className="col-sm-10">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="name"
-                            name="name"
-                            value={this.state.data.name}
-                            onChange={this.setValue}
-                          />
-                          {errors.name && (
-                            <span className="help-block">{errors.name}</span>
-                          )}
-                        </div>
-                      </label>
-                    </div>
-                    <div
-                      className={classNames("form-group", {
-                        "has-error": errors.email,
-                      })}
-                    >
-                      <label htmlFor="email">
-                        <div className="col-sm-2 control-label">Email</div>
-                        <div className="col-sm-10">
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="email"
-                            name="email"
-                            value={this.state.data.email}
-                            onChange={this.setValue}
-                          />
-                          {errors.email && (
-                            <span className="help-block">{errors.email}</span>
-                          )}
-                        </div>
-                      </label>
-                    </div>
-                    <div
-                      className={classNames("form-group", {
-                        "has-error": errors.password,
-                      })}
-                    >
-                      <label htmlFor="password">
-                        <div className="col-sm-2 control-label">Password</div>
-                        <div className="col-sm-10">
-                          <input
-                            type="password"
-                            className="form-control"
-                            id="password"
-                            name="password"
-                            value={this.state.data.password}
-                            onChange={this.setValue}
-                          />
-                          {errors.password && (
-                            <span className="help-block">
-                              {errors.password}
-                            </span>
-                          )}
-                        </div>
-                      </label>
-                    </div>
-
-                    <br />
-                    <div className="col-sm-6 col-sm-offset-3">
-                      <button
-                        id="register-button"
-                        type="submit"
-                        onClick={this.handleSubmit}
-                        className="btn btn-primary btn-block"
-                      >
-                        Register
-                      </button>
-                    </div>
-                  </form>
+            <form id="register-form" onSubmit={this.handleSubmit}>
+              <div className="well">
+                <div
+                  className={classNames("form-group", {
+                    "has-error": errors.name,
+                  })}
+                >
+                  <label htmlFor="name" className="control-label">
+                    Name
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="name"
+                      name="name"
+                      value={this.state.data.name}
+                      onChange={this.setValue}
+                    />
+                    {errors.name && (
+                      <span className="help-block">{errors.name}</span>
+                    )}
+                  </label>
                 </div>
+                <div
+                  className={classNames("form-group", {
+                    "has-error": errors.email,
+                  })}
+                >
+                  <label htmlFor="email" className="control-label">
+                    Email
+                    <input
+                      type="email"
+                      className="form-control"
+                      id="email"
+                      name="email"
+                      value={this.state.data.email}
+                      onChange={this.setValue}
+                    />
+                    {errors.email && (
+                      <span className="help-block">{errors.email}</span>
+                    )}
+                  </label>
+                </div>
+                <div
+                  className={classNames("form-group", {
+                    "has-error": errors.password,
+                  })}
+                >
+                  <label htmlFor="password" className="control-label">
+                    Password
+                    <input
+                      type="password"
+                      className="form-control"
+                      id="password"
+                      name="password"
+                      value={this.state.data.password}
+                      onChange={this.setValue}
+                    />
+                    {errors.password && (
+                      <span className="help-block">{errors.password}</span>
+                    )}
+                  </label>
+                </div>
+                <div
+                  className={classNames("form-group", {
+                    "has-error": errors.repeat_password,
+                  })}
+                >
+                  <label htmlFor="password" className="control-label">
+                    Repeat Password
+                    <input
+                      type="password"
+                      className="form-control"
+                      id="repeat_password"
+                      name="repeat_password"
+                      value={this.state.data.repeat_password}
+                      onChange={this.setValue}
+                    />
+                    {errors.repeat_password && (
+                      <span className="help-block">
+                        {errors.repeat_password}
+                      </span>
+                    )}
+                  </label>
+                </div>
+                <div className="form-group">
+                  <button
+                    id="register-button"
+                    type="submit"
+                    onClick={this.handleSubmit}
+                    className="btn btn-primary col-sm-offset-5 col-sm-2"
+                  >
+                    Register
+                  </button>
+                </div>
+                <div className="clearfix" />
               </div>
-            </div>
-            <div style={{ minHeight: "2em" }} />
+            </form>
             <div className="text-center">
               <a className="btn btn-link" onClick={this.handleClickToLogin}>
                 Return to Login

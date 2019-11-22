@@ -57,6 +57,11 @@ describe("<RegisterView />", () => {
       target: { name: "password", value: "p@$$w0rd!" },
     });
 
+    const repeatPassword = view.find('input[name="repeat_password"]');
+    repeatPassword.simulate("change", {
+      target: { name: "repeat_password", value: "p@$$w0rd!" },
+    });
+
     view.find("form").simulate("submit");
 
     expect(view.find(".has-error").length).toBe(1);
@@ -83,6 +88,11 @@ describe("<RegisterView />", () => {
     const password = view.find('input[name="password"]');
     password.simulate("change", {
       target: { name: "password", value: "short" },
+    });
+
+    const repeatPassword = view.find('input[name="repeat_password"]');
+    repeatPassword.simulate("change", {
+      target: { name: "repeat_password", value: "short" },
     });
 
     view.find("form").simulate("submit");
@@ -119,6 +129,15 @@ describe("<RegisterView />", () => {
       },
     });
 
+    const repeatPassword = view.find('input[name="repeat_password"]');
+    repeatPassword.simulate("change", {
+      target: {
+        name: "repeat_password",
+        value:
+          "superduperreallyreallyreallylongpasswordlikewaytoolongofapasswordofranysaneperson",
+      },
+    });
+
     view.find("form").simulate("submit");
 
     expect(view.find(".has-error").length).toBe(1);
@@ -129,6 +148,45 @@ describe("<RegisterView />", () => {
     expect(errors.at(0).text()).toBe(
       "Your password must be between 8 and 64 characters in length."
     );
+  });
+
+  it("should render an error when a password is not repeated correctly", () => {
+    const view = mount(<RegisterView registerUser={() => {}} />);
+
+    const name = view.find('input[name="name"]');
+    name.simulate("change", {
+      target: { name: "name", value: "Name" },
+    });
+
+    const email = view.find('input[name="email"]');
+    email.simulate("change", {
+      target: { name: "email", value: "foo@bar.com" },
+    });
+
+    const password = view.find('input[name="password"]');
+    password.simulate("change", {
+      target: {
+        name: "password",
+        value: "testpassword1",
+      },
+    });
+
+    const repeatPassword = view.find('input[name="repeat_password"]');
+    repeatPassword.simulate("change", {
+      target: {
+        name: "repeat_password",
+        value: "testpassword123",
+      },
+    });
+
+    view.find("form").simulate("submit");
+
+    expect(view.find(".has-error").length).toBe(1);
+
+    // Within a node with an error, the error messages
+    const errors = view.find(".has-error .help-block");
+
+    expect(errors.at(0).text()).toBe("Your password does not match.");
   });
 
   it("should submit a valid user", () => {
@@ -159,6 +217,14 @@ describe("<RegisterView />", () => {
     passwordInput.simulate("change", {
       target: {
         name: "password",
+        value: expectedPassword,
+      },
+    });
+
+    const repeatPasswordInput = view.find('input[name="repeat_password"]');
+    repeatPasswordInput.simulate("change", {
+      target: {
+        name: "repeat_password",
         value: expectedPassword,
       },
     });

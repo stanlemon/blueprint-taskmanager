@@ -5,7 +5,7 @@ const api = require("./tasks");
 const { omit } = require("lodash");
 const { isToday, parseISO } = require("date-fns");
 const { createUser, getUserByEmail } = require("../../db/users");
-const { createTask } = require("../../db/tasks");
+const { createTask, getTaskById } = require("../../db/tasks");
 
 const email = "test@test.com";
 
@@ -44,6 +44,41 @@ describe("/api/tasks", () => {
       .then(res => {
         expect(res.body).toEqual([]);
       });
+  });
+
+  it("GET list of tasks", async () => {
+    const user = await getUserByEmail(email);
+
+    const task1 = {
+      name: "Test task 1",
+      description: "Description of a test task",
+    };
+    const task2 = {
+      name: "Test task 2",
+      completed: new Date(),
+      tags: ["foo", "bar"],
+    };
+
+    const task1Data = await createTask(user.id, task1);
+    const task2Data = await createTask(user.id, task2);
+
+    const { body: allTasks } = await request(app)
+      .get("/tasks")
+      .expect("Content-Type", /json/)
+      .expect(200);
+
+    expect(allTasks).toMatchObject([
+      {
+        ...omit(task1Data, ["created_at", "updated_at"]),
+        createdAt: task1Data.created_at,
+        updatedAt: task1Data.updated_at,
+      },
+      {
+        ...omit(task2Data, ["created_at", "updated_at"]),
+        createdAt: task2Data.created_at,
+        updatedAt: task2Data.updated_at,
+      },
+    ]);
   });
 
   it("POST, GET and PUT task", async () => {
@@ -91,38 +126,23 @@ describe("/api/tasks", () => {
     expect(isToday(parseISO(updatedTask.updatedAt))).toBe(true);
   });
 
-  it("GET list of tasks", async () => {
+  it("DELETE a task", async () => {
     const user = await getUserByEmail(email);
 
     const task1 = {
       name: "Test task 1",
       description: "Description of a test task",
     };
-    const task2 = {
-      name: "Test task 2",
-      completed: new Date(),
-      tags: ["foo", "bar"],
-    };
 
     const task1Data = await createTask(user.id, task1);
-    const task2Data = await createTask(user.id, task2);
 
-    const { body: allTasks } = await request(app)
-      .get("/tasks")
+    await request(app)
+      .delete("/tasks/" + task1Data.id)
       .expect("Content-Type", /json/)
       .expect(200);
 
-    expect(allTasks).toMatchObject([
-      {
-        ...omit(task1Data, ["created_at", "updated_at"]),
-        createdAt: task1Data.created_at,
-        updatedAt: task1Data.updated_at,
-      },
-      {
-        ...omit(task2Data, ["created_at", "updated_at"]),
-        createdAt: task2Data.created_at,
-        updatedAt: task2Data.updated_at,
-      },
-    ]);
+    const tasks1Refresh = await getTaskById(user.id, task1Data.id);
+
+    expect(tasks1Refresh).toBe(null);
   });
 });
