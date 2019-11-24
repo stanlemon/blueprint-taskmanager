@@ -4,7 +4,6 @@ import Adapter from "enzyme-adapter-react-16";
 import { RegisterView } from "./RegisterView";
 import { history } from "../lib/Navigation";
 import { ROUTE_LOGIN } from "./Routes";
-import { Button } from "./elements/";
 
 configure({ adapter: new Adapter() });
 

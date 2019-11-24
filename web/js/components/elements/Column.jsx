@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import omit from "lodash/omit";
+import PropTypes from "prop-types";
 
 export function Column(_props) {
   const classes = classNames(
@@ -21,5 +22,9 @@ export function Column(_props) {
     </div>
   );
 }
+
+Column.propTypes = {
+  children: PropTypes.node,
+};
 
 export default Column;
