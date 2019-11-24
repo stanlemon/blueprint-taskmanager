@@ -161,11 +161,12 @@ describe("<TaskForm />", () => {
 
     expect(isSameDay(new Date(), lastSavedTask.completed)).toBe(true);
 
-    const completedLabel = view.find("label.task-completed");
+    const completedLabel = view.find('label[htmlFor="completed"]');
 
     expect(
       completedLabel
         .text()
+        .trim()
         .includes("Completed on " + format(Date.now(), "MMMM do yyyy"))
     ).toBe(true);
   });

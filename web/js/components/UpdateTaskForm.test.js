@@ -42,9 +42,9 @@ describe("<UpdateTaskForm />", () => {
 
     expect(completed.props().checked).toEqual(true);
 
-    const completedLabel = view.find("label.task-completed");
+    const completedLabel = view.find('label[htmlFor="completed"]');
 
-    expect(completedLabel.text()).toEqual(
+    expect(completedLabel.text().trim()).toEqual(
       "Completed on June 12th 2017, 7:08AM"
     );
 

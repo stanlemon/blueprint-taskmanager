@@ -26,6 +26,11 @@
         "react": {
           // Define this otherwise the rule produces a warning
             "version": "detect"
+        },
+        "import/resolver": {
+          "node": {
+            "extensions": [".js",".jsx"]
+          }
         }
     }
 }

@@ -1,12 +1,12 @@
 import isEmpty from "lodash/isEmpty";
 import isEmail from "validator/lib/isEmail";
 import isLength from "validator/lib/isLength";
-import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { navigateTo } from "../lib/Navigation";
 import { registerUser } from "../actions/";
+import { Container, Columns, Column, Field, Button } from "./elements/";
 
 export class RegisterView extends React.Component {
   constructor(props) {
@@ -99,115 +99,65 @@ export class RegisterView extends React.Component {
     const errors = { ...this.props.errors, ...this.state.errors };
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-xs-10 col-sm-8 col-xs-offset-1 col-sm-offset-2">
+      <Container style={{ padding: 10, marginTop: -70 }}>
+        <Columns>
+          <Column offset={2} size={8}>
             <h2>Register an Account</h2>
             <form id="register-form" onSubmit={this.handleSubmit}>
               <div className="well">
-                <div
-                  className={classNames("form-group", {
-                    "has-error": errors.name,
-                  })}
-                >
-                  <label htmlFor="name" className="control-label">
-                    Name
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="name"
-                      name="name"
-                      value={this.state.data.name}
-                      onChange={this.setValue}
-                    />
-                    {errors.name && (
-                      <span className="help-block">{errors.name}</span>
-                    )}
-                  </label>
-                </div>
-                <div
-                  className={classNames("form-group", {
-                    "has-error": errors.email,
-                  })}
-                >
-                  <label htmlFor="email" className="control-label">
-                    Email
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="email"
-                      name="email"
-                      value={this.state.data.email}
-                      onChange={this.setValue}
-                    />
-                    {errors.email && (
-                      <span className="help-block">{errors.email}</span>
-                    )}
-                  </label>
-                </div>
-                <div
-                  className={classNames("form-group", {
-                    "has-error": errors.password,
-                  })}
-                >
-                  <label htmlFor="password" className="control-label">
-                    Password
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="password"
-                      name="password"
-                      value={this.state.data.password}
-                      onChange={this.setValue}
-                    />
-                    {errors.password && (
-                      <span className="help-block">{errors.password}</span>
-                    )}
-                  </label>
-                </div>
-                <div
-                  className={classNames("form-group", {
-                    "has-error": errors.repeat_password,
-                  })}
-                >
-                  <label htmlFor="password" className="control-label">
-                    Repeat Password
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="repeat_password"
-                      name="repeat_password"
-                      value={this.state.data.repeat_password}
-                      onChange={this.setValue}
-                    />
-                    {errors.repeat_password && (
-                      <span className="help-block">
-                        {errors.repeat_password}
-                      </span>
-                    )}
-                  </label>
-                </div>
-                <div className="form-group">
-                  <button
-                    id="register-button"
-                    type="submit"
-                    onClick={this.handleSubmit}
-                    className="btn btn-primary col-sm-offset-5 col-sm-2"
-                  >
-                    Register
-                  </button>
-                </div>
-                <div className="clearfix" />
+                <Field
+                  name="name"
+                  label="Name"
+                  error={errors.name}
+                  value={this.state.data.name}
+                  onChange={this.setValue}
+                />
+                <Field
+                  name="email"
+                  label="Email"
+                  type="email"
+                  error={errors.email}
+                  value={this.state.data.email}
+                  onChange={this.setValue}
+                />
+                <Field
+                  name="password"
+                  label="Password"
+                  type="password"
+                  error={errors.password}
+                  value={this.state.data.password}
+                  onChange={this.setValue}
+                />
+                <Field
+                  name="repeat_password"
+                  label="Password"
+                  type="password"
+                  error={errors.repeat_password}
+                  value={this.state.data.repeat_password}
+                  onChange={this.setValue}
+                />
+                <Columns gutters={false}>
+                  <Column offset={3} size={6}>
+                    <Button
+                      id="register-button"
+                      type="submit"
+                      onClick={this.handleSubmit}
+                      is="primary"
+                    >
+                      Register
+                    </Button>
+                  </Column>
+                </Columns>
               </div>
             </form>
             <div className="text-center">
-              <a className="btn btn-link" onClick={this.handleClickToLogin}>
+              <Button is="link" onClick={this.handleClickToLogin}>
                 Return to Login
-              </a>
+              </Button>
             </div>
-          </div>
-        </div>
-      </div>
+          </Column>
+        </Columns>
+      </Container>
     );
   }
 }

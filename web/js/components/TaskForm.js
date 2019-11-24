@@ -10,6 +10,7 @@ import uniq from "lodash/uniq";
 import Tags from "react-tag-autocomplete";
 import { navigateTo } from "../lib/Navigation";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
+import { Columns, Column, Field, Button } from "./elements/";
 
 export default class TaskForm extends React.Component {
   static propTypes = {
@@ -157,150 +158,112 @@ export default class TaskForm extends React.Component {
     return (
       <form className={classes} onSubmit={this.handleSubmit}>
         <div className="well">
-          <div>
-            <div
-              className={classNames("form-group", {
-                "has-error": errors.name,
-              })}
-            >
-              <label htmlFor="name" className="control-label">
-                Name
-                <input
-                  ref={this.nameInputRef}
-                  tabIndex="1"
-                  id="name"
-                  name="name"
-                  type="text"
-                  className="form-control"
-                  onChange={this.setValue}
-                  value={task.name}
-                />
-                {errors.name && (
-                  <span className="help-block">{errors.name}</span>
-                )}
-              </label>
-            </div>
-            <div
-              className={classNames("form-group", {
-                "has-error": errors.description,
-              })}
-            >
-              <label htmlFor="description" className="control-label">
-                Description
-                <textarea
-                  tabIndex="2"
-                  id="description"
-                  name="description"
-                  className="form-control"
-                  onChange={this.setValue}
-                  value={task.description}
-                />
-                {errors.description && (
-                  <span className="help-block">{errors.description}</span>
-                )}
-              </label>
-            </div>
-            <div
-              className={classNames("form-group", {
-                "has-error": errors.due,
-              })}
-            >
-              <label htmlFor="due" className="control-label">
-                Due
-                <div>
-                  <DatePicker
-                    ref={this.datePickerRef}
-                    tabIndex="3"
-                    id="due"
-                    name="due"
-                    className="form-control"
-                    selected={task.due}
-                    onChange={this.setDueDate}
-                    todayButton="Today"
-                    isClearable={true}
-                    shouldCloseOnSelect={true}
-                    showTimeSelect
-                    dateFormat="MM/dd/yyyy h:mma"
-                    onKeyDown={e => {
-                      // If a date has already been selected, the enter key advanced the focus to the next form field.
-                      if (e.keyCode === 13) {
-                        // If a date has not been selected on the calendar, do the normal thing
-                        if (isEmpty(this.datePickerRef.current.input.value)) {
-                          return;
-                        }
+          <Field
+            label="Name"
+            name="name"
+            error={errors.name}
+            onChange={this.setValue}
+            value={task.name}
+            ref={this.nameInputRef}
+          />
+          <Field
+            label="Description"
+            name="description"
+            type="textarea"
+            error={errors.description}
+            onChange={this.setValue}
+            value={task.description}
+          />
+          <Field label="Due" name="due" error={errors.due}>
+            <DatePicker
+              ref={this.datePickerRef}
+              tabIndex="3"
+              id="due"
+              name="due"
+              className="form-control"
+              selected={task.due}
+              onChange={this.setDueDate}
+              todayButton="Today"
+              isClearable={true}
+              shouldCloseOnSelect={true}
+              showTimeSelect
+              dateFormat="MM/dd/yyyy h:mma"
+              onKeyDown={e => {
+                // If a date has already been selected, the enter key advanced the focus to the next form field.
+                if (e.keyCode === 13) {
+                  // If a date has not been selected on the calendar, do the normal thing
+                  if (isEmpty(this.datePickerRef.current.input.value)) {
+                    return;
+                  }
 
-                        // Close calendar
-                        this.datePickerRef.current.setOpen(false);
-                        // Focus on the next input, the tags
-                        // The ref is to <ReactTags/> which has an <Input/> reference that has a reference to the actual form <input/>
-                        this.tagsInputRef.current.input.input.focus();
-                      }
-                    }}
-                  />
-                </div>
-                {errors.due && <span className="help-block">{errors.due}</span>}
-              </label>
-            </div>
-            {task && task.id && (
-              <div className="checkbox">
-                <label className="control-label task-completed">
-                  <input
-                    tabIndex="4"
-                    id="completed"
-                    name="completed"
-                    type="checkbox"
-                    checked={task.completed ? true : false}
-                    onChange={this.setCompleted}
-                  />
+                  // Close calendar
+                  this.datePickerRef.current.setOpen(false);
+                  // Focus on the next input, the tags
+                  // The ref is to <ReactTags/> which has an <Input/> reference that has a reference to the actual form <input/>
+                  this.tagsInputRef.current.input.input.focus();
+                }
+              }}
+            />
+          </Field>
+          <Field label="Tags" name="tags" error={errors.tags}>
+            <Tags
+              ref={this.tagsInputRef}
+              inputAttributes={{ tabIndex: 5 }}
+              autofocus={false}
+              delimiterChars={[","]}
+              tags={task.tags.map(t => ({ name: t }))}
+              allowNew={true}
+              suggestions={this.props.tags.map(tag => ({
+                name: tag,
+              }))}
+              handleDelete={this.removeTag}
+              handleAddition={this.addTag}
+            />
+          </Field>
+          {task && task.id && (
+            <Field
+              label={
+                <>
                   Completed
                   {task.completed && !isBoolean(task.completed) && (
                     <em> on {format(task.completed, DATE_FORMAT_LONG)}</em>
                   )}
-                </label>
-              </div>
-            )}
-            <div className="form-group">
-              <label htmlFor="due" className="control-label">
-                Tags
-                <div>
-                  <Tags
-                    ref={this.tagsInputRef}
-                    inputAttributes={{ tabIndex: 5 }}
-                    autofocus={false}
-                    delimiterChars={[","]}
-                    tags={task.tags.map(t => ({ name: t }))}
-                    allowNew={true}
-                    suggestions={this.props.tags.map(tag => ({
-                      name: tag,
-                    }))}
-                    handleDelete={this.removeTag}
-                    handleAddition={this.addTag}
-                  />
-                </div>
-              </label>
-            </div>
-            <div className="form-group">
-              <button
+                </>
+              }
+              name="completed"
+              tabIndex="4"
+              type="checkbox"
+              checked={task.completed ? true : false}
+              onChange={this.setCompleted}
+            />
+          )}
+
+          <Columns gutters={false}>
+            <Column size={3}>
+              <Button
+                id="save-task"
                 // Note to self: This is a mac specific thing is 'All Controls' is selected under Keyboard settings
                 tabIndex="6"
                 type="submit"
-                className="btn btn-primary col-sm-2 save-task"
+                is="primary"
                 onClick={this.handleSubmit}
               >
                 Save
-              </button>
-              {task.id && (
-                <a
+              </Button>
+            </Column>
+            {task.id && (
+              <Column size={3}>
+                <Button
+                  id="cancel-task"
+                  tabIndex="7"
                   style={{ marginLeft: 20 }}
-                  className="btn btn-default col-sm-2 cancel-task"
                   onClick={this.cancelTask}
                 >
                   Cancel
-                </a>
-              )}
-            </div>
-            <div className="clearfix" />
-          </div>
+                </Button>
+              </Column>
+            )}
+          </Columns>
         </div>
       </form>
     );

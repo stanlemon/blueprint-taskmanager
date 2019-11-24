@@ -6,6 +6,7 @@ import { sortTasksByDate } from "../lib/Utils";
 import CreateTaskForm from "./CreateTaskForm";
 import TaskItem from "./TaskItem";
 import { connect } from "react-redux";
+import { Columns, Column } from "./elements/";
 
 const ALL = "all";
 const INCOMPLETE = "incomplete";
@@ -82,58 +83,53 @@ export class TaskListView extends React.Component {
       active: filter === COMPLETE,
     });
 
-    const style = {
-      notasks: {
-        border: "1px solid #e3e3e3",
-        borderRadius: "4px",
-        marginBottom: "8px",
-      },
-    };
-
     return (
-      <div>
-        <div className="col-xs-12 col-sm-5 pull-right">
-          <div className="btn-group btn-group-justified" role="group">
-            <div className="btn-group" role="group">
-              <button
-                type="button"
-                onClick={this.setFilterToAll}
-                className={btnAll}
-              >
-                All
-              </button>
+      <>
+        <Columns style={{ marginBottom: 10 }}>
+          <Column size={4} offset={8}>
+            <div className="btn-group btn-group-justified" role="group">
+              <div className="btn-group" role="group">
+                <button
+                  type="button"
+                  onClick={this.setFilterToAll}
+                  className={btnAll}
+                >
+                  All
+                </button>
+              </div>
+              <div className="btn-group" role="group">
+                <button
+                  type="button"
+                  onClick={this.setFilterToIncomplete}
+                  className={btnIncomplete}
+                >
+                  Incomplete
+                </button>
+              </div>
+              <div className="btn-group" role="group">
+                <button
+                  type="button"
+                  onClick={this.setFilterToComplete}
+                  className={btnComplete}
+                >
+                  Complete
+                </button>
+              </div>
             </div>
-            <div className="btn-group" role="group">
-              <button
-                type="button"
-                onClick={this.setFilterToIncomplete}
-                className={btnIncomplete}
-              >
-                Incomplete
-              </button>
-            </div>
-            <div className="btn-group" role="group">
-              <button
-                type="button"
-                onClick={this.setFilterToComplete}
-                className={btnComplete}
-              >
-                Complete
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="clearfix" />
-        <div style={{ minHeight: 10 }} />
+          </Column>
+        </Columns>
 
         {tasks.length === 0 && (
-          <div style={style.notasks}>
-            <div
-              className="text-center row task-filter-none"
-              style={{ margin: "10px" }}
-            >
-              <em>There are no tasks for this filter.</em>
-            </div>
+          <div
+            className="text-center task-filter-none"
+            style={{
+              border: "1px solid #e3e3e3",
+              borderRadius: 4,
+              marginBottom: 10,
+              padding: 10,
+            }}
+          >
+            <em>There are no tasks for this filter.</em>
           </div>
         )}
 
@@ -141,10 +137,8 @@ export class TaskListView extends React.Component {
           <TaskItem key={task.id} task={task} />
         ))}
 
-        <br />
-
         <CreateTaskForm />
-      </div>
+      </>
     );
   }
 }

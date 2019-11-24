@@ -89,7 +89,7 @@ test("end to end", async done => {
   await taskNameInput1.focus();
   await taskNameInput1.type("First task name");
 
-  const saveButton1 = await page.$(".save-task");
+  const saveButton1 = await page.$("#save-task");
   await saveButton1.click();
 
   const taskRow1 = await page.waitForSelector(".task-row");
@@ -106,7 +106,7 @@ test("end to end", async done => {
   await taskNameInput2.type("First task name, now updated");
 
   console.log("Click button to save task");
-  const saveButton2 = await page.$(".save-task");
+  const saveButton2 = await page.$("#save-task");
   await saveButton2.click();
 
   await page.waitForSelector(".task-row");

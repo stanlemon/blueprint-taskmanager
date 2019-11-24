@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { makeDateTime } from "../lib/Utils";
 import { navigateTo } from "../lib/Navigation";
 import { updateTask, deleteTask } from "../actions";
+import { Columns, Column } from "./elements/";
 
 export class TaskItem extends React.Component {
   static propTypes = {
@@ -36,7 +37,7 @@ export class TaskItem extends React.Component {
   render() {
     const { task } = this.props;
 
-    const rowClasses = classNames("row", "row-no-gutters", "task-row", {
+    const rowClasses = classNames("task-row", {
       // Tasks due in the next day
       "bg-warning task-due-soon":
         task.due &&
@@ -52,10 +53,12 @@ export class TaskItem extends React.Component {
     });
 
     return (
-      <div className={rowClasses}>
-        <div
+      <Columns className={rowClasses} gutters={false}>
+        <Column
+          flex={9}
+          size={11}
           role="button"
-          className="task-name col-xs-10 col-sm-11 col-md-11"
+          className="task-name"
           onClick={this.viewTask}
           style={{
             outline: 0,
@@ -65,20 +68,22 @@ export class TaskItem extends React.Component {
           }}
         >
           {task.name}
-        </div>
-        <div
-          className="col-xs-2 col-sm-1 col-md-1"
+        </Column>
+        <Column
+          className="pull-right"
+          flex={3}
+          size={1}
           style={{ paddingTop: 10, paddingBottom: 10, paddingRight: 20 }}
         >
-          <div className="col-xs-6 col-sm-6 text-left">
+          <Column flex={6} size={6}>
             <input
               type="checkbox"
               className="complete-task"
               checked={this.props.task.completed !== null}
               onChange={this.completeTask}
             />
-          </div>
-          <div className="col-xs-6 col-sm-6 text-right">
+          </Column>
+          <Column flex={6} size={6} className="text-right">
             <a
               className="btn btn-xs btn-danger delete-task"
               onClick={this.deleteTask}
@@ -90,9 +95,9 @@ export class TaskItem extends React.Component {
                 }}
               />
             </a>
-          </div>
-        </div>
-      </div>
+          </Column>
+        </Column>
+      </Columns>
     );
   }
 }

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { login } from "../actions/";
 import { navigateTo } from "../lib/Navigation";
 import Error from "./Error";
+import { Container, Columns, Column, Field, Button } from "./elements/";
 
 export class LoginView extends React.Component {
   constructor(props) {
@@ -80,16 +81,16 @@ export class LoginView extends React.Component {
     const { username, password } = this.state.data;
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
+      <Container style={{ padding: 10 }}>
+        <Columns>
+          <Column size={6} offset={3}>
             {Object.entries(errors).map(([key, value]) => (
               <Error key={key} message={value} />
             ))}
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
+          </Column>
+        </Columns>
+        <Columns>
+          <Column size={6} offset={3}>
             <div className="panel panel-info">
               <div className="panel-heading">
                 <h3 className="panel-title">
@@ -99,63 +100,44 @@ export class LoginView extends React.Component {
               <div className="panel-body">
                 <div className="form-horizontal">
                   <form className="login-form" onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                      <label htmlFor="username">
-                        <div className="col-sm-3 control-label">Email</div>
-                        <div className="col-sm-9">
-                          <div className="input-group">
-                            <span className="input-group-addon">
-                              <i className="fa fa-user" />
-                            </span>
-                            <input
-                              type="email"
-                              className="form-control"
-                              id="username"
-                              name="username"
-                              value={username}
-                              onChange={this.setValue}
-                            />
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="password">
-                        <div className="col-sm-3 control-label">Password</div>
-                        <div className="col-sm-9">
-                          <div className="input-group">
-                            <span className="input-group-addon">
-                              <i className="fa fa-lock" />
-                            </span>
-                            <input
-                              type="password"
-                              className="form-control"
-                              id="password"
-                              name="password"
-                              value={password}
-                              onChange={this.setValue}
-                            />
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                    <br />
-                    <div className="col-sm-10 col-sm-offset-1">
-                      <button
-                        id="login-button"
-                        type="submit"
-                        onClick={this.handleSubmit}
-                        className="btn btn-primary btn-block"
-                      >
-                        Login
-                      </button>
-                    </div>
+                    <Field
+                      isHorizontal={true}
+                      icon="user"
+                      name="username"
+                      type="email"
+                      label="Email"
+                      value={username}
+                      onChange={this.setValue}
+                    />
+
+                    <Field
+                      isHorizontal={true}
+                      icon="lock"
+                      name="password"
+                      type="password"
+                      label="Password"
+                      value={password}
+                      onChange={this.setValue}
+                    />
+
+                    <Columns>
+                      <Column size={8} offset={2}>
+                        <Button
+                          id="login-button"
+                          type="submit"
+                          onClick={this.handleSubmit}
+                          is="primary"
+                        >
+                          Login
+                        </Button>
+                      </Column>
+                    </Columns>
                   </form>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </Column>
+        </Columns>
         <div style={{ minHeight: "15px" }} />
         <div className="row">
           <div className="text-center">
@@ -168,7 +150,7 @@ export class LoginView extends React.Component {
             </a>
           </div>
         </div>
-      </div>
+      </Container>
     );
   }
 }

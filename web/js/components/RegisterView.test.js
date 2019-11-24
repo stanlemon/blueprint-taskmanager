@@ -4,6 +4,7 @@ import Adapter from "enzyme-adapter-react-16";
 import { RegisterView } from "./RegisterView";
 import { history } from "../lib/Navigation";
 import { ROUTE_LOGIN } from "./Routes";
+import { Button } from "./elements/";
 
 configure({ adapter: new Adapter() });
 
@@ -241,9 +242,8 @@ describe("<RegisterView />", () => {
   it("clicking the button to return to the login screen should trigger navigateTo", () => {
     const view = mount(<RegisterView registerUser={() => {}} />);
 
-    const button = view.findWhere(
-      n => n.type() === "a" && n.text() === "Return to Login"
-    );
+    // Probably need a better way to identify this button
+    const button = view.find("button.btn-link");
 
     button.simulate("click");
 
