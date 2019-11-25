@@ -10,7 +10,7 @@ configure({ adapter: new Adapter() });
 
 describe("<LoginView />", () => {
   it("should render a login screen with empty fields", () => {
-    const view = mount(<LoginView login={() => {}} />);
+    const view = mount(<LoginView login={() => {}} clearErrors={() => {}} />);
 
     const username = view.find('input[name="username"]');
 
@@ -22,7 +22,7 @@ describe("<LoginView />", () => {
   });
 
   it("should error when fields are submitted blank", () => {
-    const view = mount(<LoginView login={() => {}} />);
+    const view = mount(<LoginView login={() => {}} clearErrors={() => {}} />);
 
     view.find("form").simulate("submit");
 
@@ -42,7 +42,7 @@ describe("<LoginView />", () => {
       username = data.username;
       password = data.password;
     };
-    const view = mount(<LoginView login={login} />);
+    const view = mount(<LoginView login={login} clearErrors={() => {}} />);
 
     const expectedUsername = "test@test.com";
     const expectedPassword = "p@$$w0rd";
@@ -66,7 +66,7 @@ describe("<LoginView />", () => {
   });
 
   it("clicking the button to go to the register screen should trigger navigateTo", () => {
-    const view = mount(<LoginView login={() => {}} />);
+    const view = mount(<LoginView login={() => {}} clearErrors={() => {}} />);
 
     const button = view.findWhere(
       n => n.type() === "a" && n.text() === "Create Account"

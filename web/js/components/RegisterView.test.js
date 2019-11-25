@@ -9,7 +9,9 @@ configure({ adapter: new Adapter() });
 
 describe("<RegisterView />", () => {
   it("should render a register screen with empty fields", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(
+      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
+    );
 
     const name = view.find('input[name="name"]');
 
@@ -25,7 +27,9 @@ describe("<RegisterView />", () => {
   });
 
   it("should render errors when submitted with empty fields", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(
+      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
+    );
 
     view.find("form").simulate("submit");
 
@@ -40,7 +44,9 @@ describe("<RegisterView />", () => {
   });
 
   it("should render an error when an invalid email is entered", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(
+      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
+    );
 
     const name = view.find('input[name="name"]');
     name.simulate("change", {
@@ -73,7 +79,9 @@ describe("<RegisterView />", () => {
   });
 
   it("should render an error when a password is too short", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(
+      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
+    );
 
     const name = view.find('input[name="name"]');
     name.simulate("change", {
@@ -108,7 +116,9 @@ describe("<RegisterView />", () => {
   });
 
   it("should render an error when a password is too long", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(
+      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
+    );
 
     const name = view.find('input[name="name"]');
     name.simulate("change", {
@@ -151,7 +161,9 @@ describe("<RegisterView />", () => {
   });
 
   it("should render an error when a password is not repeated correctly", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(
+      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
+    );
 
     const name = view.find('input[name="name"]');
     name.simulate("change", {
@@ -201,7 +213,9 @@ describe("<RegisterView />", () => {
     const expectedEmail = "stanlemon@users.noreply.github.com";
     const expectedPassword = "p@$$w0rd!";
 
-    const view = mount(<RegisterView registerUser={registerUser} />);
+    const view = mount(
+      <RegisterView registerUser={registerUser} clearErrors={() => {}} />
+    );
 
     const nameInput = view.find('input[name="name"]');
     nameInput.simulate("change", {
@@ -239,7 +253,9 @@ describe("<RegisterView />", () => {
   });
 
   it("clicking the button to return to the login screen should trigger navigateTo", () => {
-    const view = mount(<RegisterView registerUser={() => {}} />);
+    const view = mount(
+      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
+    );
 
     // Probably need a better way to identify this button
     const button = view.find("a");
