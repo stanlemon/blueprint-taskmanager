@@ -6,7 +6,7 @@ import { sortTasksByDate } from "../lib/Utils";
 import CreateTaskForm from "./CreateTaskForm";
 import TaskItem from "./TaskItem";
 import { connect } from "react-redux";
-import { Columns, Column } from "./elements/";
+import { Container, Columns, Column } from "./elements/";
 
 const ALL = "all";
 const INCOMPLETE = "incomplete";
@@ -84,8 +84,8 @@ export class TaskListView extends React.Component {
     });
 
     return (
-      <>
-        <Columns style={{ marginBottom: 10 }}>
+      <Container>
+        <Columns>
           <Column size={4} offset={8}>
             <div className="btn-group btn-group-justified" role="group">
               <div className="btn-group" role="group">
@@ -137,8 +137,9 @@ export class TaskListView extends React.Component {
           <TaskItem key={task.id} task={task} />
         ))}
 
+        <br />
         <CreateTaskForm />
-      </>
+      </Container>
     );
   }
 }

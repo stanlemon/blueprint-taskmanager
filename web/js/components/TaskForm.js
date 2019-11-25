@@ -151,120 +151,118 @@ export default class TaskForm extends React.Component {
     const task = this.state.data;
     const errors = Object.assign({}, this.state.errors, this.props.errors);
 
-    const classes = classNames("task-form", {
+    const classes = classNames({
       [this.props.className]: !isEmpty(this.props.className),
     });
 
     return (
       <form className={classes} onSubmit={this.handleSubmit}>
-        <div className="well">
-          <Field
-            label="Name"
-            name="name"
-            error={errors.name}
-            onChange={this.setValue}
-            value={task.name}
-            ref={this.nameInputRef}
-          />
-          <Field
-            label="Description"
-            name="description"
-            type="textarea"
-            error={errors.description}
-            onChange={this.setValue}
-            value={task.description}
-          />
-          <Field label="Due" name="due" error={errors.due}>
-            <DatePicker
-              ref={this.datePickerRef}
-              tabIndex="3"
-              id="due"
-              name="due"
-              className="form-control"
-              selected={task.due}
-              onChange={this.setDueDate}
-              todayButton="Today"
-              isClearable={true}
-              shouldCloseOnSelect={true}
-              showTimeSelect
-              dateFormat="MM/dd/yyyy h:mma"
-              onKeyDown={e => {
-                // If a date has already been selected, the enter key advanced the focus to the next form field.
-                if (e.keyCode === 13) {
-                  // If a date has not been selected on the calendar, do the normal thing
-                  if (isEmpty(this.datePickerRef.current.input.value)) {
-                    return;
-                  }
-
-                  // Close calendar
-                  this.datePickerRef.current.setOpen(false);
-                  // Focus on the next input, the tags
-                  // The ref is to <ReactTags/> which has an <Input/> reference that has a reference to the actual form <input/>
-                  this.tagsInputRef.current.input.input.focus();
+        <Field
+          label="Name"
+          name="name"
+          error={errors.name}
+          onChange={this.setValue}
+          value={task.name}
+          ref={this.nameInputRef}
+        />
+        <Field
+          label="Description"
+          name="description"
+          type="textarea"
+          error={errors.description}
+          onChange={this.setValue}
+          value={task.description}
+        />
+        <Field label="Due" name="due" error={errors.due}>
+          <DatePicker
+            ref={this.datePickerRef}
+            tabIndex="3"
+            id="due"
+            name="due"
+            className="input"
+            selected={task.due}
+            onChange={this.setDueDate}
+            todayButton="Today"
+            isClearable={true}
+            shouldCloseOnSelect={true}
+            showTimeSelect
+            dateFormat="MM/dd/yyyy h:mma"
+            onKeyDown={e => {
+              // If a date has already been selected, the enter key advanced the focus to the next form field.
+              if (e.keyCode === 13) {
+                // If a date has not been selected on the calendar, do the normal thing
+                if (isEmpty(this.datePickerRef.current.input.value)) {
+                  return;
                 }
-              }}
-            />
-          </Field>
-          <Field label="Tags" name="tags" error={errors.tags}>
-            <Tags
-              ref={this.tagsInputRef}
-              inputAttributes={{ tabIndex: 5 }}
-              autofocus={false}
-              delimiterChars={[","]}
-              tags={task.tags.map(t => ({ name: t }))}
-              allowNew={true}
-              suggestions={this.props.tags.map(tag => ({
-                name: tag,
-              }))}
-              handleDelete={this.removeTag}
-              handleAddition={this.addTag}
-            />
-          </Field>
-          {task && task.id && (
-            <Field
-              label={
-                <>
-                  Completed
-                  {task.completed && !isBoolean(task.completed) && (
-                    <em> on {format(task.completed, DATE_FORMAT_LONG)}</em>
-                  )}
-                </>
-              }
-              name="completed"
-              tabIndex="4"
-              type="checkbox"
-              checked={task.completed ? true : false}
-              onChange={this.setCompleted}
-            />
-          )}
 
-          <Columns gutters={false}>
+                // Close calendar
+                this.datePickerRef.current.setOpen(false);
+                // Focus on the next input, the tags
+                // The ref is to <ReactTags/> which has an <Input/> reference that has a reference to the actual form <input/>
+                this.tagsInputRef.current.input.input.focus();
+              }
+            }}
+          />
+        </Field>
+        <Field label="Tags" name="tags" error={errors.tags}>
+          <Tags
+            ref={this.tagsInputRef}
+            inputAttributes={{ tabIndex: 5 }}
+            autofocus={false}
+            delimiterChars={[","]}
+            tags={task.tags.map(t => ({ name: t }))}
+            allowNew={true}
+            suggestions={this.props.tags.map(tag => ({
+              name: tag,
+            }))}
+            handleDelete={this.removeTag}
+            handleAddition={this.addTag}
+          />
+        </Field>
+        {task && task.id && (
+          <Field
+            label={
+              <>
+                Completed
+                {task.completed && !isBoolean(task.completed) && (
+                  <em> on {format(task.completed, DATE_FORMAT_LONG)}</em>
+                )}
+              </>
+            }
+            name="completed"
+            tabIndex="4"
+            type="checkbox"
+            checked={task.completed ? true : false}
+            onChange={this.setCompleted}
+          />
+        )}
+
+        <Columns gutters={false}>
+          <Column size={3}>
+            <Button
+              id="save-task"
+              // Note to self: This is a mac specific thing is 'All Controls' is selected under Keyboard settings
+              tabIndex="6"
+              type="submit"
+              is="primary"
+              onClick={this.handleSubmit}
+            >
+              Save
+            </Button>
+          </Column>
+          {task.id && (
             <Column size={3}>
               <Button
-                id="save-task"
-                // Note to self: This is a mac specific thing is 'All Controls' is selected under Keyboard settings
-                tabIndex="6"
-                type="submit"
-                is="primary"
-                onClick={this.handleSubmit}
+                id="cancel-task"
+                tabIndex="7"
+                style={{ marginLeft: 20 }}
+                onClick={this.cancelTask}
               >
-                Save
+                Cancel
               </Button>
             </Column>
-            {task.id && (
-              <Column size={3}>
-                <Button
-                  id="cancel-task"
-                  tabIndex="7"
-                  style={{ marginLeft: 20 }}
-                  onClick={this.cancelTask}
-                >
-                  Cancel
-                </Button>
-              </Column>
-            )}
-          </Columns>
-        </div>
+          )}
+        </Columns>
       </form>
     );
   }
