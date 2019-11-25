@@ -83,11 +83,14 @@ export class Layout extends React.Component {
           >
             <div className="navbar-start"></div>
             <div className="navbar-end">
-              <div className="navbar-item" onClick={this.handleClickToLogout}>
+              <div
+                id="logout"
+                className="navbar-item"
+                onClick={this.handleClickToLogout}
+              >
                 <span style={{ marginRight: 10 }}>Logout</span>
                 <span className="icon">
                   <i
-                    id="logout"
                     role="button"
                     style={{ cursor: "pointer" }}
                     className="fa fa-lg fa-sign-out"
