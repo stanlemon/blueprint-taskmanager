@@ -172,6 +172,7 @@ export class RegisterView extends React.Component {
 
 RegisterView.propTypes = {
   registerUser: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   errors: PropTypes.object,
 };
 

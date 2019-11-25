@@ -2,6 +2,8 @@ import isEmpty from "lodash/isEmpty";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
 import { login, clearErrors } from "../actions/";
 import { navigateTo } from "../lib/Navigation";
 import Error from "./Error";
@@ -92,7 +94,7 @@ export class LoginView extends React.Component {
         <form className="login-form" onSubmit={this.handleSubmit}>
           <Field
             isHorizontal={true}
-            icon="user"
+            icon={faUser}
             name="username"
             type="email"
             label="Email"
@@ -103,7 +105,7 @@ export class LoginView extends React.Component {
 
           <Field
             isHorizontal={true}
-            icon="lock"
+            icon={faLock}
             name="password"
             type="password"
             label="Password"
@@ -140,6 +142,7 @@ export class LoginView extends React.Component {
 
 LoginView.propTypes = {
   login: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   errors: PropTypes.shape({
     main: PropTypes.string,
   }),

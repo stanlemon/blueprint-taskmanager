@@ -2,16 +2,11 @@ import React from "react";
 import classNames from "classnames";
 import omit from "lodash/omit";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 
 // In the future handle <select> and <input type="radio" />
 const Field = React.forwardRef((props, ref) => {
   const input = makeInput(props, ref);
-
-  const icon = (
-    <span className="icon is-small is-left">
-      <i className={classNames("fa", `fa-${props.icon}`)} />
-    </span>
-  );
 
   if (props.isHorizontal) {
     return (
@@ -27,17 +22,26 @@ const Field = React.forwardRef((props, ref) => {
               <p className="control is-expanded has-icons-left">
                 {input}
                 <span className="icon is-small is-left">
-                  <i className={classNames("fa", `fa-${props.icon}`)} />
+                  <Icon icon={props.icon} />
                 </span>
               </p>
             )}
-            {!props.icon && <div className="control">input</div>}
+            {!props.icon && <div className="control">{input}</div>}
             {props.error && (
               <p className="error help is-danger">{props.error}</p>
             )}
           </div>
         </div>
       </div>
+    );
+  }
+
+  let icon = "";
+  if (props.icon) {
+    icon = (
+      <span className="icon is-small is-left">
+        <Icon icon={props.icon} />
+      </span>
     );
   }
 
@@ -50,6 +54,7 @@ const Field = React.forwardRef((props, ref) => {
       </>
     ) : (
       <>
+        {props.icon && icon}
         {props.label} {input}
       </>
     );
@@ -140,7 +145,7 @@ Field.propTypes = {
   className: PropTypes.string,
   isHorizontal: PropTypes.bool,
   onChange: PropTypes.func,
-  icon: PropTypes.string,
+  icon: PropTypes.any,
   error: PropTypes.string,
 };
 
