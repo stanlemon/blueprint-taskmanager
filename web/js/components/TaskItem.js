@@ -55,7 +55,7 @@ export class TaskItem extends React.Component {
     return (
       <Columns flex={true} className={rowClasses} gutters={false}>
         <Column
-          size={11}
+          size={10}
           role="button"
           className="task-name"
           onClick={this.viewTask}
@@ -65,9 +65,9 @@ export class TaskItem extends React.Component {
         >
           <div style={{ margin: 10 }}>{task.name}</div>
         </Column>
-        <Column size={1}>
+        <Column size={2}>
           <Columns flex={true}>
-            <Column flex={6} size={6}>
+            <Column size={6}>
               <input
                 type="checkbox"
                 className="complete-task"
@@ -75,7 +75,7 @@ export class TaskItem extends React.Component {
                 onChange={this.completeTask}
               />
             </Column>
-            <Column flex={6} size={6} className="text-right">
+            <Column size={6} className="text-right">
               <a
                 className="btn btn-xs btn-danger delete-task"
                 onClick={this.deleteTask}

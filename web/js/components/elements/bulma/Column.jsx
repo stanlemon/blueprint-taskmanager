@@ -10,9 +10,6 @@ export function Column(_props) {
     {
       [`is-${_props.size}`]: _props.size,
       [`is-offset-${_props.offset}`]: _props.offset,
-      // Flex is basically the width on mobile, it's optional
-      // I don't provide a mobile offset option yet, this is complicated
-      //[`col-xs-${_props.flex}`]: _props.flex,
     },
     _props.className
   );

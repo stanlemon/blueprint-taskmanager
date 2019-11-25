@@ -1,61 +1,11 @@
 @import "~font-awesome/less/font-awesome.less";
 
-////////// Bootstrap
+@import (inline) "../../node_modules/bulma/css/bulma.css";
 
-// Core variables and mixins
-/*
-@import "~bootswatch/cerulean/variables.less";
-@import "~bootswatch/cerulean/bootswatch.less";
-@import "~bootstrap/less/mixins.less";
 
-// Reset and dependencies
-@import "~bootstrap/less/normalize.less";
-@import "~bootstrap/less/print.less";
-//@import "~bootstrap/less/glyphicons.less";
-
-// Core CSS
-@import "~bootstrap/less/scaffolding.less";
-@import "~bootstrap/less/type.less";
-@import "~bootstrap/less/code.less";
-@import "~bootstrap/less/grid.less";
-@import "~bootstrap/less/tables.less";
-@import "~bootstrap/less/forms.less";
-@import "~bootstrap/less/buttons.less";
-
-// Components
-@import "~bootstrap/less/component-animations.less";
-@import "~bootstrap/less/dropdowns.less";
-@import "~bootstrap/less/button-groups.less";
-@import "~bootstrap/less/input-groups.less";
-@import "~bootstrap/less/navs.less";
-@import "~bootstrap/less/navbar.less";
-@import "~bootstrap/less/breadcrumbs.less";
-@import "~bootstrap/less/pagination.less";
-@import "~bootstrap/less/pager.less";
-@import "~bootstrap/less/labels.less";
-@import "~bootstrap/less/badges.less";
-//@import "~bootstrap/less/jumbotron.less";
-@import "~bootstrap/less/thumbnails.less";
-@import "~bootstrap/less/alerts.less";
-@import "~bootstrap/less/progress-bars.less";
-@import "~bootstrap/less/media.less";
-@import "~bootstrap/less/list-group.less";
-@import "~bootstrap/less/panels.less";
-//@import "~bootstrap/less/responsive-embed.less";
-@import "~bootstrap/less/wells.less";
-@import "~bootstrap/less/close.less";
-
-// Components w/ JavaScript
-//@import "~bootstrap/less/modals.less";
-//@import "~bootstrap/less/tooltip.less";
-//@import "~bootstrap/less/popovers.less";
-//@import "~bootstrap/less/carousel.less";
-
-// Utility classes
-//@import "~bootstrap/less/utilities.less";
-//@import "~bootstrap/less/responsive-utilities.less";
-*/
 @import (inline) "~react-datepicker/dist/react-datepicker.css";
+
+@import (inline) "./react-tags.css";
 
 .react-datepicker-wrapper {
   display: block !important;
@@ -69,18 +19,6 @@
 .react-datepicker__time, .react-datepicker__today-button {
   border-bottom-left-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
-}
-
-@import (inline) "./react-tags.css";
-
-html,
-body {
-  // This is specifically for react-datepicker which uses rem's
-  font-size: 14px;
-}
-
-body {
-  font-family: -apple-system, "Helvetica Neue", Helvetica Arial;
 }
 
 @rw-img-path: "~react-widgets/lib/img";
@@ -123,51 +61,9 @@ body {
   content: "\f002";
 }
 
-label {
-  font-weight: normal;
-}
-
-/* Fixes width of form controls when they are nested inside of labels */
-.form-group > label {
-  width: 100%;
-}
-
-/* icon */
-.custom-navbar .fa {
-  font-size: 25px;
-}
-.custom-navbar.navbar-inverse .navbar-nav > li > a:hover,
-.custom-navbar.navbar-inverse .navbar-nav > li > a:focus {
-  background-color: inherit;
-}
-
-@media (max-width: 767px) {
-  .custom-navbar .navbar-right {
-    float: right;
-    padding-right: 15px;
-  }
-  .custom-navbar .nav.navbar-nav.navbar-right li {
-    float: right;
-  }
-  .custom-navbar .nav.navbar-nav.navbar-right li > a {
-    padding: 8px 5px;
-  }
-  .custom-navbar .navbar-toggle {
-    float: left;
-  }
-  .custom-navbar .navbar-header {
-    float: left;
-    width: auto !important;
-  }
-  .custom-navbar .navbar-collapse {
-    clear: both;
-    float: none;
-  }
-}
-
 // Blueprint Specific CSS
 .task-row {
-  cursor: "pointer";
+  cursor: pointer;
   border: 1px solid #e3e3e3;
   border-radius: 4px;
   margin-bottom: 10px !important;

@@ -10,7 +10,7 @@ import uniq from "lodash/uniq";
 import Tags from "react-tag-autocomplete";
 import { navigateTo } from "../lib/Navigation";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
-import { Columns, Column, Field, Button } from "./elements/";
+import { Field, Button } from "./elements/";
 
 export default class TaskForm extends React.Component {
   static propTypes = {

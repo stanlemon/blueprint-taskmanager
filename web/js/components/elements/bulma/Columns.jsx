@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import omit from "lodash/omit";
+import PropTypes from "prop-types";
 
 export function Columns(_props) {
   const classes = classNames(
@@ -12,7 +13,7 @@ export function Columns(_props) {
     },
     _props.className
   );
-  const props = omit(_props, "className", "gutters", "children");
+  const props = omit(_props, "className", "flex", "gutters", "children");
   return (
     <div className={classes} {...props}>
       {_props.children}
@@ -20,7 +21,12 @@ export function Columns(_props) {
   );
 }
 
+Columns.propTypes = {
+  flex: PropTypes.bool,
+};
+
 Columns.defaultProps = {
+  flex: false,
   gutters: true,
 };
 

@@ -1,6 +1,3 @@
-// Import only what you need from Bulma
-import "../../../../node_modules/bulma/css/bulma.css";
-
 /*
 export { default as Container } from "./bootstrap/Container";
 export { default as Columns } from "./bootstrap/Columns";

@@ -96,7 +96,7 @@ describe("<TaskListView />", () => {
       <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
     );
 
-    view.find("button.task-filter-incomplete").simulate("click");
+    view.find("#task-filter-incomplete").simulate("click");
 
     expect(view.find(TaskItem).length).toBe(1);
     expect(
@@ -107,7 +107,7 @@ describe("<TaskListView />", () => {
     ).toBe(2);
 
     // Clicking back on all should show every task, essentially clear out the filter
-    view.find("button.task-filter-all").simulate("click");
+    view.find("#task-filter-all").simulate("click");
 
     expect(view.find(TaskItem).length).toBe(2);
   });
@@ -134,7 +134,7 @@ describe("<TaskListView />", () => {
       <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
     );
 
-    view.find("button.task-filter-complete").simulate("click");
+    view.find("#task-filter-complete").simulate("click");
 
     expect(view.find(TaskItem).length).toBe(1);
     expect(
@@ -145,7 +145,7 @@ describe("<TaskListView />", () => {
     ).toBe(1);
 
     // Clicking back on all should show every task, essentially clear out the filter
-    view.find("button.task-filter-all").simulate("click");
+    view.find("#task-filter-all").simulate("click");
 
     expect(view.find(TaskItem).length).toBe(2);
   });
@@ -172,7 +172,7 @@ describe("<TaskListView />", () => {
       <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
     );
 
-    view.find("button.task-filter-complete").simulate("click");
+    view.find("#task-filter-complete").simulate("click");
 
     expect(view.find(TaskItem).length).toBe(0);
     expect(view.find(".task-filter-none").text()).toEqual(
@@ -180,7 +180,7 @@ describe("<TaskListView />", () => {
     );
 
     // Clicking back on all should show every task, essentially clear out the filter
-    view.find("button.task-filter-all").simulate("click");
+    view.find("#task-filter-all").simulate("click");
 
     expect(view.find(TaskItem).length).toBe(2);
   });

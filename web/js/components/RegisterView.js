@@ -99,64 +99,68 @@ export class RegisterView extends React.Component {
     const errors = { ...this.props.errors, ...this.state.errors };
 
     return (
-      <Container style={{ padding: 10, marginTop: -70 }}>
-        <Columns>
-          <Column offset={2} size={8}>
-            <h2>Register an Account</h2>
-            <form id="register-form" onSubmit={this.handleSubmit}>
-              <div className="well">
-                <Field
-                  name="name"
-                  label="Name"
-                  error={errors.name}
-                  value={this.state.data.name}
-                  onChange={this.setValue}
-                />
-                <Field
-                  name="email"
-                  label="Email"
-                  type="email"
-                  error={errors.email}
-                  value={this.state.data.email}
-                  onChange={this.setValue}
-                />
-                <Field
-                  name="password"
-                  label="Password"
-                  type="password"
-                  error={errors.password}
-                  value={this.state.data.password}
-                  onChange={this.setValue}
-                />
-                <Field
-                  name="repeat_password"
-                  label="Password"
-                  type="password"
-                  error={errors.repeat_password}
-                  value={this.state.data.repeat_password}
-                  onChange={this.setValue}
-                />
-                <Columns gutters={false}>
-                  <Column offset={3} size={6}>
-                    <Button
-                      id="register-button"
-                      type="submit"
-                      onClick={this.handleSubmit}
-                      is="primary"
-                    >
-                      Register
-                    </Button>
-                  </Column>
-                </Columns>
-              </div>
-            </form>
-            <div className="has-text-centered">
-              <Button is="link" onClick={this.handleClickToLogin}>
-                Return to Login
-              </Button>
-            </div>
-          </Column>
-        </Columns>
+      <Container
+        style={{
+          maxWidth: 500,
+          paddingLeft: ".5rem",
+          paddingRight: ".5rem",
+          marginTop: "-2.5rem",
+          marginBottom: "1rem",
+        }}
+      >
+        <h1 className="title">Register an Account</h1>
+        <form id="register-form" onSubmit={this.handleSubmit}>
+          <div className="well">
+            <Field
+              name="name"
+              label="Name"
+              error={errors.name}
+              value={this.state.data.name}
+              onChange={this.setValue}
+            />
+            <Field
+              name="email"
+              label="Email"
+              type="email"
+              error={errors.email}
+              value={this.state.data.email}
+              onChange={this.setValue}
+            />
+            <Field
+              name="password"
+              label="Password"
+              type="password"
+              error={errors.password}
+              value={this.state.data.password}
+              onChange={this.setValue}
+            />
+            <Field
+              name="repeat_password"
+              label="Password"
+              type="password"
+              error={errors.repeat_password}
+              value={this.state.data.repeat_password}
+              onChange={this.setValue}
+            />
+            <Columns gutters={false}>
+              <Column offset={3} size={6}>
+                <Button
+                  id="register-button"
+                  type="submit"
+                  onClick={this.handleSubmit}
+                  is="primary"
+                >
+                  Register
+                </Button>
+              </Column>
+            </Columns>
+          </div>
+        </form>
+        <div className="has-text-centered" style={{ marginTop: "2.5rem" }}>
+          <a is="link" onClick={this.handleClickToLogin}>
+            Return to Login
+          </a>
+        </div>
       </Container>
     );
   }

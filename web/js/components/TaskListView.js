@@ -1,12 +1,11 @@
 import includes from "lodash/includes";
 import React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import { sortTasksByDate } from "../lib/Utils";
 import CreateTaskForm from "./CreateTaskForm";
 import TaskItem from "./TaskItem";
 import { connect } from "react-redux";
-import { Container, Columns, Column, Button } from "./elements/";
+import { Container, Button } from "./elements/";
 
 const ALL = "all";
 const INCOMPLETE = "incomplete";
@@ -76,6 +75,7 @@ export class TaskListView extends React.Component {
       <Container>
         <div className="buttons has-addons is-right">
           <Button
+            id="task-filter-all"
             is="info"
             size="small"
             selected={filter === ALL}
@@ -84,6 +84,7 @@ export class TaskListView extends React.Component {
             All
           </Button>
           <Button
+            id="task-filter-incomplete"
             is="info"
             size="small"
             selected={filter === INCOMPLETE}
@@ -92,6 +93,7 @@ export class TaskListView extends React.Component {
             Incomplete
           </Button>
           <Button
+            id="task-filter-complete"
             is="info"
             size="small"
             selected={filter === COMPLETE}
@@ -119,7 +121,12 @@ export class TaskListView extends React.Component {
           <TaskItem key={task.id} task={task} />
         ))}
 
-        <br />
+        <h1
+          className="title is-3"
+          style={{ marginTop: "2rem", marginBottom: ".25rem" }}
+        >
+          New Task
+        </h1>
         <CreateTaskForm />
       </Container>
     );

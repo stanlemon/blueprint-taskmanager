@@ -29,10 +29,10 @@ describe("<RegisterView />", () => {
 
     view.find("form").simulate("submit");
 
-    expect(view.find(".has-error").length).toBe(3);
+    expect(view.find(".error").length).toBe(3);
 
     // Within a node with an error, the error messages
-    const errors = view.find(".has-error .help-block");
+    const errors = view.find(".error");
 
     expect(errors.at(0).text()).toBe("You must enter your name.");
     expect(errors.at(1).text()).toBe("You must enter your email.");
@@ -64,10 +64,10 @@ describe("<RegisterView />", () => {
 
     view.find("form").simulate("submit");
 
-    expect(view.find(".has-error").length).toBe(1);
+    expect(view.find(".error").length).toBe(1);
 
     // Within a node with an error, the error messages
-    const errors = view.find(".has-error .help-block");
+    const errors = view.find(".error");
 
     expect(errors.at(0).text()).toBe("You must enter a valid email address.");
   });
@@ -97,10 +97,10 @@ describe("<RegisterView />", () => {
 
     view.find("form").simulate("submit");
 
-    expect(view.find(".has-error").length).toBe(1);
+    expect(view.find(".error").length).toBe(1);
 
     // Within a node with an error, the error messages
-    const errors = view.find(".has-error .help-block");
+    const errors = view.find(".error");
 
     expect(errors.at(0).text()).toBe(
       "Your password must be between 8 and 64 characters in length."
@@ -140,10 +140,10 @@ describe("<RegisterView />", () => {
 
     view.find("form").simulate("submit");
 
-    expect(view.find(".has-error").length).toBe(1);
+    expect(view.find(".error").length).toBe(1);
 
     // Within a node with an error, the error messages
-    const errors = view.find(".has-error .help-block");
+    const errors = view.find(".error");
 
     expect(errors.at(0).text()).toBe(
       "Your password must be between 8 and 64 characters in length."
@@ -181,10 +181,10 @@ describe("<RegisterView />", () => {
 
     view.find("form").simulate("submit");
 
-    expect(view.find(".has-error").length).toBe(1);
+    expect(view.find(".error").length).toBe(1);
 
     // Within a node with an error, the error messages
-    const errors = view.find(".has-error .help-block");
+    const errors = view.find(".error");
 
     expect(errors.at(0).text()).toBe("Your password does not match.");
   });
@@ -231,7 +231,7 @@ describe("<RegisterView />", () => {
 
     view.find("form").simulate("submit");
 
-    expect(view.find(".has-error").length).toBe(0);
+    expect(view.find(".error").length).toBe(0);
 
     expect(name).toBe(expectedName);
     expect(email).toBe(expectedEmail);
@@ -242,7 +242,7 @@ describe("<RegisterView />", () => {
     const view = mount(<RegisterView registerUser={() => {}} />);
 
     // Probably need a better way to identify this button
-    const button = view.find("button.btn-link");
+    const button = view.find("a");
 
     button.simulate("click");
 

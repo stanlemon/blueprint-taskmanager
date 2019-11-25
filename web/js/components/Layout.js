@@ -83,23 +83,21 @@ export class Layout extends React.Component {
           >
             <div className="navbar-start"></div>
             <div className="navbar-end">
-              <div className="navbar-item">
-                <span className="icon" style={{ marginRight: 10 }}>
-                  Logout&nbsp;
+              <div className="navbar-item" onClick={this.handleClickToLogout}>
+                <span style={{ marginRight: 10 }}>Logout</span>
+                <span className="icon">
                   <i
                     id="logout"
                     role="button"
                     style={{ cursor: "pointer" }}
                     className="fa fa-lg fa-sign-out"
-                    onClick={this.handleClickToLogout}
-                    style={{ marginRight: 20 }}
                   />
                 </span>
               </div>
             </div>
           </div>
         </nav>
-        <div style={{ marginTop: 20 }} className="container">
+        <div style={{ maxWidth: 900, padding: 15 }} className="container">
           {this.props.children}
         </div>
       </div>

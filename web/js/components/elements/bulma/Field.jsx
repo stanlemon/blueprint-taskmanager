@@ -13,24 +13,6 @@ const Field = React.forwardRef((props, ref) => {
     </span>
   );
 
-  /*
-<div class="field is-horizontal">
-  <div class="field-label is-normal">
-    <label class="label">Subject</label>
-  </div>
-  <div class="field-body">
-    <div class="field">
-      <div class="control">
-        <input class="input is-danger" type="text" placeholder="e.g. Partnership opportunity">
-      </div>
-      <p class="help is-danger">
-        This field is required
-      </p>
-    </div>
-  </div>
-</div>
-*/
-
   if (props.isHorizontal) {
     return (
       <div className={classNames("field", "is-horizontal")}>
@@ -40,16 +22,20 @@ const Field = React.forwardRef((props, ref) => {
           </label>
         </div>
         <div className="field-body">
-          {props.icon && (
-            <p className="control is-expanded has-icons-left">
-              {input}
-              <span className="icon is-small is-left">
-                <i className={classNames("fa", `fa-${props.icon}`)} />
-              </span>
-            </p>
-          )}
-          {!props.icon && <div className="control">input</div>}
-          {props.error && <p className="help is-danger">{props.error}</p>}
+          <div className="field">
+            {props.icon && (
+              <p className="control is-expanded has-icons-left">
+                {input}
+                <span className="icon is-small is-left">
+                  <i className={classNames("fa", `fa-${props.icon}`)} />
+                </span>
+              </p>
+            )}
+            {!props.icon && <div className="control">input</div>}
+            {props.error && (
+              <p className="error help is-danger">{props.error}</p>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -82,7 +68,7 @@ const Field = React.forwardRef((props, ref) => {
         })}
       >
         {children}
-        {props.error && <p className="help is-danger">{props.error}</p>}
+        {props.error && <p className="error help is-danger">{props.error}</p>}
       </label>
     </div>
   );
