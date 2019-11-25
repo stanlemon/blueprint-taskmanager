@@ -3,35 +3,40 @@ import classNames from "classnames";
 import omit from "lodash/omit";
 import PropTypes from "prop-types";
 
+// In the future handle <select> and <input type="radio" />
 const Field = React.forwardRef((props, ref) => {
   const input = makeInput(props, ref);
 
   const icon = (
-    <span className="input-group-addon">
+    <span className="icon is-small is-left">
       <i className={classNames("fa", `fa-${props.icon}`)} />
     </span>
   );
 
   if (props.isHorizontal) {
     return (
-      <div
-        className={classNames("form-group", {
-          "has-error": props.error,
-        })}
-      >
-        <label htmlFor={props.name}>
-          <div className="col-sm-3 control-label">{props.label}</div>
-          <div className="col-sm-9">
+      <div className={classNames("field", "is-horizontal")}>
+        <div className="field-label is-normal">
+          <label className="label" htmlFor={props.name}>
+            {props.label}
+          </label>
+        </div>
+        <div className="field-body">
+          <div className="field">
             {props.icon && (
-              <div className="input-group">
-                {icon}
+              <p className="control is-expanded has-icons-left">
                 {input}
-              </div>
+                <span className="icon is-small is-left">
+                  <i className={classNames("fa", `fa-${props.icon}`)} />
+                </span>
+              </p>
             )}
-            {!props.icon && input}
-            {props.error && <span className="help-block">{props.error}</span>}
+            {!props.icon && <div className="control">input</div>}
+            {props.error && (
+              <p className="error help is-danger">{props.error}</p>
+            )}
           </div>
-        </label>
+        </div>
       </div>
     );
   }
@@ -40,6 +45,7 @@ const Field = React.forwardRef((props, ref) => {
   const children =
     props.type === "checkbox" ? (
       <>
+        {props.icon && icon}
         {input} {props.label}
       </>
     ) : (
@@ -50,13 +56,19 @@ const Field = React.forwardRef((props, ref) => {
 
   return (
     <div
-      className={classNames("form-group", {
-        "has-error": props.error,
+      className={classNames("field", {
+        "is-danger": props.error,
       })}
     >
-      <label htmlFor={props.name} className="control-label">
+      <label
+        htmlFor={props.name}
+        className={classNames({
+          label: props.type !== "checkbox",
+          checkbox: props.type === "checkbox",
+        })}
+      >
         {children}
-        {props.error && <span className="help-block">{props.error}</span>}
+        {props.error && <p className="error help is-danger">{props.error}</p>}
       </label>
     </div>
   );
@@ -66,7 +78,11 @@ function makeInput(_props, ref) {
   const { name, type, value, children } = _props;
   const id = _props.id ? _props.id : name;
   const classes = classNames(
-    { "form-control": type !== "checkbox" },
+    {
+      "is-danger": _props.error,
+      input: type !== "checkbox" && type !== "textarea",
+      textarea: type === "textarea",
+    },
     _props.classNames
   );
 

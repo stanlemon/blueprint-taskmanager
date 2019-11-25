@@ -2,10 +2,17 @@ import includes from "lodash/includes";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import classNames from "classnames";
 import { navigateTo, history } from "../lib/Navigation";
 import { logout, loadTasks, loadTags, clearErrors } from "../actions/";
 
 export class Layout extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isMenuActive: false,
+    };
+  }
   componentDidMount() {
     // When the route changes, clear our errors
     history.listen(() => {
@@ -25,6 +32,12 @@ export class Layout extends React.Component {
     navigateTo("/login");
   };
 
+  toggleMenu = () => {
+    this.setState(state => {
+      return { isMenuActive: !state.isMenuActive };
+    });
+  };
+
   render() {
     if (!includes(this.props.loaded, "user")) {
       return <div />;
@@ -32,32 +45,64 @@ export class Layout extends React.Component {
 
     return (
       <div>
-        <nav className="navbar navbar-inverse navbar-fixed-top custom-navbar">
-          <div className="container">
-            <div className="navbar-header">
-              <a
-                style={{ cursor: "pointer" }}
-                className="navbar-brand btn-link"
-                onClick={this.handleClickToHome}
+        <nav
+          className="navbar has-shadow is-fixed-top"
+          role="navigation"
+          aria-label="main navigation"
+        >
+          <div className="navbar-brand">
+            <a
+              className="navbar-item has-text-link"
+              onClick={this.handleClickToHome}
+            >
+              <span className="icon" style={{ marginLeft: 10 }}>
+                <i className="fa fa-2x fa-cloud" />
+              </span>
+              <span style={{ marginLeft: 12 }}>Blueprint</span>
+            </a>
+
+            <a
+              role="button"
+              className={classNames("navbar-burger", "burger", {
+                "is-active": this.state.isMenuActive,
+              })}
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbarBasicExample"
+              onClick={this.toggleMenu}
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+          <div
+            className={classNames("navbar-menu", {
+              "is-active": this.state.isMenuActive,
+            })}
+          >
+            <div className="navbar-start"></div>
+            <div className="navbar-end">
+              <div
+                id="logout"
+                className="navbar-item"
+                onClick={this.handleClickToLogout}
               >
-                <i className="fa fa-cloud" />
-                &nbsp; Blueprint
-              </a>
+                <span style={{ marginRight: 10 }}>Logout</span>
+                <span className="icon">
+                  <i
+                    role="button"
+                    style={{ cursor: "pointer" }}
+                    className="fa fa-lg fa-sign-out"
+                  />
+                </span>
+              </div>
             </div>
-            <ul className="nav navbar-nav navbar-right">
-              <li>
-                <i
-                  id="logout"
-                  role="button"
-                  style={{ cursor: "pointer" }}
-                  className="navbar-brand fa fa-sign-out"
-                  onClick={this.handleClickToLogout}
-                />
-              </li>
-            </ul>
           </div>
         </nav>
-        <div className="container">{this.props.children}</div>
+        <div style={{ maxWidth: 900, padding: 15 }} className="container">
+          {this.props.children}
+        </div>
       </div>
     );
   }

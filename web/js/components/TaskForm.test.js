@@ -78,7 +78,7 @@ describe("<TaskForm />", () => {
     // Submit, the handler should fire and lastSavedTask updated to match our task object
     form.simulate("submit");
 
-    const errors = view.find(".has-error .help-block");
+    const errors = view.find(".error");
 
     expect(errors.length).toBe(1);
 
@@ -213,7 +213,7 @@ describe("<TaskForm />", () => {
 
     const view = mount(<TaskForm onSubmit={t => t} errors={errorMessages} />);
 
-    const errors = view.find(".has-error .help-block");
+    const errors = view.find(".error");
 
     expect(errors.length).toBe(2);
   });

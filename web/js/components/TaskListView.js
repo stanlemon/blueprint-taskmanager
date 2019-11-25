@@ -1,12 +1,11 @@
 import includes from "lodash/includes";
 import React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import { sortTasksByDate } from "../lib/Utils";
 import CreateTaskForm from "./CreateTaskForm";
 import TaskItem from "./TaskItem";
 import { connect } from "react-redux";
-import { Columns, Column } from "./elements/";
+import { Container, Button } from "./elements/";
 
 const ALL = "all";
 const INCOMPLETE = "incomplete";
@@ -43,7 +42,7 @@ export class TaskListView extends React.Component {
 
     if (!includes(loaded, "tasks")) {
       return (
-        <div className="text-center">
+        <div className="has-text-centered">
           <i
             style={{ fontSize: "10em" }}
             className="text-primary fa fa-refresh fa-spin"
@@ -72,56 +71,41 @@ export class TaskListView extends React.Component {
       })
     );
 
-    const btnClasses = classNames("btn", "btn-sm", "btn-info", "btn-default");
-    const btnAll = classNames(btnClasses, "task-filter-all", {
-      active: filter === ALL,
-    });
-    const btnIncomplete = classNames(btnClasses, "task-filter-incomplete", {
-      active: filter === INCOMPLETE,
-    });
-    const btnComplete = classNames(btnClasses, "task-filter-complete", {
-      active: filter === COMPLETE,
-    });
-
     return (
-      <>
-        <Columns style={{ marginBottom: 10 }}>
-          <Column size={4} offset={8}>
-            <div className="btn-group btn-group-justified" role="group">
-              <div className="btn-group" role="group">
-                <button
-                  type="button"
-                  onClick={this.setFilterToAll}
-                  className={btnAll}
-                >
-                  All
-                </button>
-              </div>
-              <div className="btn-group" role="group">
-                <button
-                  type="button"
-                  onClick={this.setFilterToIncomplete}
-                  className={btnIncomplete}
-                >
-                  Incomplete
-                </button>
-              </div>
-              <div className="btn-group" role="group">
-                <button
-                  type="button"
-                  onClick={this.setFilterToComplete}
-                  className={btnComplete}
-                >
-                  Complete
-                </button>
-              </div>
-            </div>
-          </Column>
-        </Columns>
+      <Container>
+        <div className="buttons has-addons is-right">
+          <Button
+            id="task-filter-all"
+            is="info"
+            size="small"
+            selected={filter === ALL}
+            onClick={this.setFilterToAll}
+          >
+            All
+          </Button>
+          <Button
+            id="task-filter-incomplete"
+            is="info"
+            size="small"
+            selected={filter === INCOMPLETE}
+            onClick={this.setFilterToIncomplete}
+          >
+            Incomplete
+          </Button>
+          <Button
+            id="task-filter-complete"
+            is="info"
+            size="small"
+            selected={filter === COMPLETE}
+            onClick={this.setFilterToComplete}
+          >
+            Complete
+          </Button>
+        </div>
 
         {tasks.length === 0 && (
           <div
-            className="text-center task-filter-none"
+            className="has-text-centered task-filter-none"
             style={{
               border: "1px solid #e3e3e3",
               borderRadius: 4,
@@ -137,8 +121,14 @@ export class TaskListView extends React.Component {
           <TaskItem key={task.id} task={task} />
         ))}
 
+        <h1
+          className="title is-3"
+          style={{ marginTop: "2rem", marginBottom: ".25rem" }}
+        >
+          New Task
+        </h1>
         <CreateTaskForm />
-      </>
+      </Container>
     );
   }
 }

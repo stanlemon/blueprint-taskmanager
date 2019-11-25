@@ -53,49 +53,42 @@ export class TaskItem extends React.Component {
     });
 
     return (
-      <Columns className={rowClasses} gutters={false}>
+      <Columns flex={true} className={rowClasses} gutters={false}>
         <Column
-          flex={9}
-          size={11}
+          size={10}
           role="button"
           className="task-name"
           onClick={this.viewTask}
           style={{
             outline: 0,
-            paddingTop: 10,
-            paddingBottom: 10,
-            paddingLeft: 20,
           }}
         >
-          {task.name}
+          <div style={{ margin: 10 }}>{task.name}</div>
         </Column>
-        <Column
-          className="pull-right"
-          flex={3}
-          size={1}
-          style={{ paddingTop: 10, paddingBottom: 10, paddingRight: 20 }}
-        >
-          <Column flex={6} size={6}>
-            <input
-              type="checkbox"
-              className="complete-task"
-              checked={this.props.task.completed !== null}
-              onChange={this.completeTask}
-            />
-          </Column>
-          <Column flex={6} size={6} className="text-right">
-            <a
-              className="btn btn-xs btn-danger delete-task"
-              onClick={this.deleteTask}
-            >
-              <i
-                className="fa fa-trash-o"
-                style={{
-                  padding: "3px",
-                }}
+        <Column size={2}>
+          <Columns flex={true}>
+            <Column size={6}>
+              <input
+                type="checkbox"
+                className="complete-task"
+                checked={this.props.task.completed !== null}
+                onChange={this.completeTask}
               />
-            </a>
-          </Column>
+            </Column>
+            <Column size={6} className="text-right">
+              <a
+                className="btn btn-xs btn-danger delete-task"
+                onClick={this.deleteTask}
+              >
+                <i
+                  className="fa fa-trash-o"
+                  style={{
+                    padding: "3px",
+                  }}
+                />
+              </a>
+            </Column>
+          </Columns>
         </Column>
       </Columns>
     );

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { login } from "../actions/";
 import { navigateTo } from "../lib/Navigation";
 import Error from "./Error";
-import { Container, Columns, Column, Field, Button } from "./elements/";
+import { Container, Field, Button } from "./elements/";
 
 export class LoginView extends React.Component {
   constructor(props) {
@@ -81,74 +81,51 @@ export class LoginView extends React.Component {
     const { username, password } = this.state.data;
 
     return (
-      <Container style={{ padding: 10 }}>
-        <Columns>
-          <Column size={6} offset={3}>
-            {Object.entries(errors).map(([key, value]) => (
-              <Error key={key} message={value} />
-            ))}
-          </Column>
-        </Columns>
-        <Columns>
-          <Column size={6} offset={3}>
-            <div className="panel panel-info">
-              <div className="panel-heading">
-                <h3 className="panel-title">
-                  <strong>Login</strong>
-                </h3>
-              </div>
-              <div className="panel-body">
-                <div className="form-horizontal">
-                  <form className="login-form" onSubmit={this.handleSubmit}>
-                    <Field
-                      isHorizontal={true}
-                      icon="user"
-                      name="username"
-                      type="email"
-                      label="Email"
-                      value={username}
-                      onChange={this.setValue}
-                    />
+      <Container style={{ padding: 20, maxWidth: 500 }}>
+        <h1 className="title">Login</h1>
+        {Object.entries(errors).map(([key, value]) => (
+          <Error key={key} message={value} />
+        ))}
+        <form className="login-form" onSubmit={this.handleSubmit}>
+          <Field
+            isHorizontal={true}
+            icon="user"
+            name="username"
+            type="email"
+            label="Email"
+            value={username}
+            onChange={this.setValue}
+          />
 
-                    <Field
-                      isHorizontal={true}
-                      icon="lock"
-                      name="password"
-                      type="password"
-                      label="Password"
-                      value={password}
-                      onChange={this.setValue}
-                    />
+          <Field
+            isHorizontal={true}
+            icon="lock"
+            name="password"
+            type="password"
+            label="Password"
+            value={password}
+            onChange={this.setValue}
+          />
 
-                    <Columns>
-                      <Column size={8} offset={2}>
-                        <Button
-                          id="login-button"
-                          type="submit"
-                          onClick={this.handleSubmit}
-                          is="primary"
-                        >
-                          Login
-                        </Button>
-                      </Column>
-                    </Columns>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </Column>
-        </Columns>
-        <div style={{ minHeight: "15px" }} />
-        <div className="row">
-          <div className="text-center">
-            <a
-              id="create-account-button"
-              className="btn btn-link"
-              onClick={this.handleClickToRegister}
+          <div className="has-text-centered">
+            <Button
+              id="login-button"
+              type="submit"
+              onClick={this.handleSubmit}
+              is="primary"
             >
-              Create Account
-            </a>
+              Login
+            </Button>
           </div>
+        </form>
+        <div className="has-text-centered" style={{ marginTop: "2rem" }}>
+          <a
+            id="create-account-button"
+            is="link"
+            onClick={this.handleClickToRegister}
+          >
+            Create Account
+          </a>
         </div>
       </Container>
     );
