@@ -5,6 +5,8 @@ import isAfter from "date-fns/isAfter";
 import isBefore from "date-fns/isBefore";
 import addDays from "date-fns/addDays";
 import { connect } from "react-redux";
+import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { makeDateTime } from "../lib/Utils";
 import { navigateTo } from "../lib/Navigation";
 import { updateTask, deleteTask } from "../actions";
@@ -80,12 +82,7 @@ export class TaskItem extends React.Component {
                 className="btn btn-xs btn-danger delete-task"
                 onClick={this.deleteTask}
               >
-                <i
-                  className="fa fa-trash-o"
-                  style={{
-                    padding: "3px",
-                  }}
-                />
+                <Icon icon={faTrash} />
               </a>
             </Column>
           </Columns>

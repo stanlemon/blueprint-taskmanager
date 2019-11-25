@@ -1,10 +1,12 @@
 import includes from "lodash/includes";
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { sortTasksByDate } from "../lib/Utils";
 import CreateTaskForm from "./CreateTaskForm";
 import TaskItem from "./TaskItem";
-import { connect } from "react-redux";
 import { Container, Button } from "./elements/";
 
 const ALL = "all";
@@ -43,10 +45,10 @@ export class TaskListView extends React.Component {
     if (!includes(loaded, "tasks")) {
       return (
         <div className="has-text-centered">
-          <i
-            style={{ fontSize: "10em" }}
-            className="text-primary fa fa-refresh fa-spin"
-          />
+          <Icon icon={faSpinner} size="3x" spin />
+          <div style={{ marginTop: 10 }}>
+            <em>Loading...</em>
+          </div>
         </div>
       );
     } else if (this.props.tasks.length === 0) {

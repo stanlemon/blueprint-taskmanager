@@ -2,7 +2,9 @@ import isEmpty from "lodash/isEmpty";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { login } from "../actions/";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
+import { login, clearErrors } from "../actions/";
 import { navigateTo } from "../lib/Navigation";
 import Error from "./Error";
 import { Container, Field, Button } from "./elements/";
@@ -21,6 +23,7 @@ export class LoginView extends React.Component {
   }
 
   handleClickToRegister = () => {
+    this.props.clearErrors();
     navigateTo("/register");
   };
 
@@ -39,8 +42,11 @@ export class LoginView extends React.Component {
 
     // If there are any errors, bail
     if (Object.keys(errors).length > 0) {
+      // If there is a client side error we clear out the server side error
+      errors["main"] = false;
+
       this.setState(state => {
-        return { ...state, ...{ errors } };
+        return { ...state, ...{ errors }, ...{ main: false } };
       });
       return;
     }
@@ -72,10 +78,10 @@ export class LoginView extends React.Component {
 
   render() {
     const errors = {
-      // These errors came from the component's validation that occurred on a submit
-      ...this.state.errors,
       // Errors are a map keyed to an array here, but we only want the first message off of the main key
       ...this.props.errors,
+      // These errors came from the component's validation that occurred on a submit
+      ...this.state.errors,
     };
 
     const { username, password } = this.state.data;
@@ -83,26 +89,27 @@ export class LoginView extends React.Component {
     return (
       <Container style={{ padding: 20, maxWidth: 500 }}>
         <h1 className="title">Login</h1>
-        {Object.entries(errors).map(([key, value]) => (
-          <Error key={key} message={value} />
-        ))}
+        <hr />
+        {errors.main && <Error message={errors.main} />}
         <form className="login-form" onSubmit={this.handleSubmit}>
           <Field
             isHorizontal={true}
-            icon="user"
+            icon={faUser}
             name="username"
             type="email"
             label="Email"
+            error={errors.username}
             value={username}
             onChange={this.setValue}
           />
 
           <Field
             isHorizontal={true}
-            icon="lock"
+            icon={faLock}
             name="password"
             type="password"
             label="Password"
+            error={errors.password}
             value={password}
             onChange={this.setValue}
           />
@@ -118,6 +125,7 @@ export class LoginView extends React.Component {
             </Button>
           </div>
         </form>
+        <hr />
         <div className="has-text-centered" style={{ marginTop: "2rem" }}>
           <a
             id="create-account-button"
@@ -134,11 +142,13 @@ export class LoginView extends React.Component {
 
 LoginView.propTypes = {
   login: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   errors: PropTypes.shape({
     main: PropTypes.string,
   }),
 };
 
-export default connect(state => ({ errors: state.errors }), { login })(
-  LoginView
-);
+export default connect(state => ({ errors: state.errors }), {
+  login,
+  clearErrors,
+})(LoginView);

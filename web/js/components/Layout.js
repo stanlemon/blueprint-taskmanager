@@ -3,6 +3,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classNames from "classnames";
+import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
+import { faTasks } from "@fortawesome/free-solid-svg-icons/faTasks";
+import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
 import { navigateTo, history } from "../lib/Navigation";
 import { logout, loadTasks, loadTags, clearErrors } from "../actions/";
 
@@ -56,7 +59,7 @@ export class Layout extends React.Component {
               onClick={this.handleClickToHome}
             >
               <span className="icon" style={{ marginLeft: 10 }}>
-                <i className="fa fa-2x fa-cloud" />
+                <Icon icon={faTasks} size="lg" />
               </span>
               <span style={{ marginLeft: 12 }}>Blueprint</span>
             </a>
@@ -89,12 +92,8 @@ export class Layout extends React.Component {
                 onClick={this.handleClickToLogout}
               >
                 <span style={{ marginRight: 10 }}>Logout</span>
-                <span className="icon">
-                  <i
-                    role="button"
-                    style={{ cursor: "pointer" }}
-                    className="fa fa-lg fa-sign-out"
-                  />
+                <span className="icon" style={{ cursor: "pointer" }}>
+                  <Icon icon={faSignOutAlt} size="lg" />
                 </span>
               </div>
             </div>

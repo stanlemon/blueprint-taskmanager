@@ -12,10 +12,7 @@ describe("<TaskListView />", () => {
   it("should render a spinner while it waits to load", () => {
     const view = mount(<TaskListView loaded={[]} tasks={[]} actions={{}} />);
 
-    const i = view.find("i");
-
-    expect(i.hasClass("fa-refresh")).toBe(true);
-    expect(i.hasClass("fa-spin")).toBe(true);
+    expect(view.text().trim()).toBe("Loading...");
   });
 
   it("should render a list of tasks", () => {

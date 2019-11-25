@@ -5,7 +5,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { navigateTo } from "../lib/Navigation";
-import { registerUser } from "../actions/";
+import { registerUser, clearErrors } from "../actions/";
 import { Container, Columns, Column, Field, Button } from "./elements/";
 
 export class RegisterView extends React.Component {
@@ -17,11 +17,13 @@ export class RegisterView extends React.Component {
         name: "",
         email: "",
         password: "",
+        repeat_password: "",
       },
     };
   }
 
   handleClickToLogin = () => {
+    this.props.clearErrors();
     navigateTo("/login");
   };
 
@@ -109,6 +111,7 @@ export class RegisterView extends React.Component {
         }}
       >
         <h1 className="title">Register an Account</h1>
+        <hr />
         <form id="register-form" onSubmit={this.handleSubmit}>
           <div className="well">
             <Field
@@ -136,7 +139,7 @@ export class RegisterView extends React.Component {
             />
             <Field
               name="repeat_password"
-              label="Password"
+              label="Repeat Password"
               type="password"
               error={errors.repeat_password}
               value={this.state.data.repeat_password}
@@ -156,6 +159,7 @@ export class RegisterView extends React.Component {
             </Columns>
           </div>
         </form>
+        <hr />
         <div className="has-text-centered" style={{ marginTop: "2.5rem" }}>
           <a is="link" onClick={this.handleClickToLogin}>
             Return to Login
@@ -168,9 +172,11 @@ export class RegisterView extends React.Component {
 
 RegisterView.propTypes = {
   registerUser: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   errors: PropTypes.object,
 };
 
-export default connect(state => ({ errors: state.errors }), { registerUser })(
-  RegisterView
-);
+export default connect(state => ({ errors: state.errors }), {
+  registerUser,
+  clearErrors,
+})(RegisterView);
