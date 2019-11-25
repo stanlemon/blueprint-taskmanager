@@ -66,7 +66,7 @@ function makeInput(_props, ref) {
   const { name, type, value, children } = _props;
   const id = _props.id ? _props.id : name;
   const classes = classNames(
-    { "form-control": type !== "checkbox" },
+    { checkbox: type !== "checkbox" },
     _props.classNames
   );
 

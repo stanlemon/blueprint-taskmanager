@@ -6,7 +6,10 @@ export function Columns(_props) {
   const classes = classNames(
     "columns",
     "is-vcentered",
-    { "is-gapless": !_props.gutters },
+    {
+      "is-gapless": !_props.gutters,
+      "is-mobile": _props.flex,
+    },
     _props.className
   );
   const props = omit(_props, "className", "gutters", "children");

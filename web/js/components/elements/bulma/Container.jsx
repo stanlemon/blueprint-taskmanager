@@ -3,7 +3,7 @@ import classNames from "classnames";
 import omit from "lodash/omit";
 
 export function Container(_props) {
-  const classes = classNames("container", "is-widescreen", _props.className);
+  const classes = classNames("container", _props.className);
   const props = omit(_props, "className", "children");
   return (
     <section>

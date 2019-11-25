@@ -237,32 +237,25 @@ export default class TaskForm extends React.Component {
           />
         )}
 
-        <Columns gutters={false}>
-          <Column size={3}>
-            <Button
-              id="save-task"
-              // Note to self: This is a mac specific thing is 'All Controls' is selected under Keyboard settings
-              tabIndex="6"
-              type="submit"
-              is="primary"
-              onClick={this.handleSubmit}
-            >
-              Save
-            </Button>
-          </Column>
+        <div style={{ minHeight: 25 }}></div>
+
+        <div className="buttons">
+          <Button
+            id="save-task"
+            // Note to self: This is a mac specific thing is 'All Controls' is selected under Keyboard settings
+            tabIndex="6"
+            type="submit"
+            is="primary"
+            onClick={this.handleSubmit}
+          >
+            Save
+          </Button>
           {task.id && (
-            <Column size={3}>
-              <Button
-                id="cancel-task"
-                tabIndex="7"
-                style={{ marginLeft: 20 }}
-                onClick={this.cancelTask}
-              >
-                Cancel
-              </Button>
-            </Column>
+            <Button id="cancel-task" tabIndex="7" onClick={this.cancelTask}>
+              Cancel
+            </Button>
           )}
-        </Columns>
+        </div>
       </form>
     );
   }

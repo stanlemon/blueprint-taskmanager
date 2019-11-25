@@ -3,15 +3,17 @@ import classNames from "classnames";
 import omit from "lodash/omit";
 
 export function Button(_props) {
-  const is = !_props.is ? "default" : _props.is;
   const classes = classNames(
     "button",
-    "is-block",
-    `is-${is}`,
+    {
+      [`is-${_props.is}`]: _props.is,
+      [`is-${_props.size}`]: _props.size,
+      "is-selected": _props.selected,
+    },
     _props.className
   );
   const { children } = _props;
-  const props = omit(_props, "className", "children", "is");
+  const props = omit(_props, "className", "children", "is", "size");
 
   return (
     <button className={classes} {...props}>

@@ -139,16 +139,14 @@ export class LoginView extends React.Component {
           </Column>
         </Columns>
         <div style={{ minHeight: "15px" }} />
-        <div className="row">
-          <div className="text-center">
-            <a
-              id="create-account-button"
-              className="btn btn-link"
-              onClick={this.handleClickToRegister}
-            >
-              Create Account
-            </a>
-          </div>
+        <div className="is-centered">
+          <Button
+            id="create-account-button"
+            is="link"
+            onClick={this.handleClickToRegister}
+          >
+            Create Account
+          </Button>
         </div>
       </Container>
     );

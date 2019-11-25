@@ -35,7 +35,7 @@ const Field = React.forwardRef((props, ref) => {
     return (
       <div className={classNames("field", "is-horizontal")}>
         <div className="field-label is-normal">
-          <label className="lavel" htmlFor={props.name}>
+          <label className="label" htmlFor={props.name}>
             {props.label}
           </label>
         </div>
@@ -76,7 +76,10 @@ const Field = React.forwardRef((props, ref) => {
     >
       <label
         htmlFor={props.name}
-        className={classNames("label", { checkbox: props.type === "checkbox" })}
+        className={classNames({
+          label: props.type !== "checkbox",
+          checkbox: props.type === "checkbox",
+        })}
       >
         {children}
         {props.error && <p className="help is-danger">{props.error}</p>}

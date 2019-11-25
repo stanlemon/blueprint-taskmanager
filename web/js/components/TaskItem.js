@@ -53,7 +53,7 @@ export class TaskItem extends React.Component {
     });
 
     return (
-      <Columns className={rowClasses} gutters={false}>
+      <Columns flex={true} className={rowClasses} gutters={false}>
         <Column
           size={11}
           role="button"
@@ -66,7 +66,7 @@ export class TaskItem extends React.Component {
           <div style={{ margin: 10 }}>{task.name}</div>
         </Column>
         <Column size={1}>
-          <Columns>
+          <Columns flex={true}>
             <Column flex={6} size={6}>
               <input
                 type="checkbox"
