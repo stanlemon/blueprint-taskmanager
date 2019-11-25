@@ -43,7 +43,7 @@ export class TaskListView extends React.Component {
 
     if (!includes(loaded, "tasks")) {
       return (
-        <div className="is-centered">
+        <div className="has-text-centered">
           <i
             style={{ fontSize: "10em" }}
             className="text-primary fa fa-refresh fa-spin"
@@ -103,7 +103,7 @@ export class TaskListView extends React.Component {
 
         {tasks.length === 0 && (
           <div
-            className="is-centered task-filter-none"
+            className="has-text-centered task-filter-none"
             style={{
               border: "1px solid #e3e3e3",
               borderRadius: 4,

@@ -150,7 +150,7 @@ export class RegisterView extends React.Component {
                 </Columns>
               </div>
             </form>
-            <div className="is-centered">
+            <div className="has-text-centered">
               <Button is="link" onClick={this.handleClickToLogin}>
                 Return to Login
               </Button>

@@ -139,7 +139,7 @@ export class LoginView extends React.Component {
           </Column>
         </Columns>
         <div style={{ minHeight: "15px" }} />
-        <div className="is-centered">
+        <div className="has-text-centered">
           <Button
             id="create-account-button"
             is="link"
