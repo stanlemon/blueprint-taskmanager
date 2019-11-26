@@ -87,7 +87,7 @@ export class LoginView extends React.Component {
     const { username, password } = this.state.data;
 
     return (
-      <Container style={{ padding: 20, maxWidth: 500 }}>
+      <Container style={{ padding: 20, maxWidth: 600 }}>
         <h1 className="title is-5 has-text-info">Blueprint Task Manager</h1>
         <h2 className="subtitle is-2">Login</h2>
         <hr />

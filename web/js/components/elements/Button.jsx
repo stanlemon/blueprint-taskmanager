@@ -13,10 +13,11 @@ export function Button(_props) {
     _props.className
   );
   const { children } = _props;
-  const props = omit(_props, "className", "children", "is", "size");
+  const style = Object.assign(_props.style || {}, { minWidth: 150 });
+  const props = omit(_props, "className", "style", "children", "is", "size");
 
   return (
-    <button className={classes} {...props}>
+    <button className={classes} style={style} {...props}>
       {children}
     </button>
   );

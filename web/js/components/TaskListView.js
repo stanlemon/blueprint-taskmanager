@@ -75,7 +75,7 @@ export class TaskListView extends React.Component {
 
     return (
       <Container>
-        <div className="buttons has-addons is-right">
+        <div className="buttons has-addons is-centered">
           <Button
             id="task-filter-all"
             is="info"

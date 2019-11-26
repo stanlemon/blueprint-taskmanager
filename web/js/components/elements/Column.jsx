@@ -8,8 +8,10 @@ export function Column(_props) {
     "column",
     "is-vcentered",
     {
-      [`is-${_props.size}`]: _props.size,
+      [`is-${_props.mobile}-mobile`]: _props.mobile,
+      [`is-${_props.size}-tablet`]: _props.size,
       [`is-offset-${_props.offset}`]: _props.offset,
+      "is-narrow": _props.narrow,
     },
     _props.className
   );

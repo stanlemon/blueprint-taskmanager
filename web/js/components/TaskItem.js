@@ -57,7 +57,6 @@ export class TaskItem extends React.Component {
     return (
       <Columns flex={true} className={rowClasses} gutters={false}>
         <Column
-          size={10}
           role="button"
           className="task-name"
           onClick={this.viewTask}
@@ -65,27 +64,23 @@ export class TaskItem extends React.Component {
             outline: 0,
           }}
         >
-          <div style={{ margin: 10 }}>{task.name}</div>
+          <div style={{ padding: 10 }}>{task.name}</div>
         </Column>
-        <Column size={2}>
-          <Columns flex={true}>
-            <Column size={6}>
-              <input
-                type="checkbox"
-                className="complete-task"
-                checked={this.props.task.completed !== null}
-                onChange={this.completeTask}
-              />
-            </Column>
-            <Column size={6} className="text-right">
-              <a
-                className="btn btn-xs btn-danger delete-task"
-                onClick={this.deleteTask}
-              >
-                <Icon icon={faTrash} />
-              </a>
-            </Column>
-          </Columns>
+        <Column narrow className="has-text-right">
+          <input
+            type="checkbox"
+            className="complete-task"
+            checked={this.props.task.completed !== null}
+            onChange={this.completeTask}
+            style={{ marginRight: 20 }}
+          />
+          <a
+            className="btn btn-xs btn-danger delete-task"
+            onClick={this.deleteTask}
+            style={{ marginRight: 20 }}
+          >
+            <Icon icon={faTrash} />
+          </a>
         </Column>
       </Columns>
     );
