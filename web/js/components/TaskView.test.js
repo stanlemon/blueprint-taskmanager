@@ -37,7 +37,13 @@ describe("<TaskView />", () => {
     history.replace("/view/2");
 
     const view = shallow(
-      <TaskView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
+      <TaskView
+        getTask={() => {}}
+        loaded={["tasks"]}
+        tasks={tasks}
+        errors={{}}
+        actions={{}}
+      />
     );
 
     expect(view.find(UpdateTaskForm).length).toBe(1);
@@ -88,7 +94,13 @@ describe("<TaskView />", () => {
     history.replace("/view/3");
 
     const view = shallow(
-      <TaskView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
+      <TaskView
+        getTask={() => {}}
+        loaded={["tasks"]}
+        tasks={tasks}
+        errors={{}}
+        actions={{}}
+      />
     );
 
     expect(view.find(Error).length).toBe(1);
@@ -102,7 +114,13 @@ describe("<TaskView />", () => {
 
   it("should not render anything if tasks have not loaded", () => {
     const view = shallow(
-      <TaskView loaded={[]} tasks={[]} errors={{}} actions={{}} />
+      <TaskView
+        getTask={() => {}}
+        loaded={[]}
+        tasks={[]}
+        errors={{}}
+        actions={{}}
+      />
     );
 
     expect(view.find(UpdateTaskForm).length).toBe(0);

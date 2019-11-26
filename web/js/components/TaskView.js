@@ -8,12 +8,12 @@ import UpdateTaskForm from "./UpdateTaskForm";
 import { getTask } from "../actions/";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
 import { connect } from "react-redux";
-import { getRouteParams, navigateTo } from "../lib/Navigation";
+import { getRouteParam, navigateTo } from "../lib/Navigation";
 import { ROUTE_ROOT, ROUTE_TASK_VIEW } from "./Routes";
 
 export class TaskView extends React.Component {
   componentDidMount() {
-    const { id } = getRouteParams(ROUTE_TASK_VIEW);
+    const id = getRouteParam(ROUTE_TASK_VIEW, "id");
     this.props.getTask(id);
   }
   render() {
@@ -25,7 +25,7 @@ export class TaskView extends React.Component {
 
     const handleReturnToList = () => navigateTo(ROUTE_ROOT);
 
-    const { id } = getRouteParams(ROUTE_TASK_VIEW);
+    const id = getRouteParam(ROUTE_TASK_VIEW, "id");
     const taskId = parseInt(id, 10);
 
     const task = Object.assign({}, tasks.filter(t => t.id === taskId)[0]);
@@ -59,6 +59,7 @@ export class TaskView extends React.Component {
 }
 
 TaskView.propTypes = {
+  getTask: PropTypes.func.isRequired,
   tasks: PropTypes.array.isRequired,
   loaded: PropTypes.array,
 };
