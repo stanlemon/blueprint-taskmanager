@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { navigateTo } from "../lib/Navigation";
 import { registerUser, clearErrors } from "../actions/";
-import { Container, Columns, Column, Field, Button } from "./elements/";
+import { Container, Field, Button } from "./elements/";
 
 export class RegisterView extends React.Component {
   constructor(props) {
@@ -106,11 +106,12 @@ export class RegisterView extends React.Component {
           maxWidth: 500,
           paddingLeft: ".5rem",
           paddingRight: ".5rem",
-          marginTop: "-2.5rem",
+          marginTop: "-2rem",
           marginBottom: "1rem",
         }}
       >
-        <h1 className="title">Register an Account</h1>
+        <h1 className="title is-5 has-text-info">Blueprint Task Manager</h1>
+        <h2 className="subtitle is-2">Register an Account</h2>
         <hr />
         <form id="register-form" onSubmit={this.handleSubmit}>
           <div className="well">
@@ -145,18 +146,15 @@ export class RegisterView extends React.Component {
               value={this.state.data.repeat_password}
               onChange={this.setValue}
             />
-            <Columns gutters={false}>
-              <Column offset={3} size={6}>
-                <Button
-                  id="register-button"
-                  type="submit"
-                  onClick={this.handleSubmit}
-                  is="primary"
-                >
-                  Register
-                </Button>
-              </Column>
-            </Columns>
+            <Button
+              id="register-button"
+              type="submit"
+              onClick={this.handleSubmit}
+              is="primary"
+              style={{ marginTop: "1.5rem" }}
+            >
+              Register
+            </Button>
           </div>
         </form>
         <hr />

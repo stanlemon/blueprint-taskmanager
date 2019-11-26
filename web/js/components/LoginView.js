@@ -88,7 +88,8 @@ export class LoginView extends React.Component {
 
     return (
       <Container style={{ padding: 20, maxWidth: 500 }}>
-        <h1 className="title">Login</h1>
+        <h1 className="title is-5 has-text-info">Blueprint Task Manager</h1>
+        <h2 className="subtitle is-2">Login</h2>
         <hr />
         {errors.main && <Error message={errors.main} />}
         <form className="login-form" onSubmit={this.handleSubmit}>
@@ -114,7 +115,7 @@ export class LoginView extends React.Component {
             onChange={this.setValue}
           />
 
-          <div className="has-text-centered">
+          <div className="has-text-right">
             <Button
               id="login-button"
               type="submit"
