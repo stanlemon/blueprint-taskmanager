@@ -1,12 +1,5 @@
-/*
-export { default as Container } from "./bootstrap/Container";
-export { default as Columns } from "./bootstrap/Columns";
-export { default as Column } from "./bootstrap/Column";
-export { default as Button } from "./bootstrap/Button";
-export { default as Field } from "./bootstrap/Field";
-*/
-export { default as Container } from "./bulma/Container";
-export { default as Columns } from "./bulma/Columns";
-export { default as Column } from "./bulma/Column";
-export { default as Button } from "./bulma/Button";
-export { default as Field } from "./bulma/Field";
+export { default as Container } from "./Container";
+export { default as Columns } from "./Columns";
+export { default as Column } from "./Column";
+export { default as Button } from "./Button";
+export { default as Field } from "./Field";
