@@ -10,7 +10,9 @@ configure({ adapter: new Adapter() });
 
 describe("<TaskListView />", () => {
   it("should render a spinner while it waits to load", () => {
-    const view = mount(<TaskListView loaded={[]} tasks={[]} actions={{}} />);
+    const view = mount(
+      <TaskListView loadTasks={() => {}} loaded={[]} tasks={[]} actions={{}} />
+    );
 
     expect(view.text().trim()).toBe("Loading...");
   });
@@ -34,7 +36,13 @@ describe("<TaskListView />", () => {
     ];
 
     const view = shallow(
-      <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
+      <TaskListView
+        loadTasks={() => {}}
+        loaded={["tasks"]}
+        tasks={tasks}
+        errors={{}}
+        actions={{}}
+      />
     );
 
     // List of tasks contains our first task
@@ -58,7 +66,13 @@ describe("<TaskListView />", () => {
     const tasks = [];
 
     const view = shallow(
-      <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
+      <TaskListView
+        loadTasks={() => {}}
+        loaded={["tasks"]}
+        tasks={tasks}
+        errors={{}}
+        actions={{}}
+      />
     );
 
     // There should be no task items
@@ -90,7 +104,13 @@ describe("<TaskListView />", () => {
     ];
 
     const view = shallow(
-      <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
+      <TaskListView
+        loadTasks={() => {}}
+        loaded={["tasks"]}
+        tasks={tasks}
+        errors={{}}
+        actions={{}}
+      />
     );
 
     view.find("#task-filter-incomplete").simulate("click");
@@ -128,7 +148,13 @@ describe("<TaskListView />", () => {
     ];
 
     const view = shallow(
-      <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
+      <TaskListView
+        loadTasks={() => {}}
+        loaded={["tasks"]}
+        tasks={tasks}
+        errors={{}}
+        actions={{}}
+      />
     );
 
     view.find("#task-filter-complete").simulate("click");
@@ -166,7 +192,13 @@ describe("<TaskListView />", () => {
     ];
 
     const view = shallow(
-      <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
+      <TaskListView
+        loadTasks={() => {}}
+        loaded={["tasks"]}
+        tasks={tasks}
+        errors={{}}
+        actions={{}}
+      />
     );
 
     view.find("#task-filter-complete").simulate("click");

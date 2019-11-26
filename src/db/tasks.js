@@ -39,7 +39,7 @@ async function getTasks(userId, page = 0, size = 10) {
     .where("user_id", userId)
     // Ensures oldest due are first, then everything by creation date, with complete last
     .orderByRaw(
-      'CASE WHEN due IS NULL OR completed IS NOT NULL THEN date("now", "+100 years") ELSE due END ASC, completed is null DESC, created_at DESC'
+      'CASE WHEN due IS NULL OR completed IS NOT NULL THEN date("now", "+100 years") ELSE due END ASC, created_at ASC, completed is null DESC'
     )
     .offset((page - 1) * size)
     .limit(size);
