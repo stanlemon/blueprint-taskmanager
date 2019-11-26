@@ -25,10 +25,20 @@ function omitUserId(o) {
   return omit(o, ["user_id"]);
 }
 
-async function getTasks(userId) {
+async function countTasks(userId) {
+  const { total } = await knex("tasks")
+    .count({ total: "*" })
+    .where("user_id", userId)
+    .first();
+  return total;
+}
+
+async function getTasks(userId, page = 0, size = 10) {
   const tasks = await knex("tasks")
     .select(columns)
     .where("user_id", userId)
+    .offset((page - 1) * size)
+    .limit(size)
     .orderBy("created_at");
 
   const tags = await getTagsForTaskIds(
@@ -213,6 +223,7 @@ function createTask(userId, task) {
 }
 
 module.exports = {
+  countTasks,
   getTasks,
   getTaskById,
   deleteTask,

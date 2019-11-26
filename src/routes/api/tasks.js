@@ -6,6 +6,7 @@ const {
   createTask,
   updateTask,
   deleteTask,
+  countTasks,
   getTasks,
   getTaskById,
 } = require("../../db/tasks");
@@ -15,9 +16,18 @@ const schema = require("../../schema/task");
 router.get(
   "/tasks",
   asyncHandler(async req => {
-    const tasks = await getTasks(req.user.id);
+    const total = await countTasks(req.user.id);
 
-    return tasks.map(v => convertCamelCase(v));
+    const page = req.query.page || 1;
+    const size = req.query.size || 10;
+    const tasks = await getTasks(req.user.id, page, size);
+
+    return {
+      tasks: tasks.map(v => convertCamelCase(v)),
+      page,
+      pages: Math.ceil(total / size),
+      total,
+    };
   })
 );
 

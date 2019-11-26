@@ -17,9 +17,11 @@ export default class TaskService extends RestService {
   }
 
   loadTasks() {
-    return this.fetch(`${this.baseUrl}/api/tasks/`).then(data =>
-      data.map(task => this.formatTask(task))
-    );
+    // Temporary: This will need to support pagination eventually
+    return this.fetch(`${this.baseUrl}/api/tasks/?size=1000`).then(data => {
+      data.tasks.map(task => this.formatTask(task));
+      return data;
+    });
   }
 
   createTask(task) {

@@ -2,6 +2,7 @@ const knex = require("../connection");
 const {
   getTaskById,
   getTasks,
+  countTasks,
   createTask,
   updateTask,
   deleteTask,
@@ -36,6 +37,10 @@ describe("tasks database access", () => {
     const task1 = await createTask(user.id, { name: "Task1", tags: ["foo"] });
     const task2 = await createTask(user.id, { name: "Task1" });
     const task3 = await createTask(user.id, { name: "Task1" });
+
+    const total = await countTasks(user.id);
+
+    expect(total).toEqual(3);
 
     const tasks = await getTasks(user.id);
 
@@ -162,5 +167,51 @@ describe("tasks database access", () => {
     // Task hasn't changed!
     expect(tasks2[0].id).toEqual(task1.id);
     expect(tasks2[0].name).toEqual(task1.name);
+  });
+
+  it("getTasks() paginates", async () => {
+    const user = await setupUser();
+
+    const task1 = await createTask(user.id, { name: "Task1" });
+    const task2 = await createTask(user.id, { name: "Task2" });
+    const task3 = await createTask(user.id, { name: "Task3" });
+    const task4 = await createTask(user.id, { name: "Task4" });
+    const task5 = await createTask(user.id, { name: "Task5" });
+    const task6 = await createTask(user.id, { name: "Task6" });
+    const task7 = await createTask(user.id, { name: "Task7" });
+    const task8 = await createTask(user.id, { name: "Task8" });
+    const task9 = await createTask(user.id, { name: "Task9" });
+    const task10 = await createTask(user.id, { name: "Task10" });
+
+    expect(await getTasks(user.id)).toMatchObject([
+      task1,
+      task2,
+      task3,
+      task4,
+      task5,
+      task6,
+      task7,
+      task8,
+      task9,
+      task10,
+    ]);
+
+    expect(await getTasks(user.id, 1, 5)).toMatchObject([
+      task1,
+      task2,
+      task3,
+      task4,
+      task5,
+    ]);
+
+    expect(await getTasks(user.id, 2, 5)).toMatchObject([
+      task6,
+      task7,
+      task8,
+      task9,
+      task10,
+    ]);
+
+    expect(await getTasks(user.id, 3, 5)).toMatchObject([]);
   });
 });

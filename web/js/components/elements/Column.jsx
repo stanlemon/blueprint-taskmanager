@@ -15,7 +15,7 @@ export function Column(_props) {
     },
     _props.className
   );
-  const props = omit(_props, "className", "size", "offset");
+  const props = omit(_props, "className", "size", "offset", "narrow");
 
   return (
     <div className={classes} {...props}>
@@ -26,6 +26,13 @@ export function Column(_props) {
 
 Column.propTypes = {
   children: PropTypes.node,
+  size: PropTypes.number,
+  mobile: PropTypes.number,
+  narrow: PropTypes.bool,
+};
+
+Column.defaultProps = {
+  narrow: false,
 };
 
 export default Column;

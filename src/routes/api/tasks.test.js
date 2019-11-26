@@ -42,7 +42,12 @@ describe("/api/tasks", () => {
       .expect("Content-Type", /json/)
       .expect(200)
       .then(res => {
-        expect(res.body).toEqual([]);
+        expect(res.body).toMatchObject({
+          tasks: [],
+          total: 0,
+          page: 1,
+          pages: 0,
+        });
       });
   });
 
@@ -67,18 +72,23 @@ describe("/api/tasks", () => {
       .expect("Content-Type", /json/)
       .expect(200);
 
-    expect(allTasks).toMatchObject([
-      {
-        ...omit(task1Data, ["created_at", "updated_at"]),
-        createdAt: task1Data.created_at,
-        updatedAt: task1Data.updated_at,
-      },
-      {
-        ...omit(task2Data, ["created_at", "updated_at"]),
-        createdAt: task2Data.created_at,
-        updatedAt: task2Data.updated_at,
-      },
-    ]);
+    expect(allTasks).toMatchObject({
+      total: 2,
+      page: 1,
+      pages: 1,
+      tasks: [
+        {
+          ...omit(task1Data, ["created_at", "updated_at"]),
+          createdAt: task1Data.created_at,
+          updatedAt: task1Data.updated_at,
+        },
+        {
+          ...omit(task2Data, ["created_at", "updated_at"]),
+          createdAt: task2Data.created_at,
+          updatedAt: task2Data.updated_at,
+        },
+      ],
+    });
   });
 
   it("POST, GET and PUT task", async () => {
