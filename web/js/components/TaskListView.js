@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+import classNames from "classnames";
 import { sortTasksByDate } from "../lib/Utils";
 import CreateTaskForm from "./CreateTaskForm";
 import TaskItem from "./TaskItem";
@@ -15,12 +16,16 @@ const COMPLETE = "complete";
 
 export class TaskListView extends React.Component {
   static propTypes = {
+    page: PropTypes.number,
+    pages: PropTypes.number,
     tasks: PropTypes.array.isRequired,
     errors: PropTypes.object,
     loaded: PropTypes.array,
   };
 
   static defaultProps = {
+    page: 1,
+    pages: 1,
     tasks: [],
     errors: {},
     loaded: [],
@@ -122,6 +127,48 @@ export class TaskListView extends React.Component {
         {tasks.map(task => (
           <TaskItem key={task.id} task={task} />
         ))}
+
+        {this.props.pages > 1 && (
+          <nav
+            className="pagination is-centered"
+            role="navigation"
+            aria-label="pagination"
+            style={{ marginTop: "1rem" }}
+          >
+            <button
+              className="button pagination-previous"
+              disabled={this.props.page > 1}
+              onClick={() => this.jumpToPage(this.props.page - 1)}
+            >
+              Previous
+            </button>
+            <button
+              className="button pagination-next"
+              disabled={this.props.page === this.props.pages}
+              onClick={() => this.jumpToPage(this.props.page + 1)}
+            >
+              Next page
+            </button>
+            <ul className="pagination-list">
+              {/*<li>
+                <span className="pagination-ellipsis">&hellip;</span>
+              </li>*/}
+              {[...Array(this.props.pages + 1).keys()].slice(1).map(page => (
+                <li key={`page-${page}`}>
+                  <button
+                    className={classNames("button", "pagination-link", {
+                      "is-current": this.props.page === page,
+                    })}
+                    aria-label={`Goto page ${page}`}
+                    onClick={() => this.jumpToPage(page)}
+                  >
+                    {page}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
 
         <h1
           className="title is-3"
