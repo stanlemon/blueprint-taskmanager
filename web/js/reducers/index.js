@@ -17,6 +17,8 @@ import {
   UPDATE_TASK_ERROR,
   DELETE_TASK_SUCCESS,
   DELETE_TASK_ERROR,
+  GET_TASK_SUCCESS,
+  GET_TASK_ERROR,
 } from "../actions/";
 
 // Ensure that we have valid dates in our tasks objects
@@ -40,6 +42,8 @@ export function tags(state, action) {
 
 export function tasks(state, action) {
   switch (action.type) {
+    case GET_TASK_SUCCESS:
+      return [...state, formatTaskDates(action.task)];
     case LOAD_TASKS_SUCCESS:
       return [...action.tasks.map(d => formatTaskDates(d))];
     case CREATE_TASK_SUCCESS:
@@ -72,6 +76,7 @@ export function errors(state, action) {
   switch (action.type) {
     case ERROR:
     case LOAD_TAGS_ERROR:
+    case GET_TASK_ERROR:
     case LOAD_TASKS_ERROR:
     case CREATE_TASK_ERROR:
     case UPDATE_TASK_ERROR:
@@ -88,6 +93,7 @@ export function errors(state, action) {
 
 export function loaded(state, action) {
   switch (action.type) {
+    case GET_TASK_SUCCESS:
     case LOAD_TASKS_SUCCESS:
       return uniq([...state, "tasks"]);
     case UNAUTHENTICATED_USER:
@@ -109,5 +115,6 @@ export default function(
     loaded: loaded(state.loaded, action),
     errors: errors(state.errors, action),
   };
+  console.log(y);
   return y;
 }

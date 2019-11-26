@@ -10,6 +10,8 @@ export const LOAD_TAGS_SUCCESS = "LOAD_TAGS_SUCCESS";
 export const LOAD_TAGS_ERROR = "LOAD_TAGS_ERROR";
 export const LOAD_TASKS_SUCCESS = "LOAD_TASKS_SUCCESS";
 export const LOAD_TASKS_ERROR = "LOAD_TASKS_ERROR";
+export const GET_TASK_SUCCESS = "GET_TASK_SUCCESS";
+export const GET_TASK_ERROR = "GET_TASK_ERROR";
 export const CREATE_TASK_SUCCESS = "CREATE_TASK_SUCCESS";
 export const CREATE_TASK_ERROR = "CREATE_TASK_ERROR";
 export const UPDATE_TASK_SUCCESS = "UPDATE_TASK_SUCCESS";
@@ -75,6 +77,30 @@ export function loadTasks() {
       })
       .catch(ex => {
         dispatch({ type: LOAD_TASKS_ERROR, errors: ex.errors });
+      });
+  };
+}
+
+export function getTask(id) {
+  return (dispatch, getState, { taskService }) => {
+    const { tasks } = getState();
+
+    if (tasks !== undefined) {
+      const task = tasks.filter(t => t.id === id)[0];
+
+      if (task !== undefined) {
+        dispatch({ type: GET_TASK_SUCCESS, task });
+        return task;
+      }
+    }
+
+    taskService
+      .getTask(id)
+      .then(task => {
+        dispatch({ type: GET_TASK_SUCCESS, task });
+      })
+      .catch(ex => {
+        dispatch({ type: GET_TASK_ERROR, errors: ex.errors });
       });
   };
 }

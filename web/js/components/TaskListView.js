@@ -5,7 +5,8 @@ import { connect } from "react-redux";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import classNames from "classnames";
-import { sortTasksByDate } from "../lib/Utils";
+import { loadTasks } from "../actions/";
+import { sortTasks } from "../lib/Utils";
 import CreateTaskForm from "./CreateTaskForm";
 import TaskItem from "./TaskItem";
 import { Container, Button } from "./elements/";
@@ -16,6 +17,7 @@ const COMPLETE = "complete";
 
 export class TaskListView extends React.Component {
   static propTypes = {
+    loadTasks: PropTypes.func,
     page: PropTypes.number,
     pages: PropTypes.number,
     tasks: PropTypes.array.isRequired,
@@ -34,6 +36,10 @@ export class TaskListView extends React.Component {
   state = {
     filter: ALL,
   };
+
+  componentDidMount() {
+    this.props.loadTasks();
+  }
 
   setFilter(filter) {
     this.setState({ filter });
@@ -65,7 +71,7 @@ export class TaskListView extends React.Component {
         </div>
       );
     }
-    const tasks = sortTasksByDate(
+    const tasks = sortTasks(
       this.props.tasks.filter(task => {
         switch (this.state.filter) {
           case INCOMPLETE:
@@ -187,5 +193,5 @@ export class TaskListView extends React.Component {
 
 export default connect(
   state => ({ loaded: state.loaded, tasks: state.tasks }),
-  {}
+  { loadTasks }
 )(TaskListView);

@@ -8,7 +8,7 @@ export function makeDateTime(d = new Date()) {
   return format(d, "yyyy-MM-dd HH:mm:ss.SSS z");
 }
 
-export function sortTasksByDate(tasks) {
+export function sortTasks(tasks) {
   return tasks
     .concat()
     .sort((a, b) => (isAfter(a.createdAt, b.createdAt) ? -1 : 1))

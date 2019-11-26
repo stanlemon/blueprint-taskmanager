@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import isAfter from "date-fns/isAfter";
 import isBefore from "date-fns/isBefore";
 import addDays from "date-fns/addDays";
+import format from "date-fns/format";
 import { connect } from "react-redux";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -64,7 +65,15 @@ export class TaskItem extends React.Component {
             outline: 0,
           }}
         >
-          <div style={{ padding: 10 }}>{task.name}</div>
+          <div style={{ padding: 10 }}>
+            {task.name}
+            {task.due && (
+              <em className="has-text-grey is-size-7">
+                {" "}
+                due {format(task.due, "MMM d, yyyy h:mma")}
+              </em>
+            )}
+          </div>
         </Column>
         <Column narrow className="has-text-right">
           <input

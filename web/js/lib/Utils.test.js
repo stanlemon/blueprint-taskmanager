@@ -1,7 +1,7 @@
 import addDays from "date-fns/addDays";
 import subDays from "date-fns/subDays";
 import shuffle from "lodash/shuffle";
-import { makeDateTime, sortTasksByDate } from "./Utils";
+import { makeDateTime, sortTasks } from "./Utils";
 
 describe("Utils", () => {
   it("makeDateTime formats mysql friendly dates", () => {
@@ -26,7 +26,7 @@ describe("Utils", () => {
   // - Overdue tasks (uncompleted) appear ordered by their due date, with the longest overdue first
   // - Not due yet tasks appear ordered by their creation date, with the most recently created at the top
   // - Completed tasks appear ordered by their completion date, with the most recently completed at the top
-  it("sortTasksByDate sorts by created date, then due date and then completed data", () => {
+  it("sortTasks sorts by created date, then due date and then completed data", () => {
     const tasks = [
       {
         name: "First task, overdue (longest overdue)",
@@ -87,7 +87,7 @@ describe("Utils", () => {
     // Copy and shuffle the tasks out of order
     const input = [].concat(shuffle(tasks));
 
-    const actual = sortTasksByDate(input);
+    const actual = sortTasks(input);
 
     // FYI: This doesn't work consistently on Node 10
     expect(actual).toEqual(tasks);
