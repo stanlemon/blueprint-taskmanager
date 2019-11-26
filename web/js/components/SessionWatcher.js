@@ -5,6 +5,13 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { checkSession } from "../actions/";
 import { getCurrentPathname, navigateTo } from "../lib/Navigation";
+import {
+  ROUTE_ROOT,
+  ROUTE_LOGIN,
+  ROUTE_REGISTER,
+  ROUTE_PRIVACY_POLICY,
+  ROUTE_TERMS_OF_SERVICE,
+} from "./Routes";
 
 export class SessionWatcher extends React.Component {
   interval;
@@ -35,21 +42,26 @@ export class SessionWatcher extends React.Component {
       this.props.user === null &&
       prevProps.user !== null
     ) {
-      navigateTo("/login");
+      navigateTo(ROUTE_LOGIN);
       return;
     }
 
-    const unauthPaths = ["/login", "/register"];
+    const unauthPaths = [
+      ROUTE_LOGIN,
+      ROUTE_REGISTER,
+      ROUTE_PRIVACY_POLICY,
+      ROUTE_TERMS_OF_SERVICE,
+    ];
 
     // Authenticated user is on an unauthenticated page
     if (this.props.user !== null && unauthPaths.indexOf(path) > -1) {
-      navigateTo("/");
+      navigateTo(ROUTE_ROOT);
       return;
     }
 
     // Unauthenticated user is on an authenticated page
     if (this.props.user === null && unauthPaths.indexOf(path) === -1) {
-      navigateTo("/login");
+      navigateTo(ROUTE_LOGIN);
       return;
     }
   }

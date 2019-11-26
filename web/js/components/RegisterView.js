@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { navigateTo } from "../lib/Navigation";
 import { registerUser, clearErrors } from "../actions/";
 import { Container, Field, Button } from "./elements/";
+import { ROUTE_TERMS_OF_SERVICE, ROUTE_PRIVACY_POLICY } from "./Routes";
 
 export class RegisterView extends React.Component {
   constructor(props) {
@@ -146,6 +147,24 @@ export class RegisterView extends React.Component {
               value={this.state.data.repeat_password}
               onChange={this.setValue}
             />
+            <div className="content">
+              By registering with this service and creating an account you agree
+              to the{" "}
+              <a
+                className="is-link"
+                onClick={() => navigateTo(ROUTE_TERMS_OF_SERVICE)}
+              >
+                Terms of Service
+              </a>{" "}
+              and acknowledge that you have read and reviewed both it and the{" "}
+              <a
+                className="is-link"
+                onClick={() => navigateTo(ROUTE_PRIVACY_POLICY)}
+              >
+                Privacy Policy
+              </a>
+              .
+            </div>
             <Button
               id="register-button"
               type="submit"
@@ -159,7 +178,7 @@ export class RegisterView extends React.Component {
         </form>
         <hr />
         <div className="has-text-centered" style={{ marginTop: "2.5rem" }}>
-          <a is="link" onClick={this.handleClickToLogin}>
+          <a className="is-link" onClick={this.handleClickToLogin}>
             Return to Login
           </a>
         </div>

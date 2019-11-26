@@ -130,7 +130,7 @@ export class LoginView extends React.Component {
         <div className="has-text-centered" style={{ marginTop: "2rem" }}>
           <a
             id="create-account-button"
-            is="link"
+            className="is-link"
             onClick={this.handleClickToRegister}
           >
             Create Account
