@@ -82,6 +82,7 @@ export class TaskListView extends React.Component {
       <Container>
         <div className="buttons has-addons is-centered">
           <Button
+            className={classNames({ "is-active": filter === ALL })}
             id="task-filter-all"
             is="info"
             size="small"
@@ -91,6 +92,7 @@ export class TaskListView extends React.Component {
             All
           </Button>
           <Button
+            className={classNames({ "is-active": filter === INCOMPLETE })}
             id="task-filter-incomplete"
             is="info"
             size="small"
@@ -100,6 +102,7 @@ export class TaskListView extends React.Component {
             Incomplete
           </Button>
           <Button
+            className={classNames({ "is-active": filter === COMPLETE })}
             id="task-filter-complete"
             is="info"
             size="small"
