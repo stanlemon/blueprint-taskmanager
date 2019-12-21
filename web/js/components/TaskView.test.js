@@ -13,8 +13,8 @@ configure({ adapter: new Adapter() });
 
 describe("<TaskView />", () => {
   it("should render a task", () => {
-    const tasks = [
-      {
+    const tasks = {
+      1: {
         id: 1,
         name: "First Task",
         description: "This is a task",
@@ -23,7 +23,7 @@ describe("<TaskView />", () => {
         createdAt: Date.now(),
         updatedAt: Date.now(),
       },
-      {
+      2: {
         id: 2,
         name: "Second Task",
         description: "This is another task",
@@ -32,7 +32,7 @@ describe("<TaskView />", () => {
         createdAt: subDays(Date.now(), 1),
         updatedAt: Date.now(),
       },
-    ];
+    };
 
     history.replace("/view/2");
 
@@ -40,7 +40,7 @@ describe("<TaskView />", () => {
       <TaskView
         getTask={() => {}}
         loaded={["tasks"]}
-        tasks={tasks}
+        tasks={{ byId: tasks }}
         errors={{}}
         actions={{}}
       />
@@ -48,7 +48,7 @@ describe("<TaskView />", () => {
 
     expect(view.find(UpdateTaskForm).length).toBe(1);
 
-    expect(view.find(UpdateTaskForm).props().task).toEqual(tasks[1]);
+    expect(view.find(UpdateTaskForm).props().task).toEqual(tasks[2]);
 
     // Find the created at date, which is read only text
     expect(
@@ -70,8 +70,8 @@ describe("<TaskView />", () => {
   });
 
   it("should render an error for an unfound task", () => {
-    const tasks = [
-      {
+    const tasks = {
+      1: {
         id: 1,
         name: "First Task",
         description: "This is a task",
@@ -80,7 +80,7 @@ describe("<TaskView />", () => {
         createdAt: Date.now(),
         updatedAt: Date.now(),
       },
-      {
+      2: {
         id: 2,
         name: "Second Task",
         description: "This is another task",
@@ -89,7 +89,7 @@ describe("<TaskView />", () => {
         createdAt: subDays(Date.now(), 1),
         updatedAt: Date.now(),
       },
-    ];
+    };
 
     history.replace("/view/3");
 
@@ -97,7 +97,7 @@ describe("<TaskView />", () => {
       <TaskView
         getTask={() => {}}
         loaded={["tasks"]}
-        tasks={tasks}
+        tasks={{ byId: tasks }}
         errors={{}}
         actions={{}}
       />
@@ -112,6 +112,7 @@ describe("<TaskView />", () => {
     expect(history.location.pathname).toBe(ROUTE_ROOT);
   });
 
+  // TODO: This should call getTask now
   it("should not render anything if tasks have not loaded", () => {
     const view = shallow(
       <TaskView
