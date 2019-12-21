@@ -73,7 +73,7 @@ export function loadTasks() {
       .loadTasks()
       .then(tasks => {
         // Temporary: We will store the whole data structure eventually
-        dispatch({ type: LOAD_TASKS_SUCCESS, tasks: tasks.tasks });
+        dispatch({ type: LOAD_TASKS_SUCCESS, tasks: tasks });
       })
       .catch(ex => {
         dispatch({ type: LOAD_TASKS_ERROR, errors: ex.errors });

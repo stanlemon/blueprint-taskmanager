@@ -1,5 +1,6 @@
 /* @flow weak */
 import uniq from "lodash/uniq";
+import keyBy from "lodash/keyBy";
 import {
   ERROR,
   CLEAR_ERRORS,
@@ -43,9 +44,29 @@ export function tags(state, action) {
 export function tasks(state, action) {
   switch (action.type) {
     case GET_TASK_SUCCESS:
-      return [...state, formatTaskDates(action.task)];
+      return {
+        ...state,
+        byId: {
+          ...state.byId,
+          [action.task.id]: { ...formatTaskDates(action.task) },
+        },
+      };
     case LOAD_TASKS_SUCCESS:
-      return [...action.tasks.map(d => formatTaskDates(d))];
+      return {
+        // All the other state
+        ...state,
+        byId: {
+          // Existing tasks by id
+          ...state.byId,
+          // Our new tasks by id
+          ...keyBy(
+            // Clean up our dates
+            action.tasks.tasks.map(d => formatTaskDates(d)),
+            // Key these into the map by id
+            t => t.id
+          ),
+        },
+      };
     case CREATE_TASK_SUCCESS:
       return [...state, formatTaskDates(action.task)];
     case UPDATE_TASK_SUCCESS:
@@ -115,6 +136,6 @@ export default function(
     loaded: loaded(state.loaded, action),
     errors: errors(state.errors, action),
   };
-  console.log(y);
+  console.log("redux store = ", y);
   return y;
 }

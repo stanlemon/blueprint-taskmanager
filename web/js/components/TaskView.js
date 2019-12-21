@@ -28,7 +28,7 @@ export class TaskView extends React.Component {
     const id = getRouteParam(ROUTE_TASK_VIEW, "id");
     const taskId = parseInt(id, 10);
 
-    const task = Object.assign({}, tasks.filter(t => t.id === taskId)[0]);
+    const task = Object.assign({}, tasks.byId[taskId]);
 
     if (isEmpty(task)) {
       return (

@@ -62,7 +62,7 @@ export class TaskListView extends React.Component {
           </div>
         </div>
       );
-    } else if (this.props.tasks.length === 0) {
+    } else if (this.props.tasks.byId.length === 0) {
       return (
         <div className="jumbotron">
           <h1>You don't have any tasks!</h1>
@@ -72,7 +72,7 @@ export class TaskListView extends React.Component {
       );
     }
     const tasks = sortTasks(
-      this.props.tasks.filter(task => {
+      Object.values(this.props.tasks.byId).filter(task => {
         switch (this.state.filter) {
           case INCOMPLETE:
             return task.completed === null;
