@@ -20,7 +20,7 @@ export class TaskListView extends React.Component {
     loadTasks: PropTypes.func,
     page: PropTypes.number,
     pages: PropTypes.number,
-    tasks: PropTypes.array.isRequired,
+    tasks: PropTypes.object.isRequired,
     errors: PropTypes.object,
     loaded: PropTypes.array,
   };
@@ -62,11 +62,14 @@ export class TaskListView extends React.Component {
           </div>
         </div>
       );
-    } else if (this.props.tasks.byId.length === 0) {
+      // TODO: Add a property for the number of tasks, and check that
+    } else if (Object.values(this.props.tasks.byId).length === 0) {
       return (
-        <div className="jumbotron">
+        <div className="content">
           <h1>You don't have any tasks!</h1>
-          <p>Use the form below to get started and add your first task.</p>
+          <p>
+            <em>Use the form below to get started and add your first task.</em>
+          </p>
           <CreateTaskForm errors={errors} />
         </div>
       );

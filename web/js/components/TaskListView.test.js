@@ -1,6 +1,7 @@
 import React from "react";
 import { mount, shallow, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import keyBy from "lodash/keyBy";
 import { TaskListView } from "./TaskListView";
 // Use the connected version because we're just using it for a lookup
 import TaskItem from "./TaskItem";
@@ -11,7 +12,7 @@ configure({ adapter: new Adapter() });
 describe("<TaskListView />", () => {
   it("should render a spinner while it waits to load", () => {
     const view = mount(
-      <TaskListView loadTasks={() => {}} loaded={[]} tasks={[]} actions={{}} />
+      <TaskListView loadTasks={() => {}} loaded={[]} tasks={{}} actions={{}} />
     );
 
     expect(view.text().trim()).toBe("Loading...");
@@ -39,7 +40,7 @@ describe("<TaskListView />", () => {
       <TaskListView
         loadTasks={() => {}}
         loaded={["tasks"]}
-        tasks={tasks}
+        tasks={{ byId: keyBy(tasks, t => t.id) }}
         errors={{}}
         actions={{}}
       />
@@ -63,7 +64,7 @@ describe("<TaskListView />", () => {
   });
 
   it("should not render a list if there are no tasks", () => {
-    const tasks = [];
+    const tasks = { byId: {} };
 
     const view = shallow(
       <TaskListView
@@ -107,7 +108,7 @@ describe("<TaskListView />", () => {
       <TaskListView
         loadTasks={() => {}}
         loaded={["tasks"]}
-        tasks={tasks}
+        tasks={{ byId: keyBy(tasks, t => t.id) }}
         errors={{}}
         actions={{}}
       />
@@ -151,7 +152,7 @@ describe("<TaskListView />", () => {
       <TaskListView
         loadTasks={() => {}}
         loaded={["tasks"]}
-        tasks={tasks}
+        tasks={{ byId: keyBy(tasks, t => t.id) }}
         errors={{}}
         actions={{}}
       />
@@ -195,7 +196,7 @@ describe("<TaskListView />", () => {
       <TaskListView
         loadTasks={() => {}}
         loaded={["tasks"]}
-        tasks={tasks}
+        tasks={{ byId: keyBy(tasks, t => t.id) }}
         errors={{}}
         actions={{}}
       />
