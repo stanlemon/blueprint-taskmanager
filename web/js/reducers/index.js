@@ -59,18 +59,17 @@ export function tasks(state, action) {
       return {
         // All the other state
         ...state,
-        byId: {
-          // Existing tasks by id
-          ...state.byId,
+        byId:
           // Our new tasks by id
-          ...keyBy(
+          keyBy(
             // Clean up our dates
             action.tasks.tasks.map(d => formatTaskDates(d)),
             // Key these into the map by id
             t => t.id
           ),
-        },
+        pages: action.tasks.pages,
       };
+    // TODO: Appending messes up filtering & pagination, need to refresh.
     case CREATE_TASK_SUCCESS:
     case UPDATE_TASK_SUCCESS:
       return {

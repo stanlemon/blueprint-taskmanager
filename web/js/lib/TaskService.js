@@ -1,3 +1,4 @@
+import querystring from "querystring";
 import mapValues from "lodash/mapValues";
 import isDate from "date-fns/isDate";
 import format from "date-fns/format";
@@ -16,9 +17,12 @@ export default class TaskService extends RestService {
     );
   }
 
-  loadTasks() {
+  loadTasks(filter = "all", page = 1, size = 10) {
+    const query = { filter, page, size };
     // Temporary: This will need to support pagination eventually
-    return this.fetch(`${this.baseUrl}/api/tasks/?size=10`);
+    return this.fetch(
+      `${this.baseUrl}/api/tasks/?${querystring.stringify(query)}`
+    );
   }
 
   getTask(id) {

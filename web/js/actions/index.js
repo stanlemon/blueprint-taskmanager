@@ -74,19 +74,41 @@ export function loadTags() {
 }
 
 export function setFilter(filter) {
-  return { type: SET_FILTER, filter };
+  return (dispatch, getState, services) => {
+    // No filter change, bail
+    if (filter === getState().filter) {
+      return;
+    }
+
+    dispatch({ type: SET_FILTER, filter });
+    // Reset the page number
+    dispatch({ type: SET_PAGE, page: 1 });
+    // Trigger a reload with the new filter and reset the page
+    loadTasks(filter, 1)(dispatch, getState, services);
+  };
 }
 
 export function setPage(page) {
-  return { type: SET_PAGE, page };
+  return (dispatch, getState, services) => {
+    // No page change, bail
+    if (page === getState().page) {
+      return;
+    }
+
+    // Reset the page number
+    dispatch({ type: SET_PAGE, page });
+    // Trigger a reload with the new filter and reset the page
+    loadTasks(getState().filter, page)(dispatch, getState, services);
+  };
 }
 
-export function loadTasks() {
+// TODO: If filter & page are not changing we shouldn't reload. Add caching
+export function loadTasks(filter, page) {
   return (dispatch, getState, { taskService }) => {
     taskService
-      .loadTasks()
+      .loadTasks(filter, page)
       .then(tasks => {
-        // Temporary: We will store the whole data structure eventually
+        console.log(tasks);
         dispatch({ type: LOAD_TASKS_SUCCESS, tasks: tasks });
       })
       .catch(ex => {
@@ -99,6 +121,7 @@ export function getTask(id) {
   return (dispatch, getState, { taskService }) => {
     const { tasks } = getState();
 
+    // If we have the specific task cached, return it rather than hit the api
     if (
       tasks !== undefined &&
       tasks.byId !== undefined &&

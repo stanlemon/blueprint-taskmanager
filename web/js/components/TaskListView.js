@@ -78,7 +78,7 @@ export class TaskListView extends React.Component {
         </div>
       );
     }
-
+    console.log(this.props.page, this.props.pages);
     return (
       <Container>
         <div className="buttons has-addons is-centered">
@@ -143,7 +143,7 @@ export class TaskListView extends React.Component {
           >
             <button
               className="button pagination-previous"
-              disabled={this.props.page > 1}
+              disabled={this.props.page === 1}
               onClick={() => this.setPage(this.props.page - 1)}
             >
               Previous
@@ -211,8 +211,9 @@ export default connect(
       loaded: state.loaded,
       filter: state.filter,
       page: state.page,
+      pages: state.tasks.pages,
       hasTasks: allTasks.length > 0,
-      tasks: filterTasks(state.filter, allTasks),
+      tasks: allTasks,
     };
   },
   { loadTasks, setFilter, setPage }
