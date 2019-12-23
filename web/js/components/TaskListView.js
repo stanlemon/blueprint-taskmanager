@@ -1,12 +1,12 @@
 import includes from "lodash/includes";
+import isObject from "lodash/isObject";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import classNames from "classnames";
-import { loadTasks } from "../actions/";
-import { sortTasks } from "../lib/Utils";
+import { loadTasks, setFilter, setPage } from "../actions/";
 import CreateTaskForm from "./CreateTaskForm";
 import TaskItem from "./TaskItem";
 import { Container, Button } from "./elements/";
@@ -18,9 +18,13 @@ const COMPLETE = "complete";
 export class TaskListView extends React.Component {
   static propTypes = {
     loadTasks: PropTypes.func,
+    setFilter: PropTypes.func,
+    setPage: PropTypes.func,
+    filter: PropTypes.string,
     page: PropTypes.number,
     pages: PropTypes.number,
-    tasks: PropTypes.object.isRequired,
+    hasTasks: PropTypes.bool,
+    tasks: PropTypes.array.isRequired,
     errors: PropTypes.object,
     loaded: PropTypes.array,
   };
@@ -33,16 +37,16 @@ export class TaskListView extends React.Component {
     loaded: [],
   };
 
-  state = {
-    filter: ALL,
-  };
-
   componentDidMount() {
     this.props.loadTasks();
   }
 
+  setPage(page) {
+    this.props.setPage(page);
+  }
+
   setFilter(filter) {
-    this.setState({ filter });
+    this.props.setFilter(filter);
   }
 
   setFilterToAll = () => this.setFilter(ALL);
@@ -50,8 +54,7 @@ export class TaskListView extends React.Component {
   setFilterToComplete = () => this.setFilter(COMPLETE);
 
   render() {
-    const { filter } = this.state;
-    const { loaded, errors } = this.props;
+    const { loaded, errors, hasTasks, tasks, filter } = this.props;
 
     if (!includes(loaded, "tasks")) {
       return (
@@ -62,8 +65,9 @@ export class TaskListView extends React.Component {
           </div>
         </div>
       );
-      // TODO: Add a property for the number of tasks, and check that
-    } else if (Object.values(this.props.tasks.byId).length === 0) {
+    }
+
+    if (!hasTasks) {
       return (
         <div className="content">
           <h1>You don't have any tasks!</h1>
@@ -74,18 +78,6 @@ export class TaskListView extends React.Component {
         </div>
       );
     }
-    const tasks = sortTasks(
-      Object.values(this.props.tasks.byId).filter(task => {
-        switch (this.state.filter) {
-          case INCOMPLETE:
-            return task.completed === null;
-          case COMPLETE:
-            return task.completed !== null;
-          default:
-            return true;
-        }
-      })
-    );
 
     return (
       <Container>
@@ -101,7 +93,9 @@ export class TaskListView extends React.Component {
             All
           </Button>
           <Button
-            className={classNames({ "is-active": filter === INCOMPLETE })}
+            className={classNames({
+              "is-active": filter === INCOMPLETE,
+            })}
             id="task-filter-incomplete"
             is="info"
             size="small"
@@ -150,14 +144,14 @@ export class TaskListView extends React.Component {
             <button
               className="button pagination-previous"
               disabled={this.props.page > 1}
-              onClick={() => this.jumpToPage(this.props.page - 1)}
+              onClick={() => this.setPage(this.props.page - 1)}
             >
               Previous
             </button>
             <button
               className="button pagination-next"
               disabled={this.props.page === this.props.pages}
-              onClick={() => this.jumpToPage(this.props.page + 1)}
+              onClick={() => this.setPage(this.props.page + 1)}
             >
               Next page
             </button>
@@ -172,7 +166,7 @@ export class TaskListView extends React.Component {
                       "is-current": this.props.page === page,
                     })}
                     aria-label={`Goto page ${page}`}
-                    onClick={() => this.jumpToPage(page)}
+                    onClick={() => this.setPage(page)}
                   >
                     {page}
                   </button>
@@ -194,7 +188,32 @@ export class TaskListView extends React.Component {
   }
 }
 
+export function filterTasks(filter, tasks) {
+  return tasks.filter(task => {
+    switch (filter) {
+      case INCOMPLETE:
+        return task.completed === null;
+      case COMPLETE:
+        return task.completed !== null;
+      default:
+        return true;
+    }
+  });
+}
+
 export default connect(
-  state => ({ loaded: state.loaded, tasks: state.tasks }),
-  { loadTasks }
+  state => {
+    const allTasks = !isObject(state.tasks?.byId)
+      ? []
+      : Object.values(state.tasks?.byId);
+
+    return {
+      loaded: state.loaded,
+      filter: state.filter,
+      page: state.page,
+      hasTasks: allTasks.length > 0,
+      tasks: filterTasks(state.filter, allTasks),
+    };
+  },
+  { loadTasks, setFilter, setPage }
 )(TaskListView);

@@ -8,6 +8,8 @@ export const AUTHENTICATION_ERROR = "AUTHENTICATION_ERROR";
 export const REGISTER_ERROR = "REGISTER_ERROR";
 export const LOAD_TAGS_SUCCESS = "LOAD_TAGS_SUCCESS";
 export const LOAD_TAGS_ERROR = "LOAD_TAGS_ERROR";
+export const SET_FILTER = "SET_FILTER";
+export const SET_PAGE = "SET_PAGE";
 export const LOAD_TASKS_SUCCESS = "LOAD_TASKS_SUCCESS";
 export const LOAD_TASKS_ERROR = "LOAD_TASKS_ERROR";
 export const GET_TASK_SUCCESS = "GET_TASK_SUCCESS";
@@ -18,6 +20,10 @@ export const UPDATE_TASK_SUCCESS = "UPDATE_TASK_SUCCESS";
 export const UPDATE_TASK_ERROR = "UPDATE_TASK_ERROR";
 export const DELETE_TASK_SUCCESS = "DELETE_TASK_SUCCESS";
 export const DELETE_TASK_ERROR = "DELETE_TASK_ERROR";
+
+export const FILTER_ALL = "all";
+export const FILTER_INCOMPLETE = "incomplete";
+export const FILTER_COMPLETE = "complete";
 
 export function addErrors(errors) {
   return { type: ERROR, errors };
@@ -67,6 +73,14 @@ export function loadTags() {
   };
 }
 
+export function setFilter(filter) {
+  return { type: SET_FILTER, filter };
+}
+
+export function setPage(page) {
+  return { type: SET_PAGE, page };
+}
+
 export function loadTasks() {
   return (dispatch, getState, { taskService }) => {
     taskService
@@ -85,13 +99,13 @@ export function getTask(id) {
   return (dispatch, getState, { taskService }) => {
     const { tasks } = getState();
 
-    if (tasks !== undefined) {
-      const task = tasks.filter(t => t.id === id)[0];
-
-      if (task !== undefined) {
-        dispatch({ type: GET_TASK_SUCCESS, task });
-        return task;
-      }
+    if (
+      tasks !== undefined &&
+      tasks.byId !== undefined &&
+      tasks.byId[id] !== undefined
+    ) {
+      dispatch({ type: GET_TASK_SUCCESS, task: tasks.byId[id] });
+      return tasks.byId[id];
     }
 
     taskService

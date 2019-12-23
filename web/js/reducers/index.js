@@ -1,6 +1,7 @@
 /* @flow weak */
 import uniq from "lodash/uniq";
 import keyBy from "lodash/keyBy";
+import omit from "lodash/omit";
 import {
   ERROR,
   CLEAR_ERRORS,
@@ -10,6 +11,9 @@ import {
   REGISTER_ERROR,
   LOAD_TAGS_SUCCESS,
   LOAD_TAGS_ERROR,
+  SET_FILTER,
+  FILTER_ALL,
+  SET_PAGE,
   LOAD_TASKS_SUCCESS,
   LOAD_TASKS_ERROR,
   CREATE_TASK_SUCCESS,
@@ -48,7 +52,7 @@ export function tasks(state, action) {
         ...state,
         byId: {
           ...state.byId,
-          [action.task.id]: { ...formatTaskDates(action.task) },
+          [action.task.id]: formatTaskDates(action.task),
         },
       };
     case LOAD_TASKS_SUCCESS:
@@ -68,17 +72,28 @@ export function tasks(state, action) {
         },
       };
     case CREATE_TASK_SUCCESS:
-      return [...state, formatTaskDates(action.task)];
     case UPDATE_TASK_SUCCESS:
-      return state.map(task =>
-        task.id === action.task.id
-          ? Object.assign({}, formatTaskDates(action.task))
-          : task
-      );
+      return {
+        // All the other state
+        ...state,
+        byId: {
+          // Existing tasks by id
+          ...state.byId,
+          // Overwrite this task
+          [action.task.id]: formatTaskDates(action.task),
+        },
+      };
     case DELETE_TASK_SUCCESS:
-      return state.filter(task => action.taskId !== task.id);
+      return {
+        // All the other state
+        ...state,
+        byId: {
+          // Remove our task
+          ...omit(state.byId, action.taskId),
+        },
+      };
     default:
-      return state;
+      return { ...state };
   }
 }
 
@@ -125,17 +140,45 @@ export function loaded(state, action) {
   }
 }
 
+export function filter(state, action) {
+  switch (action.type) {
+    case SET_FILTER:
+      return action.filter;
+    default:
+      return state;
+  }
+}
+
+export function page(state, action) {
+  switch (action.type) {
+    case SET_PAGE:
+      return action.page;
+    default:
+      return state;
+  }
+}
+
 export default function(
-  state = { user: null, tasks: [], loaded: [], errors: [] },
+  state = {
+    user: null,
+    tags: [],
+    filter: FILTER_ALL,
+    page: 1,
+    tasks: {},
+    loaded: [],
+    errors: [],
+  },
   action
 ) {
   const y = {
     user: user(state.user, action),
     tags: tags(state.tags, action),
+    filter: filter(state.filter, action),
+    page: page(state.page, action),
     tasks: tasks(state.tasks, action),
     loaded: loaded(state.loaded, action),
     errors: errors(state.errors, action),
   };
-  console.log("redux store = ", y);
+  //console.log("redux store = ", y);
   return y;
 }

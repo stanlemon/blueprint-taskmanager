@@ -1,7 +1,6 @@
 import React from "react";
 import { mount, shallow, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import keyBy from "lodash/keyBy";
 import { TaskListView } from "./TaskListView";
 // Use the connected version because we're just using it for a lookup
 import TaskItem from "./TaskItem";
@@ -12,7 +11,7 @@ configure({ adapter: new Adapter() });
 describe("<TaskListView />", () => {
   it("should render a spinner while it waits to load", () => {
     const view = mount(
-      <TaskListView loadTasks={() => {}} loaded={[]} tasks={{}} actions={{}} />
+      <TaskListView loadTasks={() => {}} loaded={[]} tasks={[]} />
     );
 
     expect(view.text().trim()).toBe("Loading...");
@@ -40,9 +39,9 @@ describe("<TaskListView />", () => {
       <TaskListView
         loadTasks={() => {}}
         loaded={["tasks"]}
-        tasks={{ byId: keyBy(tasks, t => t.id) }}
+        hasTasks={true}
+        tasks={tasks}
         errors={{}}
-        actions={{}}
       />
     );
 
@@ -64,15 +63,15 @@ describe("<TaskListView />", () => {
   });
 
   it("should not render a list if there are no tasks", () => {
-    const tasks = { byId: {} };
+    const tasks = [];
 
     const view = shallow(
       <TaskListView
         loadTasks={() => {}}
         loaded={["tasks"]}
+        hasTasks={false}
         tasks={tasks}
         errors={{}}
-        actions={{}}
       />
     );
 
@@ -86,132 +85,53 @@ describe("<TaskListView />", () => {
     expect(view.find("h1").text()).toEqual("You don't have any tasks!");
   });
 
-  it("should render only incomplete tasks when the filter is selected", () => {
-    const tasks = [
-      {
-        id: 1,
-        name: "Completed task",
-        description: "",
-        due: null,
-        completed: Date.now(),
-      },
-      {
-        id: 2,
-        name: "Incomplete Task",
-        description: "",
-        due: null,
-        completed: null,
-      },
-    ];
-
+  it("should set filter when each filter button is clicked", () => {
+    const tasks = [];
+    let lastFilter;
+    const setFilter = jest.fn(filter => (lastFilter = filter));
     const view = shallow(
       <TaskListView
         loadTasks={() => {}}
+        setFilter={setFilter}
         loaded={["tasks"]}
-        tasks={{ byId: keyBy(tasks, t => t.id) }}
+        hasTasks={true}
+        tasks={tasks}
         errors={{}}
-        actions={{}}
       />
     );
 
     view.find("#task-filter-incomplete").simulate("click");
 
-    expect(view.find(TaskItem).length).toBe(1);
-    expect(
-      view
-        .find(TaskItem)
-        .at(0)
-        .props().task.id
-    ).toBe(2);
+    expect(setFilter).toHaveBeenCalledTimes(1);
+    expect(lastFilter).toBe("incomplete");
 
-    // Clicking back on all should show every task, essentially clear out the filter
+    view.find("#task-filter-complete").simulate("click");
+
+    expect(setFilter).toHaveBeenCalledTimes(2);
+    expect(lastFilter).toBe("complete");
+
     view.find("#task-filter-all").simulate("click");
 
-    expect(view.find(TaskItem).length).toBe(2);
+    expect(setFilter).toHaveBeenCalledTimes(3);
+    expect(lastFilter).toBe("all");
   });
 
-  it("should render only complete tasks when the filter is selected", () => {
-    const tasks = [
-      {
-        id: 1,
-        name: "Completed task",
-        description: "",
-        due: null,
-        completed: Date.now(),
-      },
-      {
-        id: 2,
-        name: "Incomplete Task",
-        description: "",
-        due: null,
-        completed: null,
-      },
-    ];
+  it("should render no tasks when the current filter has no matching tasks", () => {
+    const tasks = [];
 
     const view = shallow(
       <TaskListView
         loadTasks={() => {}}
         loaded={["tasks"]}
-        tasks={{ byId: keyBy(tasks, t => t.id) }}
+        hasTasks={true}
+        tasks={tasks}
         errors={{}}
-        actions={{}}
       />
     );
-
-    view.find("#task-filter-complete").simulate("click");
-
-    expect(view.find(TaskItem).length).toBe(1);
-    expect(
-      view
-        .find(TaskItem)
-        .at(0)
-        .props().task.id
-    ).toBe(1);
-
-    // Clicking back on all should show every task, essentially clear out the filter
-    view.find("#task-filter-all").simulate("click");
-
-    expect(view.find(TaskItem).length).toBe(2);
-  });
-
-  it("should render only no tasks when the completed filter is selected because there are no complete tasks", () => {
-    const tasks = [
-      {
-        id: 1,
-        name: "Incomplete task",
-        description: "",
-        due: null,
-        completed: null,
-      },
-      {
-        id: 2,
-        name: "Incomplete Task",
-        description: "",
-        due: null,
-        completed: null,
-      },
-    ];
-
-    const view = shallow(
-      <TaskListView
-        loadTasks={() => {}}
-        loaded={["tasks"]}
-        tasks={{ byId: keyBy(tasks, t => t.id) }}
-        errors={{}}
-        actions={{}}
-      />
-    );
-
-    view.find("#task-filter-complete").simulate("click");
 
     expect(view.find(TaskItem).length).toBe(0);
     expect(view.find(".task-filter-none").text()).toEqual(
       "There are no tasks for this filter."
     );
-
-    // Clicking back on all should show every task, essentially clear out the filter
-    view.find("#task-filter-all").simulate("click");
-
-    expect(view.find(TaskItem).length).toBe(2);
   });
 });

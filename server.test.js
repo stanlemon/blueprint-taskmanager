@@ -128,15 +128,9 @@ test("end to end", async done => {
   const deleteTaskButton = await page.$(".delete-task");
   await deleteTaskButton.click();
 
-  await page.waitForSelector(".jumbotron h1");
-
   console.log("Verify there are no tasks");
   // Make sure the jumbotron has our text
-  await waitForTextInSelector(
-    page,
-    ".jumbotron h1",
-    "You don't have any tasks!"
-  );
+  await waitForTextInSelector(page, "h1", "You don't have any tasks!");
 
   console.log("Close the browser");
   await browser.close();
