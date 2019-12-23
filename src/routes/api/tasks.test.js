@@ -89,6 +89,42 @@ describe("/api/tasks", () => {
         },
       ],
     });
+
+    const { body: completeTasks } = await request(app)
+      .get("/tasks?filter=complete")
+      .expect("Content-Type", /json/)
+      .expect(200);
+
+    expect(completeTasks).toMatchObject({
+      total: 1,
+      page: 1,
+      pages: 1,
+      tasks: [
+        {
+          ...omit(task2Data, ["created_at", "updated_at"]),
+          createdAt: task2Data.created_at,
+          updatedAt: task2Data.updated_at,
+        },
+      ],
+    });
+
+    const { body: incompleteTasks } = await request(app)
+      .get("/tasks?filter=incomplete")
+      .expect("Content-Type", /json/)
+      .expect(200);
+
+    expect(incompleteTasks).toMatchObject({
+      total: 1,
+      page: 1,
+      pages: 1,
+      tasks: [
+        {
+          ...omit(task1Data, ["created_at", "updated_at"]),
+          createdAt: task1Data.created_at,
+          updatedAt: task1Data.updated_at,
+        },
+      ],
+    });
   });
 
   it("POST, GET and PUT task", async () => {
