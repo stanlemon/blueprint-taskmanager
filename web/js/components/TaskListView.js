@@ -78,7 +78,7 @@ export class TaskListView extends React.Component {
         </div>
       );
     }
-    console.log(this.props.page, this.props.pages);
+
     return (
       <Container>
         <div className="buttons has-addons is-centered">

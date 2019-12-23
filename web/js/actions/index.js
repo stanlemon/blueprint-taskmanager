@@ -108,7 +108,6 @@ export function loadTasks(filter, page) {
     taskService
       .loadTasks(filter, page)
       .then(tasks => {
-        console.log(tasks);
         dispatch({ type: LOAD_TASKS_SUCCESS, tasks: tasks });
       })
       .catch(ex => {
