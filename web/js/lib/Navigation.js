@@ -15,8 +15,14 @@ export function getCurrentPathname() {
   return history.location.pathname;
 }
 
-export function getRouteParams(route) {
-  return matchPath(history.location.pathname, route).params;
+export function getRouteParam(route, param) {
+  const path = matchPath(history.location.pathname, route);
+
+  if (path && path.params && path.params[param] !== undefined) {
+    return path.params[param];
+  }
+
+  return undefined;
 }
 
 export function makeRoute(route, params) {

@@ -8,6 +8,7 @@ import { makeDateTime } from "../lib/Utils";
 import { history } from "../lib/Navigation";
 import React from "react";
 import { TaskItem } from "./TaskItem";
+import { Modal } from "./elements";
 import { makeRoute } from "../lib/Navigation";
 import { ROUTE_TASK_VIEW } from "./Routes";
 
@@ -124,6 +125,12 @@ describe("<TaskItem />", () => {
     );
 
     wrapper.find(".delete-task").simulate("click");
+
+    // Clicking delete task pops a modal confirming deletion
+    expect(wrapper.find(Modal).length).toBe(1);
+
+    // Clicking the danger button (in the modal) will trigger deletion
+    wrapper.find("button.is-danger").simulate("click");
 
     expect(deletedTaskId).toEqual(task.id);
   });

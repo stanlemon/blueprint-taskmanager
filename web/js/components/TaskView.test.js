@@ -13,43 +13,30 @@ configure({ adapter: new Adapter() });
 
 describe("<TaskView />", () => {
   it("should render a task", () => {
-    const tasks = [
-      {
-        id: 1,
-        name: "First Task",
-        description: "This is a task",
-        due: null,
-        completed: null,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-      },
-      {
-        id: 2,
-        name: "Second Task",
-        description: "This is another task",
-        due: null,
-        completed: null,
-        createdAt: subDays(Date.now(), 1),
-        updatedAt: Date.now(),
-      },
-    ];
+    const task = {
+      id: 2,
+      name: "Second Task",
+      description: "This is another task",
+      due: null,
+      completed: null,
+      createdAt: subDays(Date.now(), 1),
+      updatedAt: Date.now(),
+    };
 
     history.replace("/view/2");
 
-    const view = shallow(
-      <TaskView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
-    );
+    const view = shallow(<TaskView loaded={true} task={task} />);
 
     expect(view.find(UpdateTaskForm).length).toBe(1);
 
-    expect(view.find(UpdateTaskForm).props().task).toEqual(tasks[1]);
+    expect(view.find(UpdateTaskForm).props().task).toEqual(task);
 
     // Find the created at date, which is read only text
     expect(
       view.findWhere(
         n =>
           n.type() === "span" &&
-          n.text() === format(tasks[1].createdAt, DATE_FORMAT_LONG)
+          n.text() === format(task.createdAt, DATE_FORMAT_LONG)
       ).length
     ).toBe(1);
 
@@ -58,38 +45,15 @@ describe("<TaskView />", () => {
       view.findWhere(
         n =>
           n.type() === "span" &&
-          n.text() === format(tasks[1].updatedAt, DATE_FORMAT_LONG)
+          n.text() === format(task.updatedAt, DATE_FORMAT_LONG)
       ).length
     ).toBe(1);
   });
 
   it("should render an error for an unfound task", () => {
-    const tasks = [
-      {
-        id: 1,
-        name: "First Task",
-        description: "This is a task",
-        due: null,
-        completed: null,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-      },
-      {
-        id: 2,
-        name: "Second Task",
-        description: "This is another task",
-        due: null,
-        completed: null,
-        createdAt: subDays(Date.now(), 1),
-        updatedAt: Date.now(),
-      },
-    ];
-
     history.replace("/view/3");
 
-    const view = shallow(
-      <TaskView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
-    );
+    const view = shallow(<TaskView loaded={true} task={null} />);
 
     expect(view.find(Error).length).toBe(1);
 
@@ -101,9 +65,7 @@ describe("<TaskView />", () => {
   });
 
   it("should not render anything if tasks have not loaded", () => {
-    const view = shallow(
-      <TaskView loaded={[]} tasks={[]} errors={{}} actions={{}} />
-    );
+    const view = shallow(<TaskView loaded={false} />);
 
     expect(view.find(UpdateTaskForm).length).toBe(0);
 

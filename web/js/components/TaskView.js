@@ -1,26 +1,24 @@
 import includes from "lodash/includes";
 import isEmpty from "lodash/isEmpty";
+import omit from "lodash/omit";
 import format from "date-fns/format";
 import React from "react";
 import PropTypes from "prop-types";
 import Error from "./Error";
 import UpdateTaskForm from "./UpdateTaskForm";
+import { getTask } from "../actions/";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { getRouteParams, navigateTo } from "../lib/Navigation";
-import { ROUTE_TASK_VIEW } from "./Routes";
+import { getRouteParam, navigateTo } from "../lib/Navigation";
+import { ROUTE_ROOT, ROUTE_TASK_VIEW } from "./Routes";
 
-export function TaskView({ loaded, tasks }) {
-  if (!includes(loaded, "tasks")) {
+export function TaskView({ loaded = false, task }) {
+  if (!loaded) {
     return <div />;
   }
 
-  const handleReturnToList = () => navigateTo("/");
-
-  const { id } = getRouteParams(ROUTE_TASK_VIEW);
-  const taskId = parseInt(id, 10);
-
-  const task = Object.assign({}, tasks.filter(t => t.id === taskId)[0]);
+  const handleReturnToList = () => navigateTo(ROUTE_ROOT);
 
   if (isEmpty(task)) {
     return (
@@ -50,16 +48,41 @@ export function TaskView({ loaded, tasks }) {
 }
 
 TaskView.propTypes = {
-  tasks: PropTypes.array.isRequired,
-  loaded: PropTypes.array,
+  id: PropTypes.string,
+  task: PropTypes.object,
+  loaded: PropTypes.bool,
 };
 
-TaskView.defaultProps = {
-  loaded: [],
-  tasks: [],
+const ConnectedTaskView = connect(state => ({
+  loaded: includes(state.loaded, "tasks"),
+  task: state.tasks?.byId?.[getRouteParam(ROUTE_TASK_VIEW, "id")],
+}))(TaskView);
+
+export class PreloadContainer extends React.Component {
+  componentDidMount() {
+    this.props.action();
+  }
+
+  render() {
+    return React.cloneElement(this.props.children, omit(this.props, "action"));
+  }
+}
+
+PreloadContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  action: PropTypes.func.isRequired,
 };
 
-export default connect(
-  state => ({ loaded: state.loaded, tasks: state.tasks }),
-  {}
-)(TaskView);
+function PreloadAction(Component, action) {
+  return connect(null, dispatch => bindActionCreators({ action }, dispatch))(
+    props => (
+      <PreloadContainer {...props}>
+        <Component />
+      </PreloadContainer>
+    )
+  );
+}
+
+export default PreloadAction(ConnectedTaskView, () => {
+  return getTask(getRouteParam(ROUTE_TASK_VIEW, "id"));
+});

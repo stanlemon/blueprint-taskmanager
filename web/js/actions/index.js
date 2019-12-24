@@ -8,14 +8,22 @@ export const AUTHENTICATION_ERROR = "AUTHENTICATION_ERROR";
 export const REGISTER_ERROR = "REGISTER_ERROR";
 export const LOAD_TAGS_SUCCESS = "LOAD_TAGS_SUCCESS";
 export const LOAD_TAGS_ERROR = "LOAD_TAGS_ERROR";
+export const SET_FILTER = "SET_FILTER";
+export const SET_PAGE = "SET_PAGE";
 export const LOAD_TASKS_SUCCESS = "LOAD_TASKS_SUCCESS";
 export const LOAD_TASKS_ERROR = "LOAD_TASKS_ERROR";
+export const GET_TASK_SUCCESS = "GET_TASK_SUCCESS";
+export const GET_TASK_ERROR = "GET_TASK_ERROR";
 export const CREATE_TASK_SUCCESS = "CREATE_TASK_SUCCESS";
 export const CREATE_TASK_ERROR = "CREATE_TASK_ERROR";
 export const UPDATE_TASK_SUCCESS = "UPDATE_TASK_SUCCESS";
 export const UPDATE_TASK_ERROR = "UPDATE_TASK_ERROR";
 export const DELETE_TASK_SUCCESS = "DELETE_TASK_SUCCESS";
 export const DELETE_TASK_ERROR = "DELETE_TASK_ERROR";
+
+export const FILTER_ALL = "all";
+export const FILTER_INCOMPLETE = "incomplete";
+export const FILTER_COMPLETE = "complete";
 
 export function addErrors(errors) {
   return { type: ERROR, errors };
@@ -65,16 +73,70 @@ export function loadTags() {
   };
 }
 
-export function loadTasks() {
+export function setFilter(filter) {
+  return (dispatch, getState, services) => {
+    // No filter change, bail
+    if (filter === getState().filter) {
+      return;
+    }
+
+    dispatch({ type: SET_FILTER, filter });
+    // Reset the page number
+    dispatch({ type: SET_PAGE, page: 1 });
+    // Trigger a reload with the new filter and reset the page
+    loadTasks(filter, 1)(dispatch, getState, services);
+  };
+}
+
+export function setPage(page) {
+  return (dispatch, getState, services) => {
+    // No page change, bail
+    if (page === getState().page) {
+      return;
+    }
+
+    // Reset the page number
+    dispatch({ type: SET_PAGE, page });
+    // Trigger a reload with the new filter and reset the page
+    loadTasks(getState().filter, page)(dispatch, getState, services);
+  };
+}
+
+// TODO: If filter & page are not changing we shouldn't reload. Add caching
+export function loadTasks(filter, page) {
   return (dispatch, getState, { taskService }) => {
     taskService
-      .loadTasks()
+      .loadTasks(filter, page)
       .then(tasks => {
-        // Temporary: We will store the whole data structure eventually
-        dispatch({ type: LOAD_TASKS_SUCCESS, tasks: tasks.tasks });
+        dispatch({ type: LOAD_TASKS_SUCCESS, tasks: tasks });
       })
       .catch(ex => {
         dispatch({ type: LOAD_TASKS_ERROR, errors: ex.errors });
+      });
+  };
+}
+
+export function getTask(id) {
+  return (dispatch, getState, { taskService }) => {
+    const { tasks } = getState();
+
+    // If we have the specific task cached, return it rather than hit the api
+    if (
+      tasks !== undefined &&
+      tasks.byId !== undefined &&
+      tasks.byId[id] !== undefined
+    ) {
+      dispatch({ type: GET_TASK_SUCCESS, task: tasks.byId[id] });
+      return tasks.byId[id];
+    }
+
+    taskService
+      .getTask(id)
+      .then(task => {
+        dispatch({ type: GET_TASK_SUCCESS, task });
+      })
+      .catch(ex => {
+        dispatch({ type: GET_TASK_ERROR, errors: ex.errors });
       });
   };
 }

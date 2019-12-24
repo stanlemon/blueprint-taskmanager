@@ -25,21 +25,39 @@ function omitUserId(o) {
   return omit(o, ["user_id"]);
 }
 
-async function countTasks(userId) {
+function buildFilter(filter) {
+  return qb => {
+    switch (filter) {
+      case "complete":
+        qb.whereNotNull("completed");
+        break;
+      case "incomplete":
+        qb.whereNull("completed");
+        break;
+    }
+  };
+}
+
+async function countTasks(userId, filter) {
   const { total } = await knex("tasks")
     .count({ total: "*" })
     .where("user_id", userId)
+    .modify(buildFilter(filter))
     .first();
   return total;
 }
 
-async function getTasks(userId, page = 0, size = 10) {
+async function getTasks(userId, filter = "all", page = 0, size = 10) {
   const tasks = await knex("tasks")
     .select(columns)
     .where("user_id", userId)
+    .modify(buildFilter(filter))
+    // Ensures oldest due are first, then everything by creation date, with complete last
+    .orderByRaw(
+      'CASE WHEN due IS NULL OR completed IS NOT NULL THEN date("now", "+100 years") ELSE due END ASC, created_at ASC, completed is null DESC'
+    )
     .offset((page - 1) * size)
-    .limit(size)
-    .orderBy("created_at");
+    .limit(size);
 
   const tags = await getTagsForTaskIds(
     userId,

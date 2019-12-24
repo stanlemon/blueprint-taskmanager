@@ -196,7 +196,7 @@ describe("tasks database access", () => {
       task10,
     ]);
 
-    expect(await getTasks(user.id, 1, 5)).toMatchObject([
+    expect(await getTasks(user.id, "all", 1, 5)).toMatchObject([
       task1,
       task2,
       task3,
@@ -204,7 +204,7 @@ describe("tasks database access", () => {
       task5,
     ]);
 
-    expect(await getTasks(user.id, 2, 5)).toMatchObject([
+    expect(await getTasks(user.id, "all", 2, 5)).toMatchObject([
       task6,
       task7,
       task8,
@@ -212,6 +212,20 @@ describe("tasks database access", () => {
       task10,
     ]);
 
-    expect(await getTasks(user.id, 3, 5)).toMatchObject([]);
+    expect(await getTasks(user.id, "all", 3, 5)).toMatchObject([]);
+  });
+
+  it("getTasks() filters", async () => {
+    const user = await setupUser();
+
+    const task1 = await createTask(user.id, { name: "Task1" });
+    const task2 = await createTask(user.id, {
+      name: "Task2",
+      completed: new Date(),
+    });
+
+    expect(await getTasks(user.id, "all")).toMatchObject([task1, task2]);
+    expect(await getTasks(user.id, "complete")).toMatchObject([task2]);
+    expect(await getTasks(user.id, "incomplete")).toMatchObject([task1]);
   });
 });

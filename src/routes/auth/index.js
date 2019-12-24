@@ -16,7 +16,7 @@ const {
   updateUser,
 } = require("../../db/users");
 
-const JWT_EXPIRES_IN_MIN = 10;
+const JWT_EXPIRES_IN_MIN = 120;
 
 if (process.env.JWT_SECRET === undefined) {
   console.warn("Jwt secret has not been set!");

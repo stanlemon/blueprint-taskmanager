@@ -4,19 +4,32 @@ import PropTypes from "prop-types";
 import isAfter from "date-fns/isAfter";
 import isBefore from "date-fns/isBefore";
 import addDays from "date-fns/addDays";
+import format from "date-fns/format";
 import { connect } from "react-redux";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { makeDateTime } from "../lib/Utils";
 import { navigateTo } from "../lib/Navigation";
 import { updateTask, deleteTask } from "../actions";
-import { Columns, Column } from "./elements/";
+import { Columns, Column, Modal } from "./elements/";
 
 export class TaskItem extends React.Component {
   static propTypes = {
     deleteTask: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
     task: PropTypes.object.isRequired,
+  };
+
+  state = {
+    isConfirmingDelete: false,
+  };
+
+  confirmDeleteTask = () => {
+    this.setState({ isConfirmingDelete: true });
+  };
+
+  cancelDeleteTask = () => {
+    this.setState({ isConfirmingDelete: false });
   };
 
   deleteTask = () => {
@@ -64,7 +77,15 @@ export class TaskItem extends React.Component {
             outline: 0,
           }}
         >
-          <div style={{ padding: 10 }}>{task.name}</div>
+          <div style={{ padding: 10 }}>
+            {task.name}
+            {task.due && (
+              <em className="has-text-grey is-size-7">
+                {" "}
+                due {format(task.due, "MMM d, yyyy h:mma")}
+              </em>
+            )}
+          </div>
         </Column>
         <Column narrow className="has-text-right">
           <input
@@ -76,12 +97,27 @@ export class TaskItem extends React.Component {
           />
           <a
             className="btn btn-xs btn-danger delete-task"
-            onClick={this.deleteTask}
+            onClick={this.confirmDeleteTask}
             style={{ marginRight: 20 }}
           >
             <Icon icon={faTrash} />
           </a>
         </Column>
+        {this.state.isConfirmingDelete && (
+          <Modal isActive={true} onClose={this.cancelDeleteTask}>
+            <p className="has-text-centered">
+              Are you sure you want to delete this task?
+            </p>
+            <div className="buttons is-centered">
+              <button className="button is-danger" onClick={this.deleteTask}>
+                Delete
+              </button>
+              <button className="button" onClick={this.cancelDeleteTask}>
+                Cancel
+              </button>
+            </div>
+          </Modal>
+        )}
       </Columns>
     );
   }

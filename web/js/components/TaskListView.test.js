@@ -10,7 +10,9 @@ configure({ adapter: new Adapter() });
 
 describe("<TaskListView />", () => {
   it("should render a spinner while it waits to load", () => {
-    const view = mount(<TaskListView loaded={[]} tasks={[]} actions={{}} />);
+    const view = mount(
+      <TaskListView loadTasks={() => {}} loaded={[]} tasks={[]} />
+    );
 
     expect(view.text().trim()).toBe("Loading...");
   });
@@ -34,7 +36,13 @@ describe("<TaskListView />", () => {
     ];
 
     const view = shallow(
-      <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
+      <TaskListView
+        loadTasks={() => {}}
+        loaded={["tasks"]}
+        hasTasks={true}
+        tasks={tasks}
+        errors={{}}
+      />
     );
 
     // List of tasks contains our first task
@@ -58,7 +66,13 @@ describe("<TaskListView />", () => {
     const tasks = [];
 
     const view = shallow(
-      <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
+      <TaskListView
+        loadTasks={() => {}}
+        loaded={["tasks"]}
+        hasTasks={false}
+        tasks={tasks}
+        errors={{}}
+      />
     );
 
     // There should be no task items
@@ -71,114 +85,53 @@ describe("<TaskListView />", () => {
     expect(view.find("h1").text()).toEqual("You don't have any tasks!");
   });
 
-  it("should render only incomplete tasks when the filter is selected", () => {
-    const tasks = [
-      {
-        id: 1,
-        name: "Completed task",
-        description: "",
-        due: null,
-        completed: Date.now(),
-      },
-      {
-        id: 2,
-        name: "Incomplete Task",
-        description: "",
-        due: null,
-        completed: null,
-      },
-    ];
-
+  it("should set filter when each filter button is clicked", () => {
+    const tasks = [];
+    let lastFilter;
+    const setFilter = jest.fn(filter => (lastFilter = filter));
     const view = shallow(
-      <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
+      <TaskListView
+        loadTasks={() => {}}
+        setFilter={setFilter}
+        loaded={["tasks"]}
+        hasTasks={true}
+        tasks={tasks}
+        errors={{}}
+      />
     );
 
     view.find("#task-filter-incomplete").simulate("click");
 
-    expect(view.find(TaskItem).length).toBe(1);
-    expect(
-      view
-        .find(TaskItem)
-        .at(0)
-        .props().task.id
-    ).toBe(2);
-
-    // Clicking back on all should show every task, essentially clear out the filter
-    view.find("#task-filter-all").simulate("click");
-
-    expect(view.find(TaskItem).length).toBe(2);
-  });
-
-  it("should render only complete tasks when the filter is selected", () => {
-    const tasks = [
-      {
-        id: 1,
-        name: "Completed task",
-        description: "",
-        due: null,
-        completed: Date.now(),
-      },
-      {
-        id: 2,
-        name: "Incomplete Task",
-        description: "",
-        due: null,
-        completed: null,
-      },
-    ];
-
-    const view = shallow(
-      <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
-    );
+    expect(setFilter).toHaveBeenCalledTimes(1);
+    expect(lastFilter).toBe("incomplete");
 
     view.find("#task-filter-complete").simulate("click");
 
-    expect(view.find(TaskItem).length).toBe(1);
-    expect(
-      view
-        .find(TaskItem)
-        .at(0)
-        .props().task.id
-    ).toBe(1);
+    expect(setFilter).toHaveBeenCalledTimes(2);
+    expect(lastFilter).toBe("complete");
 
-    // Clicking back on all should show every task, essentially clear out the filter
     view.find("#task-filter-all").simulate("click");
 
-    expect(view.find(TaskItem).length).toBe(2);
+    expect(setFilter).toHaveBeenCalledTimes(3);
+    expect(lastFilter).toBe("all");
   });
 
-  it("should render only no tasks when the completed filter is selected because there are no complete tasks", () => {
-    const tasks = [
-      {
-        id: 1,
-        name: "Incomplete task",
-        description: "",
-        due: null,
-        completed: null,
-      },
-      {
-        id: 2,
-        name: "Incomplete Task",
-        description: "",
-        due: null,
-        completed: null,
-      },
-    ];
+  it("should render no tasks when the current filter has no matching tasks", () => {
+    const tasks = [];
 
     const view = shallow(
-      <TaskListView loaded={["tasks"]} tasks={tasks} errors={{}} actions={{}} />
+      <TaskListView
+        loadTasks={() => {}}
+        loaded={["tasks"]}
+        hasTasks={true}
+        tasks={tasks}
+        errors={{}}
+      />
     );
-
-    view.find("#task-filter-complete").simulate("click");
 
     expect(view.find(TaskItem).length).toBe(0);
     expect(view.find(".task-filter-none").text()).toEqual(
       "There are no tasks for this filter."
     );
-
-    // Clicking back on all should show every task, essentially clear out the filter
-    view.find("#task-filter-all").simulate("click");
-
-    expect(view.find(TaskItem).length).toBe(2);
   });
 });

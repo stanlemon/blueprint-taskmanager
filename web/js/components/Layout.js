@@ -7,7 +7,7 @@ import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faTasks } from "@fortawesome/free-solid-svg-icons/faTasks";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
 import { navigateTo, history } from "../lib/Navigation";
-import { logout, loadTasks, loadTags, clearErrors } from "../actions/";
+import { logout, loadTags, clearErrors } from "../actions/";
 
 export class Layout extends React.Component {
   constructor(props) {
@@ -21,8 +21,6 @@ export class Layout extends React.Component {
     history.listen(() => {
       this.props.clearErrors();
     });
-
-    this.props.loadTasks();
     this.props.loadTags();
   }
 
@@ -110,7 +108,6 @@ export class Layout extends React.Component {
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   logout: PropTypes.func.isRequired,
-  loadTasks: PropTypes.func.isRequired,
   loadTags: PropTypes.func.isRequired,
   clearErrors: PropTypes.func.isRequired,
   loaded: PropTypes.array,
@@ -118,7 +115,6 @@ Layout.propTypes = {
 
 export default connect(state => ({ loaded: state.loaded }), {
   logout,
-  loadTasks,
   loadTags,
   clearErrors,
 })(Layout);
