@@ -11,13 +11,25 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { makeDateTime } from "../lib/Utils";
 import { navigateTo } from "../lib/Navigation";
 import { updateTask, deleteTask } from "../actions";
-import { Columns, Column } from "./elements/";
+import { Columns, Column, Modal } from "./elements/";
 
 export class TaskItem extends React.Component {
   static propTypes = {
     deleteTask: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
     task: PropTypes.object.isRequired,
+  };
+
+  state = {
+    isConfirmingDelete: false,
+  };
+
+  confirmDeleteTask = () => {
+    this.setState({ isConfirmingDelete: true });
+  };
+
+  cancelDeleteTask = () => {
+    this.setState({ isConfirmingDelete: false });
   };
 
   deleteTask = () => {
@@ -85,12 +97,27 @@ export class TaskItem extends React.Component {
           />
           <a
             className="btn btn-xs btn-danger delete-task"
-            onClick={this.deleteTask}
+            onClick={this.confirmDeleteTask}
             style={{ marginRight: 20 }}
           >
             <Icon icon={faTrash} />
           </a>
         </Column>
+        {this.state.isConfirmingDelete && (
+          <Modal isActive={true} onClose={this.cancelDeleteTask}>
+            <p className="has-text-centered">
+              Are you sure you want to delete this task?
+            </p>
+            <div className="buttons is-centered">
+              <button className="button is-danger" onClick={this.deleteTask}>
+                Delete
+              </button>
+              <button className="button" onClick={this.cancelDeleteTask}>
+                Cancel
+              </button>
+            </div>
+          </Modal>
+        )}
       </Columns>
     );
   }
