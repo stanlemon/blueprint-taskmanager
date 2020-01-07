@@ -2,7 +2,7 @@ const request = require("supertest");
 const knex = require("../../connection");
 const app = require("../../app");
 const api = require("./index");
-const { createUser } = require("../../db/users");
+const { createUser, getUserById } = require("../../db/users");
 
 beforeAll(async () => {
   await knex.test.setup();
@@ -16,12 +16,12 @@ afterAll(() => {
   knex.test.teardown();
 });
 
-describe("/auth/register", () => {
+describe("/auth", () => {
   app.use(api);
 
   // Disabling this linting rule because it is unaware of the supertest assertions
   /* eslint-disable jest/expect-expect */
-  it("POST creates a user", async () => {
+  it("POST /register creates a user", async () => {
     const name = "Test Tester";
     const email = "test@test.com";
     const password = "p@$$w0rd!";
@@ -43,7 +43,7 @@ describe("/auth/register", () => {
   });
   /* eslint-enable jest/expect-expect */
 
-  it("POST returns error on empty data", async () => {
+  it("POST /register returns error on empty data", async () => {
     await request(app)
       .post("/auth/register")
       .set("Content-Type", "application/json")
@@ -57,7 +57,7 @@ describe("/auth/register", () => {
       });
   });
 
-  it("POST returns error on invalid email", async () => {
+  it("POST /register returns error on invalid email", async () => {
     await request(app)
       .post("/auth/register")
       .send({
@@ -74,7 +74,7 @@ describe("/auth/register", () => {
       });
   });
 
-  it("POST returns error on short password", async () => {
+  it("POST /register returns error on short password", async () => {
     await request(app)
       .post("/auth/register")
       .send({
@@ -91,7 +91,7 @@ describe("/auth/register", () => {
       });
   });
 
-  it("POST returns error on too long password", async () => {
+  it("POST /register returns error on too long password", async () => {
     await request(app)
       .post("/auth/register")
       .send({
@@ -109,7 +109,7 @@ describe("/auth/register", () => {
       });
   });
 
-  it("POST returns error on already taken email address", async () => {
+  it("POST /register returns error on already taken email address", async () => {
     await createUser({
       email: "test@test.com",
       name: "test",
@@ -130,6 +130,41 @@ describe("/auth/register", () => {
         expect(res.body.errors).toEqual({
           email: "A user with this email address already exists",
         });
+      });
+  });
+
+  it("GET /verify verifies email address", async () => {
+    const user = await createUser({
+      email: "test@test.com",
+      name: "test",
+      password: "test",
+    });
+
+    // New users do not start verified
+    expect(user.verified).toBe(null);
+
+    // First call will verify the email address
+    await request(app)
+      .get("/auth/verify/" + user.verification_token)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(200)
+      .then(res => {
+        expect(res.body.success).toEqual(true);
+      });
+
+    const refresh = await getUserById(user.id);
+
+    expect(refresh.verified).not.toBe(null);
+
+    // Subsequent calls are not successful because the email address is already verified
+    await request(app)
+      .get("/auth/verify/" + user.verification_token)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(200)
+      .then(res => {
+        expect(res.body.success).toEqual(false);
       });
   });
 });

@@ -3,10 +3,14 @@ const shortid = require("shortid");
 const format = require("date-fns/format");
 const omit = require("lodash/omit");
 const isEmpty = require("lodash/isEmpty");
+const isObject = require("lodash/isObject");
 const knex = require("../connection");
 const InvalidArgument = require("./invalidargument");
 
 function omitPassword(o) {
+  if (!isObject(o)) {
+    return o;
+  }
   return omit(o, ["password"]);
 }
 
@@ -40,6 +44,14 @@ function getUserByEmailAndPassword(email, password) {
       return user;
     })
     .then(omitPassword);
+}
+
+function getUserByVerificationToken(verification_token) {
+  return knex("users")
+    .select()
+    .where({ verification_token, active: true })
+    .first()
+    .then(user => omitPassword(user));
 }
 
 async function createUser(data) {
@@ -84,6 +96,7 @@ module.exports = {
   getUserById,
   getUserByEmail,
   getUserByEmailAndPassword,
+  getUserByVerificationToken,
   createUser,
   updateUser,
 };

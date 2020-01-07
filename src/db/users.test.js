@@ -7,6 +7,7 @@ const {
   getUserById,
   getUserByEmail,
   getUserByEmailAndPassword,
+  getUserByVerificationToken,
 } = require("./users");
 
 beforeAll(async () => {
@@ -49,6 +50,10 @@ describe("users database access", () => {
     const refresh3 = await getUserByEmailAndPassword(user.email, password);
 
     expect(refresh3).toEqual(user);
+
+    const refresh4 = await getUserByVerificationToken(user.verification_token);
+
+    expect(refresh4).toEqual(user);
   });
 
   it("updateUser()", async () => {

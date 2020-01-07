@@ -2,25 +2,28 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const isEmpty = require("lodash/isEmpty");
-const format = require("date-fns/format");
 const addMinutes = require("date-fns/addMinutes");
 const passport = require("passport");
 const { Strategy: LocalStrategy } = require("passport-local");
 const { Strategy: JwtStrategy } = require("passport-jwt");
+const sendgrid = require("@sendgrid/mail");
+const config = require("../../config");
+const { makeDateString } = require("../../utils");
 const schemaHandler = require("../../helpers/schemaHandler");
 const schema = require("../../schema/user");
 const {
   getUserById,
   getUserByEmailAndPassword,
+  getUserByVerificationToken,
   createUser,
   updateUser,
 } = require("../../db/users");
 
 const JWT_EXPIRES_IN_MIN = 120;
 
-if (process.env.JWT_SECRET === undefined) {
+if (config.JWT_SECRET === undefined) {
   console.warn("Jwt secret has not been set!");
-  process.env.JWT_SECRET = "dyKSdvTaXRS3KWbgMBDz9QlOwZZC3BlH";
+  config.JWT_SECRET = "dyKSdvTaXRS3KWbgMBDz9QlOwZZC3BlH";
 }
 
 function cookieExtractor(req) {
@@ -35,7 +38,7 @@ passport.use(
   new JwtStrategy(
     {
       jwtFromRequest: cookieExtractor,
-      secretOrKey: process.env.JWT_SECRET,
+      secretOrKey: config.JWT_SECRET,
       // NOTE: Setting options like 'issuer' here must also be set when the token is signed below
       jsonWebTokenOptions: {
         expiresIn: JWT_EXPIRES_IN_MIN + "m", // Every 10 minutes this token will need to be refreshed
@@ -82,7 +85,7 @@ passport.deserializeUser((id, done) => {
 });
 
 function generateJwtCookie(user, res) {
-  const token = jwt.sign(user, process.env.JWT_SECRET);
+  const token = jwt.sign(user, config.JWT_SECRET);
 
   res.cookie("jwt", token, {
     // Options set here must also be set in the strategy
@@ -97,7 +100,7 @@ router.post(
   passport.authenticate(["local"]),
   async (req, res) => {
     await updateUser(req.user.id, {
-      last_logged_in: format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
+      last_logged_in: makeDateString(),
     });
 
     // Cookie must be set here so that the redirect works
@@ -144,10 +147,27 @@ router.post(
   schemaHandler(schema, async (req, res) => {
     const user = await createUser(req.body);
 
-    // TODO: Send an email with the verification token
-
     if (isEmpty(user)) {
-      res.status(500).json({ message: "An error has occurred" });
+      res.status(500).json({
+        message: "An error has occurred",
+      });
+    }
+
+    // TODO: Send an email with the verification token
+    if (true === false && config.SENDGRID_API_KEY) {
+      sendgrid.setApiKey(config.SENDGRID_API_KEY);
+
+      const url = config.BASE_URL + "/verify/" + user.token;
+
+      const message = {
+        to: user.email,
+        from: config.EMAIL_FROM,
+        subject: "Blueprint: Verify your Email Address",
+        text: `Click on the following link to verify your email address: ${url}`,
+        html: `<p>Click on the following link to verify your email address:<br /><a href="${url}">${url}</a></p>`,
+      };
+
+      sendgrid.send(message);
     }
 
     generateJwtCookie(user, res);
@@ -155,5 +175,27 @@ router.post(
     res.redirect("/auth/session");
   })
 );
+
+router.get("/auth/verify/:token", async (req, res) => {
+  const { token } = req.params;
+
+  const user = await getUserByVerificationToken(token);
+
+  if (isEmpty(user)) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Cannot verify email address." });
+  }
+
+  if (!isEmpty(user.verified)) {
+    return res
+      .status(200)
+      .send({ success: false, message: "Email address already verified." });
+  }
+
+  await updateUser(user.id, { verified: makeDateString() });
+
+  return res.send({ success: true, message: "Email address verified." });
+});
 
 module.exports = [passport.initialize(), router];
