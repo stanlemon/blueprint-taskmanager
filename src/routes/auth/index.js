@@ -144,6 +144,8 @@ router.post(
   schemaHandler(schema, async (req, res) => {
     const user = await createUser(req.body);
 
+    // TODO: Send an email with the verification token
+
     if (isEmpty(user)) {
       res.status(500).json({ message: "An error has occurred" });
     }

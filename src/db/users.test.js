@@ -34,6 +34,8 @@ describe("users database access", () => {
     expect(user.password).toBe(undefined);
     expect(isSameDay(parseISO(user.created_at), Date.now())).toBe(true);
     expect(user.created_at).toEqual(user.updated_at);
+    expect(user.verification_token).not.toBe(null);
+    expect(user.verified).toBe(null);
     expect(user.active).toBe(1);
 
     const refresh1 = await getUserById(user.id);

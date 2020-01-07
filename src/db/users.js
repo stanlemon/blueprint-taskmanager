@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const shortid = require("shortid");
 const format = require("date-fns/format");
 const omit = require("lodash/omit");
 const isEmpty = require("lodash/isEmpty");
@@ -47,6 +48,7 @@ async function createUser(data) {
   const user = Object.assign({}, data, {
     active: 1,
     password: bcrypt.hashSync(data.password, 10),
+    verification_token: shortid.generate(),
     created_at: now,
     updated_at: now,
   });
