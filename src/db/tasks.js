@@ -48,13 +48,19 @@ async function countTasks(userId, filter) {
 }
 
 async function getTasks(userId, filter = "all", page = 0, size = 10) {
+  // Postgres and Sqlite do this differently
+  const orderByFuture =
+    knex.client.config.client === "pg"
+      ? `(NOW() + interval '100' year)`
+      : `date("now", "+100 years")`;
+
   const tasks = await knex("tasks")
     .select(columns)
     .where("user_id", userId)
     .modify(buildFilter(filter))
     // Ensures oldest due are first, then everything by creation date, with complete last
     .orderByRaw(
-      'CASE WHEN due IS NULL OR completed IS NOT NULL THEN date("now", "+100 years") ELSE due END ASC, created_at ASC, completed is null DESC'
+      `CASE WHEN due IS NULL OR completed IS NOT NULL THEN ${orderByFuture} ELSE due END ASC, created_at ASC, completed is null DESC`
     )
     .offset((page - 1) * size)
     .limit(size);
