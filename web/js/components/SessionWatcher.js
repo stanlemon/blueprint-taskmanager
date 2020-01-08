@@ -29,13 +29,16 @@ export class SessionWatcher extends React.Component {
     clearInterval(this.interval);
   }
 
+  /*
   shouldComponentUpdate(nextProps) {
     return !isEqual(nextProps, this.props);
   }
+  */
 
   componentDidUpdate(prevProps) {
+    console.log("componentDidUpdate()", this.interval);
     const path = getCurrentPathname();
-
+    console.log(path, this.props.user);
     // User was authenticated and logged out
     if (
       includes(prevProps.loaded, "user") &&
@@ -46,16 +49,21 @@ export class SessionWatcher extends React.Component {
       return;
     }
 
-    const unauthPaths = [
-      ROUTE_LOGIN,
-      ROUTE_REGISTER,
-      ROUTE_PRIVACY_POLICY,
-      ROUTE_TERMS_OF_SERVICE,
-    ];
+    const unauthPaths = [ROUTE_LOGIN, ROUTE_REGISTER];
 
     // Authenticated user is on an unauthenticated page
     if (this.props.user !== null && unauthPaths.indexOf(path) > -1) {
       navigateTo(ROUTE_ROOT);
+      return;
+    }
+
+    const optPaths = [ROUTE_PRIVACY_POLICY, ROUTE_TERMS_OF_SERVICE];
+
+    // User (auth or not) is on the verify page or any of the pages where auth is optional
+    if (
+      path.substring(0, "/verify/".length) === "/verify/" ||
+      optPaths.indexOf(path) > -1
+    ) {
       return;
     }
 
