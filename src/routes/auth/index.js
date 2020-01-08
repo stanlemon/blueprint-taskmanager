@@ -185,18 +185,18 @@ router.get("/auth/verify/:token", async (req, res) => {
   if (isEmpty(user)) {
     return res
       .status(401)
-      .json({ success: false, message: "Cannot verify email address." });
+      .json({ success: false, message: "Cannot verify email address. 😥" });
   }
 
   if (!isEmpty(user.verified)) {
     return res
       .status(200)
-      .send({ success: false, message: "Email address already verified." });
+      .send({ success: false, message: "Email address already verified. 🤔" });
   }
 
   await updateUser(user.id, { verified: makeDateString() });
 
-  return res.send({ success: true, message: "Email address verified." });
+  return res.send({ success: true, message: "Email address verified! 👍" });
 });
 
 module.exports = [passport.initialize(), router];

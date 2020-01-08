@@ -13,12 +13,14 @@ import { history } from "../lib/Navigation";
 
 export const ROUTE_LOGIN = "/login";
 export const ROUTE_REGISTER = "/register";
+export const ROUTE_VERIFY = "/verify/:token";
 export const ROUTE_ROOT = "/";
 export const ROUTE_TASK_VIEW = "/view/:id";
 export const ROUTE_TERMS_OF_SERVICE = "/terms";
 export const ROUTE_PRIVACY_POLICY = "/privacy";
 
 const RegisterView = loadable(() => import("./RegisterView"));
+const VerifyEmailView = loadable(() => import("./VerifyEmailView"));
 const TermsOfServiceView = loadable(() => import("./TermsOfServiceView"));
 const PrivacyPolicyView = loadable(() => import("./PrivacyPolicyView"));
 
@@ -33,6 +35,9 @@ export default class Routes extends React.Component {
             </Route>
             <Route exact path={ROUTE_REGISTER}>
               <RegisterView />
+            </Route>
+            <Route exact path={ROUTE_VERIFY}>
+              <VerifyEmailView />
             </Route>
             <Route exact path={ROUTE_TERMS_OF_SERVICE}>
               <TermsOfServiceView />

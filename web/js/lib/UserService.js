@@ -16,4 +16,8 @@ export default class UserService extends RestService {
   register(user) {
     return this.fetch("/auth/register", "post", user);
   }
+
+  verify(token) {
+    return this.fetch("/auth/verify/" + token);
+  }
 }
