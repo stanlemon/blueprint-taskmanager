@@ -153,20 +153,21 @@ router.post(
       });
     }
 
+    const url = config.BASE_URL + "/verify/" + user.token;
+
+    const message = {
+      to: user.email,
+      from: config.EMAIL_FROM,
+      subject: "Blueprint: Verify your Email Address",
+      text: `Click on the following link to verify your email address: ${url}`,
+      html: `<p>Click on the following link to verify your email address:<br /><a href="${url}">${url}</a></p>`,
+    };
+
+    console.log("Sending Email", message);
+
     // TODO: Send an email with the verification token
     if (true === false && config.SENDGRID_API_KEY) {
       sendgrid.setApiKey(config.SENDGRID_API_KEY);
-
-      const url = config.BASE_URL + "/verify/" + user.token;
-
-      const message = {
-        to: user.email,
-        from: config.EMAIL_FROM,
-        subject: "Blueprint: Verify your Email Address",
-        text: `Click on the following link to verify your email address: ${url}`,
-        html: `<p>Click on the following link to verify your email address:<br /><a href="${url}">${url}</a></p>`,
-      };
-
       sendgrid.send(message);
     }
 
