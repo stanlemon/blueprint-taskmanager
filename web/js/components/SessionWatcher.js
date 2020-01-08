@@ -29,11 +29,9 @@ export class SessionWatcher extends React.Component {
     clearInterval(this.interval);
   }
 
-  /*
   shouldComponentUpdate(nextProps) {
     return !isEqual(nextProps, this.props);
   }
-  */
 
   componentDidUpdate(prevProps) {
     console.log("componentDidUpdate()", this.interval);
