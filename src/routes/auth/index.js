@@ -165,11 +165,22 @@ router.post(
 
     console.log("Email Message = ", message);
 
-    if (config.SENDGRID_API_KEY && config.EMAIL_FROM) {
+    if (config.SENDGRID_API_KEY) {
       console.log("Sending email to SendGrid");
 
       sendgrid.setApiKey(config.SENDGRID_API_KEY);
-      sendgrid.send(message);
+      sendgrid
+        .send(message)
+        .then(() => {
+          console.log("Successfully sent verification email");
+        })
+        .catch(err => {
+          console.error(err.toString());
+        });
+    } else {
+      console.warn(
+        "SendGrid API key is not set, not sending verification email"
+      );
     }
 
     generateJwtCookie(user, res);
