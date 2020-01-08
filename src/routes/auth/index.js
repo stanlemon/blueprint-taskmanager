@@ -153,7 +153,7 @@ router.post(
       });
     }
 
-    const url = config.BASE_URL + "/verify/" + user.token;
+    const url = config.BASE_URL + "/verify/" + user.verification_token;
 
     const message = {
       to: user.email,
@@ -163,10 +163,11 @@ router.post(
       html: `<p>Click on the following link to verify your email address:<br /><a href="${url}">${url}</a></p>`,
     };
 
-    console.log("Sending Email", message);
+    console.log("Email Message = ", message);
 
-    // TODO: Send an email with the verification token
-    if (true === false && config.SENDGRID_API_KEY) {
+    if (config.SENDGRID_API_KEY && config.EMAIL_FROM) {
+      console.log("Sending email to SendGrid");
+
       sendgrid.setApiKey(config.SENDGRID_API_KEY);
       sendgrid.send(message);
     }
