@@ -7,7 +7,6 @@ const passport = require("passport");
 const { Strategy: LocalStrategy } = require("passport-local");
 const { Strategy: JwtStrategy } = require("passport-jwt");
 const sendgrid = require("@sendgrid/mail");
-const config = require("../../config");
 const { makeDateString } = require("../../utils");
 const schemaHandler = require("../../helpers/schemaHandler");
 const schema = require("../../schema/user");
@@ -19,11 +18,13 @@ const {
   updateUser,
 } = require("../../db/users");
 
+require("dotenv").config();
+
 const JWT_EXPIRES_IN_MIN = 120;
 
-if (config.JWT_SECRET === undefined) {
+if (process.env.JWT_SECRET === undefined) {
   console.warn("Jwt secret has not been set!");
-  config.JWT_SECRET = "dyKSdvTaXRS3KWbgMBDz9QlOwZZC3BlH";
+  process.env.JWT_SECRET = "dyKSdvTaXRS3KWbgMBDz9QlOwZZC3BlH";
 }
 
 function cookieExtractor(req) {
@@ -38,7 +39,7 @@ passport.use(
   new JwtStrategy(
     {
       jwtFromRequest: cookieExtractor,
-      secretOrKey: config.JWT_SECRET,
+      secretOrKey: process.env.JWT_SECRET,
       // NOTE: Setting options like 'issuer' here must also be set when the token is signed below
       jsonWebTokenOptions: {
         expiresIn: JWT_EXPIRES_IN_MIN + "m", // Every 10 minutes this token will need to be refreshed
@@ -85,7 +86,7 @@ passport.deserializeUser((id, done) => {
 });
 
 function generateJwtCookie(user, res) {
-  const token = jwt.sign(user, config.JWT_SECRET);
+  const token = jwt.sign(user, process.env.JWT_SECRET);
 
   res.cookie("jwt", token, {
     // Options set here must also be set in the strategy
@@ -153,11 +154,11 @@ router.post(
       });
     }
 
-    const url = config.BASE_URL + "/verify/" + user.verification_token;
+    const url = process.env.BASE_URL + "/verify/" + user.verification_token;
 
     const message = {
       to: user.email,
-      from: config.EMAIL_FROM,
+      from: process.env.EMAIL_FROM,
       subject: "Blueprint: Verify your Email Address",
       text: `Click on the following link to verify your email address: ${url}`,
       html: `<p>Click on the following link to verify your email address:<br /><a href="${url}">${url}</a></p>`,
@@ -165,10 +166,10 @@ router.post(
 
     console.log("Email Message = ", message);
 
-    if (config.SENDGRID_API_KEY) {
+    if (process.env.SENDGRID_API_KEY) {
       console.log("Sending email to SendGrid");
 
-      sendgrid.setApiKey(config.SENDGRID_API_KEY);
+      sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
       sendgrid
         .send(message)
         .then(() => {
