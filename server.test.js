@@ -68,7 +68,10 @@ test("end to end", async done => {
   await page.waitForSelector(".task-create-form");
 
   console.log("Click button to logout");
-  const logoutButton = await page.$("#logout");
+  // Triggers the user menu to fan out first
+  await page.hover("#user-menu");
+  // Click the now visible logout button
+  const logoutButton = await page.waitForSelector("#logout");
   await logoutButton.click();
 
   await page.waitForSelector(".login-form");

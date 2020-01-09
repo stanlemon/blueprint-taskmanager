@@ -85,7 +85,9 @@ export class Layout extends React.Component {
             <div className="navbar-start"></div>
             <div className="navbar-end">
               <div className="navbar-item has-dropdown is-hoverable">
-                <a className="navbar-link">{this.props.user.name}</a>
+                <a className="navbar-link" id="user-menu">
+                  {this.props.user.name}
+                </a>
                 <div className="navbar-dropdown is-right">
                   <a
                     id="logout"
