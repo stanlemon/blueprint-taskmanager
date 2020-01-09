@@ -117,6 +117,9 @@ Layout.propTypes = {
   loadTags: PropTypes.func.isRequired,
   clearErrors: PropTypes.func.isRequired,
   loaded: PropTypes.array,
+  user: PropTypes.shape({
+    name: PropTypes.string,
+  }),
 };
 
 export default connect(state => ({ loaded: state.loaded, user: state.user }), {
