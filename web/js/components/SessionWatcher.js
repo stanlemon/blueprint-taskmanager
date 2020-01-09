@@ -29,14 +29,15 @@ export class SessionWatcher extends React.Component {
     clearInterval(this.interval);
   }
 
+  /*
   shouldComponentUpdate(nextProps) {
     return !isEqual(nextProps, this.props);
   }
+  */
 
   componentDidUpdate(prevProps) {
-    console.log("componentDidUpdate()", this.interval);
     const path = getCurrentPathname();
-    console.log(path, this.props.user);
+
     // User was authenticated and logged out
     if (
       includes(prevProps.loaded, "user") &&

@@ -84,15 +84,21 @@ export class Layout extends React.Component {
           >
             <div className="navbar-start"></div>
             <div className="navbar-end">
-              <div
-                id="logout"
-                className="navbar-item"
-                onClick={this.handleClickToLogout}
-              >
-                <span style={{ marginRight: 10 }}>Logout</span>
-                <span className="icon" style={{ cursor: "pointer" }}>
-                  <Icon icon={faSignOutAlt} size="lg" />
-                </span>
+              <div className="navbar-item has-dropdown is-hoverable">
+                <a className="navbar-link">{this.props.user.name}</a>
+                <div className="navbar-dropdown is-right">
+                  <a
+                    id="logout"
+                    className="navbar-item"
+                    onClick={this.handleClickToLogout}
+                  >
+                    <span className="icon" style={{ cursor: "pointer" }}>
+                      <Icon icon={faSignOutAlt} size="lg" />
+                    </span>
+
+                    <span style={{ marginRight: 10 }}>Logout</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -113,7 +119,7 @@ Layout.propTypes = {
   loaded: PropTypes.array,
 };
 
-export default connect(state => ({ loaded: state.loaded }), {
+export default connect(state => ({ loaded: state.loaded, user: state.user }), {
   logout,
   loadTags,
   clearErrors,

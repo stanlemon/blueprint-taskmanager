@@ -231,7 +231,7 @@ export function login(user) {
       .login(user)
       .then(data => {
         dispatch({ type: CLEAR_ERRORS });
-        dispatch({ type: AUTHENTICATED_USER, user: data });
+        dispatch({ type: AUTHENTICATED_USER, user: data.user });
       })
       .catch(() => {
         dispatch({

@@ -13,7 +13,7 @@ export function Button(_props) {
     _props.className
   );
   const { children } = _props;
-  const style = Object.assign(_props.style || {}, { minWidth: 150 });
+  const style = Object.assign(_props.style || {}, { minWidth: 110 });
   const props = omit(_props, "className", "style", "children", "is", "size");
 
   return (

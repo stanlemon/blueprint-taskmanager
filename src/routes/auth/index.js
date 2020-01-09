@@ -138,7 +138,7 @@ router.get("/auth/session", function(req, res, next) {
       generateJwtCookie(req.user, res);
 
       // Return back some of our details
-      res.status(200).json(req.user);
+      res.status(200).json({ user: req.user });
     });
   })(req, res, next);
 });
