@@ -148,6 +148,9 @@ export function createTask(data) {
       .then(task => {
         dispatch({ type: CLEAR_ERRORS });
         dispatch({ type: CREATE_TASK_SUCCESS, task });
+        loadTasks(getState().filter, getState().page)(dispatch, getState, {
+          taskService,
+        });
         return task;
       })
       .catch(ex => {
@@ -164,6 +167,9 @@ export function updateTask(data) {
       .then(task => {
         dispatch({ type: CLEAR_ERRORS });
         dispatch({ type: UPDATE_TASK_SUCCESS, task });
+        loadTasks(getState().filter, getState().page)(dispatch, getState, {
+          taskService,
+        });
         return task;
       })
       .catch(ex => {
@@ -180,6 +186,9 @@ export function deleteTask(taskId) {
       .then(() => {
         dispatch({ type: CLEAR_ERRORS });
         dispatch({ type: DELETE_TASK_SUCCESS, taskId });
+        loadTasks(getState().filter, getState().page)(dispatch, getState, {
+          taskService,
+        });
       })
       .catch(ex => {
         dispatch({ type: DELETE_TASK_ERROR, errors: ex.errors });

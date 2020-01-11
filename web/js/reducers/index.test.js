@@ -87,92 +87,75 @@ describe("reducers", () => {
   it("tasks()", () => {
     expect(
       tasks(
-        { byId: {} },
+        { tasks: [] },
         {
           type: LOAD_TASKS_SUCCESS,
           tasks: { tasks: [{ id: 1, name: "Task One" }] },
         }
       )
-    ).toMatchObject({ byId: { 1: { id: 1, name: "Task One" } } });
+    ).toMatchObject({ tasks: [{ id: 1, name: "Task One" }] });
 
     // Task loading is not additive
     expect(
       tasks(
-        { byId: { 1: { id: 1, name: "Task One" } } },
+        { tasks: [{ id: 1, name: "Task One" }] },
         {
           type: LOAD_TASKS_SUCCESS,
           tasks: { tasks: [{ id: 2, name: "Task Two" }] },
         }
       )
-    ).toMatchObject({ byId: { 2: { id: 2, name: "Task Two" } } });
+    ).toMatchObject({ tasks: [{ id: 2, name: "Task Two" }] });
+
+    let state;
+
+    state = { tasks: [{ id: 1, name: "Task One" }] };
 
     expect(
-      tasks(
-        { byId: { 1: { id: 1, name: "Task One" } } },
-        {
-          type: CREATE_TASK_SUCCESS,
-          task: { id: 2, name: "Task Two" },
-        }
-      )
-    ).toMatchObject({
-      byId: {
-        1: { id: 1, name: "Task One" },
-        2: { id: 2, name: "Task Two" },
-      },
-    });
+      tasks(state, {
+        type: CREATE_TASK_SUCCESS,
+        task: { id: 2, name: "Task Two" },
+      })
+    ).toMatchObject(state);
+
+    state = {
+      tasks: [
+        { id: 1, name: "Task One" },
+        { id: 2, name: "Task Two" },
+      ],
+    };
 
     expect(
-      tasks(
-        {
-          byId: {
-            1: { id: 1, name: "Task One" },
-            2: { id: 2, name: "Task Two" },
-          },
-        },
-        {
-          type: UPDATE_TASK_SUCCESS,
-          task: { id: 1, name: "Task One Now Has A Longer Name" },
-        }
-      )
-    ).toMatchObject({
-      byId: {
-        1: { id: 1, name: "Task One Now Has A Longer Name" },
-        2: { id: 2, name: "Task Two" },
-      },
-    });
+      tasks(state, {
+        type: UPDATE_TASK_SUCCESS,
+        task: { id: 1, name: "Task One Now Has A Longer Name" },
+      })
+    ).toMatchObject(state);
+
+    state = {
+      tasks: [
+        { id: 1, name: "Task One" },
+        { id: 2, name: "Task Two" },
+      ],
+    };
 
     expect(
-      tasks(
-        {
-          byId: {
-            1: { id: 1, name: "Task One" },
-            2: { id: 2, name: "Task Two" },
-          },
-        },
-        {
-          type: DELETE_TASK_SUCCESS,
-          taskId: 2,
-        }
-      )
-    ).toMatchObject({ byId: { 1: { id: 1, name: "Task One" } } });
+      tasks(state, {
+        type: DELETE_TASK_SUCCESS,
+        taskId: 2,
+      })
+    ).toMatchObject(state);
+
+    state = {
+      tasks: [
+        { id: 1, name: "Task One" },
+        { id: 2, name: "Task Two" },
+      ],
+    };
 
     expect(
-      tasks(
-        {
-          byId: {
-            1: { id: 1, name: "Task One" },
-            2: { id: 2, name: "Task Two" },
-          },
-        },
-        {
-          type: "unknown",
-        }
-      )
-    ).toMatchObject({
-      byId: {
-        1: { id: 1, name: "Task One" },
-        2: { id: 2, name: "Task Two" },
-      },
-    });
+      tasks(state, {
+        type: "unknown",
+      })
+    ).toMatchObject(state);
   });
 });

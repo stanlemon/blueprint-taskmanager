@@ -189,19 +189,13 @@ export class TaskListView extends React.Component {
 }
 
 export default connect(
-  state => {
-    const allTasks = !isObject(state.tasks?.byId)
-      ? []
-      : Object.values(state.tasks?.byId);
-
-    return {
-      loaded: state.loaded,
-      filter: state.filter,
-      page: state.page,
-      pages: state.tasks.pages,
-      hasTasks: allTasks.length > 0,
-      tasks: allTasks,
-    };
-  },
+  state => ({
+    loaded: state.loaded,
+    filter: state.filter,
+    page: state.page,
+    pages: state.tasks.pages,
+    hasTasks: state.tasks.tasks && state.tasks.tasks.length > 0,
+    tasks: state.tasks.tasks,
+  }),
   { loadTasks, setFilter, setPage }
 )(TaskListView);

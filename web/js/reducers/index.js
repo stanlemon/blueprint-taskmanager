@@ -59,38 +59,15 @@ export function tasks(state, action) {
       return {
         // All the other state
         ...state,
-        byId:
-          // Our new tasks by id
-          keyBy(
-            // Clean up our dates
-            action.tasks.tasks.map(d => formatTaskDates(d)),
-            // Key these into the map by id
-            t => t.id
-          ),
+        // Make sure you preserve the order of these tasks (see the db call)
+        tasks: action.tasks.tasks.map(d => formatTaskDates(d)),
         pages: action.tasks.pages,
       };
-    // TODO: Appending messes up filtering & pagination, need to refresh.
+    // These preserve the existing state, they don't clear out the state so that existing data doesn't blank out,
+    // but the actions immediately trigger a LOAD_TASK... operation, so the data will be refreshed on these.
     case CREATE_TASK_SUCCESS:
     case UPDATE_TASK_SUCCESS:
-      return {
-        // All the other state
-        ...state,
-        byId: {
-          // Existing tasks by id
-          ...state.byId,
-          // Overwrite this task
-          [action.task.id]: formatTaskDates(action.task),
-        },
-      };
     case DELETE_TASK_SUCCESS:
-      return {
-        // All the other state
-        ...state,
-        byId: {
-          // Remove our task
-          ...omit(state.byId, action.taskId),
-        },
-      };
     default:
       return { ...state };
   }
@@ -178,6 +155,6 @@ export default function(
     loaded: loaded(state.loaded, action),
     errors: errors(state.errors, action),
   };
-  //console.log("redux store = ", y);
+  console.log("redux store = ", y);
   return y;
 }
