@@ -1,5 +1,6 @@
 /* @flow weak */
 import uniq from "lodash/uniq";
+import isArray from "lodash/isArray";
 import {
   ERROR,
   CLEAR_ERRORS,
@@ -48,10 +49,14 @@ export function tasks(state, action) {
     case GET_TASK_SUCCESS:
       return {
         ...state,
-        byId: {
-          ...state.byId,
-          [action.task.id]: formatTaskDates(action.task),
-        },
+        tasks: [
+          // Only if the existing tasks are an array (means we've loaded them before)
+          ...(isArray(state.tasks)
+            ? // Exclude the current task we're getting if it's there, because we'll replace it
+              state.tasks.filter(t => t.id !== action.task.id)
+            : []),
+          formatTaskDates(action.task),
+        ],
       };
     case LOAD_TASKS_SUCCESS:
       return {

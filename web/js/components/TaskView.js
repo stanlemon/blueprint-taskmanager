@@ -58,7 +58,11 @@ TaskView.propTypes = {
 export default connect(
   state => ({
     loaded: includes(state.loaded, "tasks"),
-    task: state.tasks?.byId?.[getRouteParam(ROUTE_TASK_VIEW, "id")],
+    task: state.tasks.tasks
+      ? state?.tasks?.tasks.filter(
+          t => t.id !== getRouteParam(ROUTE_TASK_VIEW, "id")
+        )[0]
+      : null,
   }),
   { getTask }
 )(

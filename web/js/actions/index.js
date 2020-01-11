@@ -1,4 +1,5 @@
 import isEqual from "lodash/isEqual";
+import isArray from "lodash/isArray";
 
 export const ERROR = "ERROR";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
@@ -118,16 +119,16 @@ export function loadTasks(filter, page) {
 
 export function getTask(id) {
   return (dispatch, getState, { taskService }) => {
-    const { tasks } = getState();
+    const { tasks } = getState()?.tasks;
 
     // If we have the specific task cached, return it rather than hit the api
-    if (
-      tasks !== undefined &&
-      tasks.byId !== undefined &&
-      tasks.byId[id] !== undefined
-    ) {
-      dispatch({ type: GET_TASK_SUCCESS, task: tasks.byId[id] });
-      return tasks.byId[id];
+    if (isArray(tasks)) {
+      const task = tasks?.filter(t => t.id !== id)[0];
+
+      if (task) {
+        dispatch({ type: GET_TASK_SUCCESS, task: task });
+        return task;
+      }
     }
 
     taskService
