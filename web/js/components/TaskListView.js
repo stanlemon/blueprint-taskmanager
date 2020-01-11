@@ -38,7 +38,7 @@ export class TaskListView extends React.Component {
   };
 
   componentDidMount() {
-    this.props.loadTasks();
+    this.props.loadTasks(this.props.filter, this.props.page);
   }
 
   setPage(page) {
@@ -186,19 +186,6 @@ export class TaskListView extends React.Component {
       </Container>
     );
   }
-}
-
-export function filterTasks(filter, tasks) {
-  return tasks.filter(task => {
-    switch (filter) {
-      case INCOMPLETE:
-        return task.completed === null;
-      case COMPLETE:
-        return task.completed !== null;
-      default:
-        return true;
-    }
-  });
 }
 
 export default connect(

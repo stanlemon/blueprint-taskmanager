@@ -13,16 +13,18 @@ import { history } from "../lib/Navigation";
 
 export const ROUTE_LOGIN = "/login";
 export const ROUTE_REGISTER = "/register";
+export const ROUTE_TERMS_OF_SERVICE = "/terms";
+export const ROUTE_PRIVACY_POLICY = "/privacy";
 export const ROUTE_VERIFY = "/verify/:token";
 export const ROUTE_ROOT = "/";
 export const ROUTE_TASK_VIEW = "/view/:id";
-export const ROUTE_TERMS_OF_SERVICE = "/terms";
-export const ROUTE_PRIVACY_POLICY = "/privacy";
+export const ROUTE_PROFILE_VIEW = "/profile";
 
 const RegisterView = loadable(() => import("./RegisterView"));
 const VerifyEmailView = loadable(() => import("./VerifyEmailView"));
 const TermsOfServiceView = loadable(() => import("./TermsOfServiceView"));
 const PrivacyPolicyView = loadable(() => import("./PrivacyPolicyView"));
+const ProfileView = loadable(() => import("./ProfileView"));
 
 export default class Routes extends React.Component {
   render() {
@@ -54,6 +56,9 @@ export default class Routes extends React.Component {
                   </Route>
                   <Route exact path={ROUTE_TASK_VIEW}>
                     <TaskView />
+                  </Route>
+                  <Route exact path={ROUTE_PROFILE_VIEW}>
+                    <ProfileView />
                   </Route>
                 </Switch>
               </Layout>

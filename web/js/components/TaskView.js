@@ -8,7 +8,6 @@ import Error from "./Error";
 import UpdateTaskForm from "./UpdateTaskForm";
 import { getTask } from "../actions/";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getRouteParam, navigateTo } from "../lib/Navigation";
 import { ROUTE_ROOT, ROUTE_TASK_VIEW } from "./Routes";
@@ -48,41 +47,32 @@ export function TaskView({ loaded = false, task }) {
 }
 
 TaskView.propTypes = {
+  // Not required if loaded = false
   id: PropTypes.string,
+  // Not required if loaded = false
   task: PropTypes.object,
+  // Defaults to false if not set
   loaded: PropTypes.bool,
 };
 
-const ConnectedTaskView = connect(state => ({
-  loaded: includes(state.loaded, "tasks"),
-  task: state.tasks?.byId?.[getRouteParam(ROUTE_TASK_VIEW, "id")],
-}))(TaskView);
+export default connect(
+  state => ({
+    loaded: includes(state.loaded, "tasks"),
+    task: state.tasks?.byId?.[getRouteParam(ROUTE_TASK_VIEW, "id")],
+  }),
+  { getTask }
+)(
+  class TaskViewContainer extends React.Component {
+    static propTypes = {
+      getTask: PropTypes.func.isRequired,
+    };
 
-export class PreloadContainer extends React.Component {
-  componentDidMount() {
-    this.props.action();
+    componentDidMount() {
+      this.props.getTask(getRouteParam(ROUTE_TASK_VIEW, "id"));
+    }
+
+    render() {
+      return <TaskView {...omit(this.props, "getTask")} />;
+    }
   }
-
-  render() {
-    return React.cloneElement(this.props.children, omit(this.props, "action"));
-  }
-}
-
-PreloadContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-  action: PropTypes.func.isRequired,
-};
-
-function PreloadAction(Component, action) {
-  return connect(null, dispatch => bindActionCreators({ action }, dispatch))(
-    props => (
-      <PreloadContainer {...props}>
-        <Component />
-      </PreloadContainer>
-    )
-  );
-}
-
-export default PreloadAction(ConnectedTaskView, () => {
-  return getTask(getRouteParam(ROUTE_TASK_VIEW, "id"));
-});
+);

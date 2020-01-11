@@ -100,7 +100,6 @@ function createTags(userId, names) {
 
   return knex("tags")
     .insert(tags)
-    .returning("id")
     .then(() => {
       // Refresh the full record so we have ids
       return getTagsByName(userId, names);

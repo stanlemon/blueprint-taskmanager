@@ -20,8 +20,8 @@
     "build": "rm -rf ./dist/* && NODE_ENV=production parcel build web/index.html",
     "test": "NODE_ENV=test jest --coverage --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test-watch": "NODE_ENV=test jest --watchAll --testRegex \"(web/js|src)/.*\\.test.js$\"",
-    "test-e2e": "NODE_ENV=test jest ./server.test.js -t 'end to end' --detectOpenHandles",
-    "test-all": "NODE_ENV=test jest  --detectOpenHandles --coverage --testRegex .*\\.test.js$"
+    "test-e2e": "NODE_ENV=test jest ./server.test.js -t 'end to end' --coverage --detectOpenHandles",
+    "test-all": "NODE_ENV=test jest  --detectOpenHandles --testRegex .*\\.test.js$"
   },
   "browserslist": [
     "last 1 year, not dead",
@@ -38,7 +38,18 @@
     "automock": false,
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
-    }
+    },
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/src/db/migrations/",
+      "/web/js/components/elements/"
+    ],
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "html"
+    ]
   },
   "nodemonConfig": {
     "ignore": [

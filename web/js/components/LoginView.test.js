@@ -79,7 +79,11 @@ describe("<LoginView />", () => {
 
   it("errors from actions render", () => {
     const view = mount(
-      <LoginView login={() => {}} errors={{ main: "Error message" }} />
+      <LoginView
+        login={() => {}}
+        errors={{ main: "Error message" }}
+        clearErrors={() => {}}
+      />
     );
 
     expect(view.find(Error).length).toBe(1);

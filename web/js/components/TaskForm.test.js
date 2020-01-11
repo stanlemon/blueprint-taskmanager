@@ -207,8 +207,8 @@ describe("<TaskForm />", () => {
 
   it("renders errors from actions", () => {
     const errorMessages = {
-      description: ["Error message about description"],
-      due: ["Error message about due"],
+      description: "Error message about description",
+      due: "Error message about due",
     };
 
     const view = mount(<TaskForm onSubmit={t => t} errors={errorMessages} />);
@@ -216,5 +216,8 @@ describe("<TaskForm />", () => {
     const errors = view.find(".error");
 
     expect(errors.length).toBe(2);
+
+    expect(errors.at(0).text()).toBe(errorMessages.description);
+    expect(errors.at(1).text()).toBe(errorMessages.due);
   });
 });
