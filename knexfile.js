@@ -1,10 +1,21 @@
 module.exports = {
+  /*
   development: {
     client: "sqlite3",
     connection: {
       filename: "./database.sqlite",
     },
     useNullAsDefault: true,
+    migrations: {
+      directory: __dirname + "/src/db/migrations",
+      tableName: "knex_migrations",
+    },
+  },
+  */
+
+  development: {
+    client: "pg",
+    connection: "postgres://stan@localhost:5432/blueprint",
     migrations: {
       directory: __dirname + "/src/db/migrations",
       tableName: "knex_migrations",
