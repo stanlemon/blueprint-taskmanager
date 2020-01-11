@@ -1,10 +1,12 @@
 import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
+import isDate from "date-fns/isDate";
 import isAfter from "date-fns/isAfter";
 import isBefore from "date-fns/isBefore";
 import addDays from "date-fns/addDays";
 import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 import { connect } from "react-redux";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -54,16 +56,16 @@ export class TaskItem extends React.Component {
 
     const rowClasses = classNames("task-row", {
       // Tasks due in the next day
-      "bg-warning task-due-soon":
-        task.due &&
+      "has-background-warning task-due-soon":
         !task.completed &&
+        task.due &&
         // Is after now
-        isAfter(task.due, Date.now()) &&
+        isAfter(task.due, new Date()) &&
         // Is before 2 days from now
-        isBefore(task.due, addDays(Date.now(), 2)),
+        isBefore(task.due, addDays(new Date(), 2)),
       // Tasks that are are over due
-      "bg-danger task-overdue":
-        task.due && !task.completed && isBefore(task.due, Date.now()),
+      "has-background-danger task-overdue":
+        !task.completed && task.due && isBefore(task.due, new Date()),
       "task-completed": task.completed ? true : false,
     });
 
@@ -80,7 +82,10 @@ export class TaskItem extends React.Component {
           <div style={{ padding: 10 }}>
             {task.name}
             {task.due && (
-              <em className="has-text-grey is-size-7">
+              <em
+                className="has-text-grey is-size-7"
+                style={{ marginLeft: 10 }}
+              >
                 {" "}
                 due {format(task.due, "MMM d, yyyy h:mma")}
               </em>
