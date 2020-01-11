@@ -1,12 +1,10 @@
 import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
-import isDate from "date-fns/isDate";
 import isAfter from "date-fns/isAfter";
 import isBefore from "date-fns/isBefore";
 import addDays from "date-fns/addDays";
 import format from "date-fns/format";
-import parseISO from "date-fns/parseISO";
 import { connect } from "react-redux";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
