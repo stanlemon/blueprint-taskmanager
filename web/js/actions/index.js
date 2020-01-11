@@ -5,6 +5,8 @@ export const ERROR = "ERROR";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const AUTHENTICATED_USER = "AUTHENTICATED_USER";
 export const UNAUTHENTICATED_USER = "UNAUTHENTICATED_USER";
+export const SAVE_USER = "SAVE_USER";
+export const USER_ERROR = "USER_ERROR";
 export const AUTHENTICATION_ERROR = "AUTHENTICATION_ERROR";
 export const REGISTER_ERROR = "REGISTER_ERROR";
 export const LOAD_TAGS_SUCCESS = "LOAD_TAGS_SUCCESS";
@@ -45,6 +47,20 @@ export function loadUser(user) {
     return { type: AUTHENTICATED_USER, user };
   }
   return { type: UNAUTHENTICATED_USER };
+}
+
+export function saveUser(user) {
+  return (dispatch, getState, { userService }) => {
+    return userService
+      .saveUser(user)
+      .then(res => {
+        dispatch({ type: SAVE_USER, user: res });
+        return res;
+      })
+      .catch(ex => {
+        dispatch({ type: USER_ERROR, errors: ex.errors });
+      });
+  };
 }
 
 export function logout() {

@@ -6,6 +6,8 @@ import {
   CLEAR_ERRORS,
   AUTHENTICATED_USER,
   UNAUTHENTICATED_USER,
+  SAVE_USER,
+  USER_ERROR,
   AUTHENTICATION_ERROR,
   REGISTER_ERROR,
   LOAD_TAGS_SUCCESS,
@@ -81,6 +83,7 @@ export function user(state, action) {
     case UNAUTHENTICATED_USER:
       return null;
     case AUTHENTICATED_USER:
+    case SAVE_USER:
       return Object.assign({}, action.user);
     default:
       return state;
@@ -97,6 +100,7 @@ export function errors(state, action) {
     case UPDATE_TASK_ERROR:
     case DELETE_TASK_ERROR:
     case AUTHENTICATION_ERROR:
+    case USER_ERROR:
     case REGISTER_ERROR:
       return { ...state, ...action.errors };
     case CLEAR_ERRORS:
@@ -158,6 +162,6 @@ export default function(
     loaded: loaded(state.loaded, action),
     errors: errors(state.errors, action),
   };
-  console.log("redux store = ", y);
+  //console.log("redux store = ", y);
   return y;
 }

@@ -1,12 +1,10 @@
-import isEmpty from "lodash/isEmpty";
-import isEmail from "validator/lib/isEmail";
-import isLength from "validator/lib/isLength";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { navigateTo } from "../lib/Navigation";
 import { registerUser, clearErrors } from "../actions/";
-import { Container, Field, Button } from "./elements/";
+import { validate, UserForm } from "./UserForm";
+import { Container, Button } from "./elements/";
 import { ROUTE_TERMS_OF_SERVICE, ROUTE_PRIVACY_POLICY } from "./Routes";
 
 export class RegisterView extends React.Component {
@@ -31,39 +29,7 @@ export class RegisterView extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    const errors = {};
-
-    if (isEmpty(this.state.data) || isEmpty(this.state.data.name)) {
-      errors["name"] = "You must enter your name.";
-    }
-
-    if (isEmpty(this.state.data) || isEmpty(this.state.data.email)) {
-      errors["email"] = "You must enter your email.";
-    }
-
-    if (!isEmpty(this.state.data.email) && !isEmail(this.state.data.email)) {
-      errors["email"] = "You must enter a valid email address.";
-    }
-
-    if (isEmpty(this.state.data) || isEmpty(this.state.data.password)) {
-      errors["password"] = "You must enter your password.";
-    }
-
-    // Ensure that they've entered their password twice
-    if (
-      !isEmpty(this.state.data.password) &&
-      this.state.data.password != this.state.data.repeat_password
-    ) {
-      errors["repeat_password"] = "Your password does not match.";
-    }
-
-    if (
-      !isEmpty(this.state.data.password) &&
-      !isLength(this.state.data.password, { min: 8, max: 64 })
-    ) {
-      errors["password"] =
-        "Your password must be between 8 and 64 characters in length.";
-    }
+    const errors = validate(this.state.data);
 
     // If there are any errors, bail
     if (Object.keys(errors).length > 0) {
@@ -115,66 +81,39 @@ export class RegisterView extends React.Component {
         <h2 className="subtitle is-2">Register an Account</h2>
         <hr />
         <form id="register-form" onSubmit={this.handleSubmit}>
-          <div className="well">
-            <Field
-              name="name"
-              label="Name"
-              error={errors.name}
-              value={this.state.data.name}
-              onChange={this.setValue}
-            />
-            <Field
-              name="email"
-              label="Email"
-              type="email"
-              error={errors.email}
-              value={this.state.data.email}
-              onChange={this.setValue}
-            />
-            <Field
-              name="password"
-              label="Password"
-              type="password"
-              error={errors.password}
-              value={this.state.data.password}
-              onChange={this.setValue}
-            />
-            <Field
-              name="repeat_password"
-              label="Repeat Password"
-              type="password"
-              error={errors.repeat_password}
-              value={this.state.data.repeat_password}
-              onChange={this.setValue}
-            />
-            <div className="content">
-              By registering with this service and creating an account you agree
-              to the{" "}
-              <a
-                className="is-link"
-                onClick={() => navigateTo(ROUTE_TERMS_OF_SERVICE)}
-              >
-                Terms of Service
-              </a>{" "}
-              and acknowledge that you have read and reviewed both it and the{" "}
-              <a
-                className="is-link"
-                onClick={() => navigateTo(ROUTE_PRIVACY_POLICY)}
-              >
-                Privacy Policy
-              </a>
-              .
-            </div>
-            <Button
-              id="register-button"
-              type="submit"
-              onClick={this.handleSubmit}
-              is="primary"
-              style={{ marginTop: "1.5rem" }}
+          <UserForm
+            {...this.state.data}
+            errors={errors}
+            setValue={this.setValue}
+          />
+
+          <div className="content">
+            By registering with this service and creating an account you agree
+            to the{" "}
+            <a
+              className="is-link"
+              onClick={() => navigateTo(ROUTE_TERMS_OF_SERVICE)}
             >
-              Register
-            </Button>
+              Terms of Service
+            </a>{" "}
+            and acknowledge that you have read and reviewed both it and the{" "}
+            <a
+              className="is-link"
+              onClick={() => navigateTo(ROUTE_PRIVACY_POLICY)}
+            >
+              Privacy Policy
+            </a>
+            .
           </div>
+          <Button
+            id="register-button"
+            type="submit"
+            onClick={this.handleSubmit}
+            is="primary"
+            style={{ marginTop: "1.5rem" }}
+          >
+            Register
+          </Button>
         </form>
         <hr />
         <div className="has-text-centered" style={{ marginTop: "2.5rem" }}>

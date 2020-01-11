@@ -1,1 +1,1 @@
-module.exports = [require("./tasks"), require("./tags")];
+module.exports = [require("./tasks"), require("./tags"), require("./user")];

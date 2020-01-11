@@ -14,12 +14,13 @@ function omitPassword(o) {
   return omit(o, ["password"]);
 }
 
-function getUserById(id) {
-  return knex("users")
+async function getUserById(id) {
+  const user = await knex("users")
     .select()
     .where({ id, active: true })
-    .first()
-    .then(omitPassword);
+    .first();
+  console.log(user);
+  return omitPassword(user);
 }
 
 // Exposes 'password', so this method is private
@@ -82,14 +83,46 @@ async function createUser(data) {
     });
 }
 
-function updateUser(id, user) {
-  const data = Object.assign({}, user, {
-    updated_at: format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
-  });
+async function updateUser(id, user) {
+  const data = Object.assign(
+    {},
+    // A user may not write these fields
+    omit(user, [
+      "password",
+      "active",
+      "created_at",
+      // These should only ever be set by the API tier, never by the user
+      // They should get dropped thanks to the Joi schema validation
+      //"verification_token",
+      //"verified",
+      //"last_logged_in",
+    ]),
+    {
+      updated_at: format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
+    }
+  );
 
-  return knex("users")
+  const original = getUserById(id);
+
+  if (!original) {
+    throw new Error("Original user could not be found.");
+  }
+
+  // If password is set, hash it.
+  if (!isEmpty(user.password)) {
+    data.password = bcrypt.hashSync(user.password, 10);
+  }
+
+  if (original.email != data.email) {
+    data.verification_token = shortid.generate();
+    data.verified = null;
+  }
+
+  await knex("users")
     .update(data)
     .where("id", id);
+
+  return await getUserById(id);
 }
 
 module.exports = {
