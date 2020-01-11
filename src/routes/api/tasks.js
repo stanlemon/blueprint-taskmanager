@@ -17,9 +17,10 @@ router.get(
   "/tasks",
   asyncHandler(async req => {
     const filter = req.query.filter || "all";
-    const page = req.query.page || 1;
-    const size = req.query.size || 10;
+    const page = parseInt(req.query.page) || 1;
+    const size = parseInt(req.query.size) || 10;
 
+    const all = await countTasks(req.user.id, "all");
     const total = await countTasks(req.user.id, filter);
     const tasks = await getTasks(req.user.id, filter, page, size);
 
@@ -29,6 +30,7 @@ router.get(
       page,
       pages: Math.ceil(total / size),
       total,
+      all,
     };
   })
 );

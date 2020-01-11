@@ -62,9 +62,9 @@ export function tasks(state, action) {
       return {
         // All the other state
         ...state,
+        ...action.tasks,
         // Make sure you preserve the order of these tasks (see the db call)
         tasks: action.tasks.tasks.map(d => formatTaskDates(d)),
-        pages: action.tasks.pages,
       };
     // These preserve the existing state, they don't clear out the state so that existing data doesn't blank out,
     // but the actions immediately trigger a LOAD_TASK... operation, so the data will be refreshed on these.

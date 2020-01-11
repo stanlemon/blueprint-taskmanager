@@ -44,7 +44,7 @@ async function countTasks(userId, filter) {
     .where("user_id", userId)
     .modify(buildFilter(filter))
     .first();
-  return total;
+  return parseInt(total);
 }
 
 async function getTasks(userId, filter = "all", page = 0, size = 10) {

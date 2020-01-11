@@ -78,6 +78,8 @@ export class TaskListView extends React.Component {
       );
     }
 
+    const { pages, page } = this.props;
+
     return (
       <Container>
         <div className="buttons has-addons is-centered">
@@ -133,7 +135,7 @@ export class TaskListView extends React.Component {
           <TaskItem key={task.id} task={task} />
         ))}
 
-        {this.props.pages > 1 && (
+        {pages > 1 && (
           <nav
             className="pagination is-centered"
             role="navigation"
@@ -142,15 +144,15 @@ export class TaskListView extends React.Component {
           >
             <button
               className="button pagination-previous"
-              disabled={this.props.page === 1}
-              onClick={() => this.setPage(this.props.page - 1)}
+              disabled={page === 1}
+              onClick={() => this.setPage(page - 1)}
             >
               Previous
             </button>
             <button
               className="button pagination-next"
-              disabled={this.props.page === this.props.pages}
-              onClick={() => this.setPage(this.props.page + 1)}
+              disabled={page === pages}
+              onClick={() => this.setPage(page + 1)}
             >
               Next page
             </button>
@@ -158,16 +160,16 @@ export class TaskListView extends React.Component {
               {/*<li>
                 <span className="pagination-ellipsis">&hellip;</span>
               </li>*/}
-              {[...Array(this.props.pages + 1).keys()].slice(1).map(page => (
-                <li key={`page-${page}`}>
+              {[...Array(pages + 1).keys()].slice(1).map(p => (
+                <li key={`page-${p}`}>
                   <button
                     className={classNames("button", "pagination-link", {
-                      "is-current": this.props.page === page,
+                      "is-current": page === p,
                     })}
-                    aria-label={`Goto page ${page}`}
-                    onClick={() => this.setPage(page)}
+                    aria-label={`Goto page ${p}`}
+                    onClick={() => this.setPage(p)}
                   >
-                    {page}
+                    {p}
                   </button>
                 </li>
               ))}
@@ -190,11 +192,8 @@ export class TaskListView extends React.Component {
 export default connect(
   state => ({
     loaded: state.loaded,
-    filter: state.filter,
-    page: state.page,
-    pages: state.tasks.pages,
-    hasTasks: state.tasks.tasks && state.tasks.tasks.length > 0,
-    tasks: state.tasks.tasks,
+    hasTasks: state.tasks.all > 0,
+    ...state.tasks,
   }),
   { loadTasks, setFilter, setPage }
 )(TaskListView);
