@@ -1,7 +1,5 @@
 /* @flow weak */
 import uniq from "lodash/uniq";
-import keyBy from "lodash/keyBy";
-import omit from "lodash/omit";
 import {
   ERROR,
   CLEAR_ERRORS,
