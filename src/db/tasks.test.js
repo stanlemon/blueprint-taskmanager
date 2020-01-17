@@ -7,7 +7,7 @@ const {
   updateTask,
   deleteTask,
 } = require("./tasks");
-const { createTag } = require("./tags");
+const { upsertTags } = require("./tags");
 const { createUser } = require("./users");
 
 beforeAll(async () => {
@@ -98,8 +98,8 @@ describe("tasks database access", () => {
   it("getTaskById() with tags", async () => {
     const user = await setupUser();
 
-    await createTag(user.id, "baz");
-    await createTag(user.id, "buzz");
+    await upsertTags(user.id, ["baz", "buzz"]);
+    await upsertTags(user.id, ["baz", "buzz"]);
 
     // This should create two new tags and map an existing one
     const tags1 = ["bar", "baz", "foo"]; // Sorted alphabetically

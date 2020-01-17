@@ -54,6 +54,28 @@ describe("users database access", () => {
     const refresh4 = await getUserByVerificationToken(user.verification_token);
 
     expect(refresh4).toEqual(user);
+
+    const refresh5 = await getUserByEmailAndPassword(
+      user.email,
+      "NOT CORRECT PASSWORD"
+    );
+
+    expect(refresh5).toEqual(false);
+  });
+
+  it("createUser() with existing username", async () => {
+    const name = "Test Test";
+    const email = "test@test.com";
+    const password = "password";
+
+    // Create the first user  with this email address
+    await createUser({ email, password, name });
+
+    // Actually an InvalidArgument, but this expectation doesn't work with that
+    /* eslint-disable-next-line jest/valid-expect */
+    expect(createUser({ email, password, name })).rejects.toEqual(
+      new Error("A user with this email address already exists")
+    );
   });
 
   it("updateUser()", async () => {
@@ -73,6 +95,7 @@ describe("users database access", () => {
     const refresh2 = await getUserById(user.id);
 
     // Compare everything but update_at, which we know should now be different
+    // Note, verification token & passwords especially should not change
     expect(omit(refresh2, ["updated_at"])).toEqual(
       omit(Object.assign({}, refresh1, { name: name1 }), ["updated_at"])
     );
@@ -80,18 +103,54 @@ describe("users database access", () => {
     expect(refresh2.updated_at).not.toEqual(refresh1.updated_at);
   });
 
-  it("createUser() with existing username", async () => {
-    const name = "Test Test";
-    const email = "test@test.com";
-    const password = "password";
+  it("updateUser() with email change reset verification", async () => {
+    const user = await createUser({
+      name: "Test",
+      email: "test@test.com",
+      password: "foobar",
+    });
 
-    // Create the first user  with this email address
-    await createUser({ email, password, name });
+    // Changing the email address will make a new verification token and reset the date
+    const refresh = await updateUser(user.id, { email: "foo@foo.com" });
 
-    // Actually an InvalidArgument, but this expectation doesn't work with that
-    /* eslint-disable-next-line jest/valid-expect */
-    expect(createUser({ email, password, name })).rejects.toEqual(
-      new Error("A user with this email address already exists")
-    );
+    expect(user.verification_token).not.toBe(refresh.verification_token);
+    expect(refresh.verified).toBeNull();
+  });
+
+  it("updateUser() with password change", async () => {
+    const data = {
+      name: "Test",
+      email: "test@test.com",
+      password: "foo",
+    };
+
+    const user = await createUser(data);
+
+    const refresh1 = await getUserByEmailAndPassword(user.email, data.password);
+
+    // This user can be retrieved by its password
+    expect(refresh1.id).toBe(user.id);
+
+    const newPassword = "bar";
+
+    // Changing the user's password
+    await updateUser(user.id, { password: newPassword });
+
+    const refresh2 = await getUserByEmailAndPassword(user.email, newPassword);
+
+    // This user can be retrieved by its password
+    expect(refresh2.id).toBe(user.id);
+  });
+
+  it("updateUser() non existent", async () => {
+    let thrown = false;
+
+    try {
+      await updateUser(123456, {});
+    } catch (error) {
+      thrown = error instanceof Error;
+    }
+
+    expect(thrown).toBe(true);
   });
 });

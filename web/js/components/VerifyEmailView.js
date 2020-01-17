@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
@@ -6,32 +7,7 @@ import classNames from "classnames";
 import { Container } from "./elements/";
 import { getRouteParam, navigateTo } from "../lib/Navigation";
 import { ROUTE_LOGIN, ROUTE_VERIFY } from "./Routes";
-import UserService from "../lib/UserService";
-
-export class VerifyEmailViewContainer extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loaded: false,
-    };
-  }
-
-  componentDidMount() {
-    const token = getRouteParam(ROUTE_VERIFY, "token");
-
-    const userService = new UserService();
-    userService.verify(token).then(res => {
-      this.setState({ loaded: true, ...res });
-    });
-  }
-
-  render() {
-    return <VerifyEmailView {...this.state} />;
-  }
-}
-
-const navigateToLogin = () => navigateTo(ROUTE_LOGIN);
+import { verify } from "../actions/";
 
 export function VerifyEmailView({ loaded = false, success, message }) {
   return (
@@ -66,7 +42,7 @@ export function VerifyEmailView({ loaded = false, success, message }) {
       )}
 
       <div className="has-text-centered" style={{ marginTop: "2.5rem" }}>
-        <a className="is-link" onClick={navigateToLogin}>
+        <a className="is-link" onClick={() => navigateTo(ROUTE_LOGIN)}>
           Login to Blueprint
         </a>
       </div>
@@ -80,4 +56,33 @@ VerifyEmailView.propTypes = {
   message: PropTypes.string,
 };
 
-export default VerifyEmailViewContainer;
+export class VerifyEmailViewContainer extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loaded: false,
+    };
+  }
+
+  async componentDidMount() {
+    const token = getRouteParam(ROUTE_VERIFY, "token");
+
+    const response = await this.props.verify(token);
+
+    this.setState({ loaded: true, ...response });
+  }
+
+  render() {
+    return <VerifyEmailView {...this.state} />;
+  }
+}
+
+VerifyEmailViewContainer.propTypes = {
+  verify: PropTypes.func.isRequired,
+};
+
+/* istanbul ignore next */
+export default connect(() => ({}), {
+  verify,
+})(VerifyEmailViewContainer);

@@ -3,7 +3,11 @@ import { mount, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { RegisterView } from "./RegisterView";
 import { history } from "../lib/Navigation";
-import { ROUTE_LOGIN } from "./Routes";
+import {
+  ROUTE_LOGIN,
+  ROUTE_PRIVACY_POLICY,
+  ROUTE_TERMS_OF_SERVICE,
+} from "./Routes";
 
 configure({ adapter: new Adapter() });
 
@@ -265,5 +269,35 @@ describe("<RegisterView />", () => {
     button.simulate("click");
 
     expect(history.location.pathname).toBe(ROUTE_LOGIN);
+  });
+
+  it("clicking the privacy policy navigates there", () => {
+    const view = mount(
+      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
+    );
+
+    // Probably need a better way to identify this button
+    const button = view.findWhere(
+      n => n.type() === "a" && n.text() === "Privacy Policy"
+    );
+
+    button.simulate("click");
+
+    expect(history.location.pathname).toBe(ROUTE_PRIVACY_POLICY);
+  });
+
+  it("clicking the terms of service navigates there", () => {
+    const view = mount(
+      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
+    );
+
+    // Probably need a better way to identify this button
+    const button = view.findWhere(
+      n => n.type() === "a" && n.text() === "Terms of Service"
+    );
+
+    button.simulate("click");
+
+    expect(history.location.pathname).toBe(ROUTE_TERMS_OF_SERVICE);
   });
 });

@@ -5,9 +5,11 @@ import { connect } from "react-redux";
 import classNames from "classnames";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faTasks } from "@fortawesome/free-solid-svg-icons/faTasks";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
 import { navigateTo, history } from "../lib/Navigation";
 import { logout, loadTags, clearErrors } from "../actions/";
+import { ROUTE_ROOT, ROUTE_PROFILE, ROUTE_LOGIN } from "./Routes";
 
 export class Layout extends React.Component {
   constructor(props) {
@@ -16,6 +18,7 @@ export class Layout extends React.Component {
       isMenuActive: false,
     };
   }
+
   componentDidMount() {
     // When the route changes, clear our errors
     history.listen(() => {
@@ -25,12 +28,16 @@ export class Layout extends React.Component {
   }
 
   handleClickToHome = () => {
-    navigateTo("/");
+    navigateTo(ROUTE_ROOT);
+  };
+
+  handleClickToProfile = () => {
+    navigateTo(ROUTE_PROFILE);
   };
 
   handleClickToLogout = () => {
     this.props.logout();
-    navigateTo("/login");
+    navigateTo(ROUTE_LOGIN);
   };
 
   toggleMenu = () => {
@@ -90,15 +97,24 @@ export class Layout extends React.Component {
                 </a>
                 <div className="navbar-dropdown is-right">
                   <a
+                    id="profile"
+                    className="navbar-item"
+                    onClick={this.handleClickToProfile}
+                  >
+                    <span className="icon">
+                      <Icon icon={faUser} />
+                    </span>
+                    <span>Profile</span>
+                  </a>
+                  <a
                     id="logout"
                     className="navbar-item"
                     onClick={this.handleClickToLogout}
                   >
-                    <span className="icon" style={{ cursor: "pointer" }}>
-                      <Icon icon={faSignOutAlt} size="lg" />
+                    <span className="icon">
+                      <Icon icon={faSignOutAlt} />
                     </span>
-
-                    <span style={{ marginRight: 10 }}>Logout</span>
+                    <span>Logout</span>
                   </a>
                 </div>
               </div>
@@ -124,7 +140,8 @@ Layout.propTypes = {
   }),
 };
 
-export default connect(state => ({ loaded: state.loaded, user: state.user }), {
+/* istanbul ignore next */
+export default connect(({ loaded, user }) => ({ loaded, user }), {
   logout,
   loadTags,
   clearErrors,

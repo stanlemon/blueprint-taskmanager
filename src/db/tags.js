@@ -40,11 +40,10 @@ function getTagsForTaskIds(userId, taskIds) {
     .orderBy("name");
 }
 
+/**
+ * @private
+ */
 function getTagsByName(userId, names) {
-  if (!Array.isArray(names)) {
-    return Promise.resolve([]);
-  }
-
   return knex
     .from("tags")
     .select(["id", "name"])
@@ -73,17 +72,9 @@ function upsertTags(userId, names) {
     });
 }
 
-function createTag(userId, name) {
-  return createTags(userId, [name]).then(tags => {
-    // If it's empty, return null
-    if (tags.length === 0) {
-      return null;
-    }
-    // Otherwise return the first entry
-    return tags[0];
-  });
-}
-
+/**
+ * @private
+ */
 function createTags(userId, names) {
   if (isEmpty(names)) {
     return Promise.resolve([]);
@@ -111,6 +102,4 @@ module.exports = {
   getTagsByTaskId,
   getTagsForTaskIds,
   upsertTags,
-  createTag,
-  createTags,
 };

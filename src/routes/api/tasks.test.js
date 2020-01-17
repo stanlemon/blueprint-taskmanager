@@ -191,4 +191,32 @@ describe("/api/tasks", () => {
 
     expect(tasks1Refresh).toBe(null);
   });
+
+  it("GET task that does not exist", async () => {
+    const response = await request(app)
+      .get("/tasks/404")
+      .expect("Content-Type", /json/)
+      .expect(404);
+
+    expect(response.body).toEqual({ message: "Not Found" });
+  });
+
+  it("PUT task that does not exist", async () => {
+    const response = await request(app)
+      .put("/tasks/404")
+      .send({ name: "Does not exist" })
+      .expect("Content-Type", /json/)
+      .expect(404);
+
+    expect(response.body).toEqual({ message: "Not Found" });
+  });
+
+  it("DELETE task that does not exist", async () => {
+    const response = await request(app)
+      .delete("/tasks/404")
+      .expect("Content-Type", /json/)
+      .expect(404);
+
+    expect(response.body).toEqual({ message: "Not Found" });
+  });
 });

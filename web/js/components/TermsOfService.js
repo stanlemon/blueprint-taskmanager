@@ -1,9 +1,11 @@
 import React from "react";
+import Blueprint from "./elements/Blueprint";
 
 export default function TermsOfService() {
   return (
     <>
-      <h1>Terms of Service ("Terms")</h1>
+      <Blueprint />
+      <h2>Terms of Service</h2>
 
       <p>Last updated: November 26, 2019</p>
 
@@ -26,7 +28,7 @@ export default function TermsOfService() {
         Service.
       </p>
 
-      <h2>Accounts</h2>
+      <h3>Accounts</h3>
 
       <p>
         When you create an account with us, you must provide us information that
@@ -52,7 +54,7 @@ export default function TermsOfService() {
         unauthorized use of your account.
       </p>
 
-      <h2>Links To Other Web Sites</h2>
+      <h3>Links To Other Web Sites</h3>
 
       <p>
         Our Service may contain links to third-party web sites or services that
@@ -74,7 +76,7 @@ export default function TermsOfService() {
         policies of any third-party web sites or services that you visit.
       </p>
 
-      <h2>Warranty Disclaimer</h2>
+      <h3>Warranty Disclaimer</h3>
 
       <p>
         You understand and agree that the Service is provided "as is" and is
@@ -84,7 +86,7 @@ export default function TermsOfService() {
         imperfections.
       </p>
 
-      <h2>Termination</h2>
+      <h3>Termination</h3>
 
       <p>
         We may terminate or suspend access to our Service immediately, without
@@ -118,7 +120,7 @@ export default function TermsOfService() {
         liability.
       </p>
 
-      <h2>Governing Law</h2>
+      <h3>Governing Law</h3>
 
       <p>
         These Terms shall be governed and construed in accordance with the laws
@@ -135,7 +137,7 @@ export default function TermsOfService() {
         any prior agreements we might have between us regarding the Service.
       </p>
 
-      <h2>Changes</h2>
+      <h3>Changes</h3>
 
       <p>
         We reserve the right, at our sole discretion, to modify or replace these
@@ -148,7 +150,7 @@ export default function TermsOfService() {
         agree to the new terms, please stop using the Service.
       </p>
 
-      <h2>Contact Us</h2>
+      <h3>Contact Us</h3>
 
       <p>If you have any questions about these Terms, please contact us.</p>
 

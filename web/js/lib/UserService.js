@@ -20,4 +20,8 @@ export default class UserService extends RestService {
   verify(token) {
     return this.fetch("/auth/verify/" + token);
   }
+
+  saveUser(user) {
+    return this.fetch("/api/user", "put", user);
+  }
 }

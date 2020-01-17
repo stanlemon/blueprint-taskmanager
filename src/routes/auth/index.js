@@ -145,49 +145,53 @@ router.get("/auth/session", function(req, res, next) {
 
 router.post(
   "/auth/register",
-  schemaHandler(schema, async (req, res) => {
-    const user = await createUser(req.body);
+  schemaHandler(
+    // Modify the schema to make password required for this operation
+    schema.append({ password: schema._keys.password.required() }),
+    async (req, res) => {
+      const user = await createUser(req.body);
 
-    if (isEmpty(user)) {
-      res.status(500).json({
-        message: "An error has occurred",
-      });
-    }
-
-    const url = process.env.BASE_URL + "/verify/" + user.verification_token;
-
-    const message = {
-      to: user.email,
-      from: process.env.EMAIL_FROM,
-      subject: "Blueprint: Verify your Email Address",
-      text: `Click on the following link to verify your email address: ${url}`,
-      html: `<p>Click on the following link to verify your email address:<br /><a href="${url}">${url}</a></p>`,
-    };
-
-    console.log("Email Message = ", message);
-
-    if (process.env.SENDGRID_API_KEY) {
-      console.log("Sending email to SendGrid");
-
-      sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
-      sendgrid
-        .send(message)
-        .then(() => {
-          console.log("Successfully sent verification email");
-        })
-        .catch(err => {
-          console.error(err.toString());
+      if (isEmpty(user)) {
+        res.status(500).json({
+          message: "An error has occurred",
         });
-    } else {
-      console.warn(
-        "SendGrid API key is not set, not sending verification email"
-      );
+      }
+
+      const url = process.env.BASE_URL + "/verify/" + user.verification_token;
+
+      const message = {
+        to: user.email,
+        from: process.env.EMAIL_FROM,
+        subject: "Blueprint: Verify your Email Address",
+        text: `Click on the following link to verify your email address: ${url}`,
+        html: `<p>Click on the following link to verify your email address:<br /><a href="${url}">${url}</a></p>`,
+      };
+
+      console.log("Email Message = ", message);
+
+      if (process.env.SENDGRID_API_KEY) {
+        console.log("Sending email to SendGrid");
+
+        sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+        sendgrid
+          .send(message)
+          .then(() => {
+            console.log("Successfully sent verification email");
+          })
+          .catch(err => {
+            console.error(err.toString());
+          });
+      } else {
+        console.warn(
+          "SendGrid API key is not set, not sending verification email"
+        );
+      }
+
+      generateJwtCookie(user, res);
+
+      res.redirect("/auth/session");
     }
-
-    generateJwtCookie(user, res);
-
-    res.redirect("/auth/session");
-  })
+  )
 );
 
 router.get("/auth/verify/:token", async (req, res) => {

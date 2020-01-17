@@ -1,6 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
+import waitForExpect from "wait-for-expect";
 import { CreateTaskForm } from "./CreateTaskForm";
 
 describe("<CreateTaskForm />", () => {
@@ -57,5 +58,51 @@ describe("<CreateTaskForm />", () => {
     fireEvent.click(view.getByText("Save"));
 
     expect(lastSavedTask).toEqual(task);
+
+    // Upon a successful save, the fields we've filled out should be blank
+    waitForExpect(() => {
+      expect(view.getByLabelText("Name").value).toBe("");
+      expect(view.getByLabelText("Description").value).toBe("");
+    });
+  });
+
+  it("should render existing data when an error happens upon creation", () => {
+    const response = { errors: { name: "Error on name field" } };
+    const createTask = () => Promise.resolve(response);
+
+    const task = {
+      id: null,
+      name: "Test Task",
+      description: "A brief description",
+      due: null,
+      completed: null,
+      tags: [],
+    };
+
+    const view = render(<CreateTaskForm task={task} createTask={createTask} />);
+
+    const name = view.getByLabelText("Name");
+
+    fireEvent.change(name, {
+      target: {
+        name: "name",
+        value: task.name,
+      },
+    });
+
+    fireEvent.click(view.getByText("Save"));
+
+    // If the save had been successful this would have been blank
+    expect(view.getByLabelText("Name").value).toBe(task.name);
+    // Note we don't check for the pressence of the error in this call because it bubbles down as a prop
+  });
+
+  it("should render an error on the page", () => {
+    const errors = { name: "Error on name field" };
+    const view = render(
+      <CreateTaskForm task={{}} errors={errors} createTask={() => {}} />
+    );
+
+    expect(view.getByText(errors.name)).toBeInTheDocument();
   });
 });

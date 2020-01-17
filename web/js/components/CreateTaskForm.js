@@ -5,12 +5,6 @@ import { connect } from "react-redux";
 import { createTask } from "../actions";
 
 export class CreateTaskForm extends React.Component {
-  static propTypes = {
-    createTask: PropTypes.func.isRequired,
-    errors: PropTypes.object,
-    tags: PropTypes.arrayOf(PropTypes.string),
-  };
-
   constructor(props) {
     super(props);
   }
@@ -18,6 +12,7 @@ export class CreateTaskForm extends React.Component {
   handleSave = async data => {
     const response = await this.props.createTask(data);
 
+    // If there was an error, return the data we submitted, because <TaskForm/> will repopulate it
     if (response && response.errors) {
       return data;
     }
@@ -38,6 +33,13 @@ export class CreateTaskForm extends React.Component {
   }
 }
 
-export default connect(state => ({ tags: state.tags, errors: state.errors }), {
+CreateTaskForm.propTypes = {
+  createTask: PropTypes.func.isRequired,
+  errors: PropTypes.object,
+  tags: PropTypes.arrayOf(PropTypes.string),
+};
+
+/* istanbul ignore next */
+export default connect(({ tags, errors }) => ({ tags, errors }), {
   createTask,
 })(CreateTaskForm);

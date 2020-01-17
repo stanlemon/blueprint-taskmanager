@@ -1,6 +1,7 @@
 import React from "react";
 import TermsOfService from "./TermsOfService";
 import navigateTo from "../lib/Navigation";
+import { ROUTE_REGISTER } from "./Routes";
 
 export default function TermsOfServiceView() {
   return (
@@ -9,7 +10,7 @@ export default function TermsOfServiceView() {
         <TermsOfService />
       </div>
       <div className="has-text-centered" style={{ marginBottom: "2rem" }}>
-        <a className="is-link" onClick={() => navigateTo("/register")}>
+        <a className="is-link" onClick={() => navigateTo(ROUTE_REGISTER)}>
           Return to Create Account
         </a>
       </div>

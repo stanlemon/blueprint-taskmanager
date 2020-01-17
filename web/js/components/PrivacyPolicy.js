@@ -1,9 +1,11 @@
 import React from "react";
+import Blueprint from "./elements/Blueprint";
 
 export default function PrivacyPolciy() {
   return (
     <>
-      <h1>Privacy Policy for Blueprint Task Manager</h1>
+      <Blueprint />
+      <h2>Privacy Policy</h2>
 
       <p>
         At Blueprint Task Manager, accessible from
@@ -18,7 +20,7 @@ export default function PrivacyPolciy() {
         Privacy Policy, do not hesitate to contact us.
       </p>
 
-      <h2>Log Files</h2>
+      <h3>Log Files</h3>
 
       <p>
         Blueprint Task Manager follows a standard procedure of using log files.
@@ -33,7 +35,7 @@ export default function PrivacyPolciy() {
         information.
       </p>
 
-      <h2>Cookies and Web Beacons</h2>
+      <h3>Cookies and Web Beacons</h3>
 
       <p>
         Like any other website, Blueprint Task Manager uses 'cookies'. These
@@ -44,7 +46,7 @@ export default function PrivacyPolciy() {
         information.
       </p>
 
-      <h2>Privacy Policies</h2>
+      <h3>Privacy Policies</h3>
 
       <p>
         Third-party services leveraged by Blueprint Task Manager make receive
@@ -70,7 +72,7 @@ export default function PrivacyPolciy() {
         </li>
       </ul>
 
-      <h2>Third Party Privacy Policies</h2>
+      <h3>Third Party Privacy Policies</h3>
 
       <p>
         Blueprint Task Manager's Privacy Policy does not apply to other
@@ -88,7 +90,7 @@ export default function PrivacyPolciy() {
         websites. What Are Cookies?
       </p>
 
-      <h2>Children's Information</h2>
+      <h3>Children's Information</h3>
 
       <p>
         Another part of our priority is adding protection for children while
@@ -104,7 +106,7 @@ export default function PrivacyPolciy() {
         efforts to promptly remove such information from our records.
       </p>
 
-      <h2>Online Privacy Policy Only</h2>
+      <h3>Online Privacy Policy Only</h3>
 
       <p>
         This Privacy Policy applies only to our online activities and is valid
@@ -114,14 +116,14 @@ export default function PrivacyPolciy() {
         than this website.
       </p>
 
-      <h2>Consent</h2>
+      <h3>Consent</h3>
 
       <p>
         By using our website, you hereby consent to our Privacy Policy and agree
         to its Terms and Conditions.
       </p>
 
-      <h2>GDPR</h2>
+      <h3>GDPR</h3>
 
       <p>
         Blueprint Task Manager makes no claim to be GDPR compliant, and as

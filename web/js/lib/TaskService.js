@@ -20,33 +20,23 @@ export default class TaskService extends RestService {
   loadTasks(filter = "all", page = 1, size = 10) {
     const query = { filter, page, size };
     // Temporary: This will need to support pagination eventually
-    return this.fetch(
-      `${this.baseUrl}/api/tasks/?${querystring.stringify(query)}`
-    );
+    return this.fetch(`/api/tasks/?${querystring.stringify(query)}`);
   }
 
   getTask(id) {
     // Temporary: This will need to support pagination eventually
-    return this.fetch(`${this.baseUrl}/api/tasks/${id}`);
+    return this.fetch(`/api/tasks/${id}`);
   }
 
   createTask(task) {
-    return this.fetch(
-      `${this.baseUrl}/api/tasks/`,
-      "post",
-      this.formatTask(task)
-    );
+    return this.fetch(`/api/tasks/`, "post", this.formatTask(task));
   }
 
   updateTask(task) {
-    return this.fetch(
-      `${this.baseUrl}/api/tasks/${task.id}`,
-      "put",
-      this.formatTask(task)
-    );
+    return this.fetch(`/api/tasks/${task.id}`, "put", this.formatTask(task));
   }
 
   deleteTask(taskId) {
-    return this.fetch(`${this.baseUrl}/api/tasks/${taskId}`, "delete");
+    return this.fetch(`/api/tasks/${taskId}`, "delete");
   }
 }

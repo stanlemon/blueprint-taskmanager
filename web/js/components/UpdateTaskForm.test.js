@@ -3,6 +3,7 @@ import { configure, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { UpdateTaskForm } from "./UpdateTaskForm";
 import parseISO from "date-fns/parseISO";
+import waitForExpect from "wait-for-expect";
 
 configure({ adapter: new Adapter() });
 
@@ -81,6 +82,28 @@ describe("<UpdateTaskForm />", () => {
       due: task.due, // field is unchanged
       completed: null,
       tags: [],
+    });
+  });
+
+  it("should render errors when a task cannot be updated", () => {
+    const response = { errors: { name: "Unknown name error from backend" } };
+    const updateTask = () => Promise.resolve(response);
+
+    const task = {
+      id: 1,
+      name: "Name",
+      description: "A brief description",
+      due: parseISO("2018-06-12T07:08"),
+      completed: parseISO("2017-06-12T07:08"),
+      tags: [],
+    };
+
+    const view = mount(<UpdateTaskForm task={task} updateTask={updateTask} />);
+
+    view.find("button#save-task").simulate("click");
+
+    waitForExpect(() => {
+      expect(view.find(".error").text()).toBe(response.errors.name);
     });
   });
 });
