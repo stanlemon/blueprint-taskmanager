@@ -9,6 +9,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
 import { navigateTo, history } from "../lib/Navigation";
 import { logout, loadTags, clearErrors } from "../actions/";
+import { ROUTE_ROOT, ROUTE_PROFILE, ROUTE_LOGIN } from "./Routes";
 
 export class Layout extends React.Component {
   constructor(props) {
@@ -27,16 +28,16 @@ export class Layout extends React.Component {
   }
 
   handleClickToHome = () => {
-    navigateTo("/");
+    navigateTo(ROUTE_ROOT);
   };
 
   handleClickToProfile = () => {
-    navigateTo("/profile");
+    navigateTo(ROUTE_PROFILE);
   };
 
   handleClickToLogout = () => {
     this.props.logout();
-    navigateTo("/login");
+    navigateTo(ROUTE_LOGIN);
   };
 
   toggleMenu = () => {
@@ -139,7 +140,8 @@ Layout.propTypes = {
   }),
 };
 
-export default connect(state => ({ loaded: state.loaded, user: state.user }), {
+/* istanbul ignore next */
+export default connect(({ loaded, user }) => ({ loaded, user }), {
   logout,
   loadTags,
   clearErrors,

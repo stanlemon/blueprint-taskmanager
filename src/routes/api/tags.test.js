@@ -3,7 +3,7 @@ const knex = require("../../connection");
 const app = require("../../app");
 const api = require("./tags");
 const { createUser } = require("../../db/users");
-const { createTag } = require("../../db/tags");
+const { upsertTags } = require("../../db/tags");
 
 beforeAll(async () => {
   await knex.test.setup();
@@ -24,9 +24,7 @@ describe("/api/tags", () => {
       password: "password",
     });
 
-    await createTag(user.id, "foo");
-    await createTag(user.id, "bar");
-    await createTag(user.id, "baz");
+    await upsertTags(user.id, ["foo", "bar", "baz"]);
 
     function checkAuth(req, res, next) {
       req.user = user;

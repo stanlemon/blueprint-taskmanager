@@ -19,7 +19,7 @@ async function getUserById(id) {
     .select()
     .where({ id, active: true })
     .first();
-  console.log(user);
+
   return omitPassword(user);
 }
 
@@ -102,7 +102,7 @@ async function updateUser(id, user) {
     }
   );
 
-  const original = getUserById(id);
+  const original = await getUserById(id);
 
   if (!original) {
     throw new Error("Original user could not be found.");
@@ -113,7 +113,7 @@ async function updateUser(id, user) {
     data.password = bcrypt.hashSync(user.password, 10);
   }
 
-  if (original.email != data.email) {
+  if (data.email && original.email != data.email) {
     data.verification_token = shortid.generate();
     data.verified = null;
   }

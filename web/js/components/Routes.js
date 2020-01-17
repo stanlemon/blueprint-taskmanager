@@ -18,7 +18,7 @@ export const ROUTE_PRIVACY_POLICY = "/privacy";
 export const ROUTE_VERIFY = "/verify/:token";
 export const ROUTE_ROOT = "/";
 export const ROUTE_TASK_VIEW = "/view/:id";
-export const ROUTE_PROFILE_VIEW = "/profile";
+export const ROUTE_PROFILE = "/profile";
 
 const RegisterView = loadable(() => import("./RegisterView"));
 const VerifyEmailView = loadable(() => import("./VerifyEmailView"));
@@ -57,7 +57,7 @@ export default class Routes extends React.Component {
                   <Route exact path={ROUTE_TASK_VIEW}>
                     <TaskView />
                   </Route>
-                  <Route exact path={ROUTE_PROFILE_VIEW}>
+                  <Route exact path={ROUTE_PROFILE}>
                     <ProfileView />
                   </Route>
                 </Switch>

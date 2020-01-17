@@ -4,6 +4,7 @@ import TaskForm from "./TaskForm";
 import { connect } from "react-redux";
 import { navigateTo } from "../lib/Navigation";
 import { updateTask } from "../actions";
+import { ROUTE_ROOT } from "./Routes";
 
 export class UpdateTaskForm extends React.Component {
   handleSave = async data => {
@@ -17,7 +18,7 @@ export class UpdateTaskForm extends React.Component {
     // a callback to handle state setting in a custm manner, or to
     // execute custom code after this is complete
     return () => {
-      navigateTo("/");
+      navigateTo(ROUTE_ROOT);
     };
   };
 
@@ -41,6 +42,7 @@ UpdateTaskForm.propTypes = {
   errors: PropTypes.object,
 };
 
-export default connect(state => ({ tags: state.tags, errors: state.errors }), {
+/* istanbul ignore next */
+export default connect(({ tags, errors }) => ({ tags, errors }), {
   updateTask,
 })(UpdateTaskForm);

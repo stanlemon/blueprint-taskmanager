@@ -5,7 +5,12 @@ import { navigateTo } from "../lib/Navigation";
 import { registerUser, clearErrors } from "../actions/";
 import { validate, UserForm } from "./UserForm";
 import { Container, Button } from "./elements/";
-import { ROUTE_TERMS_OF_SERVICE, ROUTE_PRIVACY_POLICY } from "./Routes";
+import {
+  ROUTE_TERMS_OF_SERVICE,
+  ROUTE_PRIVACY_POLICY,
+  ROUTE_LOGIN,
+} from "./Routes";
+import Blueprint from "./elements/Blueprint";
 
 export class RegisterView extends React.Component {
   constructor(props) {
@@ -23,7 +28,7 @@ export class RegisterView extends React.Component {
 
   handleClickToLogin = () => {
     this.props.clearErrors();
-    navigateTo("/login");
+    navigateTo(ROUTE_LOGIN);
   };
 
   handleSubmit = e => {
@@ -77,7 +82,7 @@ export class RegisterView extends React.Component {
           marginBottom: "1rem",
         }}
       >
-        <h1 className="title is-5 has-text-info">Blueprint Task Manager</h1>
+        <Blueprint />
         <h2 className="subtitle is-2">Register an Account</h2>
         <hr />
         <form id="register-form" onSubmit={this.handleSubmit}>
@@ -132,6 +137,7 @@ RegisterView.propTypes = {
   errors: PropTypes.object,
 };
 
+/* istanbul ignore next */
 export default connect(state => ({ errors: state.errors }), {
   registerUser,
   clearErrors,

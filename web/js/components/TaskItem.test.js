@@ -207,4 +207,48 @@ describe("<TaskItem />", () => {
     expect(updatedTask.id).toEqual(task.id);
     expect(updatedTask.completed).toBe(null);
   });
+
+  it("a task is overdue", () => {
+    const task = {
+      id: 1,
+      name: "Foobar",
+      completed: null,
+      due: subDays(Date.now(), 7),
+    };
+
+    const wrapper = shallow(
+      <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
+    );
+
+    expect(wrapper.hasClass("task-overdue")).toBe(true);
+  });
+
+  it("a task is due soon", () => {
+    const task1 = {
+      id: 1,
+      name: "Foobar",
+      completed: null,
+      due: addDays(Date.now(), 1),
+    };
+
+    const wrapper1 = shallow(
+      <TaskItem task={task1} updateTask={updateTask} deleteTask={deleteTask} />
+    );
+
+    expect(wrapper1.hasClass("task-due-soon")).toBe(true);
+
+    // If the task is due far out, it's not due soon
+    const task2 = {
+      id: 2,
+      name: "Foobar",
+      completed: null,
+      due: addDays(Date.now(), 3), // tasks due within 2 days are due 'soon'
+    };
+
+    const wrapper2 = shallow(
+      <TaskItem task={task2} updateTask={updateTask} deleteTask={deleteTask} />
+    );
+
+    expect(wrapper2.hasClass("task-due-soon")).toBe(false);
+  });
 });

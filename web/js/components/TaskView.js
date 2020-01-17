@@ -1,6 +1,5 @@
 import includes from "lodash/includes";
 import isEmpty from "lodash/isEmpty";
-import omit from "lodash/omit";
 import format from "date-fns/format";
 import React from "react";
 import PropTypes from "prop-types";
@@ -12,7 +11,7 @@ import { connect } from "react-redux";
 import { getRouteParam, navigateTo } from "../lib/Navigation";
 import { ROUTE_ROOT, ROUTE_TASK_VIEW } from "./Routes";
 
-export function TaskView({ loaded = false, task }) {
+export function TaskView({ loaded, task }) {
   if (!loaded) {
     return <div />;
   }
@@ -48,13 +47,36 @@ export function TaskView({ loaded = false, task }) {
 
 TaskView.propTypes = {
   // Not required if loaded = false
-  id: PropTypes.string,
+  id: PropTypes.number,
   // Not required if loaded = false
   task: PropTypes.object,
   // Defaults to false if not set
   loaded: PropTypes.bool,
 };
 
+class TaskViewContainer extends React.Component {
+  componentDidMount() {
+    this.props.getTask(getRouteParam(ROUTE_TASK_VIEW, "id"));
+  }
+
+  render() {
+    return (
+      <TaskView
+        loaded={this.props.loaded}
+        id={this.props?.task?.id}
+        task={this.props?.task}
+      />
+    );
+  }
+}
+
+TaskViewContainer.propTypes = {
+  loaded: PropTypes.bool,
+  task: PropTypes.object,
+  getTask: PropTypes.func.isRequired,
+};
+
+/* istanbul ignore next */
 export default connect(
   state => ({
     loaded: includes(state.loaded, "tasks"),
@@ -65,18 +87,4 @@ export default connect(
       : null,
   }),
   { getTask }
-)(
-  class TaskViewContainer extends React.Component {
-    static propTypes = {
-      getTask: PropTypes.func.isRequired,
-    };
-
-    componentDidMount() {
-      this.props.getTask(getRouteParam(ROUTE_TASK_VIEW, "id"));
-    }
-
-    render() {
-      return <TaskView {...omit(this.props, "getTask")} />;
-    }
-  }
-);
+)(TaskViewContainer);

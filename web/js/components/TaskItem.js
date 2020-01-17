@@ -14,12 +14,6 @@ import { updateTask, deleteTask } from "../actions";
 import { Columns, Column, Modal } from "./elements/";
 
 export class TaskItem extends React.Component {
-  static propTypes = {
-    deleteTask: PropTypes.func.isRequired,
-    updateTask: PropTypes.func.isRequired,
-    task: PropTypes.object.isRequired,
-  };
-
   state = {
     isConfirmingDelete: false,
   };
@@ -126,4 +120,11 @@ export class TaskItem extends React.Component {
   }
 }
 
+TaskItem.propTypes = {
+  deleteTask: PropTypes.func.isRequired,
+  updateTask: PropTypes.func.isRequired,
+  task: PropTypes.object.isRequired,
+};
+
+/* istanbul ignore next */
 export default connect(state => state, { updateTask, deleteTask })(TaskItem);

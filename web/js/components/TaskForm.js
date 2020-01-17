@@ -11,29 +11,9 @@ import Tags from "react-tag-autocomplete";
 import { navigateTo } from "../lib/Navigation";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
 import { Field, Button } from "./elements/";
+import { ROUTE_ROOT } from "./Routes";
 
 export default class TaskForm extends React.Component {
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.string),
-    task: PropTypes.object,
-    errors: PropTypes.object,
-    className: PropTypes.string,
-  };
-
-  static defaultProps = {
-    className: "",
-    errors: {},
-    tags: [],
-    task: {
-      name: "",
-      description: "",
-      completed: null,
-      due: null,
-      tags: [],
-    },
-  };
-
   // Doing it this way ensure that if a task is loaded we default to it,
   // without blowing away the state on any component reload
   // See: https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
@@ -98,7 +78,7 @@ export default class TaskForm extends React.Component {
   cancelTask = e => {
     e.preventDefault();
 
-    navigateTo("/");
+    navigateTo(ROUTE_ROOT);
   };
 
   setCompleted = e => {
@@ -260,3 +240,24 @@ export default class TaskForm extends React.Component {
     );
   }
 }
+
+TaskForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string),
+  task: PropTypes.object,
+  errors: PropTypes.object,
+  className: PropTypes.string,
+};
+
+TaskForm.defaultProps = {
+  className: "",
+  errors: {},
+  tags: [],
+  task: {
+    name: "",
+    description: "",
+    completed: null,
+    due: null,
+    tags: [],
+  },
+};

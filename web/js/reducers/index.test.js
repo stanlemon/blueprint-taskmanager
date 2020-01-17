@@ -1,4 +1,4 @@
-import { user, errors, loaded, tasks } from "./index";
+import { user, errors, loaded, tasks, tags, filter, page } from "./index";
 import {
   AUTHENTICATED_USER,
   ERROR,
@@ -14,6 +14,10 @@ import {
   DELETE_TASK_SUCCESS,
   UPDATE_TASK_SUCCESS,
   CREATE_TASK_SUCCESS,
+  LOAD_TAGS_SUCCESS,
+  SET_FILTER,
+  SET_PAGE,
+  GET_TASK_SUCCESS,
 } from "../actions/index";
 
 describe("reducers", () => {
@@ -60,6 +64,8 @@ describe("reducers", () => {
   });
 
   it("loaded()", () => {
+    expect(loaded([], { type: GET_TASK_SUCCESS })).toEqual(["tasks"]);
+
     expect(loaded([], { type: LOAD_TASKS_SUCCESS })).toEqual(["tasks"]);
     expect(loaded(["tasks", "users"], { type: LOAD_TASKS_SUCCESS })).toEqual([
       "tasks",
@@ -85,6 +91,55 @@ describe("reducers", () => {
   });
 
   it("tasks()", () => {
+    const task1 = {
+      id: 1,
+      name: "Task One",
+    };
+    const task2 = {
+      id: 2,
+      name: "Task Two",
+      completed: new Date(),
+      due: new Date(),
+    };
+
+    // The second task is appended to the tasks we've already loaded
+    expect(
+      tasks(
+        { tasks: [task1] },
+        {
+          type: GET_TASK_SUCCESS,
+          task: task2,
+        }
+      )
+    ).toMatchObject({ tasks: [task1, task2] });
+
+    const task3 = { id: 3, name: "Task Three" };
+    const task4 = { id: 4, name: "Task Four" };
+    const modifiedTask4 = { ...task4, name: "Task Four Redux" };
+
+    // If the task we're getting already exists, we replace it, because the individual request might
+    // include more recent changes
+    expect(
+      tasks(
+        { tasks: [task3, task4] },
+        {
+          type: GET_TASK_SUCCESS,
+          task: modifiedTask4,
+        }
+      )
+    ).toMatchObject({ tasks: [task3, modifiedTask4] });
+
+    // State for tasks hasn't been set (not an array), still loads the task properly
+    expect(
+      tasks(
+        { tasks: null },
+        {
+          type: GET_TASK_SUCCESS,
+          task: task3,
+        }
+      )
+    ).toMatchObject({ tasks: [task3] });
+
     expect(
       tasks(
         { tasks: [] },
@@ -157,5 +212,48 @@ describe("reducers", () => {
         type: "unknown",
       })
     ).toMatchObject(state);
+  });
+
+  it("tags()", () => {
+    const input1 = ["foo", "bar", "baz"];
+
+    // Empty tags with new tags
+    expect(
+      tags([], {
+        type: LOAD_TAGS_SUCCESS,
+        tags: input1,
+      })
+    ).toMatchObject(input1);
+
+    // Existing tags with new tags
+    const input2 = ["bar", "baz"];
+
+    expect(
+      tags(["existing", "tags", "get", "cleared"], {
+        type: LOAD_TAGS_SUCCESS,
+        tags: input2,
+      })
+    ).toMatchObject(input2);
+
+    // Unknown action doesn't change existing tags
+    const existing = ["foo", "bar", "baz"];
+
+    expect(
+      tags(existing, {
+        type: "UNKNOWN",
+      })
+    ).toMatchObject(existing);
+  });
+
+  it("filter()", () => {
+    expect(filter(undefined, { type: SET_FILTER, filter: "all" })).toEqual(
+      "all"
+    );
+    expect(filter("all", { type: "UNKNOWN" })).toEqual("all");
+  });
+
+  it("page()", () => {
+    expect(page(undefined, { type: SET_PAGE, page: 1 })).toEqual(1);
+    expect(page(1, { type: "UNKNOWN" })).toEqual(1);
   });
 });

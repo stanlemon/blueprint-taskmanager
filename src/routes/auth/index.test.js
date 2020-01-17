@@ -150,12 +150,11 @@ describe("/auth", () => {
       .set("Accept", "application/json")
       .expect(200)
       .then(res => {
-        console.log(res.body);
         expect(res.body.success).toEqual(true);
       });
 
     const refresh = await getUserById(user.id);
-    console.log(refresh);
+
     expect(refresh.verified).not.toBe(null);
 
     // Subsequent calls are not successful because the email address is already verified

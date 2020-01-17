@@ -267,3 +267,9 @@ export function login(user) {
       });
   };
 }
+
+export function verify(token) {
+  return (dispatch, getState, { userService }) => {
+    return userService.verify(token);
+  };
+}

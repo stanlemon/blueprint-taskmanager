@@ -90,6 +90,7 @@ ProfileView.propTypes = {
   saveUser: PropTypes.func,
 };
 
-export default connect(state => ({ user: state.user, errors: state.errors }), {
+/* istanbul ignore next */
+export default connect(({ user, errors }) => ({ user, errors }), {
   saveUser,
 })(ProfileView);

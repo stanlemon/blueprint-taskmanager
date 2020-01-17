@@ -94,6 +94,7 @@ SessionWatcher.propTypes = {
   }),
 };
 
-export default connect(state => ({ loaded: state.loaded, user: state.user }), {
+/* istanbul ignore next */
+export default connect(({ loaded, user }) => ({ loaded, user }), {
   checkSession,
 })(SessionWatcher);

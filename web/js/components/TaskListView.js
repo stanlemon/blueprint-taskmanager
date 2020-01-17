@@ -15,27 +15,6 @@ const INCOMPLETE = "incomplete";
 const COMPLETE = "complete";
 
 export class TaskListView extends React.Component {
-  static propTypes = {
-    loadTasks: PropTypes.func,
-    setFilter: PropTypes.func,
-    setPage: PropTypes.func,
-    filter: PropTypes.string,
-    page: PropTypes.number,
-    pages: PropTypes.number,
-    hasTasks: PropTypes.bool,
-    tasks: PropTypes.array.isRequired,
-    errors: PropTypes.object,
-    loaded: PropTypes.array,
-  };
-
-  static defaultProps = {
-    page: 1,
-    pages: 1,
-    tasks: [],
-    errors: {},
-    loaded: [],
-  };
-
   componentDidMount() {
     this.props.loadTasks(this.props.filter, this.props.page);
   }
@@ -189,6 +168,28 @@ export class TaskListView extends React.Component {
   }
 }
 
+TaskListView.propTypes = {
+  loadTasks: PropTypes.func,
+  setFilter: PropTypes.func,
+  setPage: PropTypes.func,
+  filter: PropTypes.string,
+  page: PropTypes.number,
+  pages: PropTypes.number,
+  hasTasks: PropTypes.bool,
+  tasks: PropTypes.array.isRequired,
+  errors: PropTypes.object,
+  loaded: PropTypes.array,
+};
+
+TaskListView.defaultProps = {
+  page: 1,
+  pages: 1,
+  tasks: [],
+  errors: {},
+  loaded: [],
+};
+
+/* istanbul ignore next */
 export default connect(
   state => ({
     loaded: state.loaded,

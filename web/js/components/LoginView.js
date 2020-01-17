@@ -8,6 +8,7 @@ import { login, clearErrors } from "../actions/";
 import { navigateTo } from "../lib/Navigation";
 import Error from "./Error";
 import { Container, Field, Button } from "./elements/";
+import { ROUTE_REGISTER } from "./Routes";
 
 export class LoginView extends React.Component {
   constructor(props) {
@@ -24,7 +25,7 @@ export class LoginView extends React.Component {
 
   handleClickToRegister = () => {
     this.props.clearErrors();
-    navigateTo("/register");
+    navigateTo(ROUTE_REGISTER);
   };
 
   handleSubmit = e => {
@@ -149,6 +150,7 @@ LoginView.propTypes = {
   }),
 };
 
+/* istanbul ignore next */
 export default connect(state => ({ errors: state.errors }), {
   login,
   clearErrors,
