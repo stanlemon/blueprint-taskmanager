@@ -1,4 +1,5 @@
 # Blueprint Task Manager
+
 Blueprint started as my playground to experiment with [ES6](http://es6-features.org) and [React](https://facebook.github.io/react/).  Eventually I added [Redux](http://redux.js.org) and other javascript technologies that I wanted to learn how to use. I wanted to start from scratch and build a  semi-real application to experiment with, something more complex than [TodoMVC](http://todomvc.com) but along similar lines. I wanted the app to be a [single-page application](https://en.wikipedia.org/wiki/Single-page_application) with a custom backend that had user authentication.
 
 ## Under the Hood
