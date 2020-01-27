@@ -14,12 +14,20 @@ import { ROUTE_ROOT, ROUTE_PROFILE, ROUTE_LOGIN } from "./Routes";
 export class Layout extends React.Component {
   constructor(props) {
     super(props);
+
+    this.hamburgerRef = React.createRef();
+    this.menuRef = React.createRef();
+    this.dropdownRef = React.createRef();
+
     this.state = {
       isMenuActive: false,
+      isDropdownActive: false,
     };
   }
 
   componentDidMount() {
+    document.addEventListener("click", this.handleClickOutside);
+
     // When the route changes, clear our errors
     history.listen(() => {
       this.props.clearErrors();
@@ -29,20 +37,48 @@ export class Layout extends React.Component {
 
   handleClickToHome = () => {
     navigateTo(ROUTE_ROOT);
+    this.closeMenus();
   };
 
   handleClickToProfile = () => {
     navigateTo(ROUTE_PROFILE);
+    this.closeMenus();
   };
 
   handleClickToLogout = () => {
     this.props.logout();
     navigateTo(ROUTE_LOGIN);
+    this.closeMenus();
+  };
+
+  handleClickOutside = e => {
+    if (
+      this.hamburgerRef.current.contains(e.target) ||
+      this.menuRef.current.contains(e.target) ||
+      this.dropdownRef.current.contains(e.target)
+    ) {
+      return;
+    }
+
+    this.closeMenus();
+  };
+
+  closeMenus = () => {
+    this.setState(() => ({
+      isMenuActive: false,
+      isDropdownActive: false,
+    }));
   };
 
   toggleMenu = () => {
     this.setState(state => {
       return { isMenuActive: !state.isMenuActive };
+    });
+  };
+
+  toggleDropdown = () => {
+    this.setState(state => {
+      return { isDropdownActive: !state.isDropdownActive };
     });
   };
 
@@ -70,6 +106,7 @@ export class Layout extends React.Component {
             </a>
 
             <a
+              ref={this.hamburgerRef}
               role="button"
               className={classNames("navbar-burger", "burger", {
                 "is-active": this.state.isMenuActive,
@@ -85,14 +122,24 @@ export class Layout extends React.Component {
             </a>
           </div>
           <div
+            ref={this.menuRef}
             className={classNames("navbar-menu", {
               "is-active": this.state.isMenuActive,
             })}
           >
             <div className="navbar-start"></div>
             <div className="navbar-end">
-              <div className="navbar-item has-dropdown is-hoverable">
-                <a className="navbar-link" id="user-menu">
+              <div
+                ref={this.dropdownRef}
+                className={classNames("navbar-item has-dropdown", {
+                  "is-active": this.state.isDropdownActive,
+                })}
+              >
+                <a
+                  className="navbar-link"
+                  id="user-menu"
+                  onClick={this.toggleDropdown}
+                >
                   {this.props.user.name}
                 </a>
                 <div className="navbar-dropdown is-right">
