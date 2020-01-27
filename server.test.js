@@ -69,7 +69,7 @@ test("end to end", async done => {
 
   console.log("Click button to logout");
   // Triggers the user menu to fan out first
-  await page.hover("#user-menu");
+  await page.click("#user-menu");
   // Click the now visible logout button
   const logoutButton = await page.waitForSelector("#logout");
   await logoutButton.click();

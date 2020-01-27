@@ -6,6 +6,8 @@ import { validate, UserForm, UserPropTypes } from "./UserForm";
 import { Container, Button } from "./elements";
 
 export class ProfileView extends React.Component {
+  notificationTimeout;
+
   constructor(props) {
     super(props);
 
@@ -20,7 +22,7 @@ export class ProfileView extends React.Component {
     };
   }
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
 
     const errors = validate(this.state.data, { requirePassword: false });
@@ -38,7 +40,18 @@ export class ProfileView extends React.Component {
       return { ...state, errors: {} };
     });
 
-    this.props.saveUser(this.state.data);
+    await this.props.saveUser(this.state.data);
+
+    this.setState(state => ({
+      ...state,
+      message: "Profile successfully updated!",
+    }));
+
+    // TODO: Fade this out, rather than just make it disappear
+    this.notificationTimeout = setTimeout(
+      () => this.setState(state => ({ ...state, message: null })),
+      7500 // 7.5 seconds
+    );
   };
 
   setValue = e => {
@@ -65,6 +78,9 @@ export class ProfileView extends React.Component {
       <Container>
         <h1 className="title">Profile</h1>
         <hr />
+        {this.state.message && (
+          <div className="notification is-success">{this.state.message}</div>
+        )}
         <UserForm
           {...this.state.data}
           errors={errors}
