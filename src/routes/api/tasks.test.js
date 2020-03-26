@@ -41,7 +41,7 @@ describe("/api/tasks", () => {
       .get("/tasks")
       .expect("Content-Type", /json/)
       .expect(200)
-      .then(res => {
+      .then((res) => {
         expect(res.body).toMatchObject({
           tasks: [],
           total: 0,

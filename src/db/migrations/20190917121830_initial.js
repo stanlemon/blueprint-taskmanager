@@ -1,7 +1,7 @@
-exports.up = async knex => {
+exports.up = async (knex) => {
   return Promise.all([
     knex.schema.dropTableIfExists("users"),
-    knex.schema.createTable("users", table => {
+    knex.schema.createTable("users", (table) => {
       table.increments("id");
       table.string("name");
       table.string("email");
@@ -13,7 +13,7 @@ exports.up = async knex => {
     }),
 
     knex.schema.dropTableIfExists("tasks"),
-    knex.schema.createTable("tasks", table => {
+    knex.schema.createTable("tasks", (table) => {
       table.increments("id");
       table.string("name");
       table.text("description");
@@ -23,41 +23,29 @@ exports.up = async knex => {
       table.dateTime("created_at").notNullable();
       table.dateTime("updated_at").notNullable();
 
-      table
-        .foreign("user_id")
-        .references("id")
-        .inTable("users");
+      table.foreign("user_id").references("id").inTable("users");
     }),
 
     knex.schema.dropTableIfExists("tags"),
-    knex.schema.createTable("tags", table => {
+    knex.schema.createTable("tags", (table) => {
       table.increments("id");
       table.string("name");
       table.integer("user_id").notNullable();
       table.dateTime("created_at").notNullable();
       table.dateTime("updated_at").notNullable();
 
-      table
-        .foreign("user_id")
-        .references("id")
-        .inTable("users");
+      table.foreign("user_id").references("id").inTable("users");
     }),
 
     knex.schema.dropTableIfExists("task_tags"),
-    knex.schema.createTable("task_tags", table => {
+    knex.schema.createTable("task_tags", (table) => {
       table.increments("id");
       table.integer("task_id").notNullable();
       table.integer("tag_id").notNullable();
 
-      table
-        .foreign("task_id")
-        .references("id")
-        .inTable("tasks");
+      table.foreign("task_id").references("id").inTable("tasks");
 
-      table
-        .foreign("tag_id")
-        .references("id")
-        .inTable("tags");
+      table.foreign("tag_id").references("id").inTable("tags");
     }),
   ]);
 };

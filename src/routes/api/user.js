@@ -7,12 +7,12 @@ const { convertCamelCase, convertSnakeCase } = require("../../helpers");
 const schema = require("../../schema/user");
 const { updateUser } = require("../../db/users");
 
-const sanitize = user =>
+const sanitize = (user) =>
   omit(user, ["id", "active", "verification_token", "verified"]);
 
 router.get(
   "/user",
-  asyncHandler(async req => {
+  asyncHandler(async (req) => {
     return convertCamelCase(sanitize(req.user));
   })
 );

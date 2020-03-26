@@ -28,7 +28,7 @@ export class LoginView extends React.Component {
     navigateTo(ROUTE_REGISTER);
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
     const errors = {};
@@ -46,25 +46,25 @@ export class LoginView extends React.Component {
       // If there is a client side error we clear out the server side error
       errors["main"] = false;
 
-      this.setState(state => {
+      this.setState((state) => {
         return { ...state, ...{ errors }, ...{ main: false } };
       });
       return;
     }
 
     // Clear out our errors
-    this.setState(state => {
+    this.setState((state) => {
       return { ...state, errors: {} };
     });
 
     this.props.login(this.state.data);
   };
 
-  setValue = e => {
+  setValue = (e) => {
     const key = e.target.name;
     const value = e.target.value;
 
-    this.setState(state => {
+    this.setState((state) => {
       return {
         ...state,
         ...{
@@ -151,7 +151,7 @@ LoginView.propTypes = {
 };
 
 /* istanbul ignore next */
-export default connect(state => ({ errors: state.errors }), {
+export default connect((state) => ({ errors: state.errors }), {
   login,
   clearErrors,
 })(LoginView);

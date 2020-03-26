@@ -38,7 +38,7 @@ describe("/api/tags", () => {
       .get("/tags")
       .expect("Content-Type", /json/)
       .expect(200)
-      .then(res => {
+      .then((res) => {
         expect(res.body).toEqual(["bar", "baz", "foo"]);
       });
   });

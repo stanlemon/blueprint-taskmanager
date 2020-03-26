@@ -24,7 +24,7 @@ const schemaHandler = (schema, fn) => async (req, res, next) => {
     res.status(400).json({
       errors: Object.assign.apply(
         null,
-        error.details.map(d => ({ [d.path]: d.message }))
+        error.details.map((d) => ({ [d.path]: d.message }))
       ),
     });
     return;

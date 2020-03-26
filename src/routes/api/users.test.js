@@ -40,7 +40,7 @@ describe("/api/user", () => {
       .get("/user")
       .expect("Content-Type", /json/)
       .expect(200)
-      .then(res => {
+      .then((res) => {
         // The response is a subset of the properties of the user, excluding bits that we don't want exposed
         expect(res.body).toMatchObject({
           name: user.name,
@@ -60,7 +60,7 @@ describe("/api/user", () => {
       .send({ name: newName, email: user.email })
       .expect("Content-Type", /json/)
       .expect(200)
-      .then(res => {
+      .then((res) => {
         // The response is a subset of the properties of the user, excluding bits that we don't want exposed
         expect(res.body).toMatchObject({
           name: newName,

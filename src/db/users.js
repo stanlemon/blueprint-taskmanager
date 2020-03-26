@@ -15,20 +15,14 @@ function omitPassword(o) {
 }
 
 async function getUserById(id) {
-  const user = await knex("users")
-    .select()
-    .where({ id, active: true })
-    .first();
+  const user = await knex("users").select().where({ id, active: true }).first();
 
   return omitPassword(user);
 }
 
 // Exposes 'password', so this method is private
 function _getUserByEmail(email) {
-  return knex("users")
-    .select()
-    .where({ email, active: true })
-    .first();
+  return knex("users").select().where({ email, active: true }).first();
 }
 
 async function getUserByEmail(email) {
@@ -38,7 +32,7 @@ async function getUserByEmail(email) {
 
 function getUserByEmailAndPassword(email, password) {
   return _getUserByEmail(email)
-    .then(user => {
+    .then((user) => {
       if (!bcrypt.compareSync(password, user.password)) {
         return false;
       }
@@ -52,7 +46,7 @@ function getUserByVerificationToken(verification_token) {
     .select()
     .where({ verification_token, active: true })
     .first()
-    .then(user => omitPassword(user));
+    .then((user) => omitPassword(user));
 }
 
 async function createUser(data) {
@@ -118,9 +112,7 @@ async function updateUser(id, user) {
     data.verified = null;
   }
 
-  await knex("users")
-    .update(data)
-    .where("id", id);
+  await knex("users").update(data).where("id", id);
 
   return await getUserById(id);
 }

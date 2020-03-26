@@ -8,7 +8,7 @@ describe("<ProfileView />", () => {
   it("should render and submit changes", () => {
     let savedUser;
 
-    const saveUser = data => (savedUser = data);
+    const saveUser = (data) => (savedUser = data);
 
     const user = { name: "Test", email: "test@test.com" };
     const newName = "New Test";

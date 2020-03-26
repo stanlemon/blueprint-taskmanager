@@ -37,7 +37,7 @@ export default class TaskForm extends React.Component {
     this.tagsInputRef = React.createRef();
   }
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
 
     const errors = {};
@@ -51,7 +51,7 @@ export default class TaskForm extends React.Component {
 
     // If there are any errors, bail
     if (Object.keys(errors).length > 0) {
-      this.setState(state => {
+      this.setState((state) => {
         return { ...state, ...{ errors } };
       });
       return;
@@ -66,7 +66,7 @@ export default class TaskForm extends React.Component {
     // The onSubmit can also return a callback, but in that event we don't update state, but allow
     // the callback to provide state to update, if it wants
     if (isFunction(result)) {
-      result(state => {
+      result((state) => {
         this.setState(state);
       });
       return;
@@ -75,13 +75,13 @@ export default class TaskForm extends React.Component {
     this.setState({ errors: {}, data: result });
   };
 
-  cancelTask = e => {
+  cancelTask = (e) => {
     e.preventDefault();
 
     navigateTo(ROUTE_ROOT);
   };
 
-  setCompleted = e => {
+  setCompleted = (e) => {
     if (e.target.checked) {
       this.setData("completed", Date.now());
     } else {
@@ -89,12 +89,12 @@ export default class TaskForm extends React.Component {
     }
   };
 
-  setDueDate = due => {
+  setDueDate = (due) => {
     this.setData("due", due);
   };
 
   setData = (key, value) => {
-    this.setState(state => {
+    this.setState((state) => {
       return {
         ...state,
         ...{
@@ -104,7 +104,7 @@ export default class TaskForm extends React.Component {
     });
   };
 
-  addTag = tag => {
+  addTag = (tag) => {
     this.setData(
       "tags",
       // We flip these before uniquing them to ensure the latest is retained
@@ -112,14 +112,14 @@ export default class TaskForm extends React.Component {
     );
   };
 
-  removeTag = index => {
+  removeTag = (index) => {
     this.setData(
       "tags",
       [...this.state.data.tags].filter((e, i) => i !== index)
     );
   };
 
-  setValue = e => {
+  setValue = (e) => {
     if (e.target.type && e.target.type === "checkbox") {
       this.setData(e.target.name, e.target.checked);
     } else {
@@ -167,7 +167,7 @@ export default class TaskForm extends React.Component {
             shouldCloseOnSelect={true}
             showTimeSelect
             dateFormat="MM/dd/yyyy h:mma"
-            onKeyDown={e => {
+            onKeyDown={(e) => {
               // If a date has already been selected, the enter key advanced the focus to the next form field.
               if (e.keyCode === 13) {
                 // If a date has not been selected on the calendar, do the normal thing
@@ -190,9 +190,9 @@ export default class TaskForm extends React.Component {
             inputAttributes={{ tabIndex: 5 }}
             autofocus={false}
             delimiterChars={[","]}
-            tags={task.tags.map(t => ({ name: t }))}
+            tags={task.tags.map((t) => ({ name: t }))}
             allowNew={true}
-            suggestions={this.props.tags.map(tag => ({
+            suggestions={this.props.tags.map((tag) => ({
               name: tag,
             }))}
             handleDelete={this.removeTag}

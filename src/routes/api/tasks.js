@@ -15,7 +15,7 @@ const schema = require("../../schema/task");
 
 router.get(
   "/tasks",
-  asyncHandler(async req => {
+  asyncHandler(async (req) => {
     const filter = req.query.filter || "all";
     const page = parseInt(req.query.page) || 1;
     const size = parseInt(req.query.size) || 10;
@@ -25,7 +25,7 @@ router.get(
     const tasks = await getTasks(req.user.id, filter, page, size);
 
     return {
-      tasks: tasks.map(v => convertCamelCase(v)),
+      tasks: tasks.map((v) => convertCamelCase(v)),
       filter,
       page,
       pages: Math.ceil(total / size),

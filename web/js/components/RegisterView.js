@@ -31,32 +31,32 @@ export class RegisterView extends React.Component {
     navigateTo(ROUTE_LOGIN);
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
     const errors = validate(this.state.data);
 
     // If there are any errors, bail
     if (Object.keys(errors).length > 0) {
-      this.setState(state => {
+      this.setState((state) => {
         return { ...state, ...{ errors } };
       });
       return;
     }
 
     // Clear out our errors
-    this.setState(state => {
+    this.setState((state) => {
       return { ...state, errors: {} };
     });
 
     this.props.registerUser(this.state.data);
   };
 
-  setValue = e => {
+  setValue = (e) => {
     const key = e.target.name;
     const value = e.target.value;
 
-    this.setState(state => {
+    this.setState((state) => {
       return {
         ...state,
         ...{
@@ -138,7 +138,7 @@ RegisterView.propTypes = {
 };
 
 /* istanbul ignore next */
-export default connect(state => ({ errors: state.errors }), {
+export default connect((state) => ({ errors: state.errors }), {
   registerUser,
   clearErrors,
 })(RegisterView);

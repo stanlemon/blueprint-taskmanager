@@ -9,7 +9,7 @@ export class CreateTaskForm extends React.Component {
     super(props);
   }
 
-  handleSave = async data => {
+  handleSave = async (data) => {
     const response = await this.props.createTask(data);
 
     // If there was an error, return the data we submitted, because <TaskForm/> will repopulate it

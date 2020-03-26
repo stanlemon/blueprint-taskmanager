@@ -47,7 +47,7 @@ describe("reducers", () => {
       REGISTER_ERROR,
     ];
 
-    types.forEach(type => {
+    types.forEach((type) => {
       expect(
         errors({ foo: "bar" }, { type: type, errors: { bar: "baz" } })
       ).toEqual({

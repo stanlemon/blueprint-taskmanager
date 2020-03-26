@@ -49,7 +49,7 @@ describe("/auth", () => {
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
       .expect(400)
-      .then(res => {
+      .then((res) => {
         expect(res.body.errors).not.toBe(undefined);
         expect(res.body.errors.name).not.toBe(undefined);
         expect(res.body.errors.email).not.toBe(undefined);
@@ -68,7 +68,7 @@ describe("/auth", () => {
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
       .expect(400)
-      .then(res => {
+      .then((res) => {
         expect(res.body.errors).not.toBe(undefined);
         expect(res.body.errors.email).not.toBe(undefined);
       });
@@ -85,7 +85,7 @@ describe("/auth", () => {
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
       .expect(400)
-      .then(res => {
+      .then((res) => {
         expect(res.body.errors).not.toBe(undefined);
         expect(res.body.errors.password).not.toBe(undefined);
       });
@@ -103,7 +103,7 @@ describe("/auth", () => {
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
       .expect(400)
-      .then(res => {
+      .then((res) => {
         expect(res.body.errors).not.toBe(undefined);
         expect(res.body.errors.password).not.toBe(undefined);
       });
@@ -126,7 +126,7 @@ describe("/auth", () => {
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
       .expect(400)
-      .then(res => {
+      .then((res) => {
         expect(res.body.errors).toEqual({
           email: "A user with this email address already exists",
         });
@@ -149,7 +149,7 @@ describe("/auth", () => {
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
       .expect(200)
-      .then(res => {
+      .then((res) => {
         expect(res.body.success).toEqual(true);
       });
 
@@ -163,7 +163,7 @@ describe("/auth", () => {
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
       .expect(200)
-      .then(res => {
+      .then((res) => {
         expect(res.body.success).toEqual(false);
       });
   });

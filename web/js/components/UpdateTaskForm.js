@@ -7,7 +7,7 @@ import { updateTask } from "../actions";
 import { ROUTE_ROOT } from "./Routes";
 
 export class UpdateTaskForm extends React.Component {
-  handleSave = async data => {
+  handleSave = async (data) => {
     const response = await this.props.updateTask(data);
 
     if (response && response.errors) {

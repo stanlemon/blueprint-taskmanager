@@ -5,7 +5,7 @@ const { getTags } = require("../../db/tags");
 
 router.get(
   "/tags",
-  asyncHandler(async req => {
+  asyncHandler(async (req) => {
     const tags = await getTags(req.user.id);
     return tags;
   })

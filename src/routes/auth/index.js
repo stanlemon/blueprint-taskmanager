@@ -47,8 +47,8 @@ passport.use(
     },
     (payload, done) => {
       getUserById(payload.id)
-        .then(user => done(null, user))
-        .catch(ex => done(ex));
+        .then((user) => done(null, user))
+        .catch((ex) => done(ex));
     }
   )
 );
@@ -57,7 +57,7 @@ passport.use(
   "local",
   new LocalStrategy((username, password, done) => {
     getUserByEmailAndPassword(username, password)
-      .then(user => {
+      .then((user) => {
         if (!user) {
           return done(null, false, {
             message: "Incorrect email or password.",
@@ -66,7 +66,7 @@ passport.use(
 
         return done(null, user);
       })
-      .catch(error => done(error, null));
+      .catch((error) => done(error, null));
   })
 );
 
@@ -76,11 +76,11 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   getUserById(id)
-    .then(user => {
+    .then((user) => {
       // An undefined user means we couldn't find it, so the session is invalid
       done(null, user === undefined ? false : user);
     })
-    .catch(error => {
+    .catch((error) => {
       done(error, null);
     });
 });
@@ -117,7 +117,7 @@ router.get("/auth/logout", (req, res) => {
   res.redirect("/auth/session");
 });
 
-router.get("/auth/session", function(req, res, next) {
+router.get("/auth/session", function (req, res, next) {
   /* look at the 2nd parameter to the below call */
   passport.authenticate("jwt", { session: false }, (err, user) => {
     if (err) {
@@ -129,7 +129,7 @@ router.get("/auth/session", function(req, res, next) {
       });
     }
 
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         return next(err);
       }
@@ -178,7 +178,7 @@ router.post(
           .then(() => {
             console.log("Successfully sent verification email");
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err.toString());
           });
       } else {

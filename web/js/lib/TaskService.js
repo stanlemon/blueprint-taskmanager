@@ -13,7 +13,7 @@ export default class TaskService extends RestService {
         due: task.due ? task.due : null,
       }),
       // Any date objects should be formatted
-      v => (isDate(v) ? format(v, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : v)
+      (v) => (isDate(v) ? format(v, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : v)
     );
   }
 

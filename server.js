@@ -54,7 +54,7 @@ knex.migrate.latest();
 const server = http.createServer(app);
 
 /*eslint no-console: "off"*/
-server.listen(process.env.PORT, err => {
+server.listen(process.env.PORT, (err) => {
   if (err) {
     console.error(err);
     return;

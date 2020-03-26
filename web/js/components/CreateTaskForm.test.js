@@ -8,7 +8,7 @@ describe("<CreateTaskForm />", () => {
   it("should render an empty form with and submit a new task in it", () => {
     let lastSavedTask = null;
 
-    const createTask = task => {
+    const createTask = (task) => {
       // Store the task so that we can reference it later
       lastSavedTask = task;
     };

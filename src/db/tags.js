@@ -11,7 +11,7 @@ async function getTags(userId) {
     .orderBy("name");
 
   // Remap the tags so that they're just a list of strings
-  return tags.map(t => t.name);
+  return tags.map((t) => t.name);
 }
 
 function getTagsByTaskId(userId, taskId) {
@@ -22,7 +22,7 @@ function getTagsByTaskId(userId, taskId) {
     .where("user_id", userId)
     .where("task_tags.task_id", taskId)
     .orderBy("name")
-    .then(tags => tags.map(t => t.name));
+    .then((tags) => tags.map((t) => t.name));
 }
 
 /**
@@ -63,10 +63,10 @@ function upsertTags(userId, names) {
   }
 
   return getTagsByName(userId, names)
-    .then(tags => mapKeys(tags, tag => tag.name))
-    .then(tagsByName => {
-      const missing = names.filter(name => !has(tagsByName, name));
-      return createTags(userId, missing).then(t =>
+    .then((tags) => mapKeys(tags, (tag) => tag.name))
+    .then((tagsByName) => {
+      const missing = names.filter((name) => !has(tagsByName, name));
+      return createTags(userId, missing).then((t) =>
         t.concat(Object.values(tagsByName))
       );
     });
@@ -82,7 +82,7 @@ function createTags(userId, names) {
 
   const now = format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
 
-  const tags = names.map(name => ({
+  const tags = names.map((name) => ({
     user_id: userId,
     name,
     created_at: now,

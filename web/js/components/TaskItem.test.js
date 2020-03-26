@@ -120,7 +120,7 @@ describe("<TaskItem />", () => {
       <TaskItem
         task={task}
         updateTask={updateTask}
-        deleteTask={id => (deletedTaskId = id)}
+        deleteTask={(id) => (deletedTaskId = id)}
       />
     );
 
@@ -148,7 +148,7 @@ describe("<TaskItem />", () => {
     const wrapper = shallow(
       <TaskItem
         task={task}
-        updateTask={t => {
+        updateTask={(t) => {
           updatedTask = t;
         }}
         deleteTask={deleteTask}
@@ -186,7 +186,7 @@ describe("<TaskItem />", () => {
     const wrapper = shallow(
       <TaskItem
         task={task}
-        updateTask={t => {
+        updateTask={(t) => {
           updatedTask = t;
         }}
         deleteTask={deleteTask}

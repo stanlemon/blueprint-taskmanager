@@ -46,20 +46,10 @@ describe("<TaskListView />", () => {
     );
 
     // List of tasks contains our first task
-    expect(
-      view
-        .find(TaskItem)
-        .at(0)
-        .props().task
-    ).toEqual(tasks[0]);
+    expect(view.find(TaskItem).at(0).props().task).toEqual(tasks[0]);
 
     // List of tasks contains our second task
-    expect(
-      view
-        .find(TaskItem)
-        .at(1)
-        .props().task
-    ).toEqual(tasks[1]);
+    expect(view.find(TaskItem).at(1).props().task).toEqual(tasks[1]);
   });
 
   it("should not render a list if there are no tasks", () => {
@@ -88,7 +78,7 @@ describe("<TaskListView />", () => {
   it("should set filter when each filter button is clicked", () => {
     const tasks = [];
     let lastFilter;
-    const setFilter = jest.fn(filter => (lastFilter = filter));
+    const setFilter = jest.fn((filter) => (lastFilter = filter));
     const view = shallow(
       <TaskListView
         loadTasks={() => {}}

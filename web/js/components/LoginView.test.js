@@ -38,7 +38,7 @@ describe("<LoginView />", () => {
 
   it("should submit a username and password", () => {
     let username, password;
-    const login = data => {
+    const login = (data) => {
       username = data.username;
       password = data.password;
     };
@@ -69,7 +69,7 @@ describe("<LoginView />", () => {
     const view = mount(<LoginView login={() => {}} clearErrors={() => {}} />);
 
     const button = view.findWhere(
-      n => n.type() === "a" && n.text() === "Create Account"
+      (n) => n.type() === "a" && n.text() === "Create Account"
     );
 
     button.simulate("click");

@@ -55,7 +55,7 @@ export function tasks(state, action) {
           // Only if the existing tasks are an array (means we've loaded them before)
           ...(isArray(state.tasks)
             ? // Exclude the current task we're getting if it's there, because we'll replace it
-              state.tasks.filter(t => t.id !== action.task.id)
+              state.tasks.filter((t) => t.id !== action.task.id)
             : []),
           formatTaskDates(action.task),
         ],
@@ -66,7 +66,7 @@ export function tasks(state, action) {
         ...state,
         ...action.tasks,
         // Make sure you preserve the order of these tasks (see the db call)
-        tasks: action.tasks.tasks.map(d => formatTaskDates(d)),
+        tasks: action.tasks.tasks.map((d) => formatTaskDates(d)),
       };
     // These preserve the existing state, they don't clear out the state so that existing data doesn't blank out,
     // but the actions immediately trigger a LOAD_TASK... operation, so the data will be refreshed on these.
@@ -141,7 +141,7 @@ export function page(state, action) {
   }
 }
 
-export default function(
+export default function (
   state = {
     user: null,
     tags: [],

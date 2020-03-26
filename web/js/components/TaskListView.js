@@ -110,7 +110,7 @@ export class TaskListView extends React.Component {
           </div>
         )}
 
-        {tasks.map(task => (
+        {tasks.map((task) => (
           <TaskItem key={task.id} task={task} />
         ))}
 
@@ -139,7 +139,7 @@ export class TaskListView extends React.Component {
               {/*<li>
                 <span className="pagination-ellipsis">&hellip;</span>
               </li>*/}
-              {[...Array(pages + 1).keys()].slice(1).map(p => (
+              {[...Array(pages + 1).keys()].slice(1).map((p) => (
                 <li key={`page-${p}`}>
                   <button
                     className={classNames("button", "pagination-link", {
@@ -191,7 +191,7 @@ TaskListView.defaultProps = {
 
 /* istanbul ignore next */
 export default connect(
-  state => ({
+  (state) => ({
     loaded: state.loaded,
     hasTasks: state.tasks.all > 0,
     ...state.tasks,

@@ -26,7 +26,7 @@ function omitUserId(o) {
 }
 
 function buildFilter(filter) {
-  return qb => {
+  return (qb) => {
     switch (filter) {
       case "complete":
         qb.whereNotNull("completed");
@@ -75,12 +75,12 @@ created_at ASC`;
 
   const tags = await getTagsForTaskIds(
     userId,
-    tasks.map(t => t.id)
+    tasks.map((t) => t.id)
   );
 
   const tagsByTaskId = {};
 
-  tags.forEach(t => {
+  tags.forEach((t) => {
     const taskId = parseInt(t.task_id);
 
     if (!tagsByTaskId[taskId]) {
@@ -111,7 +111,7 @@ async function _getTaskById(userId, taskId) {
   if (!task) {
     return null;
   }
-  return getTagsByTaskId(userId, taskId).then(tags => {
+  return getTagsByTaskId(userId, taskId).then((tags) => {
     task.tags = tags;
     return task;
   });
@@ -122,7 +122,7 @@ async function getTaskById(userId, taskId) {
 }
 
 function deleteTask(userId, taskId) {
-  return _getTaskById(userId, taskId).then(verify => {
+  return _getTaskById(userId, taskId).then((verify) => {
     if (!verify || verify.user_id !== userId) {
       return false;
     }
@@ -141,7 +141,7 @@ function deleteTask(userId, taskId) {
 }
 
 function updateTask(userId, taskId, task) {
-  return _getTaskById(userId, taskId).then(verify => {
+  return _getTaskById(userId, taskId).then((verify) => {
     if (!verify || verify.user_id !== userId) {
       return null;
     }
@@ -185,19 +185,19 @@ function upsertTaskTags(userId, taskId, tags) {
     return Promise.resolve([]);
   }
 
-  return upsertTags(userId, tags).then(tags => {
-    const tagIds = tags.map(t => t.id);
+  return upsertTags(userId, tags).then((tags) => {
+    const tagIds = tags.map((t) => t.id);
     return knex("task_tags")
       .select()
       .where("task_id", taskId)
       .whereIn("tag_id", tagIds)
-      .then(taskTags => {
+      .then((taskTags) => {
         // Ids of all the task tags that  currently exist, some of these may be extra
-        const taskTagIds = taskTags.map(t => t.tag_id);
+        const taskTagIds = taskTags.map((t) => t.tag_id);
         // Any that don't exist we need to create
         const missing = tagIds
-          .filter(id => !includes(taskTagIds, id))
-          .map(id => ({
+          .filter((id) => !includes(taskTagIds, id))
+          .map((id) => ({
             tag_id: id,
             task_id: taskId,
           }));

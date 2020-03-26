@@ -22,43 +22,43 @@ export class ProfileView extends React.Component {
     };
   }
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
 
     const errors = validate(this.state.data, { requirePassword: false });
 
     // If there are any errors, bail
     if (Object.keys(errors).length > 0) {
-      this.setState(state => {
+      this.setState((state) => {
         return { ...state, ...{ errors } };
       });
       return;
     }
 
     // Clear out our errors
-    this.setState(state => {
+    this.setState((state) => {
       return { ...state, errors: {} };
     });
 
     await this.props.saveUser(this.state.data);
 
-    this.setState(state => ({
+    this.setState((state) => ({
       ...state,
       message: "Profile successfully updated!",
     }));
 
     // TODO: Fade this out, rather than just make it disappear
     this.notificationTimeout = setTimeout(
-      () => this.setState(state => ({ ...state, message: null })),
+      () => this.setState((state) => ({ ...state, message: null })),
       7500 // 7.5 seconds
     );
   };
 
-  setValue = e => {
+  setValue = (e) => {
     const key = e.target.name;
     const value = e.target.value;
 
-    this.setState(state => {
+    this.setState((state) => {
       return {
         ...state,
         ...{

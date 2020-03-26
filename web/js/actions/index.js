@@ -53,11 +53,11 @@ export function saveUser(user) {
   return (dispatch, getState, { userService }) => {
     return userService
       .saveUser(user)
-      .then(res => {
+      .then((res) => {
         dispatch({ type: SAVE_USER, user: res });
         return res;
       })
-      .catch(ex => {
+      .catch((ex) => {
         dispatch({ type: USER_ERROR, errors: ex.errors });
       });
   };
@@ -71,7 +71,7 @@ export function logout() {
         dispatch({ type: CLEAR_ERRORS });
         dispatch({ type: UNAUTHENTICATED_USER });
       })
-      .catch(ex => {
+      .catch((ex) => {
         dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
       });
   };
@@ -81,10 +81,10 @@ export function loadTags() {
   return (dispatch, getState, { tagService }) => {
     tagService
       .loadTags()
-      .then(tags => {
+      .then((tags) => {
         dispatch({ type: LOAD_TAGS_SUCCESS, tags });
       })
-      .catch(ex => {
+      .catch((ex) => {
         dispatch({ type: LOAD_TAGS_ERROR, errors: ex.errors });
       });
   };
@@ -124,10 +124,10 @@ export function loadTasks(filter, page) {
   return (dispatch, getState, { taskService }) => {
     taskService
       .loadTasks(filter, page)
-      .then(tasks => {
+      .then((tasks) => {
         dispatch({ type: LOAD_TASKS_SUCCESS, tasks: tasks });
       })
-      .catch(ex => {
+      .catch((ex) => {
         dispatch({ type: LOAD_TASKS_ERROR, errors: ex.errors });
       });
   };
@@ -139,7 +139,7 @@ export function getTask(id) {
 
     // If we have the specific task cached, return it rather than hit the api
     if (isArray(tasks)) {
-      const task = tasks?.filter(t => t.id !== id)[0];
+      const task = tasks?.filter((t) => t.id !== id)[0];
 
       if (task) {
         dispatch({ type: GET_TASK_SUCCESS, task: task });
@@ -149,10 +149,10 @@ export function getTask(id) {
 
     taskService
       .getTask(id)
-      .then(task => {
+      .then((task) => {
         dispatch({ type: GET_TASK_SUCCESS, task });
       })
-      .catch(ex => {
+      .catch((ex) => {
         dispatch({ type: GET_TASK_ERROR, errors: ex.errors });
       });
   };
@@ -162,7 +162,7 @@ export function createTask(data) {
   return (dispatch, getState, { taskService }) => {
     return taskService
       .createTask(data)
-      .then(task => {
+      .then((task) => {
         dispatch({ type: CLEAR_ERRORS });
         dispatch({ type: CREATE_TASK_SUCCESS, task });
         loadTasks(getState().filter, getState().page)(dispatch, getState, {
@@ -170,7 +170,7 @@ export function createTask(data) {
         });
         return task;
       })
-      .catch(ex => {
+      .catch((ex) => {
         dispatch({ type: CREATE_TASK_ERROR, errors: ex.errors });
         return { errors: ex.errors };
       });
@@ -181,7 +181,7 @@ export function updateTask(data) {
   return (dispatch, getState, { taskService }) => {
     return taskService
       .updateTask(data)
-      .then(task => {
+      .then((task) => {
         dispatch({ type: CLEAR_ERRORS });
         dispatch({ type: UPDATE_TASK_SUCCESS, task });
         loadTasks(getState().filter, getState().page)(dispatch, getState, {
@@ -189,7 +189,7 @@ export function updateTask(data) {
         });
         return task;
       })
-      .catch(ex => {
+      .catch((ex) => {
         dispatch({ type: UPDATE_TASK_ERROR, errors: ex.errors });
         return { errors: ex.errors };
       });
@@ -207,7 +207,7 @@ export function deleteTask(taskId) {
           taskService,
         });
       })
-      .catch(ex => {
+      .catch((ex) => {
         dispatch({ type: DELETE_TASK_ERROR, errors: ex.errors });
       });
   };
@@ -229,7 +229,7 @@ export function checkSession() {
           dispatch({ type: AUTHENTICATED_USER, user });
         }
       })
-      .catch(ex => {
+      .catch((ex) => {
         // Likely a 403
         dispatch({ type: UNAUTHENTICATED_USER });
         dispatch({ type: AUTHENTICATION_ERROR, errors: ex.errors });
@@ -241,11 +241,11 @@ export function registerUser(user) {
   return (dispatch, getState, { userService }) => {
     userService
       .register(user)
-      .then(data => {
+      .then((data) => {
         dispatch({ type: CLEAR_ERRORS });
         dispatch({ type: AUTHENTICATED_USER, user: data });
       })
-      .catch(ex => {
+      .catch((ex) => {
         dispatch({ type: REGISTER_ERROR, errors: ex.errors });
       });
   };
@@ -255,7 +255,7 @@ export function login(user) {
   return (dispatch, getState, { userService }) => {
     userService
       .login(user)
-      .then(data => {
+      .then((data) => {
         dispatch({ type: CLEAR_ERRORS });
         dispatch({ type: AUTHENTICATED_USER, user: data.user });
       })

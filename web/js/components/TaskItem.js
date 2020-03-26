@@ -34,7 +34,7 @@ export class TaskItem extends React.Component {
     navigateTo(`/view/${this.props.task.id}`);
   };
 
-  completeTask = event => {
+  completeTask = (event) => {
     const checked = event.target.checked;
     this.props.updateTask(
       Object.assign({}, this.props.task, {
@@ -127,4 +127,4 @@ TaskItem.propTypes = {
 };
 
 /* istanbul ignore next */
-export default connect(state => state, { updateTask, deleteTask })(TaskItem);
+export default connect((state) => state, { updateTask, deleteTask })(TaskItem);

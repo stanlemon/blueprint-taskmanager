@@ -22,8 +22,8 @@ export default class RestService {
     }
 
     return fetch(url, options)
-      .then(response => response.json())
-      .then(response => {
+      .then((response) => response.json())
+      .then((response) => {
         if (response && response.errors) {
           throw new ServiceException(response.errors);
         }

@@ -207,7 +207,7 @@ describe("<RegisterView />", () => {
 
   it("should submit a valid user", () => {
     let name, email, password;
-    const registerUser = data => {
+    const registerUser = (data) => {
       name = data.name;
       email = data.email;
       password = data.password;
@@ -263,7 +263,7 @@ describe("<RegisterView />", () => {
 
     // Probably need a better way to identify this button
     const button = view.findWhere(
-      n => n.type() === "a" && n.text() === "Return to Login"
+      (n) => n.type() === "a" && n.text() === "Return to Login"
     );
 
     button.simulate("click");
@@ -278,7 +278,7 @@ describe("<RegisterView />", () => {
 
     // Probably need a better way to identify this button
     const button = view.findWhere(
-      n => n.type() === "a" && n.text() === "Privacy Policy"
+      (n) => n.type() === "a" && n.text() === "Privacy Policy"
     );
 
     button.simulate("click");
@@ -293,7 +293,7 @@ describe("<RegisterView />", () => {
 
     // Probably need a better way to identify this button
     const button = view.findWhere(
-      n => n.type() === "a" && n.text() === "Terms of Service"
+      (n) => n.type() === "a" && n.text() === "Terms of Service"
     );
 
     button.simulate("click");

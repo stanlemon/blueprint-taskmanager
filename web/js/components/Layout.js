@@ -51,7 +51,7 @@ export class Layout extends React.Component {
     this.closeMenus();
   };
 
-  handleClickOutside = e => {
+  handleClickOutside = (e) => {
     if (
       this.hamburgerRef.current.contains(e.target) ||
       this.menuRef.current.contains(e.target) ||
@@ -71,13 +71,13 @@ export class Layout extends React.Component {
   };
 
   toggleMenu = () => {
-    this.setState(state => {
+    this.setState((state) => {
       return { isMenuActive: !state.isMenuActive };
     });
   };
 
   toggleDropdown = () => {
-    this.setState(state => {
+    this.setState((state) => {
       return { isDropdownActive: !state.isDropdownActive };
     });
   };

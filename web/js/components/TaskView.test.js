@@ -34,7 +34,7 @@ describe("<TaskView />", () => {
     // Find the created at date, which is read only text
     expect(
       view.findWhere(
-        n =>
+        (n) =>
           n.type() === "span" &&
           n.text() === format(task.createdAt, DATE_FORMAT_LONG)
       ).length
@@ -43,7 +43,7 @@ describe("<TaskView />", () => {
     // Find the updated at date, which is read only text
     expect(
       view.findWhere(
-        n =>
+        (n) =>
           n.type() === "span" &&
           n.text() === format(task.updatedAt, DATE_FORMAT_LONG)
       ).length

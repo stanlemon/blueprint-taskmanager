@@ -1,13 +1,8 @@
 const Joi = require("@hapi/joi");
 
 const keys = {
-  name: Joi.string()
-    .required()
-    .label("Name"),
-  email: Joi.string()
-    .email()
-    .required()
-    .label("Email address"),
+  name: Joi.string().required().label("Name"),
+  email: Joi.string().email().required().label("Email address"),
   password: Joi.string()
     .allow("")
     .min(8)

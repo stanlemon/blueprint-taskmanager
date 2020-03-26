@@ -12,7 +12,7 @@ describe("<TaskForm />", () => {
   it("should render an empty form with and submit a new task in it", () => {
     let lastSavedTask = null;
 
-    const save = task => {
+    const save = (task) => {
       // Store the task so that we can reference it later
       lastSavedTask = task;
       // Returning the value updates the form's state
@@ -69,7 +69,7 @@ describe("<TaskForm />", () => {
   });
 
   it("submitting a form without a task name triggers an error", () => {
-    const save = r => r;
+    const save = (r) => r;
 
     const view = mount(<TaskForm onSubmit={save} />);
 
@@ -88,7 +88,7 @@ describe("<TaskForm />", () => {
   it("should render a form with an existing task and update it", () => {
     let lastSavedTask = null;
 
-    const save = task => {
+    const save = (task) => {
       // Store the task so that we can reference it later
       lastSavedTask = task;
       return task;
@@ -172,7 +172,7 @@ describe("<TaskForm />", () => {
   });
 
   it("clicking on due opens a pop up", () => {
-    const save = r => r;
+    const save = (r) => r;
 
     const view = mount(<TaskForm onSubmit={save} />);
 
@@ -211,7 +211,7 @@ describe("<TaskForm />", () => {
       due: "Error message about due",
     };
 
-    const view = mount(<TaskForm onSubmit={t => t} errors={errorMessages} />);
+    const view = mount(<TaskForm onSubmit={(t) => t} errors={errorMessages} />);
 
     const errors = view.find(".error");
 

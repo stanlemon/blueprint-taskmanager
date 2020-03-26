@@ -11,7 +11,7 @@ describe("<UpdateTaskForm />", () => {
   it("should render a form with an existing task and update it", () => {
     let lastSavedTask = null;
 
-    const updateTask = task => {
+    const updateTask = (task) => {
       // Store the task so that we can reference it later
       lastSavedTask = task;
     };

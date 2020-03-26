@@ -1,6 +1,6 @@
 const InvalidArgument = require("../db/invalidargument");
 
-const asyncHandler = fn => async (req, res, next) => {
+const asyncHandler = (fn) => async (req, res, next) => {
   try {
     const result = await fn(req, res, next);
 
