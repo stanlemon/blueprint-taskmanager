@@ -90,7 +90,7 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "pg": "^8.0.3",
+    "pg": "^8.2.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-datepicker": "^2.14.1",
