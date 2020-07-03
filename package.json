@@ -106,7 +106,7 @@
     "serve-static": "^1.14.1",
     "shortid": "^2.2.15",
     "uuid": "^8.0.0",
-    "validator": "^13.0.0"
+    "validator": "^13.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
