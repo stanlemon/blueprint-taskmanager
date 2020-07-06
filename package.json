@@ -130,7 +130,7 @@
     "eslint-plugin-react": "^7.20.3",
     "jest": "^25.5.4",
     "less": "^3.11.1",
-    "nodemon": "^2.0.3",
+    "nodemon": "^2.0.4",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-bundle-visualiser": "^1.2.0",
     "prettier": "^2.0.5",
