@@ -137,7 +137,7 @@
     "puppeteer": "^3.0.2",
     "react-test-renderer": "^16.13.1",
     "sass": "^1.26.10",
-    "sqlite3": "^4.2.0",
+    "sqlite3": "^5.0.0",
     "supertest": "^4.0.2",
     "wait-for-expect": "^3.0.2"
   },
