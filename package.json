@@ -81,7 +81,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
-    "history": "^4.10.1",
+    "history": "^5.0.0",
     "jsonwebtoken": "^8.5.1",
     "killable": "^1.0.1",
     "knex": "^0.21.1",
