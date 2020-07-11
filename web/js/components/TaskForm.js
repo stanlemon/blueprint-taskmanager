@@ -59,7 +59,7 @@ export default class TaskForm extends React.Component {
 
     // On successful submit, blur our active fields (the ones an enter can trigger a submit)
     this.nameInputRef.current.blur();
-    this.tagsInputRef.current.input.input.blur();
+    this.tagsInputRef.current.input.current.input.current.blur();
 
     const result = await this.props.onSubmit(this.state.data);
 
@@ -195,8 +195,8 @@ export default class TaskForm extends React.Component {
             suggestions={this.props.tags.map((tag) => ({
               name: tag,
             }))}
-            handleDelete={this.removeTag}
-            handleAddition={this.addTag}
+            onDelete={this.removeTag}
+            onAddition={this.addTag}
           />
         </Field>
         {task && task.id && (
