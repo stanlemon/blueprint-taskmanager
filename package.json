@@ -129,7 +129,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.3",
     "jest": "^26.1.0",
-    "less": "^3.12.0",
+    "less": "^3.12.1",
     "nodemon": "^2.0.4",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-bundle-visualiser": "^1.2.0",
