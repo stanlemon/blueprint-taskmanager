@@ -5,21 +5,22 @@ import { makeDateTime, sortTasks } from "./Utils";
 
 describe("Utils", () => {
   it("makeDateTime formats mysql friendly dates", () => {
-    expect(makeDateTime(new Date("June 13, 1985 13:00:00-05:00"))).toEqual(
-      "1985-06-13T13:00:00-05:00"
-    );
+    // We're dropping the timezones during comparison to avoid system specific peculiarities.
+    expect(
+      makeDateTime(new Date("June 13, 1985 13:00:00")).substring(0, 19)
+    ).toEqual("1985-06-13T13:00:00");
 
-    expect(makeDateTime(new Date("November 6, 2009 05:00:00-05:00"))).toEqual(
-      "2009-11-06T05:00:00-05:00"
-    );
+    expect(
+      makeDateTime(new Date("November 6, 2009 05:00:00")).substring(0, 19)
+    ).toEqual("2009-11-06T05:00:00");
 
-    expect(makeDateTime(new Date("December 12, 2011 22:00:00-05:00"))).toEqual(
-      "2011-12-12T22:00:00-05:00"
-    );
+    expect(
+      makeDateTime(new Date("December 12, 2011 22:00:00")).substring(0, 19)
+    ).toEqual("2011-12-12T22:00:00");
 
-    expect(makeDateTime(new Date("June 2, 2014 11:30:00-04:00"))).toEqual(
-      "2014-06-02T11:30:00-04:00"
-    );
+    expect(
+      makeDateTime(new Date("June 2, 2014 11:30:00")).substring(0, 19)
+    ).toEqual("2014-06-02T11:30:00");
   });
 
   // The goal of this method is to ensure tasks are sorted properly
