@@ -127,7 +127,7 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^23.19.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react": "^7.20.4",
     "jest": "^26.1.0",
     "less": "^3.12.2",
     "nodemon": "^2.0.4",
