@@ -1,6 +1,6 @@
 import React from "react";
 import TermsOfService from "./TermsOfService";
-import navigateTo from "../lib/Navigation";
+import { navigateTo } from "../lib/Navigation";
 import { ROUTE_REGISTER } from "./Routes";
 
 export default function TermsOfServiceView() {

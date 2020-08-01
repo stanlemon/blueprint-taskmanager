@@ -23,6 +23,7 @@ require("dotenv").config();
 const JWT_EXPIRES_IN_MIN = 120;
 
 if (process.env.JWT_SECRET === undefined) {
+  // eslint-disable-next-line no-console
   console.warn("Jwt secret has not been set!");
   process.env.JWT_SECRET = "dyKSdvTaXRS3KWbgMBDz9QlOwZZC3BlH";
 }
@@ -167,21 +168,17 @@ router.post(
         html: `<p>Click on the following link to verify your email address:<br /><a href="${url}">${url}</a></p>`,
       };
 
-      console.log("Email Message = ", message);
-
       if (process.env.SENDGRID_API_KEY) {
+        // eslint-disable-next-line no-console
         console.log("Sending email to SendGrid");
 
         sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
-        sendgrid
-          .send(message)
-          .then(() => {
-            console.log("Successfully sent verification email");
-          })
-          .catch((err) => {
-            console.error(err.toString());
-          });
+        sendgrid.send(message).catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error(err.toString());
+        });
       } else {
+        // eslint-disable-next-line no-console
         console.warn(
           "SendGrid API key is not set, not sending verification email"
         );

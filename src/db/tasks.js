@@ -93,7 +93,7 @@ created_at ASC`;
     // Every task should have a tag array
     tasks[i].tags = [];
 
-    if (tagsByTaskId[task.id] != undefined) {
+    if (tagsByTaskId[task.id] !== undefined) {
       tasks[i].tags = tagsByTaskId[task.id];
     }
   });

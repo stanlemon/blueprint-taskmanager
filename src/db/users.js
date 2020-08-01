@@ -107,7 +107,7 @@ async function updateUser(id, user) {
     data.password = bcrypt.hashSync(user.password, 10);
   }
 
-  if (data.email && original.email != data.email) {
+  if (data.email && original.email !== data.email) {
     data.verification_token = shortid.generate();
     data.verified = null;
   }

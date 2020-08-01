@@ -93,7 +93,7 @@ export function validate(
   }
 
   // Ensure that they've entered their password twice
-  if (!isEmpty(password) && password != repeat_password) {
+  if (!isEmpty(password) && password !== repeat_password) {
     errors["repeat_password"] = "Your password does not match.";
   }
 

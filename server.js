@@ -22,7 +22,7 @@ app.use("/api", [
 ]);
 
 if (process.env.NODE_ENV === "development") {
-  /* eslint-disable-line global-require, import/no-extraneous-dependencies */
+  // eslint-disable-line global-require
   const Bundler = require("parcel-bundler");
 
   const file = path.join(__dirname, "web", "index.html");
