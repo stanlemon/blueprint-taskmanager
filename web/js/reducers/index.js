@@ -112,6 +112,13 @@ export function errors(state, action) {
 
 export function loaded(state, action) {
   switch (action.type) {
+    case LOAD_TAGS_ERROR:
+      return uniq([...state, "tags"]);
+    case GET_TASK_ERROR:
+    case LOAD_TASKS_ERROR:
+    case CREATE_TASK_ERROR:
+    case UPDATE_TASK_ERROR:
+    case DELETE_TASK_ERROR:
     case GET_TASK_SUCCESS:
     case LOAD_TASKS_SUCCESS:
       return uniq([...state, "tasks"]);

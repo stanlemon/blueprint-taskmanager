@@ -22,12 +22,12 @@ export default class RestService {
     }
 
     return fetch(url, options)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response && response.errors) {
-          throw new ServiceException(response.errors);
+      .then((r) => r.json().then((data) => ({ status: r.status, body: data })))
+      .then(({ status, body }) => {
+        if (status !== 200) {
+          throw new ServiceException(body);
         }
-        return response;
+        return body;
       });
   }
 }

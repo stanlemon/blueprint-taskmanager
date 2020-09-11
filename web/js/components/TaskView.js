@@ -13,7 +13,7 @@ import { ROUTE_ROOT, ROUTE_TASK_VIEW } from "./Routes";
 
 export function TaskView({ loaded, task }) {
   if (!loaded) {
-    return <div />;
+    return <div>Loading...</div>;
   }
 
   const handleReturnToList = () => navigateTo(ROUTE_ROOT);
@@ -22,9 +22,9 @@ export function TaskView({ loaded, task }) {
     return (
       <div>
         <Error message="Task does not exist." />
-        <a className="btn btn-link" onClick={handleReturnToList}>
+        <button className="button" onClick={handleReturnToList}>
           Go back to list
-        </a>
+        </button>
       </div>
     );
   }
