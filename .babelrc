@@ -5,17 +5,11 @@
     }
   },
   "presets": [
-    [
-      "@babel/preset-env",
-      {
-        //"modules": false, // Parcel flips this to 'false', but we need it true (default) for node
-        "useBuiltIns": false,
-        "shippedProposals": true
-      }
-    ],
+    "@babel/preset-env",
     "@babel/preset-react"
   ],
   "plugins": [
+    "@babel/plugin-proposal-class-properties",
     "react-hot-loader/babel"
   ]
 }

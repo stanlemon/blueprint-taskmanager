@@ -21,32 +21,13 @@ app.use("/api", [
   require("./src/routes/api"),
 ]);
 
-if (process.env.NODE_ENV === "development") {
-  // eslint-disable-line global-require
-  const Bundler = require("parcel-bundler");
+// Serve compiled assets
+app.use(serveStatic(path.join(__dirname, "dist")));
 
-  const file = path.join(__dirname, "web", "index.html");
-
-  const options = {
-    cache: false,
-    hmr: true,
-  };
-
-  // Initialize a new parcel bundler
-  const bundler = new Bundler(file, options);
-
-  // This will let Parcel handle every request to the express server not already defined
-  app.use(bundler.middleware());
-  /* eslint-enable */
-} else {
-  // Serve assets compiled by parcel
-  app.use(serveStatic(path.join(__dirname, "dist")));
-
-  // All other requests get routed to our SPA
-  app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "dist", "index.html"));
-  });
-}
+// All other requests get routed to our SPA
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 // Ensure the database is up to date
 knex.migrate.latest();
