@@ -121,7 +121,7 @@
     "@testing-library/dom": "^7.24.3",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",
-    "babel-jest": "^26.3.0",
+    "babel-jest": "^26.6.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "concurrently": "^5.3.0",
