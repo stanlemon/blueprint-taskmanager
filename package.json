@@ -142,7 +142,7 @@
     "prettier": "^2.1.2",
     "puppeteer": "^5.3.1",
     "react-test-renderer": "^16.13.1",
-    "sass": "^1.26.11",
+    "sass": "^1.28.0",
     "sqlite3": "^5.0.0",
     "style-loader": "^1.2.1",
     "supertest": "^5.0.0",
