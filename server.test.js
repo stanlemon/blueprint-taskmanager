@@ -20,8 +20,8 @@ async function waitForTextInSelector(page, selector, text) {
   );
 }
 
-test("end to end", async done => {
-  waitForExpect(() => {
+test("end to end", async (done) => {
+  await waitForExpect(() => {
     expect(server.listening).toEqual(true);
   });
 
@@ -37,7 +37,10 @@ test("end to end", async done => {
   });
   const page = await browser.newPage();
 
-  await page.goto("http://localhost:" + process.env.PORT);
+  const response = await page.goto("http://localhost:" + process.env.PORT);
+  const text = await response.text();
+  // For debugging...
+  console.log("Page contents: ", text);
 
   await page.waitForSelector(".login-form");
 
