@@ -1,8 +1,7 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { ProfileView } from "./ProfileView";
-import waitForExpect from "wait-for-expect";
 
 describe("<ProfileView />", () => {
   it("should render and submit changes", () => {
@@ -54,7 +53,7 @@ describe("<ProfileView />", () => {
     expect(savedUser).toMatchObject({ name: newName, email: newEmail });
   });
 
-  it("should validate and catch errors", () => {
+  it("should validate and catch errors", async () => {
     const saveUser = () => {};
 
     const user = { name: "Test", email: "notavalidemailaddress" };
@@ -68,7 +67,7 @@ describe("<ProfileView />", () => {
     fireEvent.click(saveButton);
 
     // <UserForm /> contains validation and we want to make sure it bubbles up
-    waitForExpect(() => {
+    await waitFor(() => {
       expect(
         view.getByText("You must enter a valid email address.")
       ).toBeInTheDocument();

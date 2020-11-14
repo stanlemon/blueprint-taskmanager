@@ -1,7 +1,6 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import waitForExpect from "wait-for-expect";
 import { CreateTaskForm } from "./CreateTaskForm";
 
 describe("<CreateTaskForm />", () => {
@@ -60,7 +59,7 @@ describe("<CreateTaskForm />", () => {
     expect(lastSavedTask).toEqual(task);
 
     // Upon a successful save, the fields we've filled out should be blank
-    waitForExpect(() => {
+    waitFor(() => {
       expect(view.getByLabelText("Name").value).toBe("");
       expect(view.getByLabelText("Description").value).toBe("");
     });

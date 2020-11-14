@@ -1,8 +1,7 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { VerifyEmailView, VerifyEmailViewContainer } from "./VerifyEmailView";
-import waitForExpect from "wait-for-expect";
 import { ROUTE_LOGIN } from "./Routes";
 import { getCurrentPathname } from "../lib/Navigation";
 
@@ -43,7 +42,7 @@ describe("<VerifyEmailView />", () => {
     );
   });
 
-  it("should call verify", () => {
+  it("should call verify", async () => {
     let isVerified = false;
     const response = { success: true, message: "Verified!" };
     const verify = () => {
@@ -54,7 +53,7 @@ describe("<VerifyEmailView />", () => {
 
     const view = render(<VerifyEmailViewContainer verify={verify} />);
 
-    waitForExpect(() => {
+    await waitFor(() => {
       expect(isVerified).toBe(true);
     });
 
