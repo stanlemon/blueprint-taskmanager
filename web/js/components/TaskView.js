@@ -10,6 +10,7 @@ import { DATE_FORMAT_LONG } from "../lib/Utils";
 import { connect } from "react-redux";
 import { getRouteParam, navigateTo } from "../lib/Navigation";
 import { ROUTE_ROOT, ROUTE_TASK_VIEW } from "./Routes";
+import { Button } from "./elements/Button";
 
 export function TaskView({ loaded, task }) {
   if (!loaded) {
@@ -22,9 +23,7 @@ export function TaskView({ loaded, task }) {
     return (
       <div>
         <Error message="Task does not exist." />
-        <button className="button" onClick={handleReturnToList}>
-          Go back to list
-        </button>
+        <Button onClick={handleReturnToList}>Go back to task list</Button>
       </div>
     );
   }
