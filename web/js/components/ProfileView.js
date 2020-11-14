@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { saveUser } from "../actions";
 import { validate, UserForm, UserPropTypes } from "./UserForm";
-import { Container, Button } from "./elements";
+import { Container, Button, Notification } from "./elements";
 
 export class ProfileView extends React.Component {
   notificationTimeout;
@@ -79,7 +79,7 @@ export class ProfileView extends React.Component {
         <h1 className="title">Profile</h1>
         <hr />
         {this.state.message && (
-          <div className="notification is-success">{this.state.message}</div>
+          <Notification is="success">{this.state.message}</Notification>
         )}
         <UserForm
           {...this.state.data}

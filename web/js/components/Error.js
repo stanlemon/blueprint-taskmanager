@@ -1,10 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Notification } from "./elements/Notification";
 
 export default function Error(props) {
   const { message } = props;
 
-  return <div className="error notification is-danger">{message}</div>;
+  return (
+    <Notification is="danger" className="error">
+      {message}
+    </Notification>
+  );
 }
 
 Error.propTypes = {
