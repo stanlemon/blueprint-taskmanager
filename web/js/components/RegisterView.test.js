@@ -1,6 +1,6 @@
 import React from "react";
-import { mount, configure } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import { fireEvent, render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { RegisterView } from "./RegisterView";
 import { history } from "../lib/Navigation";
 import {
@@ -9,200 +9,108 @@ import {
   ROUTE_TERMS_OF_SERVICE,
 } from "./Routes";
 
-configure({ adapter: new Adapter() });
-
 describe("<RegisterView />", () => {
   it("should render a register screen with empty fields", () => {
-    const view = mount(
-      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
-    );
+    render(<RegisterView registerUser={() => {}} clearErrors={() => {}} />);
 
-    const name = view.find('input[name="name"]');
-
-    expect(name.props().value).toEqual("");
-
-    const email = view.find('input[name="email"]');
-
-    expect(email.props().value).toEqual("");
-
-    const password = view.find('input[name="password"]');
-
-    expect(password.props().value).toEqual("");
+    expect(screen.getByLabelText("Name")).toHaveValue("");
+    expect(screen.getByLabelText("Email")).toHaveValue("");
+    expect(screen.getByLabelText("Password")).toHaveValue("");
   });
 
   it("should render errors when submitted with empty fields", () => {
-    const view = mount(
-      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
-    );
+    render(<RegisterView registerUser={() => {}} clearErrors={() => {}} />);
 
-    view.find("form").simulate("submit");
+    fireEvent.click(screen.getByRole("button", { name: "Register" }));
 
-    expect(view.find(".error").length).toBe(3);
+    expect(screen.getByText("You must enter your name.")).toBeInTheDocument();
+    expect(screen.getByText("You must enter your email.")).toBeInTheDocument();
+    expect(
+      screen.getByText("You must enter your password.")
+    ).toBeInTheDocument();
+  });
 
-    // Within a node with an error, the error messages
-    const errors = view.find(".error");
+  it("should render an error when no name is supplied", () => {
+    render(<RegisterView registerUser={() => {}} clearErrors={() => {}} />);
 
-    expect(errors.at(0).text()).toBe("You must enter your name.");
-    expect(errors.at(1).text()).toBe("You must enter your email.");
-    expect(errors.at(2).text()).toBe("You must enter your password.");
+    fireEvent.click(screen.getByRole("button", { name: "Register" }));
+
+    expect(screen.getByText("You must enter your name.")).toBeInTheDocument();
   });
 
   it("should render an error when an invalid email is entered", () => {
-    const view = mount(
-      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
-    );
+    render(<RegisterView registerUser={() => {}} clearErrors={() => {}} />);
 
-    const name = view.find('input[name="name"]');
-    name.simulate("change", {
-      target: { name: "name", value: "Name" },
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: {
+        value: "Not a valid email address",
+      },
     });
 
-    const email = view.find('input[name="email"]');
-    email.simulate("change", {
-      target: { name: "email", value: "Not a valid email address" },
-    });
+    fireEvent.click(screen.getByRole("button", { name: "Register" }));
 
-    const password = view.find('input[name="password"]');
-    password.simulate("change", {
-      target: { name: "password", value: "p@$$w0rd!" },
-    });
-
-    const repeatPassword = view.find('input[name="repeat_password"]');
-    repeatPassword.simulate("change", {
-      target: { name: "repeat_password", value: "p@$$w0rd!" },
-    });
-
-    view.find("form").simulate("submit");
-
-    expect(view.find(".error").length).toBe(1);
-
-    // Within a node with an error, the error messages
-    const errors = view.find(".error");
-
-    expect(errors.at(0).text()).toBe("You must enter a valid email address.");
+    expect(
+      screen.getByText("You must enter a valid email address.")
+    ).toBeInTheDocument();
   });
 
   it("should render an error when a password is too short", () => {
-    const view = mount(
-      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
-    );
+    render(<RegisterView registerUser={() => {}} clearErrors={() => {}} />);
 
-    const name = view.find('input[name="name"]');
-    name.simulate("change", {
-      target: { name: "name", value: "Name" },
+    fireEvent.change(screen.getByLabelText("Password"), {
+      target: {
+        value: "short",
+      },
     });
 
-    const email = view.find('input[name="email"]');
-    email.simulate("change", {
-      target: { name: "email", value: "foo@bar.com" },
-    });
+    fireEvent.click(screen.getByRole("button", { name: "Register" }));
 
-    const password = view.find('input[name="password"]');
-    password.simulate("change", {
-      target: { name: "password", value: "short" },
-    });
-
-    const repeatPassword = view.find('input[name="repeat_password"]');
-    repeatPassword.simulate("change", {
-      target: { name: "repeat_password", value: "short" },
-    });
-
-    view.find("form").simulate("submit");
-
-    expect(view.find(".error").length).toBe(1);
-
-    // Within a node with an error, the error messages
-    const errors = view.find(".error");
-
-    expect(errors.at(0).text()).toBe(
-      "Your password must be between 8 and 64 characters in length."
-    );
+    expect(
+      screen.getByText(
+        "Your password must be between 8 and 64 characters in length."
+      )
+    ).toBeInTheDocument();
   });
 
   it("should render an error when a password is too long", () => {
-    const view = mount(
-      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
-    );
+    render(<RegisterView registerUser={() => {}} clearErrors={() => {}} />);
 
-    const name = view.find('input[name="name"]');
-    name.simulate("change", {
-      target: { name: "name", value: "Name" },
-    });
-
-    const email = view.find('input[name="email"]');
-    email.simulate("change", {
-      target: { name: "email", value: "foo@bar.com" },
-    });
-
-    const password = view.find('input[name="password"]');
-    password.simulate("change", {
+    fireEvent.change(screen.getByLabelText("Password"), {
       target: {
-        name: "password",
         value:
           "superduperreallyreallyreallylongpasswordlikewaytoolongofapasswordofranysaneperson",
       },
     });
 
-    const repeatPassword = view.find('input[name="repeat_password"]');
-    repeatPassword.simulate("change", {
-      target: {
-        name: "repeat_password",
-        value:
-          "superduperreallyreallyreallylongpasswordlikewaytoolongofapasswordofranysaneperson",
-      },
-    });
+    fireEvent.click(screen.getByRole("button", { name: "Register" }));
 
-    view.find("form").simulate("submit");
-
-    expect(view.find(".error").length).toBe(1);
-
-    // Within a node with an error, the error messages
-    const errors = view.find(".error");
-
-    expect(errors.at(0).text()).toBe(
-      "Your password must be between 8 and 64 characters in length."
-    );
+    expect(
+      screen.getByText(
+        "Your password must be between 8 and 64 characters in length."
+      )
+    ).toBeInTheDocument();
   });
 
   it("should render an error when a password is not repeated correctly", () => {
-    const view = mount(
-      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
-    );
+    render(<RegisterView registerUser={() => {}} clearErrors={() => {}} />);
 
-    const name = view.find('input[name="name"]');
-    name.simulate("change", {
-      target: { name: "name", value: "Name" },
-    });
-
-    const email = view.find('input[name="email"]');
-    email.simulate("change", {
-      target: { name: "email", value: "foo@bar.com" },
-    });
-
-    const password = view.find('input[name="password"]');
-    password.simulate("change", {
+    fireEvent.change(screen.getByLabelText("Password"), {
       target: {
-        name: "password",
-        value: "testpassword1",
+        value: "OnePassword123",
       },
     });
 
-    const repeatPassword = view.find('input[name="repeat_password"]');
-    repeatPassword.simulate("change", {
+    fireEvent.change(screen.getByLabelText("Repeat Password"), {
       target: {
-        name: "repeat_password",
-        value: "testpassword123",
+        value: "TwoPassword456",
       },
     });
 
-    view.find("form").simulate("submit");
+    fireEvent.click(screen.getByRole("button", { name: "Register" }));
 
-    expect(view.find(".error").length).toBe(1);
-
-    // Within a node with an error, the error messages
-    const errors = view.find(".error");
-
-    expect(errors.at(0).text()).toBe("Your password does not match.");
+    expect(
+      screen.getByText("Your password does not match.")
+    ).toBeInTheDocument();
   });
 
   it("should submit a valid user", () => {
@@ -217,39 +125,33 @@ describe("<RegisterView />", () => {
     const expectedEmail = "stanlemon@users.noreply.github.com";
     const expectedPassword = "p@$$w0rd!";
 
-    const view = mount(
-      <RegisterView registerUser={registerUser} clearErrors={() => {}} />
-    );
+    render(<RegisterView registerUser={registerUser} clearErrors={() => {}} />);
 
-    const nameInput = view.find('input[name="name"]');
-    nameInput.simulate("change", {
-      target: { name: "name", value: expectedName },
-    });
-
-    const emailInput = view.find('input[name="email"]');
-    emailInput.simulate("change", {
-      target: { name: "email", value: expectedEmail },
-    });
-
-    const passwordInput = view.find('input[name="password"]');
-    passwordInput.simulate("change", {
+    fireEvent.change(screen.getByLabelText("Name"), {
       target: {
-        name: "password",
+        value: expectedName,
+      },
+    });
+
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: {
+        value: expectedEmail,
+      },
+    });
+
+    fireEvent.change(screen.getByLabelText("Password"), {
+      target: {
         value: expectedPassword,
       },
     });
 
-    const repeatPasswordInput = view.find('input[name="repeat_password"]');
-    repeatPasswordInput.simulate("change", {
+    fireEvent.change(screen.getByLabelText("Repeat Password"), {
       target: {
-        name: "repeat_password",
         value: expectedPassword,
       },
     });
 
-    view.find("form").simulate("submit");
-
-    expect(view.find(".error").length).toBe(0);
+    fireEvent.click(screen.getByRole("button", { name: "Register" }));
 
     expect(name).toBe(expectedName);
     expect(email).toBe(expectedEmail);
@@ -257,46 +159,25 @@ describe("<RegisterView />", () => {
   });
 
   it("clicking the button to return to the login screen should trigger navigateTo", () => {
-    const view = mount(
-      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
-    );
+    render(<RegisterView registerUser={() => {}} clearErrors={() => {}} />);
 
-    // Probably need a better way to identify this button
-    const button = view.findWhere(
-      (n) => n.type() === "a" && n.text() === "Return to Login"
-    );
-
-    button.simulate("click");
+    fireEvent.click(screen.getByText("Return to Login"));
 
     expect(history.location.pathname).toBe(ROUTE_LOGIN);
   });
 
   it("clicking the privacy policy navigates there", () => {
-    const view = mount(
-      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
-    );
+    render(<RegisterView registerUser={() => {}} clearErrors={() => {}} />);
 
-    // Probably need a better way to identify this button
-    const button = view.findWhere(
-      (n) => n.type() === "a" && n.text() === "Privacy Policy"
-    );
-
-    button.simulate("click");
+    fireEvent.click(screen.getByText("Privacy Policy"));
 
     expect(history.location.pathname).toBe(ROUTE_PRIVACY_POLICY);
   });
 
   it("clicking the terms of service navigates there", () => {
-    const view = mount(
-      <RegisterView registerUser={() => {}} clearErrors={() => {}} />
-    );
+    render(<RegisterView registerUser={() => {}} clearErrors={() => {}} />);
 
-    // Probably need a better way to identify this button
-    const button = view.findWhere(
-      (n) => n.type() === "a" && n.text() === "Terms of Service"
-    );
-
-    button.simulate("click");
+    fireEvent.click(screen.getByText("Terms of Service"));
 
     expect(history.location.pathname).toBe(ROUTE_TERMS_OF_SERVICE);
   });
