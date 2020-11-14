@@ -13,7 +13,9 @@ export function Button(_props) {
     _props.className
   );
   const { children } = _props;
-  const style = Object.assign(_props.style || {}, { minWidth: 110 });
+  const style = Object.assign(_props.style || {}, {
+    minWidth: _props.minWidth,
+  });
   const props = omit(_props, "className", "style", "children", "is", "size");
 
   return (
@@ -25,6 +27,8 @@ export function Button(_props) {
 
 Button.defaultProps = {
   is: "default",
+  size: "normal",
+  width: 110,
 };
 
 export default Button;

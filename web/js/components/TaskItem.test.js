@@ -1,18 +1,15 @@
-import { shallow, configure } from "enzyme";
+import React from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import subDays from "date-fns/subDays";
 import addDays from "date-fns/addDays";
 import isSameDay from "date-fns/isSameDay";
 import parseISO from "date-fns/parseISO";
-import Adapter from "enzyme-adapter-react-16";
 import { makeDateTime } from "../lib/Utils";
 import { history } from "../lib/Navigation";
-import React from "react";
 import { TaskItem } from "./TaskItem";
-import { Modal } from "./elements";
 import { makeRoute } from "../lib/Navigation";
 import { ROUTE_TASK_VIEW } from "./Routes";
-
-configure({ adapter: new Adapter() });
 
 describe("<TaskItem />", () => {
   const updateTask = () => {};
@@ -22,16 +19,22 @@ describe("<TaskItem />", () => {
     const task = {
       id: 1,
       name: "Foobar",
+      due: null,
       completed: null,
     };
-    const wrapper = shallow(
+
+    const { container } = render(
       <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
-    expect(wrapper.contains(task.name)).toBe(true);
 
-    expect(wrapper.hasClass("task-completed")).toBe(false);
-    expect(wrapper.hasClass("task-overdue")).toBe(false);
-    expect(wrapper.hasClass("task-due-soon")).toBe(false);
+    const taskName = screen.getByText(task.name);
+
+    expect(taskName).toBeInTheDocument();
+
+    // We shouldn't find these classes which communicate various states to the user about the given task
+    expect(container.querySelector(".task-completed")).toBe(null);
+    expect(container.querySelector(".task-overdue")).toBe(null);
+    expect(container.querySelector(".task-due-soon")).toBe(null);
   });
 
   it("should render a completed task with a checked checkbox", () => {
@@ -40,15 +43,19 @@ describe("<TaskItem />", () => {
       name: "Foobar",
       completed: makeDateTime(),
     };
-    const wrapper = shallow(
+
+    const { container } = render(
       <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
-    expect(wrapper.find("input").is("[checked=true]")).toBe(true);
+    const taskName = screen.getByText(task.name);
 
-    expect(wrapper.hasClass("task-completed")).toBe(true);
-    expect(wrapper.hasClass("task-overdue")).toBe(false);
-    expect(wrapper.hasClass("task-due-soon")).toBe(false);
+    expect(taskName).toBeInTheDocument();
+
+    // We shouldn't find these classes which communicate various states to the user about the given task
+    expect(container.querySelector(".task-completed")).not.toBe(null);
+    expect(container.querySelector(".task-overdue")).toBe(null);
+    expect(container.querySelector(".task-due-soon")).toBe(null);
   });
 
   it("should render an overdue task", () => {
@@ -58,15 +65,19 @@ describe("<TaskItem />", () => {
       completed: null,
       due: subDays(Date.now(), 2),
     };
-    const wrapper = shallow(
+
+    const { container } = render(
       <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
-    expect(wrapper.find("input").is("[checked=true]")).toBe(false);
+    const taskName = screen.getByText(task.name);
 
-    expect(wrapper.hasClass("task-completed")).toBe(false);
-    expect(wrapper.hasClass("task-overdue")).toBe(true);
-    expect(wrapper.hasClass("task-due-soon")).toBe(false);
+    expect(taskName).toBeInTheDocument();
+
+    // We shouldn't find these classes which communicate various states to the user about the given task
+    expect(container.querySelector(".task-completed")).toBe(null);
+    expect(container.querySelector(".task-overdue")).not.toBe(null);
+    expect(container.querySelector(".task-due-soon")).toBe(null);
   });
 
   it("should render an uncompleted task that is due soon", () => {
@@ -76,15 +87,19 @@ describe("<TaskItem />", () => {
       completed: null,
       due: addDays(Date.now(), 1),
     };
-    const wrapper = shallow(
+
+    const { container } = render(
       <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
-    expect(wrapper.find("input").is("[checked=true]")).toBe(false);
+    const taskName = screen.getByText(task.name);
 
-    expect(wrapper.hasClass("task-completed")).toBe(false);
-    expect(wrapper.hasClass("task-overdue")).toBe(false);
-    expect(wrapper.hasClass("task-due-soon")).toBe(true);
+    expect(taskName).toBeInTheDocument();
+
+    // We shouldn't find these classes which communicate various states to the user about the given task
+    expect(container.querySelector(".task-completed")).toBe(null);
+    expect(container.querySelector(".task-overdue")).toBe(null);
+    expect(container.querySelector(".task-due-soon")).not.toBe(null);
   });
 
   it("clicking on a task's name navigates to view it", () => {
@@ -95,11 +110,15 @@ describe("<TaskItem />", () => {
       due: addDays(Date.now(), 2),
     };
 
-    const wrapper = shallow(
+    render(
       <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
-    wrapper.find(".task-name").simulate("click");
+    const taskName = screen.getByText(task.name);
+
+    expect(taskName).toBeInTheDocument();
+
+    fireEvent.click(taskName);
 
     expect(history.location.pathname).toEqual(
       makeRoute(ROUTE_TASK_VIEW, { id: 1 })
@@ -116,7 +135,7 @@ describe("<TaskItem />", () => {
 
     let deletedTaskId;
 
-    const wrapper = shallow(
+    render(
       <TaskItem
         task={task}
         updateTask={updateTask}
@@ -124,15 +143,25 @@ describe("<TaskItem />", () => {
       />
     );
 
-    wrapper.find(".delete-task").simulate("click");
+    // This should be the button on the task row
+    fireEvent.click(screen.getByRole("button", { name: "Delete Task" }));
 
-    // Clicking delete task pops a modal confirming deletion
-    expect(wrapper.find(Modal).length).toBe(1);
+    // This text should appear in the modal
+    expect(
+      screen.getByText("Are you sure you want to delete this task?")
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
 
-    // Clicking the danger button (in the modal) will trigger deletion
-    wrapper.find("button.is-danger").simulate("click");
+    // This should be the delete button on the modal
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
 
+    // Confirm that we deleted the right task
     expect(deletedTaskId).toEqual(task.id);
+
+    // The modal should be closed
+    expect(
+      screen.queryByText("Are you sure you want to delete this task?")
+    ).toBe(null);
   });
 
   it("clicking on an incomplete task's checkbox marks it complete", () => {
@@ -145,7 +174,7 @@ describe("<TaskItem />", () => {
 
     let updatedTask;
 
-    const wrapper = shallow(
+    render(
       <TaskItem
         task={task}
         updateTask={(t) => {
@@ -155,16 +184,9 @@ describe("<TaskItem />", () => {
       />
     );
 
-    expect(wrapper.instance().props.task.completed).toBe(null);
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
 
-    expect(
-      wrapper.find('input[type="checkbox"].complete-task').props().checked
-    ).toBe(false);
-
-    // A click will fire the change event, with the checked property set to 'true'
-    wrapper
-      .find('input[type="checkbox"].complete-task')
-      .simulate("change", { target: { checked: true } });
+    fireEvent.click(screen.getByRole("checkbox")); // Do not check that its checked because this is handled by a prop
 
     expect(updatedTask.id).toEqual(task.id);
     expect(updatedTask.completed).not.toBe(null);
@@ -173,7 +195,7 @@ describe("<TaskItem />", () => {
     expect(isSameDay(parseISO(updatedTask.completed), Date.now())).toBe(true);
   });
 
-  it("clicking on a completed task's checkbox clears it's completed date", () => {
+  it("clicking on a completed task's checkbox clears it's completed date", async () => {
     const task = {
       id: 1234,
       name: "Foobar",
@@ -183,7 +205,7 @@ describe("<TaskItem />", () => {
 
     let updatedTask;
 
-    const wrapper = shallow(
+    render(
       <TaskItem
         task={task}
         updateTask={(t) => {
@@ -193,16 +215,11 @@ describe("<TaskItem />", () => {
       />
     );
 
-    expect(wrapper.instance().props.task.completed).not.toBe(null);
+    const checkbox = screen.getByRole("checkbox");
 
-    expect(
-      wrapper.find('input[type="checkbox"].complete-task').props().checked
-    ).toBe(true);
+    expect(checkbox).toBeChecked();
 
-    // A click will fire the change event, with the checked property set to 'true'
-    wrapper
-      .find('input[type="checkbox"].complete-task')
-      .simulate("change", { target: { checked: false } });
+    fireEvent.click(checkbox); // Do not check it's unchecked because that's handled by a prop not state
 
     expect(updatedTask.id).toEqual(task.id);
     expect(updatedTask.completed).toBe(null);
@@ -216,11 +233,11 @@ describe("<TaskItem />", () => {
       due: subDays(Date.now(), 7),
     };
 
-    const wrapper = shallow(
+    const { container } = render(
       <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
-    expect(wrapper.hasClass("task-overdue")).toBe(true);
+    expect(container.querySelector(".task-overdue")).not.toBe(null);
   });
 
   it("a task is due soon", () => {
@@ -231,12 +248,14 @@ describe("<TaskItem />", () => {
       due: addDays(Date.now(), 1),
     };
 
-    const wrapper1 = shallow(
+    const { container } = render(
       <TaskItem task={task1} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
-    expect(wrapper1.hasClass("task-due-soon")).toBe(true);
+    expect(container.querySelector(".task-due-soon")).not.toBe(null);
+  });
 
+  it("a task is due, but not soon", () => {
     // If the task is due far out, it's not due soon
     const task2 = {
       id: 2,
@@ -245,10 +264,10 @@ describe("<TaskItem />", () => {
       due: addDays(Date.now(), 3), // tasks due within 2 days are due 'soon'
     };
 
-    const wrapper2 = shallow(
+    const { container } = render(
       <TaskItem task={task2} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
-    expect(wrapper2.hasClass("task-due-soon")).toBe(false);
+    expect(container.querySelector(".task-due-soon")).toBe(null);
   });
 });

@@ -11,7 +11,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { makeDateTime } from "../lib/Utils";
 import { navigateTo } from "../lib/Navigation";
 import { updateTask, deleteTask } from "../actions";
-import { Columns, Column, Modal } from "./elements/";
+import { Columns, Column, Modal, Button } from "./elements/";
 
 export class TaskItem extends React.Component {
   state = {
@@ -27,7 +27,10 @@ export class TaskItem extends React.Component {
   };
 
   deleteTask = () => {
+    // Delete the task
     this.props.deleteTask(this.props.task.id);
+    // Close the modal
+    this.setState({ isConfirmingDelete: false });
   };
 
   viewTask = () => {
@@ -63,14 +66,7 @@ export class TaskItem extends React.Component {
 
     return (
       <Columns flex={true} className={rowClasses} gutters={false}>
-        <Column
-          role="button"
-          className="task-name"
-          onClick={this.viewTask}
-          style={{
-            outline: 0,
-          }}
-        >
+        <Column role="button" className="task-name" onClick={this.viewTask}>
           <div style={{ padding: 10 }}>
             {task.name}
             {task.due && (
@@ -84,35 +80,44 @@ export class TaskItem extends React.Component {
             )}
           </div>
         </Column>
-        <Column narrow className="has-text-right">
-          <input
-            type="checkbox"
-            className="complete-task"
-            checked={this.props.task.completed !== null}
-            onChange={this.completeTask}
-            style={{ marginRight: 20 }}
-          />
-          <a
-            className="btn btn-xs btn-danger delete-task"
-            onClick={this.confirmDeleteTask}
-            style={{ marginRight: 20 }}
-          >
-            <Icon icon={faTrash} />
-          </a>
+        <Column narrow>
+          <Columns style={{ marginRight: 5 }}>
+            <Column>
+              <input
+                type="checkbox"
+                className="checkbox complete-task"
+                checked={this.props.task.completed !== null}
+                onChange={this.completeTask}
+              />
+            </Column>
+            <Column>
+              <Button
+                className="delete-task"
+                is="danger"
+                size="small"
+                width="none"
+                onClick={this.confirmDeleteTask}
+              >
+                <Icon icon={faTrash} title="Delete Task" />
+              </Button>
+            </Column>
+          </Columns>
         </Column>
         {this.state.isConfirmingDelete && (
           <Modal isActive={true} onClose={this.cancelDeleteTask}>
             <p className="has-text-centered">
               Are you sure you want to delete this task?
             </p>
-            <div className="buttons is-centered">
-              <button className="button is-danger" onClick={this.deleteTask}>
-                Delete
-              </button>
-              <button className="button" onClick={this.cancelDeleteTask}>
-                Cancel
-              </button>
-            </div>
+            <Columns>
+              <Column className="has-text-right">
+                <Button is="danger" onClick={this.deleteTask}>
+                  Delete
+                </Button>
+              </Column>
+              <Column>
+                <Button onClick={this.cancelDeleteTask}>Cancel</Button>
+              </Column>
+            </Columns>
           </Modal>
         )}
       </Columns>
