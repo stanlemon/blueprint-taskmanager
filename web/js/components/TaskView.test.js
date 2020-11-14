@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "../lib/text-utils";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { TaskView } from "./TaskView";
 import { format, subDays } from "date-fns";
 import { DATE_FORMAT_LONG } from "../lib/Utils";

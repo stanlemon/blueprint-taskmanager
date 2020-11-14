@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { VerifyEmailView, VerifyEmailViewContainer } from "./VerifyEmailView";
 import waitForExpect from "wait-for-expect";
 import { ROUTE_LOGIN } from "./Routes";
