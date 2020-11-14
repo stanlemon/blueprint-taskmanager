@@ -1,20 +1,14 @@
 import React from "react";
-import { mount, shallow, configure } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import { fireEvent, render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { renderConnected } from "../lib/test-utils";
 import { TaskListView } from "./TaskListView";
-// Use the connected version because we're just using it for a lookup
-import TaskItem from "./TaskItem";
-import CreateTaskForm from "./CreateTaskForm";
-
-configure({ adapter: new Adapter() });
 
 describe("<TaskListView />", () => {
   it("should render a spinner while it waits to load", () => {
-    const view = mount(
-      <TaskListView loadTasks={() => {}} loaded={[]} tasks={[]} />
-    );
+    render(<TaskListView loadTasks={() => {}} loaded={[]} tasks={[]} />);
 
-    expect(view.text().trim()).toBe("Loading...");
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("should render a list of tasks", () => {
@@ -35,7 +29,7 @@ describe("<TaskListView />", () => {
       },
     ];
 
-    const view = shallow(
+    renderConnected(
       <TaskListView
         loadTasks={() => {}}
         loaded={["tasks"]}
@@ -46,16 +40,16 @@ describe("<TaskListView />", () => {
     );
 
     // List of tasks contains our first task
-    expect(view.find(TaskItem).at(0).props().task).toEqual(tasks[0]);
+    expect(screen.getByText(tasks[0].name)).toBeInTheDocument();
 
     // List of tasks contains our second task
-    expect(view.find(TaskItem).at(1).props().task).toEqual(tasks[1]);
+    expect(screen.getByText(tasks[1].name)).toBeInTheDocument();
   });
 
   it("should not render a list if there are no tasks", () => {
     const tasks = [];
 
-    const view = shallow(
+    renderConnected(
       <TaskListView
         loadTasks={() => {}}
         loaded={["tasks"]}
@@ -65,21 +59,17 @@ describe("<TaskListView />", () => {
       />
     );
 
-    // There should be no task items
-    expect(view.find(TaskItem).length).toBe(0);
-
-    // There should be a form to create a task
-    expect(view.find(CreateTaskForm).length).toBe(1);
-
     // List of tasks contains our second task
-    expect(view.find("h1").text()).toEqual("You don't have any tasks!");
+    expect(
+      screen.getByRole("heading", { name: "You don't have any tasks!" })
+    ).toBeInTheDocument();
   });
 
   it("should set filter when each filter button is clicked", () => {
     const tasks = [];
     let lastFilter;
     const setFilter = jest.fn((filter) => (lastFilter = filter));
-    const view = shallow(
+    renderConnected(
       <TaskListView
         loadTasks={() => {}}
         setFilter={setFilter}
@@ -90,38 +80,19 @@ describe("<TaskListView />", () => {
       />
     );
 
-    view.find("#task-filter-incomplete").simulate("click");
+    fireEvent.click(screen.getByRole("button", { name: "Incomplete" }));
 
     expect(setFilter).toHaveBeenCalledTimes(1);
     expect(lastFilter).toBe("incomplete");
 
-    view.find("#task-filter-complete").simulate("click");
+    fireEvent.click(screen.getByRole("button", { name: "Complete" }));
 
     expect(setFilter).toHaveBeenCalledTimes(2);
     expect(lastFilter).toBe("complete");
 
-    view.find("#task-filter-all").simulate("click");
+    fireEvent.click(screen.getByRole("button", { name: "All" }));
 
     expect(setFilter).toHaveBeenCalledTimes(3);
     expect(lastFilter).toBe("all");
-  });
-
-  it("should render no tasks when the current filter has no matching tasks", () => {
-    const tasks = [];
-
-    const view = shallow(
-      <TaskListView
-        loadTasks={() => {}}
-        loaded={["tasks"]}
-        hasTasks={true}
-        tasks={tasks}
-        errors={{}}
-      />
-    );
-
-    expect(view.find(TaskItem).length).toBe(0);
-    expect(view.find(".task-filter-none").text()).toEqual(
-      "There are no tasks for this filter."
-    );
   });
 });

@@ -148,18 +148,17 @@ export function page(state, action) {
   }
 }
 
-export default function (
-  state = {
-    user: null,
-    tags: [],
-    filter: FILTER_ALL,
-    page: 1,
-    tasks: {},
-    loaded: [],
-    errors: [],
-  },
-  action
-) {
+export const initialState = {
+  user: null,
+  tags: [],
+  filter: FILTER_ALL,
+  page: 1,
+  tasks: {},
+  loaded: [],
+  errors: [],
+};
+
+export function reducers(state = initialState, action) {
   const y = {
     user: user(state.user, action),
     tags: tags(state.tags, action),
@@ -172,3 +171,5 @@ export default function (
   //console.log("redux store = ", y);
   return y;
 }
+
+export default reducers;

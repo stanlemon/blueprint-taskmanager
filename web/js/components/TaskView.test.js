@@ -1,6 +1,7 @@
 import React from "react";
-import { render, fireEvent } from "../lib/text-utils";
+import { fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { renderConnected } from "../lib/test-utils";
 import { TaskView } from "./TaskView";
 import { format, subDays } from "date-fns";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
@@ -21,7 +22,7 @@ describe("<TaskView />", () => {
 
     history.replace("/view/2");
 
-    const view = render(<TaskView loaded={true} task={task} />);
+    const view = renderConnected(<TaskView loaded={true} task={task} />);
 
     expect(
       view.getByText(format(task.createdAt, DATE_FORMAT_LONG))
@@ -38,7 +39,7 @@ describe("<TaskView />", () => {
   it("should render an error for an unfound task", () => {
     history.replace("/view/3");
 
-    const view = render(<TaskView loaded={true} task={null} />);
+    const view = renderConnected(<TaskView loaded={true} task={null} />);
 
     expect(view.getByText("Task does not exist.")).toBeInTheDocument();
     expect(view.getByRole("button")).toBeInTheDocument();
@@ -49,7 +50,7 @@ describe("<TaskView />", () => {
   });
 
   it("should not render anything if tasks have not loaded", () => {
-    const view = render(<TaskView loaded={false} />);
+    const view = renderConnected(<TaskView loaded={false} />);
 
     expect(view.getByText("Loading...")).toBeInTheDocument();
   });
