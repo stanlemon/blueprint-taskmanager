@@ -1,11 +1,8 @@
 import React from "react";
-import { configure, mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { UpdateTaskForm } from "./UpdateTaskForm";
 import parseISO from "date-fns/parseISO";
-import waitForExpect from "wait-for-expect";
-
-configure({ adapter: new Adapter() });
 
 describe("<UpdateTaskForm />", () => {
   it("should render a form with an existing task and update it", () => {
@@ -25,54 +22,44 @@ describe("<UpdateTaskForm />", () => {
       tags: [],
     };
 
-    const view = mount(<UpdateTaskForm task={task} updateTask={updateTask} />);
+    render(<UpdateTaskForm task={task} updateTask={updateTask} />);
 
-    const name = view.find('input[name="name"]');
-
-    expect(name.props().value).toEqual(task.name);
-
-    const description = view.find('textarea[name="description"]');
-
-    expect(description.props().value).toEqual(task.description);
-
-    const due = view.find('input[name="due"]');
-
-    expect(due.props().value).toEqual("06/12/2018 7:08AM");
-
-    const completed = view.find('input[name="completed"]');
-
-    expect(completed.props().checked).toEqual(true);
-
-    const completedLabel = view.find('label[htmlFor="completed"]');
-
-    expect(completedLabel.text().trim()).toEqual(
-      "Completed on June 12th 2017, 7:08AM"
-    );
+    expect(screen.getByLabelText("Name")).toHaveValue(task.name);
+    expect(screen.getByLabelText("Due")).toHaveValue("06/12/2018 7:08AM");
+    expect(
+      screen.getByLabelText("Completed on June 12th 2017, 7:08AM")
+    ).toBeChecked();
+    expect(screen.getByLabelText("Description")).toHaveValue(task.description);
 
     // Update the task name
     const newName = "New Task Name";
-    name.simulate("change", {
-      target: { name: "name", value: newName },
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: {
+        value: newName,
+      },
     });
 
     // Update the task description
     const newDescription = "New Task Description";
-    description.simulate("change", {
-      target: { name: "description", value: newDescription },
+    fireEvent.change(screen.getByLabelText("Description"), {
+      target: {
+        value: newDescription,
+      },
     });
 
-    // Click the checkbox to toggle it
-    completed.simulate("change", {
-      target: { type: "checkbox", name: "completed", checked: false },
-    });
+    // Uncheck the checkbox
+    fireEvent.click(
+      screen.getByLabelText("Completed on June 12th 2017, 7:08AM")
+    );
 
-    view.update();
+    // Once the checkbox is flipped the label with the date should go away...
+    expect(screen.queryByLabelText("Completed on June 12th 2017, 7:08AM")).toBe(
+      null
+    );
+    // ...and just say completed
+    expect(screen.getByLabelText("Completed")).toBeInTheDocument();
 
-    expect(completed.props().checked).toEqual(true);
-
-    const form = view.find("form");
-
-    form.simulate("submit");
+    fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
     // When we submit we should have the original task, but with the new name and description fields
     expect(lastSavedTask).toEqual({
@@ -98,12 +85,12 @@ describe("<UpdateTaskForm />", () => {
       tags: [],
     };
 
-    const view = mount(<UpdateTaskForm task={task} updateTask={updateTask} />);
+    render(<UpdateTaskForm task={task} updateTask={updateTask} />);
 
-    view.find("button#save-task").simulate("click");
+    fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
-    waitForExpect(() => {
-      expect(view.find(".error").text()).toBe(response.errors.name);
+    waitFor(() => {
+      expect(screen.getByText(response.errors.name)).toBeInTheDocument();
     });
   });
 });
