@@ -14,9 +14,17 @@ export function Button(_props) {
   );
   const { children } = _props;
   const style = Object.assign(_props.style || {}, {
-    minWidth: _props.minWidth,
+    minWidth: _props.width,
   });
-  const props = omit(_props, "className", "style", "children", "is", "size");
+  const props = omit(
+    _props,
+    "className",
+    "style",
+    "children",
+    "is",
+    "size",
+    "width"
+  );
 
   return (
     <button className={classes} style={style} {...props}>
