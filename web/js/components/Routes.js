@@ -48,7 +48,7 @@ export default class Routes extends React.Component {
               <PrivacyPolicyView />
             </Route>
             <Route>
-              {/* Everything container herein requires an authenticated user */}
+              {/* Everything contained herein requires an authenticated user */}
               <Layout>
                 <Switch>
                   <Route exact path={ROUTE_ROOT}>
