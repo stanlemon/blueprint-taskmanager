@@ -3,8 +3,7 @@
 // that will start a full server in a production-like mode.
 
 const puppeteer = require("puppeteer");
-const waitForExpect = require("wait-for-expect");
-
+const { waitFor } = require("@testing-library/react");
 process.env.PORT = "19292";
 
 const { server } = require("./server.js");
@@ -21,7 +20,7 @@ async function waitForTextInSelector(page, selector, text) {
 }
 
 test("end to end", async (done) => {
-  await waitForExpect(() => {
+  await waitFor(() => {
     expect(server.listening).toEqual(true);
   });
 
