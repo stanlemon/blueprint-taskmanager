@@ -98,7 +98,7 @@ export class TaskListView extends React.Component {
 
         {tasks.length === 0 && (
           <div
-            className="has-text-centered task-filter-none"
+            className="has-text-centered"
             style={{
               border: "1px solid #e3e3e3",
               borderRadius: 4,
