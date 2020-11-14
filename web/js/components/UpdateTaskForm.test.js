@@ -72,25 +72,12 @@ describe("<UpdateTaskForm />", () => {
     });
   });
 
-  it("should render errors when a task cannot be updated", () => {
-    const response = { errors: { name: "Unknown name error from backend" } };
-    const updateTask = () => Promise.resolve(response);
+  it("should render errors when a task cannot be updated", async () => {
+    const errors = { name: "Error on name field" };
+    const view = render(
+      <UpdateTaskForm task={{}} errors={errors} updateTask={() => {}} />
+    );
 
-    const task = {
-      id: 1,
-      name: "Name",
-      description: "A brief description",
-      due: parseISO("2018-06-12T07:08"),
-      completed: parseISO("2017-06-12T07:08"),
-      tags: [],
-    };
-
-    render(<UpdateTaskForm task={task} updateTask={updateTask} />);
-
-    fireEvent.click(screen.getByRole("button", { name: "Save" }));
-
-    waitFor(() => {
-      expect(screen.getByText(response.errors.name)).toBeInTheDocument();
-    });
+    expect(view.getByText(errors.name)).toBeInTheDocument();
   });
 });

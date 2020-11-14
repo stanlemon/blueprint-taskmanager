@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import { CreateTaskForm } from "./CreateTaskForm";
 
 describe("<CreateTaskForm />", () => {
-  it("should render an empty form with and submit a new task in it", () => {
+  it("should render an empty form with and submit a new task in it", async () => {
     let lastSavedTask = null;
 
     const createTask = (task) => {
@@ -59,7 +59,7 @@ describe("<CreateTaskForm />", () => {
     expect(lastSavedTask).toEqual(task);
 
     // Upon a successful save, the fields we've filled out should be blank
-    waitFor(() => {
+    await waitFor(() => {
       expect(view.getByLabelText("Name").value).toBe("");
       expect(view.getByLabelText("Description").value).toBe("");
     });

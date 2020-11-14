@@ -62,7 +62,7 @@ export default class TaskForm extends React.Component {
     this.tagsInputRef.current.input.current.input.current.blur();
 
     const result = await this.props.onSubmit(this.state.data);
-
+    console.log(result);
     // The onSubmit can also return a callback, but in that event we don't update state, but allow
     // the callback to provide state to update, if it wants
     if (isFunction(result)) {
