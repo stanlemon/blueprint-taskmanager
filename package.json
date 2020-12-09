@@ -108,7 +108,7 @@
     "redux-thunk": "^2.3.0",
     "serve-static": "^1.14.1",
     "shortid": "^2.2.16",
-    "uuid": "^8.3.1",
+    "uuid": "^8.3.2",
     "validator": "^13.5.1"
   },
   "devDependencies": {
