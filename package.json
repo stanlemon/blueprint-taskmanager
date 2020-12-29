@@ -19,7 +19,7 @@
     "prettier": "prettier --write \"{server.js,src/**/*.js,web/**/*.js,web/**/*.less}\"",
     "build": "npm run webpack:build",
     "webpack:build": "rm -rf ./dist/* && NODE_ENV=production webpack",
-    "webpack:dev": "NODE_ENV=development webpack-dev-server",
+    "webpack:dev": "NODE_ENV=development webpack serve",
     "test": "NODE_ENV=test jest --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test:coverage": "NODE_ENV=test jest --coverage --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test:watch": "NODE_ENV=test jest --watchAll --testRegex \"(web/js|src)/.*\\.test.js$\"",
@@ -143,9 +143,9 @@
     "style-loader": "^2.0.0",
     "supertest": "^6.0.1",
     "url-loader": "^4.1.1",
-    "webpack": "^4.44.2 <5.0.0",
-    "webpack-cli": "^3.3.12 <4.0.0",
-    "webpack-dev-server": "^3.11.0 <4.0.0"
+    "webpack": "^5.11.1",
+    "webpack-cli": "^4.3.0",
+    "webpack-dev-server": "^3.11.1"
   },
   "alias": {
     "react-dom": "@hot-loader/react-dom"
