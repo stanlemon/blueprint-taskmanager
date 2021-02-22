@@ -88,7 +88,7 @@
     "jsonwebtoken": "^8.5.1",
     "killable": "^1.0.1",
     "knex": "^0.21.17",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
