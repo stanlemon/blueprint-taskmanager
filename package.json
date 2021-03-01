@@ -126,7 +126,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "concurrently": "^6.0.0",
     "css-loader": "^5.1.0",
-    "eslint": "^7.20.0",
+    "eslint": "^7.21.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-jest": "^24.1.5",
     "eslint-plugin-prettier": "^3.3.1",
