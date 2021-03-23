@@ -16,9 +16,7 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:jest/recommended",
-    "plugin:prettier/recommended",
-    "prettier",
-    "prettier/react"
+    "prettier"
   ],
   "rules": {
     // Requires strict equality
