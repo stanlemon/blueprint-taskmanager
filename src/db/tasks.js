@@ -47,7 +47,7 @@ async function countTasks(userId, filter) {
   return parseInt(total);
 }
 
-async function getTasks(userId, filter = "all", page = 0, size = 10) {
+async function getTasks(userId, filter = "all", page = 1, size = 10) {
   // Postgres and Sqlite do this differently
   const orderByRaw =
     knex.client.config.client === "pg"
