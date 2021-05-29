@@ -39,6 +39,7 @@
   "jest": {
     "verbose": true,
     "automock": false,
+    "testEnvironment": "jsdom",
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
     },
