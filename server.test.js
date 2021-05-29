@@ -19,6 +19,11 @@ async function waitForTextInSelector(page, selector, text) {
   );
 }
 
+// eslint-disable-next-line jest/no-done-callback
+afterEach(function (done) {
+  server.close(done);
+});
+
 test("end to end", async () => {
   await waitFor(() => {
     expect(server.listening).toEqual(true);
@@ -143,9 +148,4 @@ test("end to end", async () => {
 
   console.log("Close the browser");
   await browser.close();
-
-  console.log("Kill server");
-  server.kill(() => {
-    console.log("Killing server");
-  });
 }, 60000);
