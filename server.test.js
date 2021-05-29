@@ -19,7 +19,7 @@ async function waitForTextInSelector(page, selector, text) {
   );
 }
 
-test("end to end", async (done) => {
+test("end to end", async () => {
   await waitFor(() => {
     expect(server.listening).toEqual(true);
   });
@@ -147,10 +147,5 @@ test("end to end", async (done) => {
   console.log("Kill server");
   server.kill(() => {
     console.log("Killing server");
-
-    // Take a brief pause before calling it quits
-    setTimeout(() => {
-      done();
-    }, 1000);
   });
 }, 60000);
