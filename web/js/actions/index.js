@@ -135,7 +135,7 @@ export function loadTasks(filter, page) {
 
 export function getTask(id) {
   return (dispatch, getState, { taskService }) => {
-    const { tasks } = getState()?.tasks;
+    const tasks = getState()?.tasks?.tasks;
 
     // If we have the specific task cached, return it rather than hit the api
     if (isArray(tasks)) {
