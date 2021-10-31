@@ -6,7 +6,7 @@ import addDays from "date-fns/addDays";
 import isSameDay from "date-fns/isSameDay";
 import parseISO from "date-fns/parseISO";
 import { makeDateTime } from "../lib/Utils";
-import { navigateTo, getCurrentPathname } from "../lib/Navigation";
+import { getCurrentPathname } from "../lib/Navigation";
 import { TaskItem } from "./TaskItem";
 import { ROUTE_TASK_VIEW } from "./Routes";
 
