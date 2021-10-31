@@ -71,8 +71,6 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@hapi/joi": "^17.1.1",
-    "@hot-loader/react-dom": "^17.0.1",
-    "@loadable/component": "^5.15.0",
     "@sendgrid/mail": "^7.5.0",
     "bcryptjs": "^2.4.3",
     "bulma": "^0.9.3",
@@ -99,7 +97,6 @@
     "react-datepicker": "^4.3.0",
     "react-dom": "^17.0.2",
     "react-fontawesome": "^1.7.1",
-    "react-hot-loader": "^4.13.0",
     "react-redux": "^7.2.6",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.3.0",
@@ -146,8 +143,5 @@
     "webpack": "^5.61.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.4.0"
-  },
-  "alias": {
-    "react-dom": "@hot-loader/react-dom"
   }
 }

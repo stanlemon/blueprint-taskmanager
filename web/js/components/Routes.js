@@ -1,11 +1,15 @@
 import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
-import loadable from "@loadable/component";
 import SessionWatcher from "./SessionWatcher";
 import Layout from "./Layout";
 import LoginView from "./LoginView";
 import TaskListView from "./TaskListView";
 import TaskView from "./TaskView";
+import RegisterView from "./RegisterView";
+import VerifyEmailView from "./VerifyEmailView";
+import TermsOfServiceView from "./TermsOfServiceView";
+import PrivacyPolicyView from "./PrivacyPolicyView";
+import ProfileView from "./ProfileView";
 import { history } from "../lib/Navigation";
 
 // Routes should be declared here, then used in the <Route /> component.
@@ -19,12 +23,6 @@ export const ROUTE_VERIFY = "/verify/:token";
 export const ROUTE_ROOT = "/";
 export const ROUTE_TASK_VIEW = "/view/:id";
 export const ROUTE_PROFILE = "/profile";
-
-const RegisterView = loadable(() => import("./RegisterView"));
-const VerifyEmailView = loadable(() => import("./VerifyEmailView"));
-const TermsOfServiceView = loadable(() => import("./TermsOfServiceView"));
-const PrivacyPolicyView = loadable(() => import("./PrivacyPolicyView"));
-const ProfileView = loadable(() => import("./ProfileView"));
 
 export default class Routes extends React.Component {
   render() {

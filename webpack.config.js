@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: process.env.NODE_ENV === "production" ? "production" : "development",
-  entry: ["./web/js/index.js", "react-hot-loader/patch"],
+  entry: ["./web/js/index.js"],
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
@@ -45,9 +45,6 @@ module.exports = {
   resolve: {
     // Enable webpack to find files without these extensions
     extensions: [".tsx", ".ts", ".jsx", ".js"],
-    alias: {
-      "react-dom": "@hot-loader/react-dom",
-    },
   },
   plugins: [
     new HtmlWebpackPlugin({
