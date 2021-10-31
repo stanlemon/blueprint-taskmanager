@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { SessionWatcher } from "./SessionWatcher";
-import { history } from "../lib/Navigation";
+import { navigateTo, getCurrentPathname } from "../lib/Navigation";
 import { ROUTE_LOGIN, ROUTE_ROOT } from "./Routes";
 
 function Component(props = {}) {
@@ -15,7 +15,7 @@ function Component(props = {}) {
 
 describe("<SessionWatcher />", () => {
   it("renders children", () => {
-    history.replace("/");
+    navigateTo("/");
 
     // Initial state user is null, unauthed
     render(<Component />);
@@ -30,17 +30,17 @@ describe("<SessionWatcher />", () => {
     const { rerender } = render(<Component loaded={["user"]} />);
 
     // Navigate to root
-    history.push("/");
+    navigateTo("/");
 
     // Rerender with null user
     rerender(<Component loaded={["user"]} user={null} />);
 
     // Unauthed user is redirected to the login screen
-    expect(history.location.pathname).toEqual(ROUTE_LOGIN);
+    expect(getCurrentPathname()).toEqual(ROUTE_LOGIN);
   });
 
   it("unauthenticated user is on an authenticated page", () => {
-    history.replace("/");
+    navigateTo("/");
 
     // Initial state user is null, unauthed
     const { rerender } = render(<Component loaded={[]} />);
@@ -48,18 +48,18 @@ describe("<SessionWatcher />", () => {
     rerender(<Component loaded={[]} user={null} />);
 
     // Unauthed user is redirected to the login screen
-    expect(history.location.pathname).toEqual(ROUTE_LOGIN);
+    expect(getCurrentPathname()).toEqual(ROUTE_LOGIN);
   });
 
   it("authenticated user is on an unauthenticated page", () => {
-    history.replace("/login");
+    navigateTo("/login");
 
     const { rerender } = render(<Component />);
 
     rerender(<Component loaded={["user"]} user={{}} />);
 
     // Unauthed user is redirected to the login screen
-    expect(history.location.pathname).toEqual(ROUTE_ROOT);
+    expect(getCurrentPathname()).toEqual(ROUTE_ROOT);
   });
 
   it("user was authenticated and logged out", () => {
@@ -69,19 +69,19 @@ describe("<SessionWatcher />", () => {
     rerender(<Component loaded={["user"]} user={null} />);
 
     // Unauthed user is redirected to the login screen
-    expect(history.location.pathname).toEqual(ROUTE_LOGIN);
+    expect(getCurrentPathname()).toEqual(ROUTE_LOGIN);
   });
 
   it("user is authenticated on an authenticated page - noop", () => {
-    history.replace("/page1");
+    navigateTo("/page1");
 
     const { rerender } = render(<Component loaded={["user"]} user={{}} />);
 
-    history.replace("/page2");
+    navigateTo("/page2");
 
     rerender(<Component loaded={["user"]} user={{}} />);
 
     // navigateTo() should not be called, so the location should not change
-    expect(history.location.pathname).toEqual("/page2");
+    expect(getCurrentPathname()).toEqual("/page2");
   });
 });

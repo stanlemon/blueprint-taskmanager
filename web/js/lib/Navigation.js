@@ -1,32 +1,20 @@
-import { createBrowserHistory } from "history";
-import { matchPath, generatePath } from "react-router";
+const makeMatcher = require("wouter/matcher").default;
 
-// This file contains function that obscure react-router from view during
+// This file contains function that obscure route navigation during
 // development so that there are no hard dependencies outside of this file
 // and the overall <Route /> component.
-
-export const history = createBrowserHistory();
-
 export function navigateTo(route) {
-  history.push(route);
+  window.history.pushState({}, window.document.title, route);
 }
 
 export function getCurrentPathname() {
-  return history.location.pathname;
+  return window.location.pathname;
 }
 
 export function getRouteParam(route, param) {
-  const path = matchPath(history.location.pathname, route);
-
-  if (path && path.params && path.params[param] !== undefined) {
-    return path.params[param];
-  }
-
-  return undefined;
+  const matcher = makeMatcher();
+  const [, params] = matcher(route, window.location.pathname);
+  return params?.[param];
 }
 
-export function makeRoute(route, params) {
-  return generatePath(route, params);
-}
-
-export default navigateTo;
+export const history = window.history;

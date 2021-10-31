@@ -5,7 +5,7 @@ import { renderConnected } from "../lib/test-utils";
 import { TaskView } from "./TaskView";
 import { format, subDays } from "date-fns";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
-import { history } from "../lib/Navigation";
+import { navigateTo, getCurrentPathname } from "../lib/Navigation";
 import { ROUTE_ROOT } from "./Routes";
 
 describe("<TaskView />", () => {
@@ -20,7 +20,7 @@ describe("<TaskView />", () => {
       updatedAt: Date.now(),
     };
 
-    history.replace("/view/2");
+    navigateTo("/view/2");
 
     const view = renderConnected(<TaskView loaded={true} task={task} />);
 
@@ -37,7 +37,7 @@ describe("<TaskView />", () => {
   });
 
   it("should render an error for an unfound task", () => {
-    history.replace("/view/3");
+    navigateTo("/view/3");
 
     const view = renderConnected(<TaskView loaded={true} task={null} />);
 
@@ -46,7 +46,7 @@ describe("<TaskView />", () => {
 
     fireEvent.click(view.getByRole("button"));
 
-    expect(history.location.pathname).toBe(ROUTE_ROOT);
+    expect(getCurrentPathname()).toBe(ROUTE_ROOT);
   });
 
   it("should not render anything if tasks have not loaded", () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { history } from "../lib/Navigation";
+import { getCurrentPathname } from "../lib/Navigation";
 import { LoginView } from "./LoginView";
 import { ROUTE_REGISTER } from "./Routes";
 
@@ -69,7 +69,7 @@ describe("<LoginView />", () => {
 
     fireEvent.click(screen.getByText("Create Account"));
 
-    expect(history.location.pathname).toBe(ROUTE_REGISTER);
+    expect(getCurrentPathname()).toBe(ROUTE_REGISTER);
   });
 
   it("errors from actions render", () => {
