@@ -139,7 +139,7 @@ export function getTask(id) {
 
     // If we have the specific task cached, return it rather than hit the api
     if (isArray(tasks)) {
-      const task = tasks?.filter((t) => t.id !== id)[0];
+      const task = tasks?.filter((t) => t.id === id)[0];
 
       if (task) {
         dispatch({ type: GET_TASK_SUCCESS, task: task });

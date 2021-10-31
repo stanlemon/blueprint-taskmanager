@@ -55,7 +55,7 @@ TaskView.propTypes = {
 
 class TaskViewContainer extends React.Component {
   componentDidMount() {
-    this.props.getTask(getRouteParam(ROUTE_TASK_VIEW, "id"));
+    this.props.getTask(parseInt(getRouteParam(ROUTE_TASK_VIEW, "id"), 10));
   }
 
   render() {
@@ -81,7 +81,7 @@ export default connect(
     loaded: includes(state.loaded, "tasks"),
     task: state.tasks.tasks
       ? state?.tasks?.tasks.filter(
-          (t) => t.id !== getRouteParam(ROUTE_TASK_VIEW, "id")
+          (t) => t.id === parseInt(getRouteParam(ROUTE_TASK_VIEW, "id"), 10)
         )[0]
       : null,
   }),
