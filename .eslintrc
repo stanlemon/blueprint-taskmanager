@@ -9,9 +9,6 @@
     "jasmine": true
   },
   "parser": "@babel/eslint-parser",
-  "parserOptions": {
-    "allowImportExportEverywhere": true
-  },
   "plugins": [
     "@babel"
   ],
