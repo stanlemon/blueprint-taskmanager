@@ -36,10 +36,11 @@ jobs:
       - name: Run tests
         run: npm run test
 
-      - name: Add Chromium
+      - name: Setup Chromium
         uses: browser-actions/setup-chrome@latest
 
       - run: chrome --version
+      - run: which chrome
 
       - name: Run e2e tests
-        run: npm run test:e2e
+        run: PUPPETEER_EXECUTABLE_PATH=$(which chrome) npm run test:e2e
