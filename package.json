@@ -133,7 +133,7 @@
     "less-loader": "^10.2.0",
     "nodemon": "^2.0.14",
     "prettier": "^2.4.1",
-    "puppeteer-core": "^11.0.0",
+    "puppeteer": "^11.0.0",
     "sass": "^1.43.4",
     "sqlite3": "^4.2.0",
     "style-loader": "^3.3.1",
