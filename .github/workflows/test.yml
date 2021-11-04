@@ -36,8 +36,6 @@ jobs:
       - name: Run tests
         run: npm run test
 
-      - name: Install puppeteer with Chrome
-        run: npm install puppeteer
-
       - name: Run e2e tests
+        uses: browser-actions/setup-chrome@latest
         run: npm run test:e2e
