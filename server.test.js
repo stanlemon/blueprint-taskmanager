@@ -39,7 +39,7 @@ test("end to end", async () => {
   const browser = await puppeteer.launch({
     // Must be wide enough so that the logout button is visible.
     defaultViewport: { width: 1024, height: 600 },
-    //headless: false,
+    headless: false,
     //devtools: true,
     args: ["--disable-dev-shm-usage", "--no-sandbox"],
   });
@@ -47,8 +47,6 @@ test("end to end", async () => {
 
   const response = await page.goto("http://localhost:" + process.env.PORT);
   const text = await response.text();
-  // For debugging...
-  console.log("Page contents: ", text);
 
   await page.waitForSelector(".login-form");
 
@@ -108,7 +106,7 @@ test("end to end", async () => {
   const saveButton1 = await page.$("#save-task");
   await saveButton1.click();
 
-  const taskRow1 = await page.waitForSelector(".task-name");
+  await page.waitForSelector(".task-name");
   await waitForTextInSelector(page, ".task-name", "First task name");
 
   console.log("Create new task 2");
@@ -119,11 +117,39 @@ test("end to end", async () => {
   const saveButton2 = await page.$("#save-task");
   await saveButton2.click();
 
-  const taskRow2 = await page.waitForSelector(".task-name");
+  await page.waitForSelector(".task-name");
   await waitForTextInSelector(page, ".task-name", "Second task name");
 
-  console.log("Click on task to go to edit page");
-  await taskRow1.click();
+  console.log("Click task 1 to go to edit page");
+  await (
+    await page.waitForSelector(".task-row:nth-child(1) .task-name")
+  ).click();
+  // Check for our input having the correct task name
+  expect(await page.$eval('input[name="name"]', (node) => node.value)).toEqual(
+    "First task name"
+  );
+  // Clicking cancel will return to the task list
+  await (await page.$("#cancel-task")).click();
+  // Verify we are back on the main page
+  await page.waitForSelector(".task-create-form");
+
+  console.log("Click task 2 to go to edit page");
+  await (
+    await page.waitForSelector(".task-row:nth-child(2) .task-name")
+  ).click();
+  expect(await page.$eval('input[name="name"]', (node) => node.value)).toEqual(
+    "Second task name"
+  );
+  // Clicking cancel will return to the task list
+  await (await page.$("#cancel-task")).click();
+
+  await page.waitForSelector(".task-create-form");
+
+  // Go back to the first task so that we can edit the page
+  console.log("Click task 1 to go back to the edit page");
+  await (
+    await page.waitForSelector(".task-row:nth-child(1) .task-name")
+  ).click();
 
   await page.waitForSelector(".task-update-form");
 
