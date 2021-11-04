@@ -39,7 +39,7 @@ test("end to end", async () => {
   const browser = await puppeteer.launch({
     // Must be wide enough so that the logout button is visible.
     defaultViewport: { width: 1024, height: 600 },
-    headless: false,
+    //headless: false,
     //devtools: true,
     args: ["--disable-dev-shm-usage", "--no-sandbox"],
   });
