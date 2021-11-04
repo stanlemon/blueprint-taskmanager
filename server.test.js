@@ -9,15 +9,12 @@ process.env.PORT = "19292";
 const { server } = require("./server.js");
 
 // Make sure the jumbotron has our text
-async function waitForTextInSelector(page, selector, text) {
-  return page.waitForFunction(
-    'document.querySelector("' +
-      selector +
-      '").innerText.includes("' +
-      text +
-      '")'
-  );
+async function waitForTextOnPage(page, text) {
+  return await page.$x('//*[contains(text(),"' + text + '")]');
 }
+
+// Workaround for test environment issue
+window.setImmediate = window.setTimeout;
 
 // eslint-disable-next-line jest/no-done-callback
 afterEach(function (done) {
@@ -35,7 +32,7 @@ test("end to end", async () => {
   const browser = await puppeteer.launch({
     // Must be wide enough so that the logout button is visible.
     defaultViewport: { width: 1024, height: 600 },
-    //headless: false,
+    headless: false,
     //devtools: true,
     args: ["--disable-dev-shm-usage", "--no-sandbox"],
   });
@@ -96,7 +93,7 @@ test("end to end", async () => {
 
   await page.waitForSelector(".task-create-form");
 
-  console.log("Create a new task");
+  console.log("Create new task 1");
   const taskNameInput1 = await page.$('input[name="name"]');
   await taskNameInput1.focus();
   await taskNameInput1.type("First task name");
@@ -105,7 +102,18 @@ test("end to end", async () => {
   await saveButton1.click();
 
   const taskRow1 = await page.waitForSelector(".task-row");
-  await waitForTextInSelector(page, ".task-row", "First task name");
+  await waitForTextOnPage(page, "First task name");
+
+  console.log("Create new task 2");
+  const taskNameInput2 = await page.$('input[name="name"]');
+  await taskNameInput2.focus();
+  await taskNameInput2.type("Second task name");
+
+  const saveButton2 = await page.$("#save-task");
+  await saveButton2.click();
+
+  const taskRow2 = await page.waitForSelector(".task-row");
+  await waitForTextOnPage(page, "Second task name");
 
   console.log("Click on task to go to edit page");
   await taskRow1.click();
@@ -113,20 +121,16 @@ test("end to end", async () => {
   await page.waitForSelector(".task-update-form");
 
   console.log("Update task name");
-  const taskNameInput2 = await page.$('input[name="name"]');
-  await taskNameInput2.focus();
-  await taskNameInput2.type("First task name, now updated");
+  const taskNameInput1Update = await page.$('input[name="name"]');
+  await taskNameInput1Update.focus();
+  await taskNameInput1Update.type("First task name, now updated");
 
   console.log("Click button to save task");
-  const saveButton2 = await page.$("#save-task");
-  await saveButton2.click();
+  const saveButton1Update = await page.$("#save-task");
+  await saveButton1Update.click();
 
   await page.waitForSelector(".task-row");
-  await waitForTextInSelector(
-    page,
-    ".task-row",
-    "First task name, now updated"
-  );
+  await waitForTextOnPage(page, "First task name, now updated");
 
   console.log("Click checkbox on task to mark it complete");
   const completeCheckbox1 = await page.$(".complete-task");
@@ -144,7 +148,7 @@ test("end to end", async () => {
 
   console.log("Verify there are no tasks");
   // Make sure the jumbotron has our text
-  await waitForTextInSelector(page, "h1", "You don't have any tasks!");
+  await waitForTextOnPage(page, "You don't have any tasks!");
 
   console.log("Close the browser");
   await browser.close();
