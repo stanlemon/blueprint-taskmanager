@@ -8,8 +8,16 @@ process.env.PORT = "19292";
 const { server } = require("./server.js");
 
 // Make sure the jumbotron has our text
-async function waitForTextOnPage(page, text) {
-  return await page.$x('//*[contains(text(),"' + text + '")]');
+async function waitForTextInSelector(page, selector, text) {
+  await waitFor(async () => {
+    const results = await page.$$eval(selector, (nodes) =>
+      nodes.map((node) => node.textContent)
+    );
+    //console.log(text, results, results.includes(text));
+    expect(results.includes(text)).toBe(true);
+    return true;
+  });
+  return;
 }
 
 // Workaround for Test environment issue
@@ -100,8 +108,8 @@ test("end to end", async () => {
   const saveButton1 = await page.$("#save-task");
   await saveButton1.click();
 
-  const taskRow1 = await page.waitForSelector(".task-row");
-  await waitForTextOnPage(page, "First task name");
+  const taskRow1 = await page.waitForSelector(".task-name");
+  await waitForTextInSelector(page, ".task-name", "First task name");
 
   console.log("Create new task 2");
   const taskNameInput2 = await page.$('input[name="name"]');
@@ -111,8 +119,8 @@ test("end to end", async () => {
   const saveButton2 = await page.$("#save-task");
   await saveButton2.click();
 
-  const taskRow2 = await page.waitForSelector(".task-row");
-  await waitForTextOnPage(page, "Second task name");
+  const taskRow2 = await page.waitForSelector(".task-name");
+  await waitForTextInSelector(page, ".task-name", "Second task name");
 
   console.log("Click on task to go to edit page");
   await taskRow1.click();
@@ -122,14 +130,18 @@ test("end to end", async () => {
   console.log("Update task name");
   const taskNameInput1Update = await page.$('input[name="name"]');
   await taskNameInput1Update.focus();
-  await taskNameInput1Update.type("First task name, now updated");
+  await taskNameInput1Update.type(", now updated"); // Appends onto the existing value of the text field
 
   console.log("Click button to save task");
   const saveButton1Update = await page.$("#save-task");
   await saveButton1Update.click();
 
-  await page.waitForSelector(".task-row");
-  await waitForTextOnPage(page, "First task name, now updated");
+  await page.waitForSelector(".task-name");
+  await waitForTextInSelector(
+    page,
+    ".task-name",
+    "First task name, now updated"
+  );
 
   console.log("Click checkbox on task to mark it complete");
   const completeCheckbox1 = await page.$(".complete-task");
@@ -137,17 +149,29 @@ test("end to end", async () => {
 
   await page.waitForSelector(".task-row.task-completed");
 
-  console.log("Click button to delete task");
-  const deleteTaskButton = await page.$(".delete-task");
-  await deleteTaskButton.click();
+  let total = (await page.$$(".task-row")).length;
 
-  console.log("Click button to confirm delete task");
-  const confirmDeleteTaskButton = await page.$(".modal .is-danger");
-  await confirmDeleteTaskButton.click();
+  // Delete every row we've created
+  while (total > 0) {
+    console.log("Click button to delete task");
+    const deleteTaskButton = await page.$(".delete-task");
+    await deleteTaskButton.click();
+
+    console.log("Click button to confirm delete task");
+    const confirmDeleteTaskButton = await page.$(".modal .is-danger");
+    await confirmDeleteTaskButton.click();
+
+    total--;
+
+    await waitFor(async () => {
+      const x = (await page.$$(".task-row")).length;
+      expect(x).toBe(total);
+    });
+  }
 
   console.log("Verify there are no tasks");
   // Make sure the jumbotron has our text
-  await waitForTextOnPage(page, "You don't have any tasks!");
+  await waitForTextInSelector(page, "h1", "You don't have any tasks!");
 
   console.log("Close the browser");
   await browser.close();
