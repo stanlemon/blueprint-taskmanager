@@ -1,7 +1,6 @@
 // BEFORE RUNNING THIS TEST
 // Ensure that the app's assets have been built. This is an end to end test
 // that will start a full server in a production-like mode.
-
 const puppeteer = require("puppeteer");
 const { waitFor } = require("@testing-library/react");
 process.env.PORT = "19292";
@@ -13,7 +12,7 @@ async function waitForTextOnPage(page, text) {
   return await page.$x('//*[contains(text(),"' + text + '")]');
 }
 
-// Workaround for test environment issue
+// Workaround for Test environment issue
 window.setImmediate = window.setTimeout;
 
 // eslint-disable-next-line jest/no-done-callback
