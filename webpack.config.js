@@ -3,9 +3,20 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: process.env.NODE_ENV === "production" ? "production" : "development",
-  entry: ["./web/js/index.js", "react-hot-loader/patch"],
+  entry: {
+    main: "./web/js/index.js",
+    shared: [
+      "lodash",
+      "react",
+      "react-dom",
+      "redux",
+      "react-redux",
+      "redux-thunk",
+      "wouter",
+    ],
+  },
   output: {
-    filename: "main.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
     publicPath: "/",
   },
@@ -17,6 +28,11 @@ module.exports = {
     proxy: {
       "/api": "http://localhost:3000",
       "/auth": "http://localhost:3000",
+    },
+  },
+  optimization: {
+    splitChunks: {
+      chunks: "all",
     },
   },
   module: {
@@ -45,9 +61,6 @@ module.exports = {
   resolve: {
     // Enable webpack to find files without these extensions
     extensions: [".tsx", ".ts", ".jsx", ".js"],
-    alias: {
-      "react-dom": "@hot-loader/react-dom",
-    },
   },
   plugins: [
     new HtmlWebpackPlugin({

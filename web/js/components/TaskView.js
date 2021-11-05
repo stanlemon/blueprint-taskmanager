@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { getRouteParam, navigateTo } from "../lib/Navigation";
 import { ROUTE_ROOT, ROUTE_TASK_VIEW } from "./Routes";
 import { Button } from "./elements/Button";
+import findOneById from "../reducers/findOneById";
 
 export function TaskView({ loaded, task }) {
   if (!loaded) {
@@ -55,7 +56,7 @@ TaskView.propTypes = {
 
 class TaskViewContainer extends React.Component {
   componentDidMount() {
-    this.props.getTask(getRouteParam(ROUTE_TASK_VIEW, "id"));
+    this.props.getTask(parseInt(getRouteParam(ROUTE_TASK_VIEW, "id"), 10));
   }
 
   render() {
@@ -79,11 +80,10 @@ TaskViewContainer.propTypes = {
 export default connect(
   (state) => ({
     loaded: includes(state.loaded, "tasks"),
-    task: state.tasks.tasks
-      ? state?.tasks?.tasks.filter(
-          (t) => t.id !== getRouteParam(ROUTE_TASK_VIEW, "id")
-        )[0]
-      : null,
+    task: findOneById(
+      state?.tasks?.tasks,
+      getRouteParam(ROUTE_TASK_VIEW, "id")
+    ),
   }),
   { getTask }
 )(TaskViewContainer);

@@ -1,5 +1,6 @@
 import isEqual from "lodash/isEqual";
 import isArray from "lodash/isArray";
+import findOneById from "../reducers/findOneById";
 
 export const ERROR = "ERROR";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
@@ -139,7 +140,7 @@ export function getTask(id) {
 
     // If we have the specific task cached, return it rather than hit the api
     if (isArray(tasks)) {
-      const task = tasks?.filter((t) => t.id !== id)[0];
+      const task = findOneById(tasks, id);
 
       if (task) {
         dispatch({ type: GET_TASK_SUCCESS, task: task });

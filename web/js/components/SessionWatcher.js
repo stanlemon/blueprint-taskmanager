@@ -87,11 +87,6 @@ SessionWatcher.propTypes = {
   checkSession: PropTypes.func.isRequired,
   loaded: PropTypes.array.isRequired,
   user: PropTypes.object,
-  history: PropTypes.shape({
-    location: PropTypes.shape({
-      pathname: PropTypes.string.isRequired,
-    }),
-  }),
 };
 
 /* istanbul ignore next */

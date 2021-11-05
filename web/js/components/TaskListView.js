@@ -110,9 +110,11 @@ export class TaskListView extends React.Component {
           </div>
         )}
 
-        {tasks.map((task) => (
-          <TaskItem key={task.id} task={task} />
-        ))}
+        <div>
+          {tasks.map((task) => (
+            <TaskItem key={task.id} task={task} />
+          ))}
+        </div>
 
         {pages > 1 && (
           <nav

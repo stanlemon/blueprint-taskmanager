@@ -6,9 +6,8 @@ import addDays from "date-fns/addDays";
 import isSameDay from "date-fns/isSameDay";
 import parseISO from "date-fns/parseISO";
 import { makeDateTime } from "../lib/Utils";
-import { history } from "../lib/Navigation";
+import { getCurrentPathname } from "../lib/Navigation";
 import { TaskItem } from "./TaskItem";
-import { makeRoute } from "../lib/Navigation";
 import { ROUTE_TASK_VIEW } from "./Routes";
 
 describe("<TaskItem />", () => {
@@ -120,9 +119,7 @@ describe("<TaskItem />", () => {
 
     fireEvent.click(taskName);
 
-    expect(history.location.pathname).toEqual(
-      makeRoute(ROUTE_TASK_VIEW, { id: 1 })
-    );
+    expect(getCurrentPathname()).toEqual(ROUTE_TASK_VIEW.replace(":id", 1));
   });
 
   it("clicking on a task's delete button calls the delete action with the right id", () => {

@@ -2,7 +2,7 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { RegisterView } from "./RegisterView";
-import { history } from "../lib/Navigation";
+import { getCurrentPathname } from "../lib/Navigation";
 import {
   ROUTE_LOGIN,
   ROUTE_PRIVACY_POLICY,
@@ -163,7 +163,7 @@ describe("<RegisterView />", () => {
 
     fireEvent.click(screen.getByText("Return to Login"));
 
-    expect(history.location.pathname).toBe(ROUTE_LOGIN);
+    expect(getCurrentPathname()).toBe(ROUTE_LOGIN);
   });
 
   it("clicking the privacy policy navigates there", () => {
@@ -171,7 +171,7 @@ describe("<RegisterView />", () => {
 
     fireEvent.click(screen.getByText("Privacy Policy"));
 
-    expect(history.location.pathname).toBe(ROUTE_PRIVACY_POLICY);
+    expect(getCurrentPathname()).toBe(ROUTE_PRIVACY_POLICY);
   });
 
   it("clicking the terms of service navigates there", () => {
@@ -179,6 +179,6 @@ describe("<RegisterView />", () => {
 
     fireEvent.click(screen.getByText("Terms of Service"));
 
-    expect(history.location.pathname).toBe(ROUTE_TERMS_OF_SERVICE);
+    expect(getCurrentPathname()).toBe(ROUTE_TERMS_OF_SERVICE);
   });
 });

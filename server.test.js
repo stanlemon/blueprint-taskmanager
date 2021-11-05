@@ -1,7 +1,6 @@
 // BEFORE RUNNING THIS TEST
 // Ensure that the app's assets have been built. This is an end to end test
 // that will start a full server in a production-like mode.
-
 const puppeteer = require("puppeteer");
 const { waitFor } = require("@testing-library/react");
 process.env.PORT = "19292";
@@ -10,14 +9,19 @@ const { server } = require("./server.js");
 
 // Make sure the jumbotron has our text
 async function waitForTextInSelector(page, selector, text) {
-  return page.waitForFunction(
-    'document.querySelector("' +
-      selector +
-      '").innerText.includes("' +
-      text +
-      '")'
-  );
+  await waitFor(async () => {
+    const results = await page.$$eval(selector, (nodes) =>
+      nodes.map((node) => node.textContent)
+    );
+    //console.log(text, results, results.includes(text));
+    expect(results.includes(text)).toBe(true);
+    return true;
+  });
+  return;
 }
+
+// Workaround for Test environment issue
+window.setImmediate = window.setTimeout;
 
 // eslint-disable-next-line jest/no-done-callback
 afterEach(function (done) {
@@ -43,8 +47,6 @@ test("end to end", async () => {
 
   const response = await page.goto("http://localhost:" + process.env.PORT);
   const text = await response.text();
-  // For debugging...
-  console.log("Page contents: ", text);
 
   await page.waitForSelector(".login-form");
 
@@ -96,7 +98,7 @@ test("end to end", async () => {
 
   await page.waitForSelector(".task-create-form");
 
-  console.log("Create a new task");
+  console.log("Create new task 1");
   const taskNameInput1 = await page.$('input[name="name"]');
   await taskNameInput1.focus();
   await taskNameInput1.type("First task name");
@@ -104,27 +106,66 @@ test("end to end", async () => {
   const saveButton1 = await page.$("#save-task");
   await saveButton1.click();
 
-  const taskRow1 = await page.waitForSelector(".task-row");
-  await waitForTextInSelector(page, ".task-row", "First task name");
+  await page.waitForSelector(".task-name");
+  await waitForTextInSelector(page, ".task-name", "First task name");
 
-  console.log("Click on task to go to edit page");
-  await taskRow1.click();
+  console.log("Create new task 2");
+  const taskNameInput2 = await page.$('input[name="name"]');
+  await taskNameInput2.focus();
+  await taskNameInput2.type("Second task name");
+
+  const saveButton2 = await page.$("#save-task");
+  await saveButton2.click();
+
+  await page.waitForSelector(".task-name");
+  await waitForTextInSelector(page, ".task-name", "Second task name");
+
+  console.log("Click task 1 to go to edit page");
+  await (
+    await page.waitForSelector(".task-row:nth-child(1) .task-name")
+  ).click();
+  // Check for our input having the correct task name
+  expect(await page.$eval('input[name="name"]', (node) => node.value)).toEqual(
+    "First task name"
+  );
+  // Clicking cancel will return to the task list
+  await (await page.$("#cancel-task")).click();
+  // Verify we are back on the main page
+  await page.waitForSelector(".task-create-form");
+
+  console.log("Click task 2 to go to edit page");
+  await (
+    await page.waitForSelector(".task-row:nth-child(2) .task-name")
+  ).click();
+  expect(await page.$eval('input[name="name"]', (node) => node.value)).toEqual(
+    "Second task name"
+  );
+  // Clicking cancel will return to the task list
+  await (await page.$("#cancel-task")).click();
+
+  await page.waitForSelector(".task-create-form");
+
+  // Go back to the first task so that we can edit the page
+  console.log("Click task 1 to go back to the edit page");
+  await (
+    await page.waitForSelector(".task-row:nth-child(1) .task-name")
+  ).click();
 
   await page.waitForSelector(".task-update-form");
 
   console.log("Update task name");
-  const taskNameInput2 = await page.$('input[name="name"]');
-  await taskNameInput2.focus();
-  await taskNameInput2.type("First task name, now updated");
+  const taskNameInput1Update = await page.$('input[name="name"]');
+  await taskNameInput1Update.focus();
+  await taskNameInput1Update.type(", now updated"); // Appends onto the existing value of the text field
 
   console.log("Click button to save task");
-  const saveButton2 = await page.$("#save-task");
-  await saveButton2.click();
+  const saveButton1Update = await page.$("#save-task");
+  await saveButton1Update.click();
 
-  await page.waitForSelector(".task-row");
+  await page.waitForSelector(".task-name");
   await waitForTextInSelector(
     page,
-    ".task-row",
+    ".task-name",
     "First task name, now updated"
   );
 
@@ -134,13 +175,25 @@ test("end to end", async () => {
 
   await page.waitForSelector(".task-row.task-completed");
 
-  console.log("Click button to delete task");
-  const deleteTaskButton = await page.$(".delete-task");
-  await deleteTaskButton.click();
+  let total = (await page.$$(".task-row")).length;
 
-  console.log("Click button to confirm delete task");
-  const confirmDeleteTaskButton = await page.$(".modal .is-danger");
-  await confirmDeleteTaskButton.click();
+  // Delete every row we've created
+  while (total > 0) {
+    console.log("Click button to delete task");
+    const deleteTaskButton = await page.$(".delete-task");
+    await deleteTaskButton.click();
+
+    console.log("Click button to confirm delete task");
+    const confirmDeleteTaskButton = await page.$(".modal .is-danger");
+    await confirmDeleteTaskButton.click();
+
+    total--;
+
+    await waitFor(async () => {
+      const x = (await page.$$(".task-row")).length;
+      expect(x).toBe(total);
+    });
+  }
 
   console.log("Verify there are no tasks");
   // Make sure the jumbotron has our text

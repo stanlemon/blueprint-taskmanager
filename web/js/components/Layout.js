@@ -7,7 +7,7 @@ import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faTasks } from "@fortawesome/free-solid-svg-icons/faTasks";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
-import { navigateTo, history } from "../lib/Navigation";
+import { navigateTo } from "../lib/Navigation";
 import { logout, loadTags, clearErrors } from "../actions/";
 import { ROUTE_ROOT, ROUTE_PROFILE, ROUTE_LOGIN } from "./Routes";
 
@@ -29,9 +29,10 @@ export class Layout extends React.Component {
     document.addEventListener("click", this.handleClickOutside);
 
     // When the route changes, clear our errors
-    history.listen(() => {
+    window.addEventListener("navigate", () => {
       this.props.clearErrors();
     });
+
     this.props.loadTags();
   }
 
@@ -53,9 +54,9 @@ export class Layout extends React.Component {
 
   handleClickOutside = (e) => {
     if (
-      this.hamburgerRef.current.contains(e.target) ||
-      this.menuRef.current.contains(e.target) ||
-      this.dropdownRef.current.contains(e.target)
+      this.hamburgerRef?.current?.contains(e.target) ||
+      this.menuRef?.current?.contains(e.target) ||
+      this.dropdownRef?.current?.contains(e.target)
     ) {
       return;
     }
