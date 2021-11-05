@@ -1,5 +1,6 @@
 export { default as Blueprint } from "./bulma/Blueprint";
 export { default as Button } from "./bulma/Button";
+export { default as ButtonGroup } from "./bulma/ButtonGroup";
 export { default as Column } from "./bulma/Column";
 export { default as Columns } from "./bulma/Columns";
 export { default as Container } from "./bulma/Container";

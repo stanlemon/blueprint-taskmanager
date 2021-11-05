@@ -8,7 +8,7 @@ import classNames from "classnames";
 import { loadTasks, setFilter, setPage } from "../actions/";
 import CreateTaskForm from "./CreateTaskForm";
 import TaskItem from "./TaskItem";
-import { Container, Button } from "./elements/";
+import { Container, Button, ButtonGroup } from "./elements/";
 
 const ALL = "all";
 const INCOMPLETE = "incomplete";
@@ -61,7 +61,7 @@ export class TaskListView extends React.Component {
 
     return (
       <Container>
-        <div className="buttons has-addons is-centered">
+        <ButtonGroup style={{ marginBottom: 10 }}>
           <Button
             className={classNames({ "is-active": filter === ALL })}
             id="task-filter-all"
@@ -94,7 +94,7 @@ export class TaskListView extends React.Component {
           >
             Complete
           </Button>
-        </div>
+        </ButtonGroup>
 
         {tasks.length === 0 && (
           <div

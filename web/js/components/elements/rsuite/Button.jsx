@@ -1,16 +1,55 @@
 import React from "react";
-import classNames from "classnames";
+import PropTypes from "prop-types";
 import omit from "lodash/omit";
-import { Button } from "rsuite";
+import { Button as RsuiteButton } from "rsuite";
 
-export function Button(_props) {
-  return <Button>{children}</Button>;
+export default function Button({
+  children,
+  size,
+  selected: active,
+  is,
+  width,
+  ..._props
+}) {
+  const style = Object.assign(_props.style || {}, {
+    minWidth: width,
+  });
+  const type = _props.onClick ? "button" : _props.type ?? "submit";
+  const props = omit(_props, "style", "children", "is", "size", "width");
+  const appearance =
+    is === "primary" || is === "danger" ? "primary" : "default";
+  const color = is === "danger" ? "red" : null;
+
+  return (
+    <RsuiteButton
+      type={type}
+      active={active}
+      appearance={appearance}
+      color={color}
+      size={convertSize(size)}
+      style={style}
+      {...props}
+    >
+      {children}
+    </RsuiteButton>
+  );
 }
 
-Button.defaultProps = {
-  is: "default",
-  size: "normal",
-  width: 110,
-};
+function convertSize(size) {
+  switch (size) {
+    case "large":
+      return "lg";
+    case "medium":
+      return "md";
+    case "small":
+      return "sm";
+  }
+}
 
-export default Button;
+Button.propTypes = {
+  children: PropTypes.node.isRequired,
+  size: PropTypes.oneOf("small", "large", "medium"),
+  selected: PropTypes.bool,
+  is: PropTypes.oneOf("default", "primary", "danger"),
+  width: PropTypes.oneOf("none", PropTypes.number),
+};
