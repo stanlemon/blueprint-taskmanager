@@ -1,5 +1,5 @@
 import React from "react";
-import Blueprint from "./elements/Blueprint";
+import { Blueprint } from "./elements/";
 
 export default function TermsOfService() {
   return (

@@ -10,7 +10,7 @@ import {
   ROUTE_PRIVACY_POLICY,
   ROUTE_LOGIN,
 } from "./Routes";
-import Blueprint from "./elements/Blueprint";
+import { Blueprint } from "./elements/";
 
 export class RegisterView extends React.Component {
   constructor(props) {

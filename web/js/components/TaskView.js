@@ -10,7 +10,7 @@ import { DATE_FORMAT_LONG } from "../lib/Utils";
 import { connect } from "react-redux";
 import { getRouteParam, navigateTo } from "../lib/Navigation";
 import { ROUTE_ROOT, ROUTE_TASK_VIEW } from "./Routes";
-import { Button } from "./elements/Button";
+import { Button } from "./elements/";
 import findOneById from "../reducers/findOneById";
 
 export function TaskView({ loaded, task }) {
