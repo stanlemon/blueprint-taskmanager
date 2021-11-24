@@ -137,9 +137,16 @@ test("end to end", async () => {
   await (
     await page.waitForSelector(".task-row:nth-child(2) .task-name")
   ).click();
-  expect(await page.$eval('input[name="name"]', (node) => node.value)).toEqual(
-    "Second task name"
+
+  const secondTaskInputValue = await page.$eval(
+    'input[name="name"]',
+    (node) => {
+      console.log(node.value);
+      return node.value;
+    }
   );
+
+  expect(secondTaskInputValue).toEqual("Second task name");
   // Clicking cancel will return to the task list
   await (await page.$("#cancel-task")).click();
 
