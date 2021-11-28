@@ -2,10 +2,11 @@ import React from "react";
 import TermsOfService from "./TermsOfService";
 import { navigateTo } from "../lib/Navigation";
 import { ROUTE_REGISTER } from "./Routes";
+import { Container } from "./elements";
 
 export default function TermsOfServiceView() {
   return (
-    <div className="container" style={{ marginTop: "-2rem", maxWidth: 900 }}>
+    <Container style={{ marginTop: "-2rem", maxWidth: 900 }}>
       <div className="content" style={{ padding: 20 }}>
         <TermsOfService />
       </div>
@@ -14,6 +15,6 @@ export default function TermsOfServiceView() {
           Return to Create Account
         </a>
       </div>
-    </div>
+    </Container>
   );
 }

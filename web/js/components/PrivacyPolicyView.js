@@ -2,10 +2,11 @@ import React from "react";
 import PrivacyPolciy from "./PrivacyPolicy";
 import { navigateTo } from "../lib/Navigation";
 import { ROUTE_REGISTER } from "./Routes";
+import { Container } from "./elements";
 
 export default function PrivacyPolciyView() {
   return (
-    <div className="container" style={{ marginTop: "-2rem", maxWidth: 900 }}>
+    <Container style={{ marginTop: "-2rem", maxWidth: 900 }}>
       <div className="content" style={{ padding: 20 }}>
         <PrivacyPolciy />
       </div>
@@ -14,6 +15,6 @@ export default function PrivacyPolciyView() {
           Return to Create Account
         </a>
       </div>
-    </div>
+    </Container>
   );
 }
