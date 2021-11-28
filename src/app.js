@@ -3,6 +3,7 @@ const compression = require("compression");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const rateLimit = require("express-rate-limit");
 
 require("dotenv").config();
 
@@ -10,6 +11,12 @@ const app = express();
 
 const logger = morgan("combined");
 
+const limiter = rateLimit({
+  windowMs: 2 * 60 * 1000, // 2 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+
+app.use(limiter);
 app.use(logger);
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.json());
