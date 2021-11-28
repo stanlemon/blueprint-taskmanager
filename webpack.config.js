@@ -3,18 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: process.env.NODE_ENV === "production" ? "production" : "development",
-  entry: {
-    main: "./web/js/index.js",
-    shared: [
-      "lodash",
-      "react",
-      "react-dom",
-      "redux",
-      "react-redux",
-      "redux-thunk",
-      "wouter",
-    ],
-  },
+  entry: "./web/js/index.js",
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist"),

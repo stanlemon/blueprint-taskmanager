@@ -1,6 +1,5 @@
 const path = require("path");
 const http = require("http");
-const killable = require("killable");
 const serveStatic = require("serve-static");
 const passport = require("passport");
 
@@ -48,7 +47,3 @@ server.listen(process.env.PORT, (err) => {
   console.log("Starting in %s mode", process.env.NODE_ENV);
   console.log("Listening at http://%s:%s", host, port);
 });
-
-killable(server);
-
-module.exports = { server };
