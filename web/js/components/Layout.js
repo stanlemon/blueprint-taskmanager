@@ -10,6 +10,7 @@ import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
 import { navigateTo } from "../lib/Navigation";
 import { logout, loadTags, clearErrors } from "../actions/";
 import { ROUTE_ROOT, ROUTE_PROFILE, ROUTE_LOGIN } from "./Routes";
+import { Container } from "./elements";
 
 export class Layout extends React.Component {
   constructor(props) {
@@ -169,9 +170,9 @@ export class Layout extends React.Component {
             </div>
           </div>
         </nav>
-        <div style={{ maxWidth: 900, padding: 15 }} className="container">
+        <Container style={{ maxWidth: 900, padding: 15 }}>
           {this.props.children}
-        </div>
+        </Container>
       </div>
     );
   }

@@ -12,7 +12,7 @@ const app = express();
 const logger = morgan("combined");
 
 const limiter = rateLimit({
-  windowMs: 2 * 60 * 1000, // 2 minutes
+  windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
 });
 
