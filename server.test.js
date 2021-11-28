@@ -23,9 +23,22 @@ async function waitForTextInSelector(page, selector, text) {
 // Workaround for Test environment issue
 window.setImmediate = window.setTimeout;
 
+let browser;
+beforeAll(async function () {
+  browser = await puppeteer.launch({
+    // Must be wide enough so that the logout button is visible.
+    defaultViewport: { width: 1024, height: 600 },
+    //headless: false,
+    //devtools: true,
+    args: ["--disable-dev-shm-usage", "--no-sandbox"],
+  });
+});
+
 // eslint-disable-next-line jest/no-done-callback
-afterEach(function (done) {
-  server.close(done);
+afterAll(function (done) {
+  browser.close().then(() => {
+    server.close(done);
+  });
 });
 
 test("end to end", async () => {
@@ -36,13 +49,6 @@ test("end to end", async () => {
   const username = "stanlemon@users.noreply.github.com";
   const password = "p@$$w0rd!";
 
-  const browser = await puppeteer.launch({
-    // Must be wide enough so that the logout button is visible.
-    defaultViewport: { width: 1024, height: 600 },
-    //headless: false,
-    //devtools: true,
-    args: ["--disable-dev-shm-usage", "--no-sandbox"],
-  });
   const page = await browser.newPage();
 
   const response = await page.goto("http://localhost:" + process.env.PORT);
@@ -208,4 +214,4 @@ test("end to end", async () => {
 
   console.log("Close the browser");
   await browser.close();
-}, 60000);
+}, 10000);
