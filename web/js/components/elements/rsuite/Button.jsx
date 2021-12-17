@@ -43,6 +43,8 @@ function convertSize(size) {
       return "md";
     case "small":
       return "sm";
+    default:
+      return "";
   }
 }
 

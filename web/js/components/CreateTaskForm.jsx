@@ -5,10 +5,6 @@ import { connect } from "react-redux";
 import { createTask } from "../actions";
 
 export class CreateTaskForm extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleSave = async (data) => {
     const response = await this.props.createTask(data);
 
