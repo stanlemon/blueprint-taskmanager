@@ -34,6 +34,8 @@ function buildFilter(filter) {
       case "incomplete":
         qb.whereNull("completed");
         break;
+      default:
+        break;
     }
   };
 }

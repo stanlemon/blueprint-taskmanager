@@ -8,7 +8,7 @@ import { faTasks } from "@fortawesome/free-solid-svg-icons/faTasks";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
 import { navigateTo } from "../lib/Navigation";
-import { logout, loadTags, clearErrors } from "../actions/";
+import { logout, loadTags, clearErrors } from "../actions";
 import { ROUTE_ROOT, ROUTE_PROFILE, ROUTE_LOGIN } from "./Routes";
 import { Container } from "./elements";
 

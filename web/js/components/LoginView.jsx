@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
-import { login, clearErrors } from "../actions/";
+import { login, clearErrors } from "../actions";
 import { navigateTo } from "../lib/Navigation";
 import Error from "./Error";
-import { Container, Field, Button } from "./elements/";
+import { Container, Field, Button } from "./elements";
 import { ROUTE_REGISTER } from "./Routes";
 
 export class LoginView extends React.Component {

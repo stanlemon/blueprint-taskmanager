@@ -1,9 +1,10 @@
 module.exports = {
   launch: {
-    //headless: false,
+    headless: true,
   },
   server: {
-    command: "PORT=19292 NODE_ENV=test node server.js",
+    launchTimeout: 10000,
+    command: "npm run build; PORT=19292 NODE_ENV=test npm start",
     port: 19292,
   },
 };

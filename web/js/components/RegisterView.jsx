@@ -2,15 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { navigateTo } from "../lib/Navigation";
-import { registerUser, clearErrors } from "../actions/";
+import { registerUser, clearErrors } from "../actions";
 import { validate, UserForm } from "./UserForm";
-import { Container, Button } from "./elements/";
+import { Container, Button } from "./elements";
 import {
   ROUTE_TERMS_OF_SERVICE,
   ROUTE_PRIVACY_POLICY,
   ROUTE_LOGIN,
 } from "./Routes";
-import { Blueprint } from "./elements/";
+import { Blueprint } from "./elements";
 
 export class RegisterView extends React.Component {
   constructor(props) {
