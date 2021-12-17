@@ -23,7 +23,7 @@
     "test": "NODE_ENV=test jest --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test:coverage": "NODE_ENV=test jest --coverage --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test:watch": "NODE_ENV=test jest --watchAll --testRegex \"(web/js|src)/.*\\.test.js$\"",
-    "test:e2e": "NODE_ENV=test jest ./server.test.js --detectOpenHandles",
+    "test:e2e": "npm run build; NODE_ENV=test jest ./server.test.js --detectOpenHandles",
     "test:all": "NODE_ENV=test jest  --detectOpenHandles --testRegex .*\\.test.js$"
   },
   "nodemonConfig": {
