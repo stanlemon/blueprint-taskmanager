@@ -17,7 +17,7 @@ export default class TaskService extends RestService {
   }
 
   loadTasks(filter = "all", page = 1, size = 10) {
-    const query = new new URLSearchParams({ filter, page, size })();
+    const query = new URLSearchParams({ filter, page, size });
     // Temporary: This will need to support pagination eventually
     return this.fetch(`/api/tasks/?${query.toString()}`);
   }
