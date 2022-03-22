@@ -9,7 +9,7 @@ module.exports = {
   },
 
   test: {
-    client: "sqlite3",
+    client: "better-sqlite3",
     connection: ":memory:",
     useNullAsDefault: true,
     migrations: {

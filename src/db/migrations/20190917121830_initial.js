@@ -1,6 +1,10 @@
 exports.up = async (knex) => {
   return Promise.all([
+    knex.schema.dropTableIfExists("task_tags"),
+    knex.schema.dropTableIfExists("tags"),
+    knex.schema.dropTableIfExists("tasks"),
     knex.schema.dropTableIfExists("users"),
+
     knex.schema.createTable("users", (table) => {
       table.increments("id");
       table.string("name");
@@ -12,7 +16,6 @@ exports.up = async (knex) => {
       table.dateTime("updated_at").notNullable();
     }),
 
-    knex.schema.dropTableIfExists("tasks"),
     knex.schema.createTable("tasks", (table) => {
       table.increments("id");
       table.string("name");
@@ -22,30 +25,20 @@ exports.up = async (knex) => {
       table.integer("user_id").notNullable();
       table.dateTime("created_at").notNullable();
       table.dateTime("updated_at").notNullable();
-
-      table.foreign("user_id").references("id").inTable("users");
     }),
 
-    knex.schema.dropTableIfExists("tags"),
     knex.schema.createTable("tags", (table) => {
       table.increments("id");
       table.string("name");
       table.integer("user_id").notNullable();
       table.dateTime("created_at").notNullable();
       table.dateTime("updated_at").notNullable();
-
-      table.foreign("user_id").references("id").inTable("users");
     }),
 
-    knex.schema.dropTableIfExists("task_tags"),
     knex.schema.createTable("task_tags", (table) => {
       table.increments("id");
       table.integer("task_id").notNullable();
       table.integer("tag_id").notNullable();
-
-      table.foreign("task_id").references("id").inTable("tasks");
-
-      table.foreign("tag_id").references("id").inTable("tags");
     }),
   ]);
 };
