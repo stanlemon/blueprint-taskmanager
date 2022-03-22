@@ -72,7 +72,8 @@ async function createUser(data) {
   return knex("users")
     .insert(user)
     .returning("id")
-    .then(([id]) => {
+    .then((results) => {
+      const id = results[0]?.id;
       return getUserById(id);
     });
 }

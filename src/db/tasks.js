@@ -61,9 +61,9 @@ CASE WHEN completed IS NULL THEN (now() + interval '100' year) ELSE completed EN
 created_at ASC`
       : `CASE
   WHEN due IS NOT NULL AND completed IS NULL THEN due
-  ELSE date("now", "-1000 year")
+  ELSE date('now', '-1000 year')
 END DESC,
-CASE WHEN completed IS NULL THEN date("now", "+100 year") ELSE completed END DESC,
+CASE WHEN completed IS NULL THEN date('now', '+100 year') ELSE completed END DESC,
 created_at ASC`;
 
   const tasks = await knex("tasks")
@@ -248,7 +248,8 @@ function createTask(userId, task) {
   return knex("tasks")
     .insert(data)
     .returning("id")
-    .then(([id]) => {
+    .then((results) => {
+      const id = results[0]?.id;
       // This needs to be nested so that we can access the newly created task's id
       return upsertTaskTags(userId, id, tags).then(() => {
         return getTaskById(userId, id);
