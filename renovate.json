@@ -4,7 +4,6 @@
     "group:allNonMajor"
   ],
   "timezone": "America/Indiana/Indianapolis",
-  "bumpVersion": "patch",
   "rangeStrategy": "bump",
   "schedule": [
     "after 10am and before 4pm on Saturday"
