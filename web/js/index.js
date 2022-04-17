@@ -1,6 +1,8 @@
-import React from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./components/App";
-import "../css/main.less";
+import "rsuite/styles/index.less";
 
-render(<App />, document.getElementById("root"));
+const root = createRoot(
+  document.body.appendChild(document.createElement("div"))
+);
+root.render(<App />);

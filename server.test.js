@@ -51,7 +51,7 @@ describe("end to end", () => {
     const submitButton1 = await page.$("#register-button");
     await submitButton1.click();
 
-    await page.waitForSelector(".task-create-form");
+    await page.waitForSelector("#task-create-form");
 
     console.log("Click button to logout");
     // Triggers the menu to fan out first
@@ -73,7 +73,7 @@ describe("end to end", () => {
     const loginSubmitButton = await page.$("#login-button");
     await loginSubmitButton.click();
 
-    await page.waitForSelector(".task-create-form");
+    await page.waitForSelector("#task-create-form");
 
     console.log("Create new task 1");
     const taskNameInput1 = await page.$('input[name="name"]');
@@ -108,7 +108,7 @@ describe("end to end", () => {
     // Clicking cancel will return to the task list
     await (await page.$("#cancel-task")).click();
     // Verify we are back on the main page
-    await page.waitForSelector(".task-create-form");
+    await page.waitForSelector("#task-create-form");
 
     console.log("Click task 2 to go to edit page");
     await (
@@ -127,7 +127,7 @@ describe("end to end", () => {
     // Clicking cancel will return to the task list
     await (await page.$("#cancel-task")).click();
 
-    await page.waitForSelector(".task-create-form");
+    await page.waitForSelector("#task-create-form");
 
     // Go back to the first task so that we can edit the page
     console.log("Click task 1 to go back to the edit page");

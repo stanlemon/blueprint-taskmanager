@@ -43,7 +43,7 @@ describe("<TaskItem />", () => {
       completed: makeDateTime(),
     };
 
-    const { container } = render(
+    render(
       <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
@@ -51,21 +51,21 @@ describe("<TaskItem />", () => {
 
     expect(taskName).toBeInTheDocument();
 
-    // We shouldn't find these classes which communicate various states to the user about the given task
-    expect(container.querySelector(".task-completed")).not.toBe(null);
-    expect(container.querySelector(".task-overdue")).toBe(null);
-    expect(container.querySelector(".task-due-soon")).toBe(null);
+    // Brittle check to make sure there is a line through the name of a completed task
+    expect(taskName.style.getPropertyValue("text-decoration")).toEqual(
+      "line-through"
+    );
   });
 
   it("should render an overdue task", () => {
     const task = {
       id: 1,
       name: "Foobar",
-      completed: null,
-      due: subDays(Date.now(), 2),
+      completed: false,
+      due: subDays(Date.now(), 3),
     };
 
-    const { container } = render(
+    render(
       <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
@@ -73,10 +73,9 @@ describe("<TaskItem />", () => {
 
     expect(taskName).toBeInTheDocument();
 
-    // We shouldn't find these classes which communicate various states to the user about the given task
-    expect(container.querySelector(".task-completed")).toBe(null);
-    expect(container.querySelector(".task-overdue")).not.toBe(null);
-    expect(container.querySelector(".task-due-soon")).toBe(null);
+    // Brittle test to check that the color of an overdue task is red
+    expect(taskName.style.getPropertyValue("color")).toEqual("red");
+    expect(taskName.style.getPropertyValue("text-decoration")).toEqual("none");
   });
 
   it("should render an uncompleted task that is due soon", () => {
@@ -87,7 +86,7 @@ describe("<TaskItem />", () => {
       due: addDays(Date.now(), 1),
     };
 
-    const { container } = render(
+    render(
       <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
@@ -95,10 +94,9 @@ describe("<TaskItem />", () => {
 
     expect(taskName).toBeInTheDocument();
 
-    // We shouldn't find these classes which communicate various states to the user about the given task
-    expect(container.querySelector(".task-completed")).toBe(null);
-    expect(container.querySelector(".task-overdue")).toBe(null);
-    expect(container.querySelector(".task-due-soon")).not.toBe(null);
+    // Brittle test to check that the color of a task due soon is orange
+    expect(taskName.style.getPropertyValue("color")).toEqual("orange");
+    expect(taskName.style.getPropertyValue("text-decoration")).toEqual("none");
   });
 
   it("clicking on a task's name navigates to view it", () => {
@@ -230,11 +228,17 @@ describe("<TaskItem />", () => {
       due: subDays(Date.now(), 7),
     };
 
-    const { container } = render(
+    render(
       <TaskItem task={task} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
-    expect(container.querySelector(".task-overdue")).not.toBe(null);
+    const taskName = screen.getByText(task.name);
+
+    expect(taskName).toBeInTheDocument();
+
+    // Brittle test to check the color of the task
+    expect(taskName.style.getPropertyValue("color")).toEqual("red");
+    expect(taskName.style.getPropertyValue("text-decoration")).toEqual("none");
   });
 
   it("a task is due soon", () => {
@@ -245,11 +249,17 @@ describe("<TaskItem />", () => {
       due: addDays(Date.now(), 1),
     };
 
-    const { container } = render(
+    render(
       <TaskItem task={task1} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
-    expect(container.querySelector(".task-due-soon")).not.toBe(null);
+    const taskName = screen.getByText(task1.name);
+
+    expect(taskName).toBeInTheDocument();
+
+    // Brittle test to check the color of the task
+    expect(taskName.style.getPropertyValue("color")).toEqual("orange");
+    expect(taskName.style.getPropertyValue("text-decoration")).toEqual("none");
   });
 
   it("a task is due, but not soon", () => {
@@ -261,10 +271,16 @@ describe("<TaskItem />", () => {
       due: addDays(Date.now(), 3), // tasks due within 2 days are due 'soon'
     };
 
-    const { container } = render(
+    render(
       <TaskItem task={task2} updateTask={updateTask} deleteTask={deleteTask} />
     );
 
-    expect(container.querySelector(".task-due-soon")).toBe(null);
+    const taskName = screen.getByText(task2.name);
+
+    expect(taskName).toBeInTheDocument();
+
+    // Brittle test to check the color of the task
+    expect(taskName.style.getPropertyValue("color")).toEqual("");
+    expect(taskName.style.getPropertyValue("text-decoration")).toEqual("none");
   });
 });

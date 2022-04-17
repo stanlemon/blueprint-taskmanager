@@ -2,15 +2,16 @@ import includes from "lodash/includes";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import classNames from "classnames";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faTasks } from "@fortawesome/free-solid-svg-icons/faTasks";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
+import { faGear } from "@fortawesome/free-solid-svg-icons/faGear";
 import { navigateTo } from "../lib/Navigation";
 import { logout, loadTags, clearErrors } from "../actions";
 import { ROUTE_ROOT, ROUTE_PROFILE, ROUTE_LOGIN } from "./Routes";
 import { Container } from "./elements";
+import { Affix, Dropdown, Nav, Navbar } from "rsuite";
 
 export class Layout extends React.Component {
   constructor(props) {
@@ -90,90 +91,35 @@ export class Layout extends React.Component {
     }
 
     return (
-      <div>
-        <nav
-          className="navbar has-shadow is-fixed-top"
-          role="navigation"
-          aria-label="main navigation"
-        >
-          <div className="navbar-brand">
-            <a
-              className="navbar-item has-text-link"
-              onClick={this.handleClickToHome}
-            >
-              <span className="icon" style={{ marginLeft: 10 }}>
-                <Icon icon={faTasks} size="lg" />
-              </span>
-              <span style={{ marginLeft: 12 }}>Blueprint</span>
-            </a>
-
-            <a
-              ref={this.hamburgerRef}
-              role="button"
-              className={classNames("navbar-burger", "burger", {
-                "is-active": this.state.isMenuActive,
-              })}
-              aria-label="menu"
-              aria-expanded="false"
-              data-target="navbarBasicExample"
-              onClick={this.toggleMenu}
-            >
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-            </a>
-          </div>
-          <div
-            ref={this.menuRef}
-            className={classNames("navbar-menu", {
-              "is-active": this.state.isMenuActive,
-            })}
-          >
-            <div className="navbar-start"></div>
-            <div className="navbar-end">
-              <div
-                ref={this.dropdownRef}
-                className={classNames("navbar-item has-dropdown", {
-                  "is-active": this.state.isDropdownActive,
-                })}
-              >
-                <a
-                  className="navbar-link"
-                  id="user-menu"
-                  onClick={this.toggleDropdown}
+      <>
+        <Affix>
+          <Navbar>
+            <Navbar.Brand onClick={this.handleClickToHome}>
+              <Icon icon={faTasks} />
+              {" Blueprint"}
+            </Navbar.Brand>
+            <Nav pullRight>
+              <Dropdown icon={<Icon icon={faGear} />} title=" Settings">
+                <Dropdown.Item
+                  icon={<Icon icon={faUser} />}
+                  eventKey="4"
+                  onClick={this.handleClickToProfile}
                 >
-                  {this.props.user.name}
-                </a>
-                <div className="navbar-dropdown is-right">
-                  <a
-                    id="profile"
-                    className="navbar-item"
-                    onClick={this.handleClickToProfile}
-                  >
-                    <span className="icon">
-                      <Icon icon={faUser} />
-                    </span>
-                    <span>Profile</span>
-                  </a>
-                  <a
-                    id="logout"
-                    className="navbar-item"
-                    onClick={this.handleClickToLogout}
-                  >
-                    <span className="icon">
-                      <Icon icon={faSignOutAlt} />
-                    </span>
-                    <span>Logout</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav>
-        <Container style={{ maxWidth: 900, padding: 15 }}>
-          {this.props.children}
-        </Container>
-      </div>
+                  {" Profile"}
+                </Dropdown.Item>
+                <Dropdown.Item
+                  icon={<Icon icon={faSignOutAlt} />}
+                  eventKey="5"
+                  onClick={this.handleClickToLogout}
+                >
+                  {" Logout"}
+                </Dropdown.Item>
+              </Dropdown>
+            </Nav>
+          </Navbar>
+        </Affix>
+        <Container>{this.props.children}</Container>
+      </>
     );
   }
 }

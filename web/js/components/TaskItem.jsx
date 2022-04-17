@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
 import isAfter from "date-fns/isAfter";
@@ -11,7 +10,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { makeDateTime } from "../lib/Utils";
 import { navigateTo } from "../lib/Navigation";
 import { updateTask, deleteTask } from "../actions";
-import { Columns, Column, Modal, Button } from "./elements/";
+import { Columns, Column, Modal, Button, Center, Spacer } from "./elements/";
 
 export class TaskItem extends React.Component {
   state = {
@@ -49,75 +48,43 @@ export class TaskItem extends React.Component {
   render() {
     const { task } = this.props;
 
-    const rowClasses = classNames("task-row", {
-      // Tasks due in the next day
-      "has-background-warning task-due-soon":
-        !task.completed &&
-        task.due &&
-        // Is after now
-        isAfter(task.due, new Date()) &&
-        // Is before 2 days from now
-        isBefore(task.due, addDays(new Date(), 2)),
-      // Tasks that are are over due
-      "has-background-danger task-overdue":
-        !task.completed && task.due && isBefore(task.due, new Date()),
-      "task-completed": task.completed ? true : false,
-    });
+    const styles = {
+      cursor: "pointer",
+      padding: 10,
+      textDecoration: !!task.completed ? "line-through" : "none",
+      color: getTaskTextColor(task),
+    };
 
     return (
-      <Columns flex={true} className={rowClasses} gutters={false}>
-        <Column role="button" className="task-name" onClick={this.viewTask}>
-          <div style={{ padding: 10 }}>
+      <Columns>
+        <Column size={22}>
+          <div style={styles} onClick={this.viewTask}>
             {task.name}
-            {task.due && (
-              <em
-                className="has-text-grey is-size-7"
-                style={{ marginLeft: 10 }}
-              >
-                {" "}
-                due {format(task.due, "MMM d, yyyy h:mma")}
-              </em>
-            )}
+            {task.due && <em> due {format(task.due, "MMM d, yyyy h:mma")}</em>}
           </div>
         </Column>
-        <Column narrow>
-          <Columns style={{ marginRight: 5 }}>
-            <Column>
-              <input
-                type="checkbox"
-                className="checkbox complete-task"
-                checked={this.props.task.completed !== null}
-                onChange={this.completeTask}
-              />
-            </Column>
-            <Column>
-              <Button
-                className="delete-task"
-                is="danger"
-                size="small"
-                width="none"
-                onClick={this.confirmDeleteTask}
-              >
-                <Icon icon={faTrash} title="Delete Task" />
-              </Button>
-            </Column>
-          </Columns>
+        <Column size={1}>
+          <input
+            type="checkbox"
+            checked={this.props.task.completed !== null}
+            onChange={this.completeTask}
+          />
+        </Column>
+        <Column size={1}>
+          <Button is="danger" width="none" onClick={this.confirmDeleteTask}>
+            <Icon icon={faTrash} title="Delete Task" />
+          </Button>
         </Column>
         {this.state.isConfirmingDelete && (
           <Modal isActive={true} onClose={this.cancelDeleteTask}>
-            <p className="has-text-centered">
-              Are you sure you want to delete this task?
-            </p>
-            <Columns>
-              <Column className="has-text-right">
-                <Button is="danger" onClick={this.deleteTask}>
-                  Delete
-                </Button>
-              </Column>
-              <Column>
-                <Button onClick={this.cancelDeleteTask}>Cancel</Button>
-              </Column>
-            </Columns>
+            <p>Are you sure you want to delete this task?</p>
+            <Spacer />
+            <Center>
+              <Button is="danger" onClick={this.deleteTask}>
+                Delete
+              </Button>
+              <Button onClick={this.cancelDeleteTask}>Cancel</Button>
+            </Center>
           </Modal>
         )}
       </Columns>
@@ -133,3 +100,24 @@ TaskItem.propTypes = {
 
 /* istanbul ignore next */
 export default connect((state) => state, { updateTask, deleteTask })(TaskItem);
+
+function getTaskTextColor(task) {
+  const dueSoon =
+    // Is not complete
+    !task.completed &&
+    // Has a due date
+    task.due &&
+    // Is after now
+    isAfter(task.due, new Date()) &&
+    // Is before 2 days from now
+    isBefore(task.due, addDays(new Date(), 2));
+  const overDue = !task.completed && task.due && isBefore(task.due, new Date());
+
+  if (dueSoon) {
+    return "orange";
+  } else if (overDue) {
+    return "red";
+  } else {
+    return "inherit";
+  }
+}

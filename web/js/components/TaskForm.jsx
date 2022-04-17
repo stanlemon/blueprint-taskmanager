@@ -1,16 +1,13 @@
 import isBoolean from "lodash/isBoolean";
-import classNames from "classnames";
 import format from "date-fns/format";
 import React from "react";
 import PropTypes from "prop-types";
-import DatePicker from "react-datepicker";
 import isEmpty from "lodash/isEmpty";
 import isFunction from "lodash/isFunction";
-import uniq from "lodash/uniq";
-import Tags from "react-tag-autocomplete";
+import { Checkbox, DatePicker, Form, TagInput } from "rsuite";
 import { navigateTo } from "../lib/Navigation";
 import { DATE_FORMAT_LONG } from "../lib/Utils";
-import { Field, Button } from "./elements/";
+import { Field, Button, Spacer } from "./elements/";
 import { ROUTE_ROOT } from "./Routes";
 
 export default class TaskForm extends React.Component {
@@ -29,14 +26,6 @@ export default class TaskForm extends React.Component {
     errors: {},
   };
 
-  constructor(props) {
-    super(props);
-
-    this.nameInputRef = React.createRef();
-    this.datePickerRef = React.createRef();
-    this.tagsInputRef = React.createRef();
-  }
-
   handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -44,9 +33,6 @@ export default class TaskForm extends React.Component {
 
     if (isEmpty(this.state.data) || isEmpty(this.state.data.name)) {
       errors["name"] = "You must enter a name for this task.";
-      // If we add more fields with error states, this won't scale, but for now if this field has an error
-      // focus on it immediately so it can be addressed.
-      this.nameInputRef.current.focus();
     }
 
     // If there are any errors, bail
@@ -56,10 +42,6 @@ export default class TaskForm extends React.Component {
       });
       return;
     }
-
-    // On successful submit, blur our active fields (the ones an enter can trigger a submit)
-    this.nameInputRef.current.blur();
-    this.tagsInputRef.current.input.current.input.current.blur();
 
     const result = await this.props.onSubmit(this.state.data);
 
@@ -81,8 +63,8 @@ export default class TaskForm extends React.Component {
     navigateTo(ROUTE_ROOT);
   };
 
-  setCompleted = (e) => {
-    if (e.target.checked) {
+  setCompleted = (value, checked) => {
+    if (checked) {
       this.setData("completed", Date.now());
     } else {
       this.setData("completed", null);
@@ -104,22 +86,11 @@ export default class TaskForm extends React.Component {
     });
   };
 
-  addTag = (tag) => {
-    this.setData(
-      "tags",
-      // We flip these before uniquing them to ensure the latest is retained
-      uniq([...this.state.data.tags, tag.name].reverse()).reverse()
-    );
+  setTags = (tags) => {
+    this.setData("tags", tags);
   };
 
-  removeTag = (index) => {
-    this.setData(
-      "tags",
-      [...this.state.data.tags].filter((e, i) => i !== index)
-    );
-  };
-
-  setValue = (e) => {
+  setValue = (value, e) => {
     if (e.target.type && e.target.type === "checkbox") {
       this.setData(e.target.name, e.target.checked);
     } else {
@@ -131,19 +102,14 @@ export default class TaskForm extends React.Component {
     const task = this.state.data;
     const errors = Object.assign({}, this.state.errors, this.props.errors);
 
-    const classes = classNames({
-      [this.props.className]: !isEmpty(this.props.className),
-    });
-
     return (
-      <form className={classes} onSubmit={this.handleSubmit}>
+      <form id={this.props.id} onSubmit={this.handleSubmit}>
         <Field
           label="Name"
           name="name"
           error={errors.name}
           onChange={this.setValue}
           value={task.name}
-          ref={this.nameInputRef}
         />
         <Field
           label="Description"
@@ -153,77 +119,43 @@ export default class TaskForm extends React.Component {
           onChange={this.setValue}
           value={task.description}
         />
-        <Field label="Due" name="due" error={errors.due}>
+
+        <div style={{ marginBottom: 20 }}>
+          <Form.ControlLabel htmlFor="due">Due</Form.ControlLabel>
           <DatePicker
-            ref={this.datePickerRef}
-            tabIndex="3"
-            id="due"
             name="due"
-            className="input"
-            selected={task.due}
+            id="due"
+            block
+            format="MM/dd/yyyy hh:mmaa"
+            showMeridian={true}
+            value={task.due}
             onChange={this.setDueDate}
-            todayButton="Today"
-            isClearable={true}
-            shouldCloseOnSelect={true}
-            showTimeSelect
-            dateFormat="MM/dd/yyyy h:mma"
-            onKeyDown={(e) => {
-              // If a date has already been selected, the enter key advanced the focus to the next form field.
-              if (e.keyCode === 13) {
-                // If a date has not been selected on the calendar, do the normal thing
-                if (isEmpty(this.datePickerRef.current.input.value)) {
-                  return;
-                }
-
-                // Close calendar
-                this.datePickerRef.current.setOpen(false);
-                // Focus on the next input, the tags
-                // The ref is to <ReactTags/> which has an <Input/> reference that has a reference to the actual form <input/>
-                this.tagsInputRef.current.input.input.focus();
-              }
-            }}
           />
-        </Field>
-        <Field label="Tags" name="tags" error={errors.tags}>
-          <Tags
-            ref={this.tagsInputRef}
-            inputAttributes={{ tabIndex: 5 }}
-            autofocus={false}
-            delimiterChars={[","]}
-            tags={task.tags.map((t) => ({ name: t }))}
-            allowNew={true}
-            suggestions={this.props.tags.map((tag) => ({
-              name: tag,
-            }))}
-            onDelete={this.removeTag}
-            onAddition={this.addTag}
-          />
-        </Field>
-        {task && task.id && (
-          <Field
-            label={
-              <>
-                Completed
-                {task.completed && !isBoolean(task.completed) && (
-                  <em> on {format(task.completed, DATE_FORMAT_LONG)}</em>
-                )}
-              </>
-            }
-            name="completed"
-            tabIndex="4"
-            type="checkbox"
-            checked={task.completed ? true : false}
-            onChange={this.setCompleted}
-          />
-        )}
+          {errors.due && <div style={{ color: "red" }}>{errors.due}</div>}
+        </div>
 
-        <div style={{ minHeight: 25 }}></div>
+        <div style={{ marginBottom: 20 }}>
+          <Form.ControlLabel>Tags</Form.ControlLabel>
+          <TagInput block value={task.tags} onChange={this.setTags} />
+          {errors.tags && <div style={{ color: "red" }}>{errors.tags}</div>}
+        </div>
 
-        <div className="buttons">
+        <Checkbox
+          name="completed"
+          checked={task.completed ? true : false}
+          onChange={this.setCompleted}
+        >
+          Completed
+          {task && task.id && task.completed && !isBoolean(task.completed) && (
+            <em> on {format(task.completed, DATE_FORMAT_LONG)}</em>
+          )}
+        </Checkbox>
+
+        <Spacer />
+
+        <div>
           <Button
             id="save-task"
-            // Note to self: This is a mac specific thing is 'All Controls' is selected under Keyboard settings
-            tabIndex="6"
             type="submit"
             is="primary"
             onClick={this.handleSubmit}
@@ -231,7 +163,7 @@ export default class TaskForm extends React.Component {
             Save
           </Button>
           {task.id && (
-            <Button id="cancel-task" tabIndex="7" onClick={this.cancelTask}>
+            <Button id="cancel-task" onClick={this.cancelTask}>
               Cancel
             </Button>
           )}
@@ -246,11 +178,10 @@ TaskForm.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string),
   task: PropTypes.object,
   errors: PropTypes.object,
-  className: PropTypes.string,
+  id: PropTypes.string.isRequired,
 };
 
 TaskForm.defaultProps = {
-  className: "",
   errors: {},
   tags: [],
   task: {

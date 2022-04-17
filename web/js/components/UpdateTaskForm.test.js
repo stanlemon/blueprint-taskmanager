@@ -25,7 +25,7 @@ describe("<UpdateTaskForm />", () => {
     render(<UpdateTaskForm task={task} updateTask={updateTask} />);
 
     expect(screen.getByLabelText("Name")).toHaveValue(task.name);
-    expect(screen.getByLabelText("Due")).toHaveValue("06/12/2018 7:08AM");
+    expect(screen.getByLabelText("Due")).toHaveValue("06/12/2018 07:08AM");
     expect(
       screen.getByLabelText("Completed on June 12th 2017, 7:08AM")
     ).toBeChecked();

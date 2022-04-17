@@ -35,10 +35,9 @@ describe("<CreateTaskForm />", () => {
 
     expect(due.value).toEqual("");
 
-    const completed = view.queryByLabelText("Completed");
+    const completed = view.getByLabelText("Completed");
 
-    // Create form does not include the completed checkbox
-    expect(completed).toBe(null);
+    expect(completed.checked).toBe(false);
 
     fireEvent.change(name, {
       target: {

@@ -22,9 +22,9 @@ describe("<VerifyEmailView />", () => {
     expect(view.queryByText("Verifying...")).toBe(null);
     expect(view.getByText(message)).toBeInTheDocument();
     // Success = true yield success text
-    expect(view.getByText(message).classList.contains("has-text-success")).toBe(
-      true
-    );
+    expect(
+      view.getByRole("alert").classList.contains("rs-message-success")
+    ).toBe(true);
   });
 
   it("should render a failure message", () => {
@@ -37,7 +37,7 @@ describe("<VerifyEmailView />", () => {
     expect(view.queryByText("Verifying...")).toBe(null);
     expect(view.getByText(message)).toBeInTheDocument();
     // Success = false yields danger text
-    expect(view.getByText(message).classList.contains("has-text-danger")).toBe(
+    expect(view.getByRole("alert").classList.contains("rs-message-error")).toBe(
       true
     );
   });

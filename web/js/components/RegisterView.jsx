@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import { navigateTo } from "../lib/Navigation";
 import { registerUser, clearErrors } from "../actions";
 import { validate, UserForm } from "./UserForm";
-import { Container, Button } from "./elements";
+import { Container, Button, Spacer, Center } from "./elements";
 import {
   ROUTE_TERMS_OF_SERVICE,
   ROUTE_PRIVACY_POLICY,
   ROUTE_LOGIN,
 } from "./Routes";
-import { Blueprint } from "./elements";
+import { Blueprint, Divider } from "./elements";
 
 export class RegisterView extends React.Component {
   constructor(props) {
@@ -52,9 +52,8 @@ export class RegisterView extends React.Component {
     this.props.registerUser(this.state.data);
   };
 
-  setValue = (e) => {
+  setValue = (value, e) => {
     const key = e.target.name;
-    const value = e.target.value;
 
     this.setState((state) => {
       return {
@@ -73,18 +72,10 @@ export class RegisterView extends React.Component {
     const errors = { ...this.props.errors, ...this.state.errors };
 
     return (
-      <Container
-        style={{
-          maxWidth: 500,
-          paddingLeft: ".5rem",
-          paddingRight: ".5rem",
-          marginTop: "-2rem",
-          marginBottom: "1rem",
-        }}
-      >
+      <Container>
         <Blueprint />
-        <h2 className="subtitle is-2">Register an Account</h2>
-        <hr />
+        <h2>Register an Account</h2>
+        <Divider />
         <form id="register-form" onSubmit={this.handleSubmit}>
           <UserForm
             {...this.state.data}
@@ -92,40 +83,33 @@ export class RegisterView extends React.Component {
             setValue={this.setValue}
           />
 
-          <div className="content">
+          <div>
             By registering with this service and creating an account you agree
             to the{" "}
-            <a
-              className="is-link"
-              onClick={() => navigateTo(ROUTE_TERMS_OF_SERVICE)}
-            >
+            <Button onClick={() => navigateTo(ROUTE_TERMS_OF_SERVICE)}>
               Terms of Service
-            </a>{" "}
+            </Button>{" "}
             and acknowledge that you have read and reviewed both it and the{" "}
-            <a
-              className="is-link"
-              onClick={() => navigateTo(ROUTE_PRIVACY_POLICY)}
-            >
+            <Button onClick={() => navigateTo(ROUTE_PRIVACY_POLICY)}>
               Privacy Policy
-            </a>
+            </Button>
             .
           </div>
+          <Spacer />
           <Button
             id="register-button"
             type="submit"
             onClick={this.handleSubmit}
             is="primary"
-            style={{ marginTop: "1.5rem" }}
           >
             Register
           </Button>
         </form>
-        <hr />
-        <div className="has-text-centered" style={{ marginTop: "2.5rem" }}>
-          <a className="is-link" onClick={this.handleClickToLogin}>
-            Return to Login
-          </a>
-        </div>
+        <Divider />
+        <Spacer />
+        <Center>
+          <Button onClick={this.handleClickToLogin}>Return to Login</Button>
+        </Center>
       </Container>
     );
   }

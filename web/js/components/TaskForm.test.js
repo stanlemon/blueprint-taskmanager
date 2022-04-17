@@ -84,7 +84,7 @@ describe("<TaskForm />", () => {
 
     // Check that the fields we have are set correctly
     expect(screen.getByLabelText("Name")).toHaveValue(task.name);
-    expect(screen.getByLabelText("Due")).toHaveValue("06/12/2018 7:08AM");
+    expect(screen.getByLabelText("Due")).toHaveValue("06/12/2018 07:08AM");
     expect(screen.getByLabelText("Completed")).not.toBeChecked();
     expect(screen.getByLabelText("Description")).toHaveValue(task.description);
 
@@ -136,8 +136,8 @@ describe("<TaskForm />", () => {
 
     // Click on today to set the date
     fireEvent.click(screen.getByText("Today"));
-
-    const dueValue = parse(dueInput.value, "MM/dd/yyyy h:mma", Date.now());
+    console.log(dueInput.value);
+    const dueValue = parse(dueInput.value, "MM/dd/yyyy hh:mmaa", Date.now());
 
     expect(isSameDay(new Date(), dueValue)).toBe(true);
   });

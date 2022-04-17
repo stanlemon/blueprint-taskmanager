@@ -26,7 +26,6 @@ export default function Button({
       active={active}
       appearance={appearance}
       color={color}
-      size={convertSize(size)}
       style={style}
       {...props}
     >
@@ -35,23 +34,9 @@ export default function Button({
   );
 }
 
-function convertSize(size) {
-  switch (size) {
-    case "large":
-      return "lg";
-    case "medium":
-      return "md";
-    case "small":
-      return "sm";
-    default:
-      return "";
-  }
-}
-
 Button.propTypes = {
   children: PropTypes.node.isRequired,
-  size: PropTypes.oneOf("small", "large", "medium"),
   selected: PropTypes.bool,
-  is: PropTypes.oneOf("default", "primary", "danger"),
-  width: PropTypes.oneOf("none", PropTypes.number),
+  is: PropTypes.oneOf(["default", "primary", "danger"]),
+  width: PropTypes.oneOf(["none", PropTypes.number]),
 };
