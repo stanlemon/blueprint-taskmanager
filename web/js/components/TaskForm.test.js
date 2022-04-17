@@ -136,7 +136,7 @@ describe("<TaskForm />", () => {
 
     // Click on today to set the date
     fireEvent.click(screen.getByText("Today"));
-    console.log(dueInput.value);
+
     const dueValue = parse(dueInput.value, "MM/dd/yyyy hh:mmaa", Date.now());
 
     expect(isSameDay(new Date(), dueValue)).toBe(true);

@@ -56,7 +56,6 @@ TaskView.propTypes = {
 
 class TaskViewContainer extends React.Component {
   componentDidMount() {
-    console.log("Task view");
     this.props.getTask(parseInt(getRouteParam(ROUTE_TASK_VIEW, "id"), 10));
   }
 
