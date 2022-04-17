@@ -25,7 +25,7 @@ export class UpdateTaskForm extends React.Component {
   render() {
     return (
       <TaskForm
-        className="task-update-form"
+        id="task-update-form"
         tags={this.props.tags}
         task={this.props.task}
         errors={this.props.errors}

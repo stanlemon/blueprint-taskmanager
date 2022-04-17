@@ -20,7 +20,7 @@ export class CreateTaskForm extends React.Component {
   render() {
     return (
       <TaskForm
-        className="task-create-form"
+        id="task-create-form"
         onSubmit={this.handleSave}
         tags={this.props.tags}
         errors={this.props.errors}

@@ -7,7 +7,15 @@ import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
 import { login, clearErrors } from "../actions";
 import { navigateTo } from "../lib/Navigation";
 import Error from "./Error";
-import { Container, Field, Button } from "./elements";
+import {
+  Container,
+  Field,
+  Button,
+  Center,
+  Spacer,
+  Divider,
+  Blueprint,
+} from "./elements";
 import { ROUTE_REGISTER } from "./Routes";
 
 export class LoginView extends React.Component {
@@ -60,9 +68,8 @@ export class LoginView extends React.Component {
     this.props.login(this.state.data);
   };
 
-  setValue = (e) => {
+  setValue = (value, e) => {
     const key = e.target.name;
-    const value = e.target.value;
 
     this.setState((state) => {
       return {
@@ -88,12 +95,12 @@ export class LoginView extends React.Component {
     const { username, password } = this.state.data;
 
     return (
-      <Container style={{ padding: 20, maxWidth: 600 }}>
-        <h1 className="title is-5 has-text-info">Blueprint Task Manager</h1>
-        <h2 className="subtitle is-2">Login</h2>
-        <hr />
+      <Container>
+        <Blueprint />
+        <h2>Login</h2>
+        <Divider />
         {errors.main && <Error message={errors.main} />}
-        <form className="login-form" onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <Field
             isHorizontal={true}
             icon={faUser}
@@ -116,7 +123,7 @@ export class LoginView extends React.Component {
             onChange={this.setValue}
           />
 
-          <div className="has-text-right">
+          <div>
             <Button
               id="login-button"
               type="submit"
@@ -127,16 +134,16 @@ export class LoginView extends React.Component {
             </Button>
           </div>
         </form>
-        <hr />
-        <div className="has-text-centered" style={{ marginTop: "2rem" }}>
-          <a
+        <Divider />
+        <Spacer />
+        <Center>
+          <Button
             id="create-account-button"
-            className="is-link"
             onClick={this.handleClickToRegister}
           >
             Create Account
-          </a>
-        </div>
+          </Button>
+        </Center>
       </Container>
     );
   }

@@ -7,12 +7,16 @@ import waitForExpect from "wait-for-expect";
 
 process.env.PORT = "19292";
 
+async function getTextInSelector(page, selector, text) {
+  return await page.$$eval(selector, (nodes) =>
+    nodes.map((node) => node.textContent)
+  );
+}
+
 // Make sure the jumbotron has our text
 async function waitForTextInSelector(page, selector, text) {
   await waitForExpect(async () => {
-    const results = await page.$$eval(selector, (nodes) =>
-      nodes.map((node) => node.textContent)
-    );
+    const results = await getTextInSelector(page, selector, text);
     //console.log(text, results, results.includes(text));
     expect(results.includes(text)).toBe(true);
   });
@@ -25,7 +29,7 @@ describe("end to end", () => {
     const username = "stanlemon@users.noreply.github.com";
     const password = "p@$$w0rd!";
 
-    await page.waitForSelector(".login-form");
+    await page.waitForSelector("input[name=username]");
 
     console.log("Click create account button");
     const createAccountButton = await page.$("#create-account-button");
@@ -51,16 +55,16 @@ describe("end to end", () => {
     const submitButton1 = await page.$("#register-button");
     await submitButton1.click();
 
-    await page.waitForSelector(".task-create-form");
+    await page.waitForSelector("#task-create-form");
 
     console.log("Click button to logout");
     // Triggers the menu to fan out first
-    await page.click(".navbar-burger");
+    await page.click("#settings");
     // Click the now visible logout button
     const logoutButton = await page.waitForSelector("#logout");
     await logoutButton.click();
 
-    await page.waitForSelector(".login-form");
+    await page.waitForSelector("input[name=username]");
 
     console.log("Enter username and password");
     const loginUsernameInput = await page.$("input[name=username]");
@@ -73,7 +77,7 @@ describe("end to end", () => {
     const loginSubmitButton = await page.$("#login-button");
     await loginSubmitButton.click();
 
-    await page.waitForSelector(".task-create-form");
+    await page.waitForSelector("#task-create-form");
 
     console.log("Create new task 1");
     const taskNameInput1 = await page.$('input[name="name"]');
@@ -83,8 +87,7 @@ describe("end to end", () => {
     const saveButton1 = await page.$("#save-task");
     await saveButton1.click();
 
-    await page.waitForSelector(".task-name");
-    await waitForTextInSelector(page, ".task-name", "First task name");
+    await waitForTextInSelector(page, "div", "First task name");
 
     console.log("Create new task 2");
     const taskNameInput2 = await page.$('input[name="name"]');
@@ -94,13 +97,13 @@ describe("end to end", () => {
     const saveButton2 = await page.$("#save-task");
     await saveButton2.click();
 
-    await page.waitForSelector(".task-name");
-    await waitForTextInSelector(page, ".task-name", "Second task name");
+    await waitForTextInSelector(page, "div", "Second task name");
 
     console.log("Click task 1 to go to edit page");
-    await (
-      await page.waitForSelector(".task-row:nth-child(1) .task-name")
-    ).click();
+    await page.evaluate((_) => {
+      document.querySelectorAll(".task-row:nth-child(1) .task-name")[0].click();
+    });
+
     // Check for our input having the correct task name
     expect(
       await page.$eval('input[name="name"]', (node) => node.value)
@@ -108,12 +111,12 @@ describe("end to end", () => {
     // Clicking cancel will return to the task list
     await (await page.$("#cancel-task")).click();
     // Verify we are back on the main page
-    await page.waitForSelector(".task-create-form");
+    await page.waitForSelector("#task-create-form");
 
     console.log("Click task 2 to go to edit page");
-    await (
-      await page.waitForSelector(".task-row:nth-child(2) .task-name")
-    ).click();
+    await page.evaluate((_) => {
+      document.querySelectorAll(".task-row:nth-child(2) .task-name")[0].click();
+    });
 
     const secondTaskInputValue = await page.$eval(
       'input[name="name"]',
@@ -127,15 +130,13 @@ describe("end to end", () => {
     // Clicking cancel will return to the task list
     await (await page.$("#cancel-task")).click();
 
-    await page.waitForSelector(".task-create-form");
+    await page.waitForSelector("#task-create-form");
 
     // Go back to the first task so that we can edit the page
     console.log("Click task 1 to go back to the edit page");
-    await (
-      await page.waitForSelector(".task-row:nth-child(1) .task-name")
-    ).click();
-
-    await page.waitForSelector(".task-update-form");
+    await page.evaluate((_) => {
+      document.querySelectorAll(".task-row:nth-child(1) .task-name")[0].click();
+    });
 
     console.log("Update task name");
     const taskNameInput1Update = await page.$('input[name="name"]');
@@ -154,21 +155,32 @@ describe("end to end", () => {
     );
 
     console.log("Click checkbox on task to mark it complete");
-    const completeCheckbox1 = await page.$(".complete-task");
+    const completeCheckbox1 = await page.$("input[type=checkbox]");
     await completeCheckbox1.click();
 
-    await page.waitForSelector(".task-row.task-completed");
+    // Not sure if this works
+    await page.waitForSelector("input[type=checkbox]:checked");
+
+    const isCheckboxChecked = await (
+      await completeCheckbox1.getProperty("checked")
+    ).jsonValue();
+
+    expect(isCheckboxChecked).toBe(true);
+
+    console.log(isCheckboxChecked);
 
     let total = (await page.$$(".task-row")).length;
 
     // Delete every row we've created
     while (total > 0) {
       console.log("Click button to delete task");
-      const deleteTaskButton = await page.$(".delete-task");
+      const deleteTaskButton = await page.$(".task-delete");
       await deleteTaskButton.click();
 
       console.log("Click button to confirm delete task");
-      const confirmDeleteTaskButton = await page.$(".modal .is-danger");
+      const confirmDeleteTaskButton = await page.waitForSelector(
+        ".task-delete-confirm"
+      );
       await confirmDeleteTaskButton.click();
 
       total--;

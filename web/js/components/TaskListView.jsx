@@ -4,11 +4,18 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
-import classNames from "classnames";
 import { loadTasks, setFilter, setPage } from "../actions/";
 import CreateTaskForm from "./CreateTaskForm";
 import TaskItem from "./TaskItem";
-import { Container, Button, ButtonGroup } from "./elements/";
+import {
+  Container,
+  Button,
+  ButtonGroup,
+  Spacer,
+  Center,
+  Divider,
+  Pagination,
+} from "./elements/";
 
 const ALL = "all";
 const INCOMPLETE = "incomplete";
@@ -19,9 +26,9 @@ export class TaskListView extends React.Component {
     this.props.loadTasks(this.props.filter, this.props.page);
   }
 
-  setPage(page) {
+  setPage = (page) => {
     this.props.setPage(page);
-  }
+  };
 
   setFilter(filter) {
     this.props.setFilter(filter);
@@ -36,18 +43,19 @@ export class TaskListView extends React.Component {
 
     if (!includes(loaded, "tasks")) {
       return (
-        <div className="has-text-centered">
+        <Center>
           <Icon icon={faSpinner} size="3x" spin />
-          <div style={{ marginTop: 10 }}>
+          <Spacer />
+          <div>
             <em>Loading...</em>
           </div>
-        </div>
+        </Center>
       );
     }
 
     if (!hasTasks) {
       return (
-        <div className="content">
+        <div>
           <h1>You don't have any tasks!</h1>
           <p>
             <em>Use the form below to get started and add your first task.</em>
@@ -63,107 +71,46 @@ export class TaskListView extends React.Component {
       <Container>
         <ButtonGroup style={{ marginBottom: 10 }}>
           <Button
-            className={classNames({ "is-active": filter === ALL })}
             id="task-filter-all"
-            is="info"
-            size="small"
+            is="default"
             selected={filter === ALL}
             onClick={this.setFilterToAll}
           >
             All
           </Button>
           <Button
-            className={classNames({
-              "is-active": filter === INCOMPLETE,
-            })}
             id="task-filter-incomplete"
-            is="info"
-            size="small"
+            is="default"
             selected={filter === INCOMPLETE}
             onClick={this.setFilterToIncomplete}
           >
             Incomplete
           </Button>
           <Button
-            className={classNames({ "is-active": filter === COMPLETE })}
             id="task-filter-complete"
-            is="info"
-            size="small"
+            is="default"
             selected={filter === COMPLETE}
             onClick={this.setFilterToComplete}
           >
             Complete
           </Button>
         </ButtonGroup>
-
-        {tasks.length === 0 && (
-          <div
-            className="has-text-centered"
-            style={{
-              border: "1px solid #e3e3e3",
-              borderRadius: 4,
-              marginBottom: 10,
-              padding: 10,
-            }}
-          >
-            <em>There are no tasks for this filter.</em>
-          </div>
-        )}
-
+        {tasks.length === 0 && <em>There are no tasks for this filter.</em>}
         <div>
           {tasks.map((task) => (
             <TaskItem key={task.id} task={task} />
           ))}
         </div>
-
         {pages > 1 && (
-          <nav
-            className="pagination is-centered"
-            role="navigation"
-            aria-label="pagination"
-            style={{ marginTop: "1rem" }}
-          >
-            <button
-              className="button pagination-previous"
-              disabled={page === 1}
-              onClick={() => this.setPage(page - 1)}
-            >
-              Previous
-            </button>
-            <button
-              className="button pagination-next"
-              disabled={page === pages}
-              onClick={() => this.setPage(page + 1)}
-            >
-              Next page
-            </button>
-            <ul className="pagination-list">
-              {/*<li>
-                <span className="pagination-ellipsis">&hellip;</span>
-              </li>*/}
-              {[...Array(pages + 1).keys()].slice(1).map((p) => (
-                <li key={`page-${p}`}>
-                  <button
-                    className={classNames("button", "pagination-link", {
-                      "is-current": page === p,
-                    })}
-                    aria-label={`Goto page ${p}`}
-                    onClick={() => this.setPage(p)}
-                  >
-                    {p}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <Pagination
+            total={pages * 10}
+            limit={10}
+            activePage={page}
+            onChangePage={this.setPage}
+          />
         )}
-
-        <h1
-          className="title is-3"
-          style={{ marginTop: "2rem", marginBottom: ".25rem" }}
-        >
-          New Task
-        </h1>
+        <Divider />
+        <h2>New Task</h2>
         <CreateTaskForm />
       </Container>
     );

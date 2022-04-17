@@ -3,49 +3,40 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
-import classNames from "classnames";
-import { Container } from "./elements/";
+import { Button, Center, Container, Notification, Spacer } from "./elements/";
 import { getRouteParam, navigateTo } from "../lib/Navigation";
 import { ROUTE_LOGIN, ROUTE_VERIFY } from "./Routes";
 import { verify } from "../actions/";
 
 export function VerifyEmailView({ loaded = false, success, message }) {
   return (
-    <Container
-      style={{
-        paddingLeft: ".5rem",
-        paddingRight: ".5rem",
-        marginTop: "-2rem",
-        marginBottom: "1rem",
-      }}
-    >
+    <Container>
       {!loaded && (
-        <div className="has-text-centered">
+        <Center>
           <Icon icon={faSpinner} size="3x" spin />
-          <div style={{ marginTop: 10 }}>
+          <Spacer />
+          <div>
             <em>Verifying...</em>
           </div>
-        </div>
+        </Center>
       )}
 
       {loaded && (
-        <div className="content">
-          <h1
-            className={classNames("has-text-centered", {
-              "has-text-success": success,
-              "has-text-danger": !success,
-            })}
-          >
-            {message}
-          </h1>
-        </div>
+        <Container>
+          {success ? (
+            <Notification is="success">{message}</Notification>
+          ) : (
+            <Notification is="error">{message}</Notification>
+          )}
+        </Container>
       )}
 
-      <div className="has-text-centered" style={{ marginTop: "2.5rem" }}>
-        <a className="is-link" onClick={() => navigateTo(ROUTE_LOGIN)}>
+      <Spacer />
+      <Center>
+        <Button onClick={() => navigateTo(ROUTE_LOGIN)}>
           Login to Blueprint
-        </a>
-      </div>
+        </Button>
+      </Center>
     </Container>
   );
 }

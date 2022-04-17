@@ -54,9 +54,8 @@ export class ProfileView extends React.Component {
     );
   };
 
-  setValue = (e) => {
+  setValue = (value, e) => {
     const key = e.target.name;
-    const value = e.target.value;
 
     this.setState((state) => {
       return {
@@ -76,7 +75,7 @@ export class ProfileView extends React.Component {
 
     return (
       <Container>
-        <h1 className="title">Profile</h1>
+        <h1>Profile</h1>
         <hr />
         {this.state.message && (
           <Notification is="success">{this.state.message}</Notification>
