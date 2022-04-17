@@ -99,8 +99,13 @@ export class Layout extends React.Component {
               {" Blueprint"}
             </Navbar.Brand>
             <Nav pullRight>
-              <Dropdown icon={<Icon icon={faGear} />} title=" Settings">
+              <Dropdown
+                id="settings"
+                icon={<Icon icon={faGear} />}
+                title=" Settings"
+              >
                 <Dropdown.Item
+                  id="profile"
                   icon={<Icon icon={faUser} />}
                   eventKey="4"
                   onClick={this.handleClickToProfile}
@@ -108,6 +113,7 @@ export class Layout extends React.Component {
                   {" Profile"}
                 </Dropdown.Item>
                 <Dropdown.Item
+                  id="logout"
                   icon={<Icon icon={faSignOutAlt} />}
                   eventKey="5"
                   onClick={this.handleClickToLogout}

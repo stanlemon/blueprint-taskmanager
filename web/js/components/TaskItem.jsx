@@ -56,12 +56,15 @@ export class TaskItem extends React.Component {
     };
 
     return (
-      <Columns>
-        <Column size={22}>
-          <div style={styles} onClick={this.viewTask}>
-            {task.name}
-            {task.due && <em> due {format(task.due, "MMM d, yyyy h:mma")}</em>}
-          </div>
+      <Columns className="task-row">
+        <Column
+          size={22}
+          className="task-name"
+          style={styles}
+          onClick={this.viewTask}
+        >
+          {task.name}
+          {task.due && <em> due {format(task.due, "MMM d, yyyy h:mma")}</em>}
         </Column>
         <Column size={1}>
           <input
@@ -71,7 +74,12 @@ export class TaskItem extends React.Component {
           />
         </Column>
         <Column size={1}>
-          <Button is="danger" width="none" onClick={this.confirmDeleteTask}>
+          <Button
+            className="task-delete"
+            is="danger"
+            width="none"
+            onClick={this.confirmDeleteTask}
+          >
             <Icon icon={faTrash} title="Delete Task" />
           </Button>
         </Column>
@@ -80,7 +88,11 @@ export class TaskItem extends React.Component {
             <p>Are you sure you want to delete this task?</p>
             <Spacer />
             <Center>
-              <Button is="danger" onClick={this.deleteTask}>
+              <Button
+                className="task-delete-confirm"
+                is="danger"
+                onClick={this.deleteTask}
+              >
                 Delete
               </Button>
               <Button onClick={this.cancelDeleteTask}>Cancel</Button>

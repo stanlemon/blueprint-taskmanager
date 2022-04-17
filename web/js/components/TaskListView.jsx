@@ -96,9 +96,11 @@ export class TaskListView extends React.Component {
           </Button>
         </ButtonGroup>
         {tasks.length === 0 && <em>There are no tasks for this filter.</em>}
-        {tasks.map((task) => (
-          <TaskItem key={task.id} task={task} />
-        ))}
+        <div>
+          {tasks.map((task) => (
+            <TaskItem key={task.id} task={task} />
+          ))}
+        </div>
         {pages > 1 && (
           <Pagination
             total={pages * 10}

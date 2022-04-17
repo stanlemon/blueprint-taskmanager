@@ -2,8 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import FlexboxGrid from "rsuite/FlexboxGrid";
 
-export function Columns(_props) {
-  return <FlexboxGrid align="middle">{_props.children}</FlexboxGrid>;
+export function Columns({ className, children }) {
+  return (
+    <FlexboxGrid align="middle" className={className}>
+      {children}
+    </FlexboxGrid>
+  );
 }
 
 Columns.propTypes = {

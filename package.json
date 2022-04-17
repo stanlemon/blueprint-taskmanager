@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^13.1.1",
+    "@types/puppeteer": "^5.4.5",
     "better-sqlite3": "^7.5.1",
     "concurrently": "^7.1.0",
     "jest-puppeteer": "^6.1.0",
