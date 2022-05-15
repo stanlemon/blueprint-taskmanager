@@ -73,8 +73,8 @@
   "devDependencies": {
     "@testing-library/react": "^13.2.0",
     "@types/puppeteer": "^5.4.6",
-    "better-sqlite3": "^7.5.1",
-    "concurrently": "^7.1.0",
+    "better-sqlite3": "^7.5.2",
+    "concurrently": "^7.2.0",
     "jest-puppeteer": "^6.1.0",
     "nodemon": "^2.0.16",
     "puppeteer": "^14.1.0",
