@@ -16,6 +16,14 @@
       "enabled": false
     },
     {
+      "packageNames": [
+        "passport"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ]
+    },
+    {
       "matchDatasources": [
         "npm"
       ],
