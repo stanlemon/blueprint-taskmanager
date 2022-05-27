@@ -19,9 +19,9 @@
       "packageNames": [
         "passport"
       ],
-      "matchUpdateTypes": [
-        "patch"
-      ]
+      "major": true,
+      "minor": true,
+      "enabled": false
     },
     {
       "matchDatasources": [
