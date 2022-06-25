@@ -77,7 +77,7 @@
     "concurrently": "^7.2.1",
     "jest-puppeteer": "^6.1.0",
     "nodemon": "^2.0.16",
-    "puppeteer": "^14.3.0",
+    "puppeteer": "^15.1.1",
     "supertest": "^6.2.3",
     "wait-for-expect": "^3.0.2"
   }
