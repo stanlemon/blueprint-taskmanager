@@ -11,9 +11,8 @@ export default function TermsOfService() {
 
       <p>
         Please read these Terms of Service ("Terms", "Terms of Service")
-        carefully before using the https://blueprint-taskmanager.herokuapp.com
-        website (the "Service") operated by Blueprint Task Manager ("us", "we",
-        or "our").
+        carefully before using the website (the "Service") operated by Blueprint
+        Task Manager ("us", "we", or "our").
       </p>
 
       <p>

@@ -8,11 +8,10 @@ export default function PrivacyPolciy() {
       <h2>Privacy Policy</h2>
 
       <p>
-        At Blueprint Task Manager, accessible from
-        http://blueprint-taskmanager.herokuapp.com, one of our main priorities
-        is the privacy of our visitors. This Privacy Policy document contains
-        types of information that is collected and recorded by Blueprint Task
-        Manager and how we use it.
+        At Blueprint Task Manager one of our main priorities is the privacy of
+        our visitors. This Privacy Policy document contains types of information
+        that is collected and recorded by Blueprint Task Manager and how we use
+        it.
       </p>
 
       <p>
@@ -54,23 +53,6 @@ export default function PrivacyPolciy() {
         has no access to or control over these cookies that are used by
         third-party advertisers.
       </p>
-
-      <p>
-        Services and their respective privacy policies used by Blueprint Task
-        Manager:
-      </p>
-
-      <ul>
-        <li>
-          <a
-            href="https://www.heroku.com/policy/security"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Heroku Privacy Policy
-          </a>
-        </li>
-      </ul>
 
       <h3>Third Party Privacy Policies</h3>
 
