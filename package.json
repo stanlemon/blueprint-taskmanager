@@ -66,7 +66,7 @@
     "rsuite": "^5.18.0",
     "serve-static": "^1.15.0",
     "shortid": "^2.2.16",
-    "uuid": "^8.3.2",
+    "uuid": "^9.0.0",
     "validator": "^13.7.0",
     "wouter": "^2.7.5"
   },
