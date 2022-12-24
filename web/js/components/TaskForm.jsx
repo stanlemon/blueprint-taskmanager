@@ -128,6 +128,12 @@ export default class TaskForm extends React.Component {
             block
             format="MM/dd/yyyy hh:mmaa"
             showMeridian={true}
+            ranges={[
+              {
+                label: "today",
+                value: new Date(),
+              },
+            ]}
             value={task.due}
             onChange={this.setDueDate}
           />
