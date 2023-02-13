@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const rateLimit = require("express-rate-limit");
+const session = require("express-session");
 
 require("dotenv").config();
 
@@ -25,5 +26,26 @@ if (process.env.NODE_ENV === "production") {
   app.use(compression());
   app.use(helmet());
 }
+
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET,
+  })
+);
+
+// Taken from https://github.com/jaredhanson/passport/issues/904#issuecomment-1307558283
+app.use((request, response, next) => {
+  if (request.session && !request.session.regenerate) {
+    request.session.regenerate = (cb) => {
+      cb();
+    };
+  }
+  if (request.session && !request.session.save) {
+    request.session.save = (cb) => {
+      cb();
+    };
+  }
+  next();
+});
 
 module.exports = app;
