@@ -64,7 +64,7 @@
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
-    "rsuite": "^5.27.0",
+    "rsuite": "^5.28.0",
     "serve-static": "^1.15.0",
     "shortid": "^2.2.16",
     "uuid": "^9.0.0",
@@ -78,7 +78,7 @@
     "concurrently": "^7.6.0",
     "jest-puppeteer": "^7.0.1",
     "nodemon": "^2.0.20",
-    "puppeteer": "^19.7.1",
+    "puppeteer": "^19.7.2",
     "supertest": "^6.3.3",
     "wait-for-expect": "^3.0.2"
   }
