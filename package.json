@@ -76,7 +76,7 @@
     "@types/puppeteer": "^7.0.4",
     "better-sqlite3": "^8.2.0",
     "concurrently": "^7.6.0",
-    "jest-puppeteer": "^7.0.1",
+    "jest-puppeteer": "^8.0.5",
     "nodemon": "^2.0.21",
     "puppeteer": "^19.7.4",
     "supertest": "^6.3.3",
