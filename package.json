@@ -75,7 +75,7 @@
     "@testing-library/react": "^14.0.0",
     "@types/puppeteer": "^7.0.4",
     "better-sqlite3": "^8.2.0",
-    "concurrently": "^7.6.0",
+    "concurrently": "^8.0.1",
     "jest-puppeteer": "^8.0.6",
     "nodemon": "^2.0.22",
     "puppeteer": "^19.8.0",
