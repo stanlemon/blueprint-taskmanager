@@ -34,12 +34,12 @@
     ]
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.3.0",
-    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@hapi/joi": "^17.1.1",
     "@sendgrid/mail": "^7.7.0",
-    "@stanlemon/webdev": "^0.1.96",
+    "@stanlemon/webdev": "^0.1.97",
     "bcryptjs": "^2.4.3",
     "client-sessions": "^0.8.0",
     "compression": "^1.7.4",
@@ -48,7 +48,7 @@
     "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
     "express-session": "^1.17.3",
-    "helmet": "^6.0.1",
+    "helmet": "^6.1.5",
     "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.2",
     "lodash": "^4.17.21",
@@ -64,7 +64,7 @@
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
-    "rsuite": "^5.29.0",
+    "rsuite": "^5.31.1",
     "serve-static": "^1.15.0",
     "shortid": "^2.2.16",
     "uuid": "^9.0.0",
@@ -74,11 +74,11 @@
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@types/puppeteer": "^7.0.4",
-    "better-sqlite3": "^8.2.0",
+    "better-sqlite3": "^8.3.0",
     "concurrently": "^8.0.1",
     "jest-puppeteer": "^8.0.6",
     "nodemon": "^2.0.22",
-    "puppeteer": "^19.8.0",
+    "puppeteer": "^19.9.0",
     "supertest": "^6.3.3",
     "wait-for-expect": "^3.0.2"
   }
