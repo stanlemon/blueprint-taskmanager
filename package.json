@@ -64,12 +64,12 @@
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
-    "rsuite": "^5.31.1",
+    "rsuite": "^5.32.0",
     "serve-static": "^1.15.0",
     "shortid": "^2.2.16",
     "uuid": "^9.0.0",
     "validator": "^13.9.0",
-    "wouter": "^2.10.0"
+    "wouter": "^2.10.1"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
@@ -78,7 +78,7 @@
     "concurrently": "^8.0.1",
     "jest-puppeteer": "^8.0.6",
     "nodemon": "^2.0.22",
-    "puppeteer": "^19.9.0",
+    "puppeteer": "^19.10.1",
     "supertest": "^6.3.3",
     "wait-for-expect": "^3.0.2"
   }
