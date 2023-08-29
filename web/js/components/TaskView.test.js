@@ -1,6 +1,5 @@
 import React from "react";
 import { fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import { renderConnected } from "../lib/test-utils";
 import { TaskView } from "./TaskView";
 import { format, subDays } from "date-fns";
@@ -33,7 +32,7 @@ describe("<TaskView />", () => {
     expect(view.getByLabelText("Name")).toHaveValue(task.name);
     expect(view.getByLabelText("Description")).toHaveValue(task.description);
     expect(view.getByLabelText("Due")).toHaveValue("");
-    expect(view.getByLabelText("Completed")).not.toHaveAttribute("checked");
+    expect(view.getByLabelText("Completed")).not.toBeChecked();
   });
 
   it("should render an error for an unfound task", () => {

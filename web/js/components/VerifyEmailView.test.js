@@ -1,6 +1,5 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import { VerifyEmailView, VerifyEmailViewContainer } from "./VerifyEmailView";
 import { ROUTE_LOGIN } from "./Routes";
 import { getCurrentPathname } from "../lib/Navigation";
@@ -19,12 +18,10 @@ describe("<VerifyEmailView />", () => {
       <VerifyEmailView loaded={true} success={true} message={message} />
     );
 
-    expect(view.queryByText("Verifying...")).toBe(null);
+    expect(view.queryByText("Verifying...")).not.toBeInTheDocument();
     expect(view.getByText(message)).toBeInTheDocument();
     // Success = true yield success text
-    expect(
-      view.getByRole("alert").classList.contains("rs-message-success")
-    ).toBe(true);
+    expect(view.getByRole("alert")).toHaveClass("rs-message-success");
   });
 
   it("should render a failure message", () => {
@@ -34,12 +31,10 @@ describe("<VerifyEmailView />", () => {
       <VerifyEmailView loaded={true} success={false} message={message} />
     );
 
-    expect(view.queryByText("Verifying...")).toBe(null);
+    expect(view.queryByText("Verifying...")).not.toBeInTheDocument();
     expect(view.getByText(message)).toBeInTheDocument();
     // Success = false yields danger text
-    expect(view.getByRole("alert").classList.contains("rs-message-error")).toBe(
-      true
-    );
+    expect(view.getByRole("alert")).toHaveClass("rs-message-error");
   });
 
   it("should call verify", async () => {

@@ -1,6 +1,5 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import { CreateTaskForm } from "./CreateTaskForm";
 
 describe("<CreateTaskForm />", () => {
@@ -37,7 +36,7 @@ describe("<CreateTaskForm />", () => {
 
     const completed = view.getByLabelText("Completed");
 
-    expect(completed.checked).toBe(false);
+    expect(completed).not.toBeChecked();
 
     fireEvent.change(name, {
       target: {

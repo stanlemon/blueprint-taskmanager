@@ -1,6 +1,5 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import { renderConnected } from "../lib/test-utils";
 import { TaskListView } from "./TaskListView";
 

@@ -3,7 +3,6 @@ import parse from "date-fns/parse";
 import parseISO from "date-fns/parseISO";
 import isSameDay from "date-fns/isSameDay";
 import { fireEvent, render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import TaskForm from "./TaskForm";
 
 describe("<TaskForm />", () => {

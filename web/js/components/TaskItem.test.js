@@ -1,6 +1,5 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import subDays from "date-fns/subDays";
 import addDays from "date-fns/addDays";
 import isSameDay from "date-fns/isSameDay";
@@ -156,7 +155,7 @@ describe("<TaskItem />", () => {
     // The modal should be closed
     expect(
       screen.queryByText("Are you sure you want to delete this task?")
-    ).toBe(null);
+    ).not.toBeInTheDocument();
   });
 
   it("clicking on an incomplete task's checkbox marks it complete", () => {

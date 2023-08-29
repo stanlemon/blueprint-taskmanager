@@ -1,6 +1,5 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import PrivacyPolciyView from "./PrivacyPolicyView";
 import { getCurrentPathname } from "../lib/Navigation";
 import { ROUTE_REGISTER } from "./Routes";

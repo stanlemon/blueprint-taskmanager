@@ -1,6 +1,5 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import { getCurrentPathname } from "../lib/Navigation";
 import { LoginView } from "./LoginView";
 import { ROUTE_REGISTER } from "./Routes";

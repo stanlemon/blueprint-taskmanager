@@ -1,6 +1,5 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import { UpdateTaskForm } from "./UpdateTaskForm";
 import parseISO from "date-fns/parseISO";
 
@@ -53,9 +52,9 @@ describe("<UpdateTaskForm />", () => {
     );
 
     // Once the checkbox is flipped the label with the date should go away...
-    expect(screen.queryByLabelText("Completed on June 12th 2017, 7:08AM")).toBe(
-      null
-    );
+    expect(
+      screen.queryByLabelText("Completed on June 12th 2017, 7:08AM")
+    ).not.toBeInTheDocument();
     // ...and just say completed
     expect(screen.getByLabelText("Completed")).toBeInTheDocument();
 
