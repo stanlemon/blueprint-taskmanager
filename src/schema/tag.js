@@ -1,4 +1,4 @@
-const Joi = require("@hapi/joi");
+const Joi = require("joi");
 
 const schema = Joi.object().keys({
   id: Joi.number().allow(null).optional().label("Tag id"),

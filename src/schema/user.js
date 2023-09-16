@@ -1,4 +1,4 @@
-const Joi = require("@hapi/joi");
+const Joi = require("joi");
 
 const keys = {
   name: Joi.string().required().label("Name"),
