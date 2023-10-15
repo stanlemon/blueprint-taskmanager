@@ -1,5 +1,9 @@
 {
   "extends": [
     "@stanlemon"
-  ]
+  ],
+  "rules": {
+    "react/no-unescaped-entities": "warn",
+    "no-extra-boolean-cast": "warn"
+  }
 }
