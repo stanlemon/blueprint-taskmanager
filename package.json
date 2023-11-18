@@ -38,7 +38,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@sendgrid/mail": "^7.7.0",
-    "@stanlemon/webdev": "^0.1.139",
+    "@stanlemon/webdev": "^0.1.140",
     "bcryptjs": "^2.4.3",
     "client-sessions": "^0.8.0",
     "compression": "^1.7.4",
@@ -64,7 +64,7 @@
     "react-redux": "^8.1.3",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
-    "rsuite": "^5.44.0",
+    "rsuite": "^5.45.0",
     "serve-static": "^1.15.0",
     "shortid": "^2.2.16",
     "uuid": "^9.0.1",
@@ -72,13 +72,13 @@
     "wouter": "^2.12.1"
   },
   "devDependencies": {
-    "@testing-library/react": "^14.1.0",
+    "@testing-library/react": "^14.1.2",
     "@types/puppeteer": "^7.0.4",
     "better-sqlite3": "^9.1.1",
     "concurrently": "^8.2.2",
     "jest-puppeteer": "^9.0.1",
     "nodemon": "^3.0.1",
-    "puppeteer": "^21.5.1",
+    "puppeteer": "^21.5.2",
     "supertest": "^6.3.3",
     "wait-for-expect": "^3.0.2"
   }
