@@ -9,7 +9,7 @@
     "url": "git@github.com:stanlemon/blueprint-taskmanager.git"
   },
   "engines": {
-    "node": ">=16.13"
+    "node": ">=20.0"
   },
   "main": "server.js",
   "scripts": {
