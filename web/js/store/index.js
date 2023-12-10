@@ -1,6 +1,6 @@
-import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
-import reducer from "../reducers/";
+import { configureStore } from "@reduxjs/toolkit";
+import { user, tags, filter, page, tasks, loaded, errors } from "../reducers/";
+
 import UserService from "../lib/UserService";
 import TaskService from "../lib/TaskService";
 import TagService from "../lib/TagsService";
@@ -11,9 +11,22 @@ const services = {
   tagService: new TagService(),
 };
 
-const store = createStore(
-  reducer,
-  applyMiddleware(thunk.withExtraArgument(services))
-);
+const store = configureStore({
+  reducer: {
+    user,
+    tags,
+    filter,
+    page,
+    tasks,
+    loaded,
+    errors,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: {
+        extraArgument: services,
+      },
+    }),
+});
 
 export default store;

@@ -27,6 +27,16 @@ import {
   GET_TASK_ERROR,
 } from "../actions/";
 
+export const initialState = {
+  user: null,
+  tags: [],
+  filter: FILTER_ALL,
+  page: 1,
+  tasks: {},
+  loaded: [],
+  errors: [],
+};
+
 // Ensure that we have valid dates in our tasks objects
 function formatTaskDates(task) {
   return Object.assign({}, task, {
@@ -37,7 +47,7 @@ function formatTaskDates(task) {
   });
 }
 
-export function tags(state, action) {
+export function tags(state = initialState.tags, action) {
   switch (action.type) {
     case LOAD_TAGS_SUCCESS:
       return [...action.tags];
@@ -46,7 +56,7 @@ export function tags(state, action) {
   }
 }
 
-export function tasks(state, action) {
+export function tasks(state = initialState.tasks, action) {
   switch (action.type) {
     case GET_TASK_SUCCESS:
       return {
@@ -78,7 +88,7 @@ export function tasks(state, action) {
   }
 }
 
-export function user(state, action) {
+export function user(state = initialState.user, action) {
   switch (action.type) {
     case UNAUTHENTICATED_USER:
       return null;
@@ -90,7 +100,7 @@ export function user(state, action) {
   }
 }
 
-export function errors(state, action) {
+export function errors(state = initialState.errors, action) {
   switch (action.type) {
     case ERROR:
     case LOAD_TAGS_ERROR:
@@ -110,7 +120,7 @@ export function errors(state, action) {
   }
 }
 
-export function loaded(state, action) {
+export function loaded(state = initialState.loaded, action) {
   switch (action.type) {
     case LOAD_TAGS_ERROR:
       return uniq([...state, "tags"]);
@@ -130,7 +140,7 @@ export function loaded(state, action) {
   }
 }
 
-export function filter(state, action) {
+export function filter(state = initialState.filter, action) {
   switch (action.type) {
     case SET_FILTER:
       return action.filter;
@@ -139,7 +149,7 @@ export function filter(state, action) {
   }
 }
 
-export function page(state, action) {
+export function page(state = initialState.page, action) {
   switch (action.type) {
     case SET_PAGE:
       return action.page;
@@ -148,18 +158,8 @@ export function page(state, action) {
   }
 }
 
-export const initialState = {
-  user: null,
-  tags: [],
-  filter: FILTER_ALL,
-  page: 1,
-  tasks: {},
-  loaded: [],
-  errors: [],
-};
-
 export function reducers(state = initialState, action) {
-  const y = {
+  return {
     user: user(state.user, action),
     tags: tags(state.tags, action),
     filter: filter(state.filter, action),
@@ -168,8 +168,6 @@ export function reducers(state = initialState, action) {
     loaded: loaded(state.loaded, action),
     errors: errors(state.errors, action),
   };
-  //console.log("redux store = ", y);
-  return y;
 }
 
 export default reducers;
