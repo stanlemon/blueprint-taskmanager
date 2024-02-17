@@ -69,7 +69,7 @@
     "shortid": "^2.2.16",
     "uuid": "^9.0.1",
     "validator": "^13.11.0",
-    "wouter": "^2.12.1"
+    "wouter": "^3.0.0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.2.1",
