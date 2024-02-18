@@ -1,7 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { UpdateTaskForm } from "./UpdateTaskForm";
-import parseISO from "date-fns/parseISO";
+import { parseISO } from "date-fns";
 
 describe("<UpdateTaskForm />", () => {
   it("should render a form with an existing task and update it", () => {

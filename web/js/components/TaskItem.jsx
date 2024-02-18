@@ -1,9 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import isAfter from "date-fns/isAfter";
-import isBefore from "date-fns/isBefore";
-import addDays from "date-fns/addDays";
-import format from "date-fns/format";
+import { isAfter, isBefore, addDays, format } from "date-fns";
 import { connect } from "react-redux";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -51,7 +48,7 @@ export class TaskItem extends React.Component {
     const styles = {
       cursor: "pointer",
       padding: 10,
-      textDecoration: !!task.completed ? "line-through" : "none",
+      textDecoration: task.completed ? "line-through" : "none",
       color: getTaskTextColor(task),
     };
 

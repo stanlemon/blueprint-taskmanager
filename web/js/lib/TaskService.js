@@ -1,6 +1,5 @@
 import mapValues from "lodash/mapValues";
-import isDate from "date-fns/isDate";
-import format from "date-fns/format";
+import { isDate, format } from "date-fns";
 import RestService from "./RestService";
 
 export default class TaskService extends RestService {

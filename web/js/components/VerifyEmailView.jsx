@@ -58,7 +58,6 @@ export class VerifyEmailViewContainer extends React.Component {
 
   async componentDidMount() {
     const token = getRouteParam(ROUTE_VERIFY, "token");
-
     const response = await this.props.verify(token);
 
     this.setState({ loaded: true, ...response });

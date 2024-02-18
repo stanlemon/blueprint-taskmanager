@@ -1,5 +1,4 @@
-import addDays from "date-fns/addDays";
-import subDays from "date-fns/subDays";
+import { addDays, subDays } from "date-fns";
 import shuffle from "lodash/shuffle";
 import { makeDateTime, sortTasks } from "./Utils";
 

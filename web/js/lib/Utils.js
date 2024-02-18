@@ -1,6 +1,4 @@
-import formatISO from "date-fns/formatISO";
-import isAfter from "date-fns/isAfter";
-import isSameMinute from "date-fns/isSameMinute";
+import { formatISO, isAfter, isSameMinute } from "date-fns";
 
 export const DATE_FORMAT_LONG = "MMMM do yyyy, h:mma";
 

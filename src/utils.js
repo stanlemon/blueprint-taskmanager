@@ -1,4 +1,4 @@
-const format = require("date-fns/format");
+const { format } = require("date-fns");
 
 const SQL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSxxx";
 

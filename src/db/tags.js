@@ -1,4 +1,4 @@
-const format = require("date-fns/format");
+const { format } = require("date-fns");
 const knex = require("../connection");
 const isEmpty = require("lodash/isEmpty");
 const mapKeys = require("lodash/mapKeys");

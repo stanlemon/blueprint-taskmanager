@@ -1,6 +1,6 @@
 import includes from "lodash/includes";
 import isEmpty from "lodash/isEmpty";
-import format from "date-fns/format";
+import { format } from "date-fns";
 import React from "react";
 import PropTypes from "prop-types";
 import Error from "./Error";

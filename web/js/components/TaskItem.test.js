@@ -1,9 +1,6 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import subDays from "date-fns/subDays";
-import addDays from "date-fns/addDays";
-import isSameDay from "date-fns/isSameDay";
-import parseISO from "date-fns/parseISO";
+import { subDays, addDays, isSameDay, parseISO } from "date-fns";
 import { makeDateTime } from "../lib/Utils";
 import { getCurrentPathname } from "../lib/Navigation";
 import { TaskItem } from "./TaskItem";

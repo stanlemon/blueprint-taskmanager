@@ -1,5 +1,5 @@
 import isBoolean from "lodash/isBoolean";
-import format from "date-fns/format";
+import { format } from "date-fns";
 import React from "react";
 import PropTypes from "prop-types";
 import isEmpty from "lodash/isEmpty";

@@ -3,8 +3,7 @@ const omit = require("lodash/omit");
 const includes = require("lodash/includes");
 const isObject = require("lodash/isObject");
 const isEmpty = require("lodash/isEmpty");
-const format = require("date-fns/format");
-const isDate = require("date-fns/isDate");
+const { format, isDate } = require("date-fns");
 const { upsertTags, getTagsByTaskId, getTagsForTaskIds } = require("./tags");
 
 const columns = [

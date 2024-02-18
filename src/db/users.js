@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const shortid = require("shortid");
-const format = require("date-fns/format");
+const { format } = require("date-fns");
 const omit = require("lodash/omit");
 const isEmpty = require("lodash/isEmpty");
 const isObject = require("lodash/isObject");

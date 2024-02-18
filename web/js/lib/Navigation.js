@@ -1,4 +1,5 @@
-const makeMatcher = require("wouter/matcher").default;
+const { makeMatcher } = require("wouter");
+const { pathToRegexp, match } = require("path-to-regexp");
 
 // This file contains function that obscure route navigation during
 // development so that there are no hard dependencies outside of this file
@@ -12,9 +13,15 @@ export function getCurrentPathname() {
 }
 
 export function getRouteParam(route, param) {
-  const matcher = makeMatcher();
-  const [, params] = matcher(route, window.location.pathname);
-  return params?.[param];
+  console.log(route, window.location.pathname);
+  const urlMatch = match(route, {
+    decode: decodeURIComponent,
+  });
+
+  console.log(urlMatch(window.location.pathname));
+  //=> { path: '/users/1234/photos', index: 0, params: { id: '1234', tab: 'photos' } }
+
+  return "";
 }
 
 export const history = window.history;
