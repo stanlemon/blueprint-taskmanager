@@ -1,4 +1,3 @@
-import React from "react";
 import { Blueprint } from "./elements";
 
 export default function PrivacyPolciy() {

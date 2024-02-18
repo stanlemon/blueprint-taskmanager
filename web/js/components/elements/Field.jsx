@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { Form, Input, InputGroup } from "rsuite";

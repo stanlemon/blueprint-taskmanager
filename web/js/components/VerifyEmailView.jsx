@@ -64,8 +64,6 @@ export class VerifyEmailViewContainer extends React.Component {
 
       this.setState({ loaded: true, ...response });
     } catch (error) {
-      console.error(error);
-
       this.setState({
         loaded: true,
         ...error.errors,

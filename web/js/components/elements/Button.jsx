@@ -1,11 +1,9 @@
-import React from "react";
 import PropTypes from "prop-types";
 import omit from "lodash/omit";
 import { Button as RsuiteButton } from "rsuite";
 
 export default function Button({
   children,
-  size,
   selected: active,
   is,
   width,

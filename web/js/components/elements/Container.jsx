@@ -1,4 +1,3 @@
-import React from "react";
 import Container from "rsuite/Container";
 import Content from "rsuite/Content";
 
