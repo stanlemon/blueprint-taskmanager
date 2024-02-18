@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { subDays, addDays, isSameDay, parseISO } from "date-fns";
 import { makeDateTime } from "../lib/Utils";
 import { getCurrentPathname } from "../lib/Navigation";
@@ -94,7 +94,7 @@ describe("<TaskItem />", () => {
     expect(taskName.style.getPropertyValue("text-decoration")).toEqual("none");
   });
 
-  it("clicking on a task's name navigates to view it", () => {
+  it("clicking on a task's name navigates to view it", async () => {
     const task = {
       id: 1,
       name: "Foobar",
@@ -112,10 +112,12 @@ describe("<TaskItem />", () => {
 
     fireEvent.click(taskName);
 
-    expect(getCurrentPathname()).toEqual(ROUTE_TASK_VIEW.replace(":id", 1));
+    await waitFor(() => {
+      expect(getCurrentPathname()).toEqual(ROUTE_TASK_VIEW.replace(":id", 1));
+    });
   });
 
-  it("clicking on a task's delete button calls the delete action with the right id", () => {
+  it("clicking on a task's delete button calls the delete action with the right id", async () => {
     const task = {
       id: 1234,
       name: "Foobar",
@@ -136,22 +138,28 @@ describe("<TaskItem />", () => {
     // This should be the button on the task row
     fireEvent.click(screen.getByRole("button", { name: "Delete Task" }));
 
-    // This text should appear in the modal
-    expect(
-      screen.getByText("Are you sure you want to delete this task?")
-    ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
+    await waitFor(() => {
+      // This text should appear in the modal
+      expect(
+        screen.getByText("Are you sure you want to delete this task?")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Cancel" })
+      ).toBeInTheDocument();
+    });
 
     // This should be the delete button on the modal
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-    // Confirm that we deleted the right task
-    expect(deletedTaskId).toEqual(task.id);
+    await waitFor(() => {
+      // Confirm that we deleted the right task
+      expect(deletedTaskId).toEqual(task.id);
 
-    // The modal should be closed
-    expect(
-      screen.queryByText("Are you sure you want to delete this task?")
-    ).not.toBeInTheDocument();
+      // The modal should be closed
+      expect(
+        screen.queryByText("Are you sure you want to delete this task?")
+      ).not.toBeInTheDocument();
+    });
   });
 
   it("clicking on an incomplete task's checkbox marks it complete", () => {

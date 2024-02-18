@@ -1,9 +1,9 @@
 import { parse, parseISO, isSameDay } from "date-fns";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import TaskForm from "./TaskForm";
 
 describe("<TaskForm />", () => {
-  it("should render an empty form with and submit a new task in it", () => {
+  it("should render an empty form with and submit a new task in it", async () => {
     let lastSavedTask = null;
 
     const save = (task) => {
@@ -22,7 +22,7 @@ describe("<TaskForm />", () => {
       tags: [],
     };
 
-    render(<TaskForm task={{}} onSubmit={save} />);
+    render(<TaskForm id="test" task={{}} onSubmit={save} />);
 
     // Update the task name
     expect(screen.getByLabelText("Name")).toHaveValue("");
@@ -44,13 +44,15 @@ describe("<TaskForm />", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
-    expect(lastSavedTask).toEqual(task);
+    await waitFor(() => {
+      expect(lastSavedTask).toEqual(task);
+    });
   });
 
   it("submitting a form without a task name triggers an error", () => {
     const save = (r) => r;
 
-    render(<TaskForm onSubmit={save} />);
+    render(<TaskForm id="test" onSubmit={save} />);
 
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
@@ -59,7 +61,7 @@ describe("<TaskForm />", () => {
     ).toBeInTheDocument();
   });
 
-  it("should render a form with an existing task and update it", () => {
+  it("should render a form with an existing task and update it", async () => {
     let lastSavedTask = null;
 
     const save = (task) => {
@@ -76,7 +78,7 @@ describe("<TaskForm />", () => {
       completed: null, // Note that you can't set completion when creating
     };
 
-    render(<TaskForm task={task} onSubmit={save} />);
+    render(<TaskForm id="test" task={task} onSubmit={save} />);
 
     // Check that the fields we have are set correctly
     expect(screen.getByLabelText("Name")).toHaveValue(task.name);
@@ -106,22 +108,24 @@ describe("<TaskForm />", () => {
     // Submit the form
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
-    // When we submit we should have the original task, but with the new name and description fields
-    expect(lastSavedTask).toMatchObject({
-      id: task.id,
-      name: newName,
-      description: newDescription,
-      due: task.due, // field is unchanged
-      // Leave out completed, we'll check it next
-    });
+    await waitFor(() => {
+      // When we submit we should have the original task, but with the new name and description fields
+      expect(lastSavedTask).toMatchObject({
+        id: task.id,
+        name: newName,
+        description: newDescription,
+        due: task.due, // field is unchanged
+        // Leave out completed, we'll check it next
+      });
 
-    expect(isSameDay(new Date(), lastSavedTask.completed)).toBe(true);
+      expect(isSameDay(new Date(), lastSavedTask.completed)).toBe(true);
+    });
   });
 
   it("clicking on due opens a pop up", () => {
     const save = (r) => r;
 
-    render(<TaskForm onSubmit={save} />);
+    render(<TaskForm id="test" onSubmit={save} />);
 
     const dueInput = screen.getByLabelText("Due");
 
@@ -144,7 +148,7 @@ describe("<TaskForm />", () => {
       due: "Error message about due",
     };
 
-    render(<TaskForm onSubmit={(t) => t} errors={errorMessages} />);
+    render(<TaskForm id="test" onSubmit={(t) => t} errors={errorMessages} />);
 
     expect(screen.getByText(errorMessages.description)).toBeInTheDocument();
     expect(screen.getByText(errorMessages.due)).toBeInTheDocument();

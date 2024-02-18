@@ -70,7 +70,7 @@ describe("<UpdateTaskForm />", () => {
     });
   });
 
-  it("should render errors when a task cannot be updated", async () => {
+  it("should render errors when a task cannot be updated", () => {
     const errors = { name: "Error on name field" };
     const view = render(
       <UpdateTaskForm task={{}} errors={errors} updateTask={() => {}} />

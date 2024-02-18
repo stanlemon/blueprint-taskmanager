@@ -99,28 +99,28 @@ export class Layout extends React.Component {
               {" Blueprint"}
             </Navbar.Brand>
             <Nav pullRight>
-              <Dropdown
+              <Nav.Menu
                 id="settings"
                 icon={<Icon icon={faGear} />}
                 title=" Settings"
               >
-                <Dropdown.Item
+                <Nav.Item
                   id="profile"
                   icon={<Icon icon={faUser} />}
                   eventKey="4"
                   onClick={this.handleClickToProfile}
                 >
                   {" Profile"}
-                </Dropdown.Item>
-                <Dropdown.Item
+                </Nav.Item>
+                <Nav.Item
                   id="logout"
                   icon={<Icon icon={faSignOutAlt} />}
                   eventKey="5"
                   onClick={this.handleClickToLogout}
                 >
                   {" Logout"}
-                </Dropdown.Item>
-              </Dropdown>
+                </Nav.Item>
+              </Nav.Menu>
             </Nav>
           </Navbar>
         </Affix>

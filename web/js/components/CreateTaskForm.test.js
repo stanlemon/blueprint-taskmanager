@@ -62,7 +62,7 @@ describe("<CreateTaskForm />", () => {
     });
   });
 
-  it("should render existing data when an error happens upon creation", () => {
+  it("should render existing data when an error happens upon creation", async () => {
     const response = { errors: { name: "Error on name field" } };
     const createTask = () => Promise.resolve(response);
 
@@ -88,9 +88,11 @@ describe("<CreateTaskForm />", () => {
 
     fireEvent.click(view.getByText("Save"));
 
-    // If the save had been successful this would have been blank
-    expect(view.getByLabelText("Name").value).toBe(task.name);
-    // Note we don't check for the pressence of the error in this call because it bubbles down as a prop
+    await waitFor(() => {
+      // If the save had been successful this would have been blank
+      expect(view.getByLabelText("Name").value).toBe(task.name);
+      // Note we don't check for the pressence of the error in this call because it bubbles down as a prop
+    });
   });
 
   it("should render an error on the page", () => {

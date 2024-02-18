@@ -2,7 +2,7 @@ import { render, fireEvent, waitFor } from "@testing-library/react";
 import { ProfileView } from "./ProfileView";
 
 describe("<ProfileView />", () => {
-  it("should render and submit changes", () => {
+  it("should render and submit changes", async () => {
     let savedUser;
 
     const saveUser = (data) => (savedUser = data);
@@ -48,7 +48,9 @@ describe("<ProfileView />", () => {
 
     fireEvent.click(saveButton);
 
-    expect(savedUser).toMatchObject({ name: newName, email: newEmail });
+    await waitFor(() => {
+      expect(savedUser).toMatchObject({ name: newName, email: newEmail });
+    });
   });
 
   it("should validate and catch errors", async () => {
