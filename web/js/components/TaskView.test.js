@@ -1,4 +1,3 @@
-import React from "react";
 import { fireEvent } from "@testing-library/react";
 import { renderConnected } from "../lib/test-utils";
 import { TaskView } from "./TaskView";

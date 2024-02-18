@@ -1,4 +1,3 @@
-import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { subDays, addDays, isSameDay, parseISO } from "date-fns";
 import { makeDateTime } from "../lib/Utils";

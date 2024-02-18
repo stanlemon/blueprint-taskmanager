@@ -1,4 +1,3 @@
-import React from "react";
 import { parse, parseISO, isSameDay } from "date-fns";
 import { fireEvent, render, screen } from "@testing-library/react";
 import TaskForm from "./TaskForm";

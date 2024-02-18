@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import { SessionWatcher } from "./SessionWatcher";
 import { navigateTo, getCurrentPathname } from "../lib/Navigation";
