@@ -50,7 +50,7 @@
     "express-rate-limit": "^7.2.0",
     "express-session": "^1.18.0",
     "helmet": "^7.1.0",
-    "joi": "^17.13.0",
+    "joi": "^17.13.1",
     "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
     "lodash": "^4.17.21",
@@ -64,8 +64,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-fontawesome": "^1.7.1",
-    "react-redux": "^9.1.1",
-    "rsuite": "^5.60.0",
+    "react-redux": "^9.1.2",
+    "rsuite": "^5.60.1",
     "serve-static": "^1.15.0",
     "shortid": "^2.2.16",
     "uuid": "^9.0.1",
@@ -73,7 +73,7 @@
     "wouter": "^3.1.2"
   },
   "devDependencies": {
-    "@testing-library/react": "^15.0.5",
+    "@testing-library/react": "^15.0.6",
     "@types/puppeteer": "^7.0.4",
     "better-sqlite3": "^9.6.0",
     "concurrently": "^8.2.2",
