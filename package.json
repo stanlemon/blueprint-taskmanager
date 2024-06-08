@@ -73,7 +73,7 @@
     "wouter": "^3.2.0"
   },
   "devDependencies": {
-    "@testing-library/react": "^15.0.7",
+    "@testing-library/react": "^16.0.0",
     "@types/puppeteer": "^7.0.4",
     "better-sqlite3": "^11.0.0",
     "concurrently": "^8.2.2",
