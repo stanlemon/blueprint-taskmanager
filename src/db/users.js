@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const shortid = require("shortid");
+const { v7: uuid } = require("uuid");
 const { format } = require("date-fns");
 const omit = require("lodash/omit");
 const isEmpty = require("lodash/isEmpty");
@@ -55,7 +55,7 @@ async function createUser(data) {
   const user = Object.assign({}, data, {
     active: 1,
     password: bcrypt.hashSync(data.password, 10),
-    verification_token: shortid.generate(),
+    verification_token: uuid(),
     created_at: now,
     updated_at: now,
   });
@@ -109,7 +109,7 @@ async function updateUser(id, user) {
   }
 
   if (data.email && original.email !== data.email) {
-    data.verification_token = shortid.generate();
+    data.verification_token = uuid();
     data.verified = null;
   }
 

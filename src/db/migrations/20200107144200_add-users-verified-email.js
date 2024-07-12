@@ -1,4 +1,4 @@
-const shortid = require("shortid");
+const { v7: uuid } = require("uuid");
 
 exports.up = async function (knex) {
   await knex.schema.alterTable("users", (table) => {
@@ -10,7 +10,7 @@ exports.up = async function (knex) {
 
   users.forEach(async (user) => {
     await knex("users")
-      .update({ verification_token: shortid.generate() })
+      .update({ verification_token: uuid() })
       .where("id", user.id);
   });
 
