@@ -11,7 +11,7 @@ import { navigateTo } from "../lib/Navigation";
 import { logout, loadTags, clearErrors } from "../actions";
 import { ROUTE_ROOT, ROUTE_PROFILE, ROUTE_LOGIN } from "./Routes";
 import { Container } from "./elements";
-import { Affix, Dropdown, Nav, Navbar } from "rsuite";
+import { Affix, Nav, Navbar } from "rsuite";
 
 export class Layout extends React.Component {
   constructor(props) {
