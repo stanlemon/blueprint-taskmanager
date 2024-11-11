@@ -72,7 +72,7 @@ describe("users database access", () => {
     await createUser({ email, password, name });
 
     // Actually an InvalidArgument, but this expectation doesn't work with that
-    /* eslint-disable-next-line jest/valid-expect */
+
     expect(createUser({ email, password, name })).rejects.toEqual(
       new Error("A user with this email address already exists")
     );

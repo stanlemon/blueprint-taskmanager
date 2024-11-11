@@ -16,8 +16,8 @@
     "start": "node server.js",
     "start:dev": "NODE_ENV=development nodemon --trace-warnings server.js",
     "dev": "concurrently \"npm run start:dev\" \"npm run webpack:dev\"",
-    "lint": "eslint --ext .jsx --ext .js server.js src/** web/js/**",
-    "lint:format": "eslint --ext .jsx --ext .js server.js src/** web/js/** --fix",
+    "lint": "eslint server.js src/** web/js/**",
+    "lint:format": "eslint server.js src/** web/js/** --fix",
     "build": "npm run webpack:build",
     "webpack:build": "rm -rf ./dist/* && NODE_ENV=production WEBPACK_ENTRY=./web/js/index.js webpack",
     "webpack:dev": "NODE_ENV=development WEBPACK_ENTRY=./web/js/index.js webpack serve",
@@ -73,6 +73,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.48.2",
+    "@stanlemon/eslint-config": "^3.0.0",
     "@testing-library/react": "^16.0.1",
     "@types/node": "^22.9.0",
     "better-sqlite3": "^11.5.0",

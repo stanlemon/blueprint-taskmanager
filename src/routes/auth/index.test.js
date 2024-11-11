@@ -20,7 +20,7 @@ describe("/auth", () => {
   app.use(api);
 
   // Disabling this linting rule because it is unaware of the supertest assertions
-  /* eslint-disable jest/expect-expect */
+
   it("POST /register creates a user", async () => {
     const name = "Test Tester";
     const email = "test@test.com";
@@ -41,7 +41,6 @@ describe("/auth", () => {
       .expect(302)
       .expect("Location", "/auth/session");
   });
-  /* eslint-enable jest/expect-expect */
 
   it("POST /register returns error on empty data", async () => {
     await request(app)

@@ -12,7 +12,7 @@ export default function Button({
   const style = Object.assign(_props.style || {}, {
     minWidth: width,
   });
-  const type = _props.onClick ? "button" : _props.type ?? "submit";
+  const type = _props.onClick ? "button" : (_props.type ?? "submit");
   const props = omit(_props, "style", "children", "is", "size", "width");
   const appearance =
     is === "primary" || is === "danger" ? "primary" : "default";

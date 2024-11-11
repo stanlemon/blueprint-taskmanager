@@ -19,7 +19,6 @@ const asyncHandler = (fn) => async (req, res, next) => {
       process.env.NODE_ENV === "development" ||
       process.env.NODE_ENV === "test"
     ) {
-      // eslint-disable-next-line no-console
       console.error(ex);
 
       res.status(500).json({ error: ex.message });
