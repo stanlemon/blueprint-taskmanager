@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { Modal } from "rsuite";
 
-// eslint-disable-next-line
 export default function ({ isActive, onClose, children }) {
   return (
     <Modal open={isActive} onClose={onClose}>

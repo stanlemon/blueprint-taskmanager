@@ -1,7 +1,6 @@
 import { Message } from "rsuite";
 import Spacer from "./Spacer";
 
-// eslint-disable-next-line
 export default function Notification({ is, children }) {
   return (
     <>

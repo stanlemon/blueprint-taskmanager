@@ -23,7 +23,6 @@ require("dotenv").config();
 const JWT_EXPIRES_IN_MIN = 120;
 
 if (process.env.JWT_SECRET === undefined) {
-  // eslint-disable-next-line no-console
   console.warn("Jwt secret has not been set!");
   process.env.JWT_SECRET = "dyKSdvTaXRS3KWbgMBDz9QlOwZZC3BlH";
 }
@@ -174,11 +173,9 @@ router.post(
 
         sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
         sendgrid.send(message).catch((err) => {
-          // eslint-disable-next-line no-console
           console.error(err.toString());
         });
       } else {
-        // eslint-disable-next-line no-console
         console.warn(
           "SendGrid API key is not set, not sending verification email"
         );

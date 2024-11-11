@@ -60,6 +60,12 @@
       "minimumReleaseAge": "14 days"
     },
     {
+      "matchPackageNames": [
+        "@stanlemon/*"
+      ],
+      "minimumReleaseAge": "0 days"
+    },
+    {
       "matchUpdateTypes": [
         "security"
       ],
