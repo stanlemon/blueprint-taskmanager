@@ -7,3 +7,7 @@ coverage/
 dist/
 .cache/
 test-database-*.sqlite
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

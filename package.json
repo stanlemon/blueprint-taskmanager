@@ -24,8 +24,8 @@
     "test": "NODE_ENV=test jest --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test:coverage": "NODE_ENV=test jest --coverage --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test:watch": "NODE_ENV=test jest --watchAll --testRegex \"(web/js|src)/.*\\.test.js$\"",
-    "test:e2e": "npm run build; NODE_ENV=test jest ./server.test.js --detectOpenHandles",
-    "test:all": "NODE_ENV=test jest  --detectOpenHandles --testRegex .*\\.test.js$"
+    "test:e2e": "npm run build; NODE_ENV=test npx playwright test",
+    "test:all": "npm run test; npm run test:e2e"
   },
   "nodemonConfig": {
     "ignore": [
@@ -72,12 +72,12 @@
     "wouter": "^3.3.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.48.2",
     "@testing-library/react": "^16.0.1",
+    "@types/node": "^22.9.0",
     "better-sqlite3": "^11.5.0",
     "concurrently": "^9.0.1",
-    "jest-puppeteer": "^10.1.4",
     "nodemon": "^3.1.7",
-    "puppeteer": "^23.6.1",
     "supertest": "^7.0.0",
     "wait-for-expect": "^3.0.2"
   }
