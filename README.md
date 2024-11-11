@@ -19,7 +19,7 @@ You can run tests by doing:
 
     npm test
 
-You can run an end to end test using [puppeteer](https://github.com/GoogleChrome/puppeteer) by doing:
+You can run an end to end test using [playwright](http://playwright.dev) by doing:
 
     npm run test-e2e
 
