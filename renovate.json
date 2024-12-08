@@ -1,5 +1,13 @@
 {
   "extends": [
     "github>stanlemon/javascript:renovate.json5"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "passport"
+      ],
+      "enabled": false
+    }
   ]
 }
