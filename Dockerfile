@@ -1,4 +1,4 @@
-FROM node:20@sha256:f4755c9039bdeec5c736b2e0dd5b47700d6393b65688b9e9f807ec12f54a8690
+FROM node:22.10.0@sha256:da53547a061beb7f11f58ee2231589b999acfca89bdf6dfd740627340c879f63
 
 # Create app directory
 RUN mkdir -p /usr/src/app
