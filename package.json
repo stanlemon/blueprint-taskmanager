@@ -76,6 +76,7 @@
     "@stanlemon/eslint-config": "^3.0.3",
     "@testing-library/react": "^16.1.0",
     "@types/node": "^22.10.1",
+    "@types/react": "^18.3.1",
     "better-sqlite3": "^11.7.0",
     "concurrently": "^9.1.0",
     "nodemon": "^3.1.7",
