@@ -9,7 +9,7 @@
     "url": "git@github.com:stanlemon/blueprint-taskmanager.git"
   },
   "engines": {
-    "node": ">=20.0"
+    "node": ">=20.0.0"
   },
   "main": "server.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "build": "npm run webpack:build",
     "webpack:build": "rm -rf ./dist/* && NODE_ENV=production WEBPACK_ENTRY=./web/js/index.js webpack",
     "webpack:dev": "NODE_ENV=development WEBPACK_ENTRY=./web/js/index.js webpack serve",
-    "test": "NODE_ENV=test jest --testRegex \"(web/js|src)/.*\\.test.js$\"",
+    "test": "node -v; NODE_ENV=test jest --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test:coverage": "NODE_ENV=test jest --coverage --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test:watch": "NODE_ENV=test jest --watchAll --testRegex \"(web/js|src)/.*\\.test.js$\"",
     "test:e2e": "npm run build; NODE_ENV=test npx playwright test",
@@ -40,13 +40,13 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@reduxjs/toolkit": "^2.4.0",
     "@sendgrid/mail": "^8.1.4",
-    "@stanlemon/webdev": "^0.2.6",
+    "@stanlemon/webdev": "^0.2.14",
     "bcryptjs": "^2.4.3",
     "client-sessions": "^0.8.0",
     "compression": "^1.7.5",
     "cookie-parser": "^1.4.7",
     "date-fns": "^4.1.0",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "express-rate-limit": "^7.4.1",
     "express-session": "^1.18.1",
     "helmet": "^8.0.0",
@@ -65,7 +65,7 @@
     "react-dom": "^18.3.1",
     "react-fontawesome": "^1.7.1",
     "react-redux": "^9.1.2",
-    "rsuite": "^5.74.2",
+    "rsuite": "^5.75.0",
     "serve-static": "^1.16.2",
     "uuid": "^11.0.3",
     "validator": "^13.12.0",
@@ -73,10 +73,10 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.49.0",
-    "@stanlemon/eslint-config": "^3.0.0",
-    "@testing-library/react": "^16.0.1",
+    "@stanlemon/eslint-config": "^3.0.3",
+    "@testing-library/react": "^16.1.0",
     "@types/node": "^22.10.1",
-    "better-sqlite3": "^11.6.0",
+    "better-sqlite3": "^11.7.0",
     "concurrently": "^9.1.0",
     "nodemon": "^3.1.7",
     "supertest": "^7.0.0",

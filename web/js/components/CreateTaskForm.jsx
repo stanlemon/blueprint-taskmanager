@@ -14,7 +14,13 @@ export class CreateTaskForm extends React.Component {
     }
 
     // Return a blank task
-    return Object.assign({}, TaskForm.defaultProps.task);
+    return {
+      name: "",
+      description: "",
+      completed: null,
+      due: null,
+      tags: [],
+    };
   };
 
   render() {

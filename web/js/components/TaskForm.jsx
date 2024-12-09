@@ -16,12 +16,12 @@ export default class TaskForm extends React.Component {
   // See: https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
   state = {
     data: {
-      id: this.props.task.id || null,
-      name: this.props.task.name || "",
-      description: this.props.task.description || "",
-      completed: this.props.task.completed || null,
-      due: this.props.task.due || null,
-      tags: this.props.task.tags || [],
+      id: this.props.task?.id || null,
+      name: this.props.task?.name || "",
+      description: this.props.task?.description || "",
+      completed: this.props.task?.completed || null,
+      due: this.props.task?.due || null,
+      tags: this.props.task?.tags || [],
     },
     errors: {},
   };
@@ -100,7 +100,11 @@ export default class TaskForm extends React.Component {
 
   render() {
     const task = this.state.data;
-    const errors = Object.assign({}, this.state.errors, this.props.errors);
+    const errors = Object.assign(
+      {},
+      this.state.errors,
+      this.props.errors || {}
+    );
 
     return (
       <form id={this.props.id} onSubmit={this.handleSubmit}>
@@ -185,16 +189,4 @@ TaskForm.propTypes = {
   task: PropTypes.object,
   errors: PropTypes.object,
   id: PropTypes.string.isRequired,
-};
-
-TaskForm.defaultProps = {
-  errors: {},
-  tags: [],
-  task: {
-    name: "",
-    description: "",
-    completed: null,
-    due: null,
-    tags: [],
-  },
 };

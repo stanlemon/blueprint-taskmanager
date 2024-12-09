@@ -30,6 +30,8 @@ if (process.env.NODE_ENV === "production") {
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: true,
   })
 );
 

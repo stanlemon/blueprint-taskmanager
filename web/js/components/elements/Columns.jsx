@@ -9,13 +9,4 @@ export function Columns({ className, children }) {
   );
 }
 
-Columns.propTypes = {
-  flex: PropTypes.bool,
-};
-
-Columns.defaultProps = {
-  flex: false,
-  gutters: true,
-};
-
 export default Columns;

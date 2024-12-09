@@ -39,7 +39,15 @@ export class TaskListView extends React.Component {
   setFilterToComplete = () => this.setFilter(COMPLETE);
 
   render() {
-    const { loaded, errors, hasTasks, tasks, filter } = this.props;
+    const {
+      loaded = [],
+      errors = {},
+      hasTasks = false,
+      tasks = [],
+      filter,
+      page = 1,
+      pages = 1,
+    } = this.props;
 
     if (!includes(loaded, "tasks")) {
       return (
@@ -64,8 +72,6 @@ export class TaskListView extends React.Component {
         </div>
       );
     }
-
-    const { pages, page } = this.props;
 
     return (
       <Container>
@@ -128,14 +134,6 @@ TaskListView.propTypes = {
   tasks: PropTypes.array.isRequired,
   errors: PropTypes.object,
   loaded: PropTypes.array,
-};
-
-TaskListView.defaultProps = {
-  page: 1,
-  pages: 1,
-  tasks: [],
-  errors: {},
-  loaded: [],
 };
 
 /* istanbul ignore next */

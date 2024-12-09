@@ -21,7 +21,7 @@ export class SessionWatcher extends React.Component {
 
     this.interval = setInterval(
       this.props.checkSession,
-      this.props.pollInterval
+      this.props.pollInterval || 30000
     );
   }
 
@@ -75,11 +75,6 @@ export class SessionWatcher extends React.Component {
     return this.props.children;
   }
 }
-
-SessionWatcher.defaultProps = {
-  pollInterval: 30000,
-  loaded: [],
-};
 
 SessionWatcher.propTypes = {
   children: PropTypes.node.isRequired,

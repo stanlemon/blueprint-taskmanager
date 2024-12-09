@@ -4,11 +4,11 @@ import { Form, Input, InputGroup } from "rsuite";
 
 export default function Field({
   name,
-  type,
+  type = "text",
   label,
   value,
   placeholder,
-  onChange,
+  onChange = () => {},
   required,
   icon,
   error,
@@ -48,16 +48,7 @@ Field.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   value: PropTypes.string,
   placeholder: PropTypes.string,
-  isHorizontal: PropTypes.bool,
   onChange: PropTypes.func,
   icon: PropTypes.any,
   error: PropTypes.string,
-};
-
-Field.defaultProps = {
-  type: "text",
-  isHorizontal: false,
-  onChange: () => {},
-  icon: null,
-  error: null,
 };

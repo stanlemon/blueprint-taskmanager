@@ -102,7 +102,6 @@ export class LoginView extends React.Component {
         {errors.main && <Error message={errors.main} />}
         <form onSubmit={this.handleSubmit}>
           <Field
-            isHorizontal={true}
             icon={faUser}
             name="username"
             type="email"
@@ -113,7 +112,6 @@ export class LoginView extends React.Component {
           />
 
           <Field
-            isHorizontal={true}
             icon={faLock}
             name="password"
             type="password"
