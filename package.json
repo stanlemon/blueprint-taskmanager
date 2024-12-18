@@ -1,6 +1,6 @@
 {
   "name": "blueprint-task-manager",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "author": "Stan Lemon <stanlemon@users.noreply.github.com>",
   "description": "Blueprint Task Manager - A playground to experiment with React and Redux.",
   "license": "MIT",
@@ -35,8 +35,8 @@
     ]
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.7.1",
-    "@fortawesome/free-solid-svg-icons": "^6.7.1",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@reduxjs/toolkit": "^2.5.0",
     "@sendgrid/mail": "^8.1.4",
@@ -47,7 +47,7 @@
     "cookie-parser": "^1.4.7",
     "date-fns": "^4.1.0",
     "express": "^4.21.2",
-    "express-rate-limit": "^7.4.1",
+    "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
     "helmet": "^8.0.0",
     "joi": "^17.13.3",
