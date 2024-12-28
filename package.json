@@ -1,6 +1,6 @@
 {
   "name": "blueprint-task-manager",
-  "version": "0.6.11",
+  "version": "0.6.12",
   "author": "Stan Lemon <stanlemon@users.noreply.github.com>",
   "description": "Blueprint Task Manager - A playground to experiment with React and Redux.",
   "license": "MIT",
@@ -65,7 +65,7 @@
     "react-dom": "^19.0.0",
     "react-fontawesome": "^1.7.1",
     "react-redux": "^9.2.0",
-    "rsuite": "^5.75.0",
+    "rsuite": "^5.76.0",
     "serve-static": "^1.16.2",
     "uuid": "^11.0.3",
     "validator": "^13.12.0",
