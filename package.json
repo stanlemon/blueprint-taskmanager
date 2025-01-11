@@ -1,6 +1,6 @@
 {
   "name": "blueprint-task-manager",
-  "version": "0.6.15",
+  "version": "0.6.16",
   "author": "Stan Lemon <stanlemon@users.noreply.github.com>",
   "description": "Blueprint Task Manager - A playground to experiment with React and Redux.",
   "license": "MIT",
@@ -67,7 +67,7 @@
     "react-redux": "^9.2.0",
     "rsuite": "^5.76.2",
     "serve-static": "^1.16.2",
-    "uuid": "^11.0.3",
+    "uuid": "^11.0.4",
     "validator": "^13.12.0",
     "wouter": "^3.3.5"
   },
@@ -78,7 +78,7 @@
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
-    "better-sqlite3": "^11.7.0",
+    "better-sqlite3": "^11.7.2",
     "concurrently": "^9.1.2",
     "nodemon": "^3.1.9",
     "supertest": "^7.0.0",
