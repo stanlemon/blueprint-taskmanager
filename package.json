@@ -1,6 +1,6 @@
 {
   "name": "blueprint-task-manager",
-  "version": "0.6.23",
+  "version": "0.6.24",
   "author": "Stan Lemon <stanlemon@users.noreply.github.com>",
   "description": "Blueprint Task Manager - A playground to experiment with React and Redux.",
   "license": "MIT",
@@ -59,7 +59,7 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "path-to-regexp": "^8.2.0",
-    "pg": "^8.13.2",
+    "pg": "^8.13.3",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -67,9 +67,9 @@
     "react-redux": "^9.2.0",
     "rsuite": "^5.77.1",
     "serve-static": "^1.16.2",
-    "uuid": "^11.0.5",
+    "uuid": "^11.1.0",
     "validator": "^13.12.0",
-    "wouter": "^3.5.1"
+    "wouter": "^3.6.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.50.1",
