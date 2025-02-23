@@ -1,6 +1,6 @@
 {
   "name": "blueprint-task-manager",
-  "version": "0.6.25",
+  "version": "0.6.26",
   "author": "Stan Lemon <stanlemon@users.noreply.github.com>",
   "description": "Blueprint Task Manager - A playground to experiment with React and Redux.",
   "license": "MIT",
@@ -41,7 +41,7 @@
     "@reduxjs/toolkit": "^2.5.1",
     "@sendgrid/mail": "^8.1.4",
     "@stanlemon/webdev": "^0.2.24",
-    "bcryptjs": "^2.4.3",
+    "bcryptjs": "^3.0.2",
     "client-sessions": "^0.8.0",
     "compression": "^1.8.0",
     "cookie-parser": "^1.4.7",
