@@ -1,6 +1,6 @@
 {
   "name": "blueprint-task-manager",
-  "version": "0.6.61",
+  "version": "0.6.62",
   "author": "Stan Lemon <stanlemon@users.noreply.github.com>",
   "description": "Blueprint Task Manager - A playground to experiment with React and Redux.",
   "license": "MIT",
@@ -72,7 +72,7 @@
     "wouter": "^3.7.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.54.0",
+    "@playwright/test": "^1.54.1",
     "@stanlemon/eslint-config": "^3.0.43",
     "@testing-library/react": "^16.3.0",
     "@types/node": "^22.15.1",
